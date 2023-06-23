@@ -1,1 +1,1 @@
-alert('Hello, Sam is testing js');
+alert('Hello, Sam is testing js alert');
