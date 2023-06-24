@@ -1,7 +1,7 @@
 // alert('Hello, Sam is testing js alert, test direct changes');
 // Get the checkbox element by ID
 // check box answer 1.
-const checkbox = document.getElementById('SplitEnds1');
+const checkbox = document.getElementById('split-end-fizz');
 
 // Add a click event listener
 checkbox.addEventListener('click', function() {
