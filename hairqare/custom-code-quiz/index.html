@@ -32,7 +32,7 @@
         </div>
 
         <div class="container" id="content" style="display: none;">
-            <form method="POST" id="signup-form" class="signup-form" enctype="multipart/form-data">
+            <form onsubmit="handleSubmit(event)" id="signup-form" class="signup-form" enctype="multipart/form-data">
                 <h3></h3>
                 <fieldset>
                     <div class="container-img">
@@ -92,14 +92,14 @@
                         <div class="subtitle">Take our quiz and secure your seat in the next group of Challengers. </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <input type="text" name="first_name" id="first_name" placeholder="First Name" />
+                                    <input type="text" name="first_name" id="first_name" placeholder="First Name" required/>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="last_name" id="last_name" placeholder="Last Name" />
+                                    <input type="text" name="last_name" id="last_name" placeholder="Last Name" required/>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="email" name="email" id="email" placeholder="Email" />
+                                <input type="email" name="email" id="email" placeholder="Email" required/>
                             </div>
 
                             <br/>
@@ -109,7 +109,7 @@
                                 <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
                                 <div class="previous-button-2">Previous</div>
                             </div>
-                            <div  class="button button-next">Go to registration page</div>
+                            <button type="submit" class="button submit-result">Go to registration page </button>
                         </div>
                     </div>
                 </fieldset>

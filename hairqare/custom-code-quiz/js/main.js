@@ -1,6 +1,7 @@
 (function($) {
 
     var form = $("#signup-form");
+
     form.steps({
         headerTag: "h3",
         bodyTag: "fieldset",
@@ -31,7 +32,7 @@
             return true;
         },
         onFinished: function(event, currentIndex) {
-            alert('Sumited');
+            console.log('Hello');
         }
     });
 
@@ -43,6 +44,12 @@
       $('.button-next').on('click', function() {
         // Manually trigger the next step change
         form.steps('next');
+      });
+
+      $('.button-prev').on('click', function() {
+        // Manually trigger the next step change
+        console.log('back');
+        form.steps('previous');
       });
 
       $('.button-prev').on('click', function() {
@@ -63,6 +70,11 @@
     });
 
 })(jQuery);
+
+function handleSubmit(event) {
+    event.preventDefault(); // Prevents the default form submission behavior
+    // Get All the data
+  }
 
 document.addEventListener('DOMContentLoaded', function() {
     // Hide the loader
