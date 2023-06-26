@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="author" content="colorlib.com">
+		<meta name="author" content="hairqare.com">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form</title>
+    <title>QUIZ</title>
 
     <style>
         #signup-form-p-0, #signup-form-p-1 {
             padding-top: 10px;
         }
         .actions {
+            display: none;
+        }
+        #content1 {
             display: none;
         }
     </style>
@@ -29,6 +32,10 @@
 
         <div id="loader">
             <div class="loader-inner"></div>
+        </div>
+
+        <div class="container" id="content1">
+            <h1>RESULT DETAILS</h1>
         </div>
 
         <div class="container" id="content" style="display: none;">
@@ -58,19 +65,19 @@
                     <div class="container-img">
                         <label for="your_review" class="section-text">What best describes your hair problems?</label>
                             <div>
-                                <input type="radio" class="radio-option" id="option1" name="options">
+                                <input type="radio" class="radio-option" id="option1" name="options" value="Split_dryness">
                                 <label for="option1" class="radio-option-label">😑 Split ends, frizz, and dryness</label>
 
-                                <input type="radio" class="radio-option" id="option2" name="options">
+                                <input type="radio" class="radio-option" id="option2" name="options" value="Hair_loss">
                                 <label for="option2" class="radio-option-label">😣 Hair loss or hair thinning</label>
 
-                                <input type="radio" class="radio-option" id="option3" name="options">
+                                <input type="radio" class="radio-option" id="option3" name="options" value="Damage_dye">
                                 <label for="option3" class="radio-option-label">😕 Damage from dye, heat, or chemical treatments</label>
 
-                                <input type="radio" class="radio-option" id="option4" name="options">
+                                <input type="radio" class="radio-option" id="option4" name="options" value="Irritation_dandruff">
                                 <label for="option4" class="radio-option-label">😫 Irritation or dandruff</label>
 
-                                <input type="radio" class="radio-option" id="option5" name="options">
+                                <input type="radio" class="radio-option" id="option5" name="options" value="None">
                                 <label for="option5" class="radio-option-label">🤷‍♀️ None of the above</label>
                             </div>
 

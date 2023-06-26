@@ -23,11 +23,6 @@
             }
             if(currentIndex === 1) {
                 form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
-                // if ($('.radio-option:checked').length === 0) {
-                // No radio button is selected, prevent moving to the next step
-                    console.log('Radio button check');
-                    console.log($('.radio-option:checked').length);
-                // }
             }
             return true;
         },
@@ -48,16 +43,9 @@
 
       $('.button-prev').on('click', function() {
         // Manually trigger the next step change
-        console.log('back');
+        // console.log('back');
         form.steps('previous');
       });
-
-      $('.button-prev').on('click', function() {
-        // Manually trigger the next step change
-        console.log('back');
-        form.steps('previous');
-      });
-
     $(".toggle-password").on('click', function() {
 
         $(this).toggleClass("zmdi-eye zmdi-eye-off");
@@ -74,6 +62,34 @@
 function handleSubmit(event) {
     event.preventDefault(); // Prevents the default form submission behavior
     // Get all the data
+    var form_content = document.getElementById("content");
+    var result = document.getElementById("content1");
+    var selectedOption = document.querySelector('input[name="options"]:checked');
+
+    var selectedFn = document.querySelector('input[name="first_name"]');
+    var selectedLn = document.querySelector('input[name="last_name"]');
+    var selectedEm = document.querySelector('input[name="email"]');
+
+    // Check if a radio button is selected
+    if (selectedOption && selectedFn && selectedLn && selectedEm) {
+        var question1 = document.querySelector('label[for="' + selectedOption.id + '"]');
+        const questions_logic_payload = {
+            hair_problem: question1.textContent
+        };
+
+        const user_profile = {
+            firstname: selectedFn.value,
+            lastname: selectedLn.value,
+            email: selectedEm.value,
+        }
+        console.log("Selected value: " + questions_logic_payload.hair_problem, 'Profile: ', user_profile);
+        // Perform any further operations with the selected value
+
+        result.style.display = "block";
+        form_content.style.display = "none";
+      } else {
+        console.log("Error Data");
+      }
   }
 
 document.addEventListener('DOMContentLoaded', function() {
