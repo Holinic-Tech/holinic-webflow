@@ -73,7 +73,7 @@
 
 function handleSubmit(event) {
     event.preventDefault(); // Prevents the default form submission behavior
-    // Get All the data
+    // Get all the data
   }
 
 document.addEventListener('DOMContentLoaded', function() {
