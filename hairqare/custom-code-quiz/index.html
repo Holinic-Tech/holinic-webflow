@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="colorlib.com">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form</title>
+
+    <style>
+        #signup-form-p-0, #signup-form-p-1 {
+            padding-top: 10px;
+        }
+        .actions {
+            display: none;
+        }
+    </style>
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="main">
+
+        <div id="loader">
+            <div class="loader-inner"></div>
+        </div>
+
+        <div class="container" id="content" style="display: none;">
+            <form method="POST" id="signup-form" class="signup-form" enctype="multipart/form-data">
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <div class="title">Find out if the Challenge is right for you✨</div>
+                        <div class="subtitle">Take our quiz and secure your seat in the next group of Challengers. </div>
+                        <div class="image-container">
+                        <img src="https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg" alt="Img">
+                        </div>
+
+                        <br/>
+
+                        <div class="container-lg-button">
+                            <!-- <div id="button-prev" class="button">Previous</div> -->
+                            <div id="button-next" class="lg-button button-next">Get Started</div>
+                        </div>
+                    </div>
+                    <!-- button -->
+
+                </fieldset>
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">What best describes your hair problems?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option1" name="options">
+                                <label for="option1" class="radio-option-label">😑 Split ends, frizz, and dryness</label>
+
+                                <input type="radio" class="radio-option" id="option2" name="options">
+                                <label for="option2" class="radio-option-label">😣 Hair loss or hair thinning</label>
+
+                                <input type="radio" class="radio-option" id="option3" name="options">
+                                <label for="option3" class="radio-option-label">😕 Damage from dye, heat, or chemical treatments</label>
+
+                                <input type="radio" class="radio-option" id="option4" name="options">
+                                <label for="option4" class="radio-option-label">😫 Irritation or dandruff</label>
+
+                                <input type="radio" class="radio-option" id="option5" name="options">
+                                <label for="option5" class="radio-option-label">🤷‍♀️ None of the above</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <div class="title">Find out if the Challenge is right for you✨</div>
+                        <div class="subtitle">Take our quiz and secure your seat in the next group of Challengers. </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" name="first_name" id="first_name" placeholder="First Name" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="last_name" id="last_name" placeholder="Last Name" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" id="email" placeholder="Email" />
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                            <div  class="button button-next">Go to registration page</div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="vendor/jquery-steps/jquery.steps.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
