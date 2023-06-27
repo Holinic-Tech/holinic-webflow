@@ -697,6 +697,20 @@ fieldset.current {
   transition: background-color .2s ease-in;
 }
 
+.lg-join-button {
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  width: 80%;
+  cursor: pointer;
+  background-color: #f2b485;
+  border-radius: 5px;
+  padding: 12px 32px;
+  font-size: 15px;
+  border-radius: 30px;
+  transition: background-color .2s ease-in;
+}
+
 .section-text {
   color: #0a1f44;
   text-align: center;
