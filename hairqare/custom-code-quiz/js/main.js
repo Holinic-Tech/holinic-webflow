@@ -277,6 +277,20 @@ function proocessResultLogic(content, first_name) {
     }
 }
 
+ // Helper function to get the value of a cookie
+function getCookieValue(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookies = decodedCookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}
+
 
 // Radio Button Change Listener Event.
 // Get the radio button groups
@@ -456,20 +470,6 @@ function loaderShow() {
     content2.style.display = "block";
     }, 2000);
 
-}
-
-// Helper function to get the value of a cookie
-function getCookieValue(cookieName) {
-    var name = cookieName + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var cookies = decodedCookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    return "";
 }
 
 document.addEventListener('DOMContentLoaded', function() {
