@@ -341,7 +341,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?rUEvP9az?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
     // Redirect user to next page immediately
-    window.location.href = redirectUrl;
+    window.top.location.href = redirectUrl;
 
     // Post user's answers, name, and email to webhook
     $.ajax({
