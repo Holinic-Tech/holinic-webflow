@@ -102,26 +102,22 @@ function proocessResultLogic(content, first_name) {
     if (content === '😑 Split ends, frizz, and dryness') {
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to repair your damaged hair and achieve silky ends... so you can go through the day with confidence every day!
+        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to repair your damaged hair and achieve silky ends... so you can go through the day with confidence every day!
 
         <br/><br/>
 
-        Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
         <br/><br/>
 
-        Instead, we have a simple and quick routine that you can do in a few minutes a day that will help you stop your split ends, tame frizz and achieve luscious and healthy locks in less than two weeks.
-
-        <br/><br/>
-
-        In the 14-Day Haircare Challenge, world renown haircare instructor Sarah Tran will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop your split ends, tame frizz and achieve luscious and healthy locks in less than two weeks.
 
         <br/><br/>
 
-        (These same tips have already helped thousands of women get the hair of their dreams.)
+        In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
 
         <br/><br/>
 
-        The next 14 days are about finally getting your confidence back. It’s about waking up every day loving how you look and feel, so you can enjoy your days to the fullest.
+        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
 
         <br/><br/>
 
@@ -131,23 +127,19 @@ function proocessResultLogic(content, first_name) {
         return `
         Based on your answers, we're identified a SIMPLE solution to visibly reduce your hair loss and regain denser and voluminous hair… so you can go through the day with confidence every day!
 
-        Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.
+       <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
 
         <br/><br/>
 
-        Instead, we have a simple and quick routine that you can do in a few minutes a day that will help you revive your follicles and visibly reduce the number of hair you lose in less than two weeks.
+        Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you revive your follicles and visibly reduce the number of hair you lose in less than two weeks.
 
         <br/><br/>
 
-        In the 14-Day Haircare Challenge, world renown haircare instructor Sarah Tran will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
 
         <br/><br/>
 
-        (These same tips have already helped thousands of women solve their hair troubles.)
-
-        <br/><br/>
-
-        The next 14 days are about finally getting your confidence back. It’s about waking up every day loving how you look and feel, so you can enjoy your days to the fullest.
+        (These same tips have already helped <u>thousands of women</u> solve their hair troubles.)
 
         <br/><br/>
 
@@ -160,19 +152,15 @@ function proocessResultLogic(content, first_name) {
 
         <br/><br/>
 
-        Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
 
         <br/><br/>
 
-        Instead, we have a simple and quick routine that you can do in a few minutes a day that will help you stop the breakage, restore your hair and make it shine in less than two weeks.
+        Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop the breakage, restore your hair and make it shine in less than two weeks.
 
         <br/><br/>
 
-        In the 14-Day Haircare Challenge, world renown haircare instructor Sarah Tran will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
-
-        <br/><br/>
-
-        (These same tips have already helped thousands of women get the hair of their dreams.)
+        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
         The next 14 days are about finally getting your confidence back. It’s about waking up every day loving how you look and feel, so you can enjoy your days to the fullest.
 
         <br/><br/>
@@ -183,27 +171,23 @@ function proocessResultLogic(content, first_name) {
     } else if (content === '😫 Irritation or dandruff') {
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to trade this ugly,  embarrassing discomfort for a fresh and healthy scalp ... so you can go through the day with confidence every day!
+        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to trade this ugly,  embarrassing discomfort for a fresh and healthy scalp ... so you can go through the day with confidence every day!
 
         <br/><br/>
 
-        Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
 
         <br/><br/>
 
-        Instead, we have a simple and quick routine that you can do in a few minutes a day that will help you stop the flakes and itchiness to achieve clean and voluminous locks in less than two weeks.
+        Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop the flakes and itchiness to achieve clean and voluminous locks in less than two weeks.
 
         <br/><br/>
 
-        In the 14-Day Haircare Challenge, world renown haircare instructor Sarah Tran will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
 
         <br/><br/>
 
-        (These same tips have already helped thousands of women get the hair of their dreams.)
-
-        <br/><br/>
-
-        The next 14 days are about finally getting your confidence back. It’s about waking up every day loving how you look and feel, so you can enjoy your days to the fullest.
+        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
 
         <br/><br/>
 
@@ -213,23 +197,23 @@ function proocessResultLogic(content, first_name) {
     } else {
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to bring back your hair’s shine and density from the old days... so you can go through the day with confidence every day!
+        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to bring back your hair’s shine and density from the old days... so you can go through the day with confidence every day!
 
         <br/><br/>
 
-        Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
 
         <br/><br/>
 
-        Instead, we have a simple and quick routine that you can do in a few minutes a day that will help you stop your split ends, tame frizz and achieve luscious and healthy locks in less than two weeks.
+        Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop your split ends, tame frizz and achieve luscious and healthy locks in less than two weeks.
 
         <br/><br/>
 
-        In the 14-Day Haircare Challenge, world renown haircare instructor Sarah Tran will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
 
         <br/><br/>
 
-        (These same tips have already helped thousands of women get the hair of their dreams.)
+        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
 
         <br/><br/>
 

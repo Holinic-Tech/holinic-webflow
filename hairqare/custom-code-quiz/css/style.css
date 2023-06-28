@@ -453,7 +453,7 @@ fieldset.current {
 }
 
 .content {
-  max-height: 610px; }
+  max-height: 800px; }
 
 .actions {
   position: relative;
@@ -507,7 +507,7 @@ fieldset.current {
     max-width: 100%; }
 
   .content {
-    max-height: 600px; }
+    max-height: 800px; }
 
   .fieldset-flex {
     flex-direction: column;
@@ -575,6 +575,9 @@ fieldset.current {
   padding-top: 13px;
   padding-bottom: 13px;
   display: flex;
+  font-size: 15pt;
+  font-weight: 400;
+  font-family: 'Inter';
   box-shadow: 0 2px 5px rgba(0,0,0,.2)
 }
 
@@ -702,7 +705,9 @@ fieldset.current {
   background-color: #5b3acc;
   border-radius: 5px;
   padding: 12px 32px;
-  font-size: 15px;
+  font-size: 14pt;
+  letter-spacing: 0.4px;
+  font-weight: 400;
   transition: background-color .2s ease-in;
 }
 
@@ -712,17 +717,18 @@ fieldset.current {
   text-align: center;
   width: 80%;
   cursor: pointer;
-  background-color: #f2b485;
+  background-color: #E66A0B;
   border-radius: 5px;
   padding: 12px 32px;
   font-size: 15px;
+  font-weight: 600;
   border-radius: 30px;
   transition: background-color .2s ease-in;
 }
 
 .lg-join-button:hover {
   color: #ffffff;
-  background-color: #bc7b49;
+  background-color: #ffb67d;
 }
 
 .section-text {
