@@ -29,6 +29,15 @@ list-type-ulli, .actions ul {
     /* IE9 Compat Modes */
     src: local("RecklessNeue Regular"), local("RecklessNeue-Regular"), url("../fonts/reck/RecklessNeue-Book.eot?#iefix") format("embedded-opentype"), url("../fonts/reck/RecklessNeue-Book.woff2") format("woff2"), url("../fonts/reck/RecklessNeue-Book.woff") format("woff"), url("../fonts/reck/RecklessNeue-Book.ttf") format("truetype"), url("../fonts/reck/RecklessNeue-Book.svg#RecklessNeue") format("svg");
     /* Legacy iOS */ }
+
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      src: url("../fonts/Inter/Inter-Medium.ttf");
+      /* IE9 Compat Modes */
+      src: local("Inter Regular"), local("Inter-Regular"), url("../fonts/Inter/Inter-Regular.ttf") format("truetype");
+      /* Legacy iOS */ }
 /* Montserrat-300 - latin */
 @font-face {
   font-family: 'Montserrat';
@@ -300,7 +309,7 @@ textarea {
   margin-bottom: 20px; }
 
 fieldset.current {
-  padding-top: 10px; }
+  padding-top: 20px; }
 
 .form-rating {
   float: left; }

@@ -25,6 +25,16 @@
        url('../fonts/reck/RecklessNeue-Book.#RecklessNeue') format('svg'); /* Legacy iOS */
 }
 
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../fonts/Inter/Inter-Regular.ttf'); /* IE9 Compat Modes */
+  src: local('Inter Regular'), local('Inter-Regular'),
+       url('../fonts/Inter/Inter-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+}
+
 /* Montserrat-300 - latin */
 @font-face {
   font-family: 'Montserrat';
