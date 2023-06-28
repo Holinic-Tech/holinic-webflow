@@ -100,11 +100,7 @@ function splitName(fullName) {
 
 function proocessResultLogic(content, first_name) {
     if (content === '😑 Split ends, frizz, and dryness') {
-        return `Let's be honest here. Dealing with dry, brittle, and frizzy hair feels like a never-ending struggle. Each morning, you wake up hoping for a good hair day, only to end up with a frizzy mess that won’t cooperate, no matter how many products you apply.
-
-        <br/><br/>
-        This ends TODAY.
-        <br/><br/>
+        return `
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to repair your damaged hair and achieve silky ends... so you can go through the day with confidence every day!
 
@@ -133,14 +129,6 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😣 Hair loss or hair thinning') {
         return `
-        Are you afraid to run your hand in your hair because every time you feel that it will make you balder? Is your shower constantly clogged with  your fallen hair and just looking at it makes you grieve? You keep losing more hair every day and you just don’t know any more where to turn to make it stop…
-
-        <br/><br/>
-
-        This ends TODAY.
-
-        <br/><br/>
-
         Based on your answers, we're identified a SIMPLE solution to visibly reduce your hair loss and regain denser and voluminous hair… so you can go through the day with confidence every day!
 
         Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.
@@ -168,14 +156,6 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
         return `
-        Let's be honest here, you’ve gone a bit too far and now you’re worried it is too late. You LOVE styling, coloring and pumping your hair so you can look your most fabulous self. But as a result your hair is now breaking mid-way, your frizz gets uncontrollable and every day it requires more styling to get even a decent look.
-
-        <br/><br/>
-
-        This ends TODAY.
-
-        <br/><br/>
-
         Based on your answers, we're identified a SIMPLE solution to stop your split ends, tame frizz and get you fabulous healthy hair… so you can go through the day with confidence every day!
 
         <br/><br/>
@@ -202,13 +182,6 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😫 Irritation or dandruff') {
         return `
-        There it is again. That all-too-familiar urge to scratch your head. As you give in, you feel a momentary sense of relief, only to be quickly replaced by anxiety. You know what comes next - the burn and white flakes on your shoulders, standing out starkly against your dark clothing, revealing your struggle to the world.
-
-        <br/><br/>
-
-        This ends TODAY.
-
-        <br/><br/>
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to trade this ugly,  embarrassing discomfort for a fresh and healthy scalp ... so you can go through the day with confidence every day!
 
@@ -239,13 +212,6 @@ function proocessResultLogic(content, first_name) {
         `;
     } else {
         return `
-        You’re not exactly sure why it’s happening but something with your hair is definitely off. It used to be so healthy, shiny without having to think so much about it. And now you’re contemplating your old pictures and you realize that you have no idea where these amazing hair went. And you’re not even sure how to start to take care of it…
-
-        <br/><br/>
-
-        This ends TODAY.
-
-        <br/><br/>
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to bring back your hair’s shine and density from the old days... so you can go through the day with confidence every day!
 
@@ -387,7 +353,8 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
     // Prepare redirect URL
     var cvgUid = getCookieValue('__cvg_uid');
-    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/rUEvP9az?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
+    // https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=1-2t1g9z33-lh76lqga&billing_email=test%40gmail.com&billing_first_name=Toby&billing_last_name=
+    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?rUEvP9az?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
     // Redirect user to next page immediately
     window.location.href = redirectUrl;
