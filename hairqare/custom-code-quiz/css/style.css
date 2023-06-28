@@ -720,6 +720,11 @@ fieldset.current {
   transition: background-color .2s ease-in;
 }
 
+.lg-join-button:hover {
+  color: #ffffff;
+  background-color: #bc7b49;
+}
+
 .section-text {
   color: #0a1f44;
   text-align: center;

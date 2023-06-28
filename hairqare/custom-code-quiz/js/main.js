@@ -1,3 +1,9 @@
+// Create an array to store the selected answers  [Global Variable]
+const selectedAnswers = [];
+let selectedFirstname = '';
+let selectedLastname = '';
+let selectedEmail = '';
+
 (function($) {
 
     var form = $("#signup-form");
@@ -39,6 +45,13 @@
       $('.button-next').on('click', function() {
         // Manually trigger the next step change
         form.steps('next');
+      });
+
+      $('.lg-join-button').on('click', function() {
+        // Process Joining the Challenge
+        if (selectedFirstname != '') {
+            handleDataSubmission(selectedEmail, selectedFirstname, selectedLastname, selectedAnswers);
+        }
       });
 
       $('.button-prev').on('click', function() {
@@ -264,10 +277,127 @@ function proocessResultLogic(content, first_name) {
     }
 }
 
+
+// Radio Button Change Listener Event.
+// Get the radio button groups
+const optionGroup = document.getElementsByName("options");
+const option1Group = document.getElementsByName("option1");
+const option2Group = document.getElementsByName("option2");
+const option3Group = document.getElementsByName("option3");
+const option4Group = document.getElementsByName("option4");
+const option6Group = document.getElementsByName("option6");
+const option7Group = document.getElementsByName("option7");
+
+
+// Function to handle the radio button change event
+function handleRadioChange(event) {
+  const selectedOption = event.target;
+  const selectedLabel = document.querySelector(`label[for="${selectedOption.id}"]`).textContent;
+  selectedAnswers.push(selectedLabel);
+}
+
+// Add event listeners to radio button groups
+optionGroup.forEach((radio) => {
+    // console.log('listening');
+  radio.addEventListener("change", handleRadioChange);
+//   console.log('listened, ', selectedAnswers);
+
+});
+
+option1Group.forEach((radio) => {
+  radio.addEventListener("change", handleRadioChange);
+});
+
+option2Group.forEach((radio) => {
+  radio.addEventListener("change", handleRadioChange);
+});
+
+option3Group.forEach((radio) => {
+    radio.addEventListener("change", handleRadioChange);
+});
+
+option4Group.forEach((radio) => {
+    radio.addEventListener("change", handleRadioChange);
+});
+
+option6Group.forEach((radio) => {
+    radio.addEventListener("change", handleRadioChange);
+});
+
+option7Group.forEach((radio) => {
+    radio.addEventListener("change", handleRadioChange);
+});
+
+function handleDataSubmission (email, firstName, lastName, answers) {
+
+     // Save user's answers, name, and email to cookie with 90 day expiry
+    var data = {
+        answers: answers,
+        name: `${firstName} ${lastName}`,
+        email: email
+    };
+
+    document.cookie = "quiz_data=" + JSON.stringify(data) + ";max-age=7776000;path=/;domain=.hairqare.co";
+
+    const cvgTrack = ({
+        eventName,
+        properties,
+        eventId,
+        profileProperties,
+        aliases,
+    }) => {
+        if (typeof window !== "undefined" && window["cvg"]) {
+            window["cvg"]({
+                method: "event",
+                event: eventName,
+                properties,
+                eventId,
+                profileProperties,
+                aliases,
+            });
+        }
+    };
+    // Track a 'Completed Quiz' event
+    cvgTrack({
+        eventName: "Completed Quiz",
+        properties: {
+            answers: answers,
+            name: `${firstName} ${lastName}`,
+            email: email
+        },
+        aliases: ["urn:email:" + email],
+        profileProperties: {
+            "$email": email
+        }
+    });
+
+    // Prepare redirect URL
+    var cvgUid = getCookieValue('__cvg_uid');
+    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/rUEvP9az?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
+
+    // Redirect user to next page immediately
+    window.location.href = redirectUrl;
+
+    // Post user's answers, name, and email to webhook
+    $.ajax({
+        url: 'https://hook.us1.make.com/86fb3m8fp0kbqtjusi14r063yrdmnuug',
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: function () {
+
+        },
+        error: function () {
+            // Failed webhook request; handle as needed
+        }
+    });
+}
+
 function handleSubmit(event) {
     event.preventDefault(); // Prevents the default form submission behavior
 
     loaderShow();
+    console.log(selectedAnswers, 'Global Variable')
     // Get all the data
     var form_content = document.getElementById("content");
     var result = document.getElementById("content1");
@@ -293,13 +423,16 @@ function handleSubmit(event) {
             lastname: lastName,
             email: selectedEm.value,
         }
-
+        // wHAT Are YoU DoIng SaMUeL??
+        selectedEmail = user_profile?.email;
+        selectedFirstname = user_profile?.firstname;
+        selectedLastname = user_profile?.lastname;
 
         // console.log("Selected value: " + questions_logic_payload.hair_problem.toString(), 'Profile: ', user_profile);
         const result_screen = proocessResultLogic(questions_logic_payload.hair_problem.toString(), firstName);
         resultScreenId.innerHTML = result_screen;
 
-        console.log(result_screen)
+        // console.log(result_screen);
         // Perform any further operations with the selected value
         form_content.style.display = "none";
       } else {
@@ -323,6 +456,20 @@ function loaderShow() {
     content2.style.display = "block";
     }, 2000);
 
+}
+
+// Helper function to get the value of a cookie
+function getCookieValue(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookies = decodedCookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
 }
 
 document.addEventListener('DOMContentLoaded', function() {
