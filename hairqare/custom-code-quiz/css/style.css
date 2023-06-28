@@ -575,7 +575,7 @@ fieldset.current {
   padding-top: 13px;
   padding-bottom: 13px;
   display: flex;
-  font-size: 15pt;
+  font-size: 13pt;
   font-weight: 400;
   font-family: 'Inter';
   box-shadow: 0 2px 5px rgba(0,0,0,.2)
@@ -614,6 +614,7 @@ fieldset.current {
   font-size: 32px;
   font-weight: 500;
   line-height: 32px;
+  letter-spacing: 0.8px;
 }
 
 .subtitle {
