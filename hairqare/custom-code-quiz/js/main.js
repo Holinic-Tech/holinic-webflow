@@ -266,6 +266,8 @@ function proocessResultLogic(content, first_name) {
 
 function handleSubmit(event) {
     event.preventDefault(); // Prevents the default form submission behavior
+
+    loaderShow();
     // Get all the data
     var form_content = document.getElementById("content");
     var result = document.getElementById("content1");
@@ -299,14 +301,29 @@ function handleSubmit(event) {
 
         console.log(result_screen)
         // Perform any further operations with the selected value
-
-        // Display result and hide quiz
-        result.style.display = "block";
         form_content.style.display = "none";
       } else {
         console.log("Error Data");
       }
   }
+
+function loaderShow() {
+    // Get the reference to the loader element
+    const loader = document.getElementById("loader");
+    const content2 = document.getElementById("content1");
+
+    // Show the loader
+    loader.style.display = "block";
+    content2.style.display = "none";
+
+    // Run the loader for 2 seconds
+    setTimeout(() => {
+    // Hide the loader after 2 seconds
+    loader.style.display = "none";
+    content2.style.display = "block";
+    }, 2000);
+
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // Hide the loader
