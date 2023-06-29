@@ -366,6 +366,9 @@ function handleDataSubmission (email, firstName, lastName, answers) {
             // Failed webhook request; handle as needed
         }
     });
+
+    // scroll to Top
+    $(window).scrollTo(0);
 }
 
 function handleSubmit(event) {
