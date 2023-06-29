@@ -224,10 +224,10 @@ function proocessResultLogic(content, first_name) {
 }
 
  // Helper function to get the value of a cookie
-function getCookieValue(cookieName) {
+ function getCookieValue(cookieName) {
     var name = cookieName + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var cookies = decodedCookie.split(';');
+    // we dont need decodeURIComponent operation since it's not necessary when using the jQuery Cookie plugin.
+    var cookies = document.cookie.split(';');
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i].trim();
         if (cookie.indexOf(name) === 0) {
@@ -236,6 +236,7 @@ function getCookieValue(cookieName) {
     }
     return "";
 }
+
 
 
 // Radio Button Change Listener Event.
@@ -313,7 +314,8 @@ function handleDataSubmission (email, firstName, lastName, answers) {
         email: email
     };
 
-    document.cookie = "quiz_data=" + JSON.stringify(data) + ";max-age=7776000;path=/;domain=.hairqare.co";
+    $.cookie('quiz_data', JSON.stringify(data), { expires: 90, path: '/', domain: '.hairqare.co'});
+    // $.cookie('quiz_data', JSON.stringify(data), { expires: 90, path: '/'});
 
     const cvgTrack = ({
         eventName,
@@ -349,8 +351,9 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
     // Prepare redirect URL
     var cvgUid = getCookieValue('__cvg_uid');
+    // print(cvgUid, 'COOKIEEE TRACCKING');
     // https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=1-2t1g9z33-lh76lqga&billing_email=test%40gmail.com&billing_first_name=Toby&billing_last_name=
-    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?rUEvP9az?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
+    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?r__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
     // Redirect user to next page immediately
     window.top.location.href = redirectUrl;
