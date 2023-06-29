@@ -289,6 +289,20 @@ option7Group.forEach((radio) => {
 });
 
 function handleDataSubmission (email, firstName, lastName, answers) {
+    // Get the reference to the loader element
+    const loader = document.getElementById("loader");
+    const content2 = document.getElementById("content1");
+
+    // Show the loader
+    loader.style.display = "block";
+    content2.style.display = "none";
+
+    // Run the loader for 2 seconds
+    setTimeout(() => {
+    // Hide the loader after 2 seconds
+    loader.style.display = "none";
+    content2.style.display = "block";
+    }, 8000);
 
      // Save user's answers, name, and email to cookie with 90 day expiry
     var data = {
@@ -396,6 +410,9 @@ function handleSubmit(event) {
         // console.log(result_screen);
         // Perform any further operations with the selected value
         form_content.style.display = "none";
+
+        // scroll to Top
+        $(window).scrollTo(0);
       } else {
         console.log("Error Data");
       }
