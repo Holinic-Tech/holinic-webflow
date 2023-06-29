@@ -579,7 +579,8 @@ fieldset.current {
   font-size: 16px;
   font-weight: 400;
   font-family: 'Inter';
-  box-shadow: 0 2px 5px rgba(0,0,0,.2)
+  box-shadow: 0 2px 5px rgba(0,0,0,.2);
+  line-height: 1.1;
 }
 
 .radio-option-label:hover {
