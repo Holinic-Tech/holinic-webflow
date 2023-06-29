@@ -289,7 +289,6 @@ option7Group.forEach((radio) => {
 });
 
 function handleDataSubmission (email, firstName, lastName, answers) {
-    scrollToTop();
     // Get the reference to the loader element
     const loader = document.getElementById("loader");
     const content2 = document.getElementById("content1");
@@ -297,6 +296,8 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     // Show the loader
     loader.style.display = "block";
     content2.style.display = "none";
+
+    scrollToTop();
 
     // Run the loader for 2 seconds
     setTimeout(() => {
@@ -367,6 +368,8 @@ function handleDataSubmission (email, firstName, lastName, answers) {
             // Failed webhook request; handle as needed
         }
     });
+
+    scrollToTop();
 }
 
 function handleSubmit(event) {
