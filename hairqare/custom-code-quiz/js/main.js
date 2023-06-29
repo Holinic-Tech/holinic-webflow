@@ -289,6 +289,7 @@ option7Group.forEach((radio) => {
 });
 
 function handleDataSubmission (email, firstName, lastName, answers) {
+    scrollToTop();
     // Get the reference to the loader element
     const loader = document.getElementById("loader");
     const content2 = document.getElementById("content1");
@@ -366,14 +367,12 @@ function handleDataSubmission (email, firstName, lastName, answers) {
             // Failed webhook request; handle as needed
         }
     });
-
-    // scroll to Top
-    $(window).scrollTo(0);
 }
 
 function handleSubmit(event) {
     event.preventDefault(); // Prevents the default form submission behavior
 
+    scrollToTop();
     loaderShow();
     console.log(selectedAnswers, 'Global Variable')
     // Get all the data
@@ -413,9 +412,6 @@ function handleSubmit(event) {
         // console.log(result_screen);
         // Perform any further operations with the selected value
         form_content.style.display = "none";
-
-        // scroll to Top
-        $(window).scrollTo(0);
       } else {
         console.log("Error Data");
       }
@@ -438,6 +434,11 @@ function loaderShow() {
     }, 2000);
 
 }
+
+function scrollToTop() {
+    var myElement = document.getElementById('scroll-top');
+    myElement.scrollTop = 0;
+  }
 
 document.addEventListener('DOMContentLoaded', function() {
     // Hide the loader
