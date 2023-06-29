@@ -576,7 +576,7 @@ fieldset.current {
   padding-top: 13px;
   padding-bottom: 13px;
   display: flex;
-  font-size: 13pt;
+  font-size: 16px;
   font-weight: 400;
   font-family: 'Inter';
   box-shadow: 0 2px 5px rgba(0,0,0,.2)
