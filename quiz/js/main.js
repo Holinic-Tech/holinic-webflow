@@ -409,7 +409,26 @@ function handleSubmit(event) {
             firstname: firstName,
             lastname: lastName,
             email: selectedEm.value,
+            fullname: `${firstName} ${lastName}`,
         }
+
+        // Store the object in localStorage
+        localStorage.setItem('user_profile', JSON.stringify(user_profile));
+
+        // Retrieve the localStorage data
+        const storedData = localStorage.getItem('user_profile');
+
+        // Check if data exists in localStorage
+        if (storedData) {
+            // Parse the stored data from a string to an object
+            const user = JSON.parse(storedData);
+
+            // Print the localStorage data
+            console.log(user);
+        } else {
+            console.log('No data found in localStorage.');
+        }
+
         // wHAT Are YoU DoIng SaMUeL??
         selectedEmail = user_profile?.email;
         selectedFirstname = user_profile?.firstname;
