@@ -364,7 +364,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
     // Post user's answers, name, and email to webhook
     $.ajax({
-        url: 'https://hook.us1.make.com/86fb3m8fp0kbqtjusi14r063yrdmnuug',
+        url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
