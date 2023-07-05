@@ -359,25 +359,36 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     // https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=1-2t1g9z33-lh76lqga&billing_email=test%40gmail.com&billing_first_name=Toby&billing_last_name=
     var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?r__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
-    // Redirect user to next page immediately
-    window.top.location.href = redirectUrl;
-
-    // Post user's answers, name, and email to webhook
+    // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({
         url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: function () {
-
+            return window.top.location.href = redirectUrl;
         },
         error: function () {
             // Failed webhook request; handle as needed
+            $.ajax({
+                url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function () {
+                    return window.top.location.href = redirectUrl;
+                },
+                error: function () {
+                    // Failed webhook request; handle as needed
+                    return window.top.location.href = redirectUrl;
+                }
+            });
         }
     });
 
     scrollToTop();
 }
+
 
 function handleSubmit(event) {
     event.preventDefault(); // Prevents the default form submission behavior
@@ -434,11 +445,33 @@ function handleSubmit(event) {
         selectedFirstname = user_profile?.firstname;
         selectedLastname = user_profile?.lastname;
 
-        // console.log("Selected value: " + questions_logic_payload.hair_problem.toString(), 'Profile: ', user_profile);
-        const result_screen = proocessResultLogic(questions_logic_payload.hair_problem.toString(), firstName);
-        resultScreenId.innerHTML = result_screen;
 
         // console.log(result_screen);
+        var data_upload = {
+            answers: selectedAnswers,
+            name: `${firstName} ${lastName}`,
+            email: selectedEm.value
+        };
+        // Post user's answers, name, and email to webhook
+        $.ajax({
+            url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+            type: 'POST',
+            data: JSON.stringify(data_upload),
+            contentType: 'application/json',
+            success: function () {
+                console.log('sucessful webhook');
+                // console.log("Selected value: " + questions_logic_payload.hair_problem.toString(), 'Profile: ', user_profile);
+                const result_screen = proocessResultLogic(questions_logic_payload.hair_problem.toString(), firstName);
+                return resultScreenId.innerHTML = result_screen;
+            },
+            error: function () {
+                // Failed webhook request; handle as needed
+                console.log('failed webhook');
+                const result_screen = proocessResultLogic(questions_logic_payload.hair_problem.toString(), firstName);
+                return resultScreenId.innerHTML = result_screen;
+            }
+        });
+
         // Perform any further operations with the selected value
         form_content.style.display = "none";
       } else {
