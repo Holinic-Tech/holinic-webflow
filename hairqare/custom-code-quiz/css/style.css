@@ -318,8 +318,8 @@ fieldset.current {
   width: 110px;
   height: 110px;
   position: absolute;
-  top: -30px;
-  right: -35px; }
+  top: -70px;
+  right: -5px; }
   .step-current .step-current-content {
     width: 100%;
     height: 100%;
@@ -328,7 +328,7 @@ fieldset.current {
     -webkit-border-radius: 50%;
     -o-border-radius: 50%;
     -ms-border-radius: 50%;
-    background: #43d7ba;
+    background: #5b3acc;
     color: #fff;
     font-family: 'Montserrat';
     font-weight: 900;
@@ -357,9 +357,21 @@ fieldset.current {
       bottom: 0px;
       left: 0; }
     .step-current .step-current-content .step-inner-0 {
-      background-image: linear-gradient(180deg, #43d7ba 70%, #1abc9c 30%); }
+      background-image: linear-gradient(180deg, #5b3acc 90%, #7a5be0 10%); }
     .step-current .step-current-content .step-inner-1 {
-      background-image: linear-gradient(180deg, #43d7ba 50%, #1abc9c 50%); }
+      background-image: linear-gradient(180deg, #5b3acc 80%, #7a5be0 20%); }
+    .step-current .step-current-content .step-inner-2 {
+      background-image: linear-gradient(180deg, #5b3acc 70%, #7a5be0 30%); }
+    .step-current .step-current-content .step-inner-3 {
+      background-image: linear-gradient(180deg, #5b3acc 60%, #7a5be0 40%); }
+    .step-current .step-current-content .step-inner-4 {
+      background-image: linear-gradient(180deg, #5b3acc 55%, #7a5be0 45%); }
+    .step-current .step-current-content .step-inner-5 {
+      background-image: linear-gradient(180deg, #5b3acc 40%, #7a5be0 60%); }
+    .step-current .step-current-content .step-inner-6 {
+      background-image: linear-gradient(180deg, #5b3acc 20%, #7a5be0 80%); }
+    .step-current .step-current-content .step-inner-7 {
+      background-image: linear-gradient(180deg, #5b3acc 0%, #7a5be0 100%); }
     .step-current .step-current-content .step-number {
       position: relative;
       z-index: 99; }
