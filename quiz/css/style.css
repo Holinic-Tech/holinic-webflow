@@ -315,24 +315,25 @@ fieldset.current {
   float: left; }
 
 .step-current {
-  width: 110px;
-  height: 110px;
+  width: 80px;
+  height: 80px;
   position: absolute;
-  top: -30px;
-  right: -35px; }
+  top: -50px;
+  right: -5px; }
   .step-current .step-current-content {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    border: 3px solid #d4d4d4;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     -o-border-radius: 50%;
     -ms-border-radius: 50%;
-    background: #43d7ba;
-    color: #fff;
+    background: #ffffff;
+    color: #d4d4d4;
     font-family: 'Montserrat';
     font-weight: 900;
-    font-size: 17px;
+    font-size: 14px;
     align-items: center;
     -moz-align-items: center;
     -webkit-align-items: center;
@@ -357,9 +358,21 @@ fieldset.current {
       bottom: 0px;
       left: 0; }
     .step-current .step-current-content .step-inner-0 {
-      background-image: linear-gradient(180deg, #43d7ba 70%, #1abc9c 30%); }
+      background-image: linear-gradient(180deg, #FFFFFF 90%, #FFFFFF 10%); }
     .step-current .step-current-content .step-inner-1 {
-      background-image: linear-gradient(180deg, #43d7ba 50%, #1abc9c 50%); }
+      background-image: linear-gradient(180deg, #ffffff 80%, #ffffff 20%); }
+    .step-current .step-current-content .step-inner-2 {
+      background-image: linear-gradient(180deg, #ffffff 70%, #ffffff 30%); }
+    .step-current .step-current-content .step-inner-3 {
+      background-image: linear-gradient(180deg, #ffffff 60%, #ffffff 40%); }
+    .step-current .step-current-content .step-inner-4 {
+      background-image: linear-gradient(180deg, #ffffff 55%, #ffffff 45%); }
+    .step-current .step-current-content .step-inner-5 {
+      background-image: linear-gradient(180deg, #ffffff 40%, #ffffff 60%); }
+    .step-current .step-current-content .step-inner-6 {
+      background-image: linear-gradient(180deg, #ffffff 20%, #ffffff 80%); }
+    .step-current .step-current-content .step-inner-7 {
+      background-image: linear-gradient(180deg, #ffffff 0%, #ffffff 100%); }
     .step-current .step-current-content .step-number {
       position: relative;
       z-index: 99; }
@@ -738,9 +751,9 @@ fieldset.current {
   color: #0a1f44;
   text-align: center;
   margin-bottom: 12px;
-  font-family: Recklessneue,sans-serif;
-  font-size: 29px;
-  font-weight: 400;
+  font-family: 'Inter';
+  font-size: 21px;
+  font-weight: 500;
   line-height: 32px;
   margin: 0px;
   padding-bottom: 15px;

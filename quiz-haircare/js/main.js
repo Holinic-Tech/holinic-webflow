@@ -25,9 +25,33 @@ let selectedEmail = '';
 
                 form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-0');
                 form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-1');
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-2');
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-3');
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-4');
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-5');
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-6');
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('.step-inner-7');
                 form.find('.content .body .step-current-content').append('<span class="step-inner step-inner-' + currentIndex + '"></span>');
             }
             if(currentIndex === 1) {
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
+            }
+            if(currentIndex === 2) {
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
+            }
+            if(currentIndex === 3) {
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
+            }
+            if(currentIndex === 4) {
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
+            }
+            if(currentIndex === 5) {
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
+            }
+            if(currentIndex === 6) {
+                form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
+            }
+            if(currentIndex === 7) {
                 form.find('.content .body .step-current-content').find('.step-inner').removeClass('step-inner-0').addClass('step-inner-'+ currentIndex + '');
             }
             return true;
@@ -254,6 +278,9 @@ const option6Group = document.getElementsByName("option6");
 const option7Group = document.getElementsByName("option7");
 
 
+// new questions
+const option8Group = document.getElementsByName("optionnew");
+
 // Function to handle the radio button change event
 function handleRadioChange(event) {
   const selectedOption = event.target;
@@ -290,6 +317,11 @@ option6Group.forEach((radio) => {
 });
 
 option7Group.forEach((radio) => {
+    radio.addEventListener("change", handleRadioChange);
+});
+
+// new question
+option8Group.forEach((radio) => {
     radio.addEventListener("change", handleRadioChange);
 });
 
