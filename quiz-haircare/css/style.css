@@ -714,6 +714,89 @@ fieldset.current {
   transition: background-color .2s ease-in;
 }
 
+.lg-button-home {
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  width: 80%;
+  cursor: pointer;
+  background-color: #5b3acc;
+  border-radius: 10px;
+  padding: 12px 32px;
+  font-size: 20px;
+  font-family: 'Inter';
+  letter-spacing: 0.4px;
+  font-weight: 400;
+  transition: background-color .2s ease-in;
+}
+
+.lg-button-outline {
+  color: #5b3acc;
+  border-radius: 5px;
+  text-align: center;
+  width: 30%;
+  margin-left: 15px;
+  cursor: pointer;
+  border-radius: 10px;
+  border-width: 1px;
+  border: 2px solid #5b3acc;
+  padding: 12px 32px;
+  font-size: 20px;
+  text-decoration: none;
+  font-family: 'Inter';
+  letter-spacing: 0.4px;
+  font-weight: 400;
+  transition: background-color .2s ease-in;
+}
+
+/* Media query for mobile screens */
+@media (max-width: 768px) {
+  .lg-button-home {
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    width: 70%;
+    cursor: pointer;
+    background-color: #5b3acc;
+    border-radius: 10px;
+    padding: 12px 32px;
+    font-size: 13px;
+    font-family: 'Inter';
+    letter-spacing: 0.4px;
+    font-weight: 400;
+    transition: background-color .2s ease-in;
+  }
+
+  .lg-button-outline {
+    color: #5b3acc;
+    border-radius: 5px;
+    text-align: center;
+    width: 20%;
+    margin-left: 15px;
+    cursor: pointer;
+    border-radius: 10px;
+    border-width: 1px;
+    border: 2px solid #5b3acc;
+    padding: 12px 32px;
+    font-size: 13px;
+    font-family: 'Inter';
+    letter-spacing: 0.4px;
+    font-weight: 400;
+    transition: background-color .2s ease-in;
+  }
+}
+
+#bottom-text {
+  text-align: left;
+  max-width: 500px;
+  color: #000;
+  font-family: 'Inter';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+}
+
 .lg-join-button {
   color: #fff;
   border-radius: 5px;
