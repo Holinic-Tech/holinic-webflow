@@ -388,6 +388,13 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     scrollToTop();
 }
 
+function handleSkipButton() {
+    var cvgUid = getCookieValue('__cvg_uid');
+    // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
+    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?r__cvg_uid=${cvgUid}`
+    return window.top.location.href = redirectUrl;
+};
+
 
 function handleSubmit(event) {
     event.preventDefault(); // Prevents the default form submission behavior
