@@ -390,7 +390,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     // print(cvgUid, 'COOKIEEE TRACCKING');
     // $29 checkout
     // https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=1-2t1g9z33-lh76lqga&billing_email=test%40gmail.com&billing_first_name=Toby&billing_last_name=
-    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save90/?r__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
+    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save90/?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
     // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({

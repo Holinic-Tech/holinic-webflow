@@ -356,7 +356,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     // Prepare redirect URL
     var cvgUid = getCookieValue('__cvg_uid');
     // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?r__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
+    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
     // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({
@@ -391,7 +391,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 function handleSkipButton() {
     var cvgUid = getCookieValue('__cvg_uid');
     // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?r__cvg_uid=${cvgUid}`
+    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?__cvg_uid=${cvgUid}`
     return window.top.location.href = redirectUrl;
 };
 
