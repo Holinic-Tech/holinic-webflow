@@ -645,6 +645,7 @@ fieldset.current {
 .image-container img {
   max-width: 100%;
   height: auto;
+  padding-bottom: 30px;
 }
 
 .container-button {
@@ -761,33 +762,36 @@ fieldset.current {
 }
 
 .text-chall {
-  font-size: 32px;
-  margin-bottom: 10px;
+  font-size: 28px;
+  /* margin-bottom: 10px; */
   color: #0a1f44;
   text-align: center;
   margin-bottom: 12px;
-  font-family: 'Inter';
-  font-weight: 400;
-  line-height: 32px;
+  font-family: 'helvetica';
+  font-weight: 600;
+  line-height: 38px;
   /* letter-spacing: 0.8px; */
 }
 .text-chall-body {
   font-size: 18px;
   color: #000;
-  margin-bottom: 20px;
-  font-family: 'Inter';
+  /* margin-bottom: 20px; */
+  font-family: 'helvetica';
   font-style: normal;
-  font-weight: 400;
-  line-height: 30px;
+  font-weight: 300;
+  /* line-height: 30px; */
   text-align: center;
 }
 /* Media query for mobile screens */
 @media (max-width: 768px) {
   .text-chall {
-    font-size: 25px;
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 500;
   }
   .text-chall-body {
     font-size: 16px;
+    line-height: 25px;
   }
   .image-containerx img {
     width: 100%;
