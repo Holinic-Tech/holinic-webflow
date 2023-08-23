@@ -395,7 +395,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
     // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({
-        url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
+        url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
@@ -405,7 +405,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
         error: function () {
             // Failed webhook request; handle as needed
             $.ajax({
-                url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
+                url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
@@ -488,7 +488,7 @@ function handleSubmit(event) {
         };
         // Post user's answers, name, and email to webhook
         $.ajax({
-            url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
+            url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
             type: 'POST',
             data: JSON.stringify(data_upload),
             contentType: 'application/json',
