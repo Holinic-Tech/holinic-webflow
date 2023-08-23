@@ -286,6 +286,7 @@ function handleRadioChange(event) {
   const selectedOption = event.target;
   const selectedLabel = document.querySelector(`label[for="${selectedOption.id}"]`).textContent;
   selectedAnswers.push(selectedLabel);
+  console.log("Answer picked", selectedAnswers);
 }
 
 // Add event listeners to radio button groups
@@ -394,7 +395,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
     // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({
-        url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+        url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
@@ -404,7 +405,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
         error: function () {
             // Failed webhook request; handle as needed
             $.ajax({
-                url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+                url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
@@ -487,7 +488,7 @@ function handleSubmit(event) {
         };
         // Post user's answers, name, and email to webhook
         $.ajax({
-            url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+            url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
             type: 'POST',
             data: JSON.stringify(data_upload),
             contentType: 'application/json',
