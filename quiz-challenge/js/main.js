@@ -282,48 +282,64 @@ const option8Group = document.getElementsByName("optionnew");
 
 
 // Function to handle the radio button change event
-function handleRadioChange(event) {
-  const selectedOption = event.target;
-  const selectedLabel = document.querySelector(`label[for="${selectedOption.id}"]`).textContent;
-  selectedAnswers.push(selectedLabel);
-}
-
-// Add event listeners to radio button groups
-optionGroup.forEach((radio) => {
-    // console.log('listening');
-  radio.addEventListener("change", handleRadioChange);
-//   console.log('listened, ', selectedAnswers);
-
-});
-
-option1Group.forEach((radio) => {
-  radio.addEventListener("change", handleRadioChange);
-});
-
-option2Group.forEach((radio) => {
-  radio.addEventListener("change", handleRadioChange);
-});
-
-option3Group.forEach((radio) => {
-    radio.addEventListener("change", handleRadioChange);
-});
-
-option4Group.forEach((radio) => {
-    radio.addEventListener("change", handleRadioChange);
-});
-
-option6Group.forEach((radio) => {
-    radio.addEventListener("change", handleRadioChange);
-});
-
-option7Group.forEach((radio) => {
-    radio.addEventListener("change", handleRadioChange);
-});
-
-// new question
-option8Group.forEach((radio) => {
-    radio.addEventListener("change", handleRadioChange);
-});
+function handleRadioChange(event, num) {
+    const selectedOption = event.target;
+    const selectedLabel = document.querySelector(`label[for="${selectedOption.id}"]`).textContent;
+    selectedAnswers[num] = selectedLabel;
+    console.log("Answer picked", selectedAnswers);
+  //   console.log("Number", num);
+  }
+  
+  // Add event listeners to radio button groups
+  optionGroup.forEach((radio) => {
+    // Add event listener to each radio button
+    radio.addEventListener("change", (event) => {
+      handleRadioChange(event, 0);
+    });
+  });
+  
+  option1Group.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+          handleRadioChange(event, 1);
+        });
+  });
+  
+  option2Group.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+          handleRadioChange(event, 3);
+        });
+  });
+  
+  option3Group.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+          handleRadioChange(event, 4);
+        });
+  });
+  
+  option4Group.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+          handleRadioChange(event, 5);
+        });
+  });
+  
+  option6Group.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+          handleRadioChange(event, 6);
+        });
+  });
+  
+  option7Group.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+          handleRadioChange(event, 7);
+        });
+  });
+  
+  // new question
+  option8Group.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+          handleRadioChange(event, 2);
+        });
+  });
 
 function handleDataSubmission (email, firstName, lastName, answers) {
     // Get the reference to the loader element
@@ -394,7 +410,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
     // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({
-        url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+        url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
@@ -404,7 +420,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
         error: function () {
             // Failed webhook request; handle as needed
             $.ajax({
-                url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+                url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
@@ -487,7 +503,7 @@ function handleSubmit(event) {
         };
         // Post user's answers, name, and email to webhook
         $.ajax({
-            url: 'https://hook.us1.make.com/7ldadddexettepgl3ftl7beuu3i8cp4t',
+            url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
             type: 'POST',
             data: JSON.stringify(data_upload),
             contentType: 'application/json',
