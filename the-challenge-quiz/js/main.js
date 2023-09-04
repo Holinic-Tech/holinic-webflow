@@ -105,22 +105,26 @@ function proocessResultLogic(content, first_name) {
         Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to repair your damaged hair and achieve silky ends... so you can go through the day with confidence every day!
         <br/><br/>
 
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
         <br/><br/>
 
-        🏆 Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop your split ends, tame frizz and achieve luscious and healthy locks in less than two weeks.
-
-        <br/><br/>
-
-        🥇 In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        ✅ It only takes 10 minutes a day to complete and you’ll get </u><b>VISIBLE results in the first few days.</b>
 
         <br/><br/>
 
-        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
+        ✅ Less time in the bathroom, more time enjoying <b>soft and shiny hair.</b>
 
         <br/><br/>
 
-        You deserve this, ${first_name}
+        ✅ Watch the <b>lessons from anywhere</b> with online access.
+
+        <br/><br/>
+        ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br><br>
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
+
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
         `;
     } else if (content === '😣 Hair loss or hair thinning') {
         return `
@@ -128,23 +132,23 @@ function proocessResultLogic(content, first_name) {
 
         <br/><br/>
 
-       <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
-
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
         <br/><br/>
 
-        🏆 Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you revive your follicles and visibly reduce the number of hair you lose in less than two weeks.
+        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
+        <br><br>
+        ✅ See <b>reduced hair loss after the shower</b> and activation of new baby hair growth.
+        <br><br>
+          ✅ Watch the <b>lessons from anywhere</b> with online access.
+          <br><br>
 
-        <br/><br/>
+         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br><br>
 
-        🥇 In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
 
-        <br/><br/>
-
-        (These same tips have already helped <u>thousands of women</u> solve their hair troubles.)
-
-        <br/><br/>
-
-        You deserve this, ${first_name}
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
 
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
@@ -153,23 +157,23 @@ function proocessResultLogic(content, first_name) {
 
         <br/><br/>
 
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
-
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
         <br/><br/>
 
-        🏆 Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop the breakage, restore your hair and make it shine in less than two weeks.
+        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
+        <br><br>
+        ✅ <b>Stronger hair that will resist damage with the styling and coloring.</b> 
+        <br><br>
+          ✅ Watch the <b>lessons from anywhere</b> with online access.
+          <br><br>
 
-        <br/><br/>
+         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br><br>
 
-        🥇 In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
 
-        <br/><br/>
-
-        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
-
-        <br/><br/>
-
-        You deserve this, ${first_name}
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
 
         `;
     } else if (content === '😫 Irritation or dandruff') {
@@ -179,24 +183,23 @@ function proocessResultLogic(content, first_name) {
 
         <br/><br/>
 
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
-
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
         <br/><br/>
 
-        🏆 Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop the flakes and itchiness to achieve clean and voluminous locks in less than two weeks.
+        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
+        <br><br>
+        ✅ <b>Healthier, more comfortable scalp in a few washes only.</b> 
+        <br><br>
+          ✅ Watch the <b>lessons from anywhere</b> with online access.
+          <br><br>
 
-        <br/><br/>
+         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br><br>
 
-        🥇 In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
 
-        <br/><br/>
-
-        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
-
-        <br/><br/>
-
-        You deserve this, ${first_name}
-
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
         `;
     } else {
         return `
@@ -205,23 +208,23 @@ function proocessResultLogic(content, first_name) {
 
         <br/><br/>
 
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine... and you won’t need any fancy salon treatments or expensive products either.</b>
-
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
         <br/><br/>
 
-        🏆 Instead, we have a simple and quick routine that you can do in <u>a few minutes a day</u> that will help you stop your split ends, tame frizz and achieve luscious and healthy locks in less than two weeks.
+        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
+        <br><br>
+        ✅ <b>Reduced hair loss, activated hair growth and better-looking hair.</b> 
+        <br><br>
+          ✅ Watch the <b>lessons from anywhere</b> with online access.
+          <br><br>
 
-        <br/><br/>
+         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br><br>
 
-        🥇 In the 14-Day Haircare Challenge, <b>world renown haircare instructor Sarah Tran</b> will give you bite-sized daily videos with expert-quality advice which you can easily apply in the comfort of your own home.
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
 
-        <br/><br/>
-
-        (These same tips have already helped <u>thousands of women</u> get the hair of their dreams.)
-
-        <br/><br/>
-
-        You deserve this, ${first_name}
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
 
         `;
     }
@@ -394,7 +397,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     // Prepare redirect URL
     var cvgUid = getCookieValue('__cvg_uid');
     // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
+    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
     // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({
@@ -428,8 +431,8 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
 function handleSkipButton() {
     var cvgUid = getCookieValue('__cvg_uid');
-    // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=${cvgUid}`
+    // print(cvgUid, 'COOKIE TRACCKING'); - $39 checkout
+    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?__cvg_uid=${cvgUid}`
     return window.top.location.href = redirectUrl;
 };
 
