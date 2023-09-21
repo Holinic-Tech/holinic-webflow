@@ -128,33 +128,34 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😣 Hair loss or hair thinning') {
         return `
-        Based on your answers, we've identified a <u>SIMPLE haircare routine</u> to visibly reduce your hair loss and regain denser and voluminous hair… so you can go through the day with confidence every day!
+
+        Based on your answers, we’ve identified a SIMPLE haircare routine to increase new hair growth and reduce your hair loss. 
+        <br/><br/>
+
+        <b>It’s NOT an ultra strict, long or complicated routine...</b>
+        <br/><br/>
+
+        ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
 
         <br/><br/>
 
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        ✅  <b>You’ll stop worrying about going bald one day </b>or questioning if other people notice your thinning hair...</b>
+
         <br/><br/>
 
-        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
-        <br><br>
-        ✅ See <b>reduced hair loss after the shower</b> and activation of new baby hair growth.
-        <br><br>
-          ✅ Watch the <b>lessons from anywhere</b> with online access.
-          <br><br>
+        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
 
-         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br/><br/>
+        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
+        <br><br>
+        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
         <br><br>
 
-        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
-        <br><br>
-
-        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
-
+        Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
         return `
-        Based on your answers, we're identified a <u>SIMPLE haircare routine</u> to stop your split ends, tame frizz and get you fabulous healthy hair… so you can go through the day with confidence every day!
-
+        Based on your answers, we're identified a SIMPLE haircare routine to bring back shine and softness to your damaged dry hair...
         <br/><br/>
 
         <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
@@ -162,18 +163,18 @@ function proocessResultLogic(content, first_name) {
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
-        ✅ <b>Stronger hair that will resist damage with the styling and coloring.</b> 
-        <br><br>
-          ✅ Watch the <b>lessons from anywhere</b> with online access.
-          <br><br>
+        ✅ <b>Stronger hair that will resist damage even with styling and coloring.</b> 
+        <br/><br/>
 
-         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
+
+        <br/><br/>
+        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
+        <br><br>
+        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
         <br><br>
 
-        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
-        <br><br>
-
-        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
+        Join now to get a life with vibrant, smooth and shiny hair styles that will make feel fabulous and unique every day.<br><br> You deserve this ${first_name}
 
         `;
     } else if (content === '😫 Irritation or dandruff') {
