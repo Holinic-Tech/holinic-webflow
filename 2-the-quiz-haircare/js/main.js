@@ -164,7 +164,7 @@ function proocessResultLogic(content, first_name) {
         ✅ <b>Stronger hair that will resist damage even with styling and coloring.</b> 
         <br/><br/>
 
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
+        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
 
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
@@ -190,7 +190,7 @@ function proocessResultLogic(content, first_name) {
         ✅ <b>Healthier, more comfortable scalp in just one wash only.</b> 
         <br/><br/>
 
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
+        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
 
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
@@ -214,7 +214,7 @@ function proocessResultLogic(content, first_name) {
         ✅ <b>Reduced hair loss, activated hair growth and better-looking hair.</b> 
         <br/><br/>
 
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
+        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
 
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
