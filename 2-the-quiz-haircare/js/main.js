@@ -426,6 +426,7 @@ function handleSubmit(event) {
     var selectedEm = document.querySelector('input[name="email"]');
 
     const resultScreenId = document.getElementById("result-text");
+    
 
 
     // Check if a radio button is selected
