@@ -137,10 +137,10 @@ function proocessResultLogic(content, first_name) {
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
-        ✅ <b>No more dry, frizzy and unmanageable hair</b> that makes you hide your hair and feel insecure and less unique than you really are
+        ✅ <b>Manageable, better-looking hair that stay beautiful for days after your wash.</b>
         <br/><br/>
 
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
+        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
 
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
@@ -148,7 +148,7 @@ function proocessResultLogic(content, first_name) {
         ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
         <br><br>
 
-        Join now to get a life with soft, shiny and luxurious hair that will get you compliments every day.<br><br> You deserve this ${first_name}
+        Join now to get a life with dense, long, beautiful hair and feel confident every day.<br><br> You deserve this ${first_name}
 
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
@@ -211,7 +211,7 @@ function proocessResultLogic(content, first_name) {
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
-        ✅ <b>See reduced hair loss, activated hair growth and better-looking hair.</b> 
+        ✅ <b>Reduced hair loss, activated hair growth and better-looking hair.</b> 
         <br/><br/>
 
         ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
@@ -222,9 +222,7 @@ function proocessResultLogic(content, first_name) {
         ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
         <br><br>
 
-        Life a life where you can enjoy the confidence that comes from your hair instead of losing time, money and energy on it. <br><br>
-
-Dense, long and silky hair is just a click away.<br><br> You deserve this ${first_name}
+        Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
 
         `;
     }
