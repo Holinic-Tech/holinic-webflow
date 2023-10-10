@@ -1,11 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, World!</title>
+		<meta name="author" content="hairqare.com">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Is the Challenge right for you?</title>
+
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
+
+    <style>
+        #signup-form-p-0, #signup-form-p-1 {
+            padding-top: 10px;
+        }
+        .actions {
+            display: none;
+        }
+        #content1 {
+            display: none;
+        }
+        #result-text {
+            color: #3a2d32;
+            text-align:left;
+            vertical-align: middle;
+            font-size: 16px;
+            font-family: 'Inter';
+            letter-spacing: 0.2px;
+            margin-top: 20px;
+            line-height: 1.7;
+        }
+        br {
+            margin-top: 20px; /* Adjust the top margin as needed */
+            margin-bottom: 20px; /* Adjust the bottom margin as needed */
+        }
+    </style>
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css?v=3">
+
+    <!-- Start Converge Pixel Snippet -->
+    <script type="text/javascript">
+        !function(e,n,i,t,s,o){e.cvg||((t=e.cvg=function(){t.process?
+        t.process.apply(t,arguments):t.queue.push(arguments)}).queue=[],
+        t.t=+new Date,(s=n.createElement(i)).async=1,
+        s.src="https://static.runconverge.com/convergepixelV3.js",
+        (o=n.getElementsByTagName(i)[0]).parentNode.insertBefore(s,o))}
+        (window,document,"script"),cvg({method:"init",id:"YGQUUS",params:{}});
+        cvg({method:"event",event:"$page_load"});
+    </script>
+    <!-- End Converge Pixel Snippet -->
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-TT5MJDF');</script>
+        <!-- End Google Tag Manager -->
+
+                <!-- Start VWO Async SmartCode -->
+                <link rel="preconnect" href="https://dev.visualwebsiteoptimizer.com" />
+                <script type='text/javascript' id='vwoCode'>
+                window._vwo_code || (function() {
+                var account_id=755600,
+                version=2.0,
+                settings_tolerance=2000,
+                hide_element='body',
+                hide_element_style = 'opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important',
+                /* DO NOT EDIT BELOW THIS LINE */
+                f=false,w=window,d=document,v=d.querySelector('#vwoCode'),cK='_vwo_'+account_id+'_settings',cc={};try{var c=JSON.parse(localStorage.getItem('_vwo_'+account_id+'_config'));cc=c&&typeof c==='object'?c:{}}catch(e){}var stT=cc.stT==='session'?w.sessionStorage:w.localStorage;code={use_existing_jquery:function(){return typeof use_existing_jquery!=='undefined'?use_existing_jquery:undefined},library_tolerance:function(){return typeof library_tolerance!=='undefined'?library_tolerance:undefined},settings_tolerance:function(){return cc.sT||settings_tolerance},hide_element_style:function(){return'{'+(cc.hES||hide_element_style)+'}'},hide_element:function(){return typeof cc.hE==='string'?cc.hE:hide_element},getVersion:function(){return version},finish:function(){if(!f){f=true;var e=d.getElementById('_vis_opt_path_hides');if(e)e.parentNode.removeChild(e)}},finished:function(){return f},load:function(e){var t=this.getSettings(),n=d.createElement('script'),i=this;if(t){n.textContent=t;d.getElementsByTagName('head')[0].appendChild(n);if(!w.VWO||VWO.caE){stT.removeItem(cK);i.load(e)}}else{n.fetchPriority='high';n.src=e;n.type='text/javascript';n.onerror=function(){_vwo_code.finish()};d.getElementsByTagName('head')[0].appendChild(n)}},getSettings:function(){try{var e=stT.getItem(cK);if(!e){return}e=JSON.parse(e);if(Date.now()>e.e){stT.removeItem(cK);return}return e.s}catch(e){return}},init:function(){if(d.URL.indexOf('__vwo_disable__')>-1)return;var e=this.settings_tolerance();w._vwo_settings_timer=setTimeout(function(){_vwo_code.finish();stT.removeItem(cK)},e);var t=d.currentScript,n=d.createElement('style'),i=this.hide_element(),r=t&&!t.async&&i?i+this.hide_element_style():'',c=d.getElementsByTagName('head')[0];n.setAttribute('id','_vis_opt_path_hides');v&&n.setAttribute('nonce',v.nonce);n.setAttribute('type','text/css');if(n.styleSheet)n.styleSheet.cssText=r;else n.appendChild(d.createTextNode(r));c.appendChild(n);this.load('https://dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&vn='+version)}};w._vwo_code=code;code.init();})();
+                </script>
+                <!-- End VWO Async SmartCode -->
 </head>
+
 <body>
-    <h1>Hello, World!</h1>
+
+    <div class="main" id="scroll-top">
+
+        <center>
+            <div id="loader">
+                <div class="loader-inner"></div>
+            </div>
+        </center>
+
+
+        <div class="container" id="content1" style="background-color: #e9ebfb;">
+                <!-- Google Tag Manager (noscript) -->
+                <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT5MJDF"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+                <!-- End Google Tag Manager (noscript) -->
+            <form onsubmit="handleSubmit(event)" id="result-form" class="signup-form" enctype="multipart/form-data">
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <div class="title" style="letter-spacing: 3px;margin-top: 25px; text-align:center; font-size: 34px;">Great news! You are a perfect fit for the challenge ✨</div>
+                        <div class="container-lg-button" id="container-lg-button-top" style="margin-bottom: 30px; margin-top: 30px;">
+                            <!-- <div id="button-prev" class="button">Previous</div> -->
+                            <div class="lg-join-button" id="lg-button-top" style="letter-spacing: 0.4px;">JOIN NOW →</div>
+                        </div>
+                        <div class="subtitle" id="result-text">... </div>
+
+                        <div class="container-lg-button" style="margin-bottom: 20px;">
+                            <!-- <div id="button-prev" class="button">Previous</div> -->
+                            <div class="lg-join-button" id="lg-button-bottom" style="letter-spacing: 0.4px;">JOIN THE CHALLENGE NOW →</div>
+                        </div>
+                        <div class="subtitle" id="result-image">... </div>
+                        <br/>
+
+                        <div class="image-container">
+                            <div style="position: relative; padding-top: 56.25%;">
+                                <iframe src="https://www.youtube.com/embed/rul244vxNec?rel=0" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" title="Haircare Challenge Introduction" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                <!-- <iframe src="https://customer-k0rv29ogkuomtqhl.cloudflarestream.com/8f9ee1302d047e1e405f71477fd07ddf/iframe?poster=https%3A%2F%2Fi.postimg.cc%2FrpBwzWKW%2FClean-Shot-2023-06-06-at-12-37-58.jpg" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- button -->
+
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="container" id="content" style="display: none;">
+            <form onsubmit="handleSubmit(event)" id="signup-form" class="signup-form" enctype="multipart/form-data">
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <div class="title">Find out if the Haircare Challenge is right for you✨</div>
+                        <div class="subtitle">Take our quiz and secure your seat in the next group of participants. </div>
+                        <div class="image-container">
+                        <img src="https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg" alt="Img">
+                        </div>
+
+                        <br/>
+
+                        <div class="container-lg-button">
+                            <!-- <div id="button-prev" class="button">Previous</div> -->
+                            <div id="button-next" class="lg-button-home button-next">START THE QUIZ</div>
+                            <a  href="#" onclick="handleSkipButton()"  class="lg-button-outline">SKIP**</a>
+                        </div>
+
+                        <br/>
+
+                        <center>
+                            <div id="bottom-text">
+                                ** Only skip the quiz if you have already done it as it helps to ensure that you are a fit for the Challenge.
+                            </div>
+                        </center>
+                    </div>
+                    <!-- button -->
+
+                </fieldset>
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">What best describes your hair problems?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option1" name="options" value="Split_dryness">
+                                <label for="option1" class="radio-option-label">😑 Split ends, frizz, and dryness</label>
+
+                                <input type="radio" class="radio-option" id="option2" name="options" value="Hair_loss">
+                                <label for="option2" class="radio-option-label">😣 Hair loss or hair thinning</label>
+
+                                <input type="radio" class="radio-option" id="option3" name="options" value="Damage_dye">
+                                <label for="option3" class="radio-option-label">😕 Damage from dye, heat, or chemical treatments</label>
+
+                                <input type="radio" class="radio-option" id="option4" name="options" value="Irritation_dandruff">
+                                <label for="option4" class="radio-option-label">😫 Irritation or dandruff</label>
+
+                                <input type="radio" class="radio-option" id="option5" name="options" value="None">
+                                <label for="option5" class="radio-option-label">🤷‍♀️ None of the above</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">How old are you?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option12" name="option1" value="one2">
+                                <label for="option12" class="radio-option-label">👧 Under 18</label>
+
+                                <input type="radio" class="radio-option" id="option22" name="option1" value="two2">
+                                <label for="option22" class="radio-option-label">🎓 18-24</label>
+
+                                <input type="radio" class="radio-option" id="option32" name="option1" value="three2">
+                                <label for="option32" class="radio-option-label">💼 25-34</label>
+
+                                <input type="radio" class="radio-option" id="option42" name="option1" value="four2">
+                                <label for="option42" class="radio-option-label">👩‍💼 35-44</label>
+
+                                <input type="radio" class="radio-option" id="option52" name="option1" value="five2">
+                                <label for="option52" class="radio-option-label">👩‍💻 45+</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- BREAK -->
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">What do you currently do for your hair?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option13" name="option2" value="one2">
+                                <label for="option13" class="radio-option-label">💈 All-inclusive approach: salon treatments, products, doctors, supplements, etc.</label>
+
+                                <input type="radio" class="radio-option" id="option23" name="option2" value="two2">
+                                <label for="option23" class="radio-option-label">🧴 Basic care: just shampoo and conditioner</label>
+
+                                <input type="radio" class="radio-option" id="option33" name="option2" value="three2">
+                                <label for="option33" class="radio-option-label">🧖‍♀️ Occasional pampering: hair masks and treatments once in a while</label>
+
+                                <input type="radio" class="radio-option" id="option43" name="option2" value="four2">
+                                <label for="option43" class="radio-option-label">🌿 Natural remedies: using oils, herbs, or DIY treatments</label>
+
+                                <input type="radio" class="radio-option" id="option53" name="option2" value="five2">
+                                <label for="option53" class="radio-option-label">🤷‍♀️ None of the above</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Spending on Shampoo -->
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">How much do you spend on a bottle of shampoo?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option14" name="option3" value="one2">
+                                <label for="option14" class="radio-option-label">🧴 Less than $10</label>
+
+                                <input type="radio" class="radio-option" id="option24" name="option3" value="two2">
+                                <label for="option24" class="radio-option-label">🧼 $10 - $20</label>
+
+                                <input type="radio" class="radio-option" id="option34" name="option3" value="three2">
+                                <label for="option34" class="radio-option-label">🛁 $20 - $50</label>
+
+                                <input type="radio" class="radio-option" id="option44" name="option3" value="four2">
+                                <label for="option44" class="radio-option-label">🛀 More than $50</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- DIet -->
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">What best describes your diet?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option15" name="option4" value="one2">
+                                <label for="option15" class="radio-option-label">🍔 My eating habits are kinda unhealthy</label>
+
+                                <input type="radio" class="radio-option" id="option25" name="option4" value="two2">
+                                <label for="option25" class="radio-option-label">⚖️ I mostly eat a healthy and balanced diet</label>
+
+                                <input type="radio" class="radio-option" id="option35" name="option4" value="three2">
+                                <label for="option35" class="radio-option-label">👩‍🏫 I follow a special diet which I've researched and found suitable</label>
+
+                                <input type="radio" class="radio-option" id="option45" name="option4" value="four2">
+                                <label for="option45" class="radio-option-label">🤷‍♀️ None of the answers described my diet</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Myth -->
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">Which of these hair care myths do you currently believe?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option17" name="option6" value="one2">
+                                <label for="option17" class="radio-option-label">🍚 Rice water will make your hair grow faster</label>
+
+                                <input type="radio" class="radio-option" id="option27" name="option6" value="two2">
+                                <label for="option27" class="radio-option-label">🥥 Coconut oil is the best hair oil</label>
+
+                                <input type="radio" class="radio-option" id="option37" name="option6" value="three2">
+                                <label for="option37" class="radio-option-label">💊 Biotin supplements make your hair grow</label>
+
+                                <input type="radio" class="radio-option" id="option47" name="option6" value="four2">
+                                <label for="option47" class="radio-option-label">🌱 Natural and organic products are better</label>
+
+                                <input type="radio" class="radio-option" id="option57" name="option6" value="four2">
+                                <label for="option57" class="radio-option-label">📋 All of them</label>
+
+                                <input type="radio" class="radio-option" id="option67" name="option6" value="four2">
+                                <label for="option67" class="radio-option-label">🙅‍♀️ None of them</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Hair Type -->
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <label for="your_review" class="section-text">Which hair type do you have?</label>
+                            <div>
+                                <input type="radio" class="radio-option" id="option18" name="option7" value="one2">
+                                <label for="option18" class="radio-option-label">⎸ Straight</label>
+
+                                <input type="radio" class="radio-option" id="option28" name="option7" value="two2">
+                                <label for="option28" class="radio-option-label">⌇ Curly</label>
+
+                                <input type="radio" class="radio-option" id="option38" name="option7" value="three2">
+                                <label for="option38" class="radio-option-label">〜 Wavy</label>
+
+                                <input type="radio" class="radio-option" id="option48" name="option7" value="four2">
+                                <label for="option48" class="radio-option-label">⦚ Coily</label>
+
+                                <input type="radio" class="radio-option" id="option411" name="option7" value="four2">
+                                <label for="option411" class="radio-option-label">I don't know</label>
+                            </div>
+
+                            <br/>
+
+                        <div class="container-button">
+                            <div  class="button-prev previous">
+                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
+                                <div class="previous-button-2">Previous</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- BREAK -->
+
+                <h3></h3>
+                <fieldset>
+                    <div class="container-img">
+                        <div class="title">Your results are almost there!</div>
+                        <div class="subtitle">Enter your name and email to calculate your Challenge fit. </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <input type="text" style="font-size: 14pt; font-family: Inter;" name="full_name" id="full_name" placeholder="Please enter your full name" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" style="font-size: 14pt; font-family: Inter;" name="email" id="email" placeholder="Please enter your email" required/>
+                            </div>
+
+                            <br/>
+
+                            <button type="submit" class="button submit-result">Analyze my profile</button>
+
+                            <br/>
+                            <br/>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="vendor/jquery-steps/jquery.steps.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>
