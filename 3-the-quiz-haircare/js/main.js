@@ -101,7 +101,7 @@ function splitName(fullName) {
 function proocessResultLogic(content, first_name) {
     const dynamicImage = document.getElementById('dynamic-image');
     if (content === '😣 Hair loss or hair thinning') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62bacf9ca156d7c79935aef6/65250c2d86ab10f9e0cccb98_Hair%20loss_LD.jpg";
+        dynamicImage.src = "https://uploads-ssl.webflow.com/62bacf9ca156d7c79935aef6/6527cac509ff78020d2bf2a4_Stephanie%20P_before-after_LD.jpg";
         return `
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to increase new hair growth and reduce your hair loss. 
