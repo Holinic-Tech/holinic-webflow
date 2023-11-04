@@ -406,7 +406,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 function handleSkipButton() {
     var cvgUid = getCookieValue('__cvg_uid');
     // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = `https://cart.hairqare.co/14-day-haircare-challenge?discount=save-85&__cvg_uid=${cvgUid}`
+    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85?__cvg_uid=${cvgUid}`
     return window.top.location.href = redirectUrl;
 };
 
