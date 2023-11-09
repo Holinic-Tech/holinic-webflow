@@ -607,7 +607,7 @@ fieldset.current {
 }
 
 .title {
-  font-size: 24px;
+  
   margin-bottom: 32px;
   color: #0a1f44;
   text-align: center;
@@ -885,7 +885,7 @@ fieldset.current {
   font-family: "Inter-Regular", Helvetica;
   font-weight: 400;
   color: #3f3f3f;
-  font-size: 16px;
+  font-size: clamp(16px, 3vw, 18px);
   text-align: center;
   letter-spacing: 0;
   line-height: 28px;
@@ -898,7 +898,7 @@ fieldset.current {
   font-family: "Inter-Medium", Helvetica;
   font-weight: 500;
   color: #3f3f3f;
-  font-size: 16px;
+  font-size: clamp(16px, 3vw, 18px);
   text-align: center;
   letter-spacing: 0;
   line-height: 28px;
