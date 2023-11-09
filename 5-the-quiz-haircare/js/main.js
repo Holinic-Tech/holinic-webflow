@@ -101,14 +101,10 @@ function splitName(fullName) {
 function proocessResultLogic(content, first_name) {
     const dynamicImage = document.getElementById('dynamic-image');
     if (content === '😣 Hair loss or hair thinning') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62bacf9ca156d7c79935aef6/6527cac509ff78020d2bf2a4_Stephanie%20P_before-after_LD.jpg";
+        dynamicImage.src = "Results_Chart/Result_Chart_Hair_loss.png";
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to increase new hair growth and reduce your hair loss. 
-        <br/><br/>
-
-        <b>It’s NOT an ultra strict, long or complicated routine...</b>
-        <br/><br/>
+   
 
         ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
 
@@ -129,14 +125,9 @@ function proocessResultLogic(content, first_name) {
         Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
         `;
     } else if (content === '😑 Split ends, frizz, and dryness') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62bacf9ca156d7c79935aef6/65250c2d9875a28c968f6db5_Dry%20and%20Frizzy_LD.jpg";
+        dynamicImage.src = "Results_Chart/Result_Chart_split_ends.png";
         return `
-        Based on your answers, we’ve identified a SIMPLE haircare routine to repair your damaged hair and achieve silky ends...
-
-        <br/><br/>
-
-        <b>It’s NOT an ultra strict, long or complicated routine...</b>
-        <br/><br/>
+    
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
@@ -155,13 +146,9 @@ function proocessResultLogic(content, first_name) {
 
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62bacf9ca156d7c79935aef6/65250c2d69852f55ba4e3915_Bleached-damaged_LD.jpg";
+        dynamicImage.src = "Results_Chart/Result_Chart_damage_from_dye.png";
         return `
-        Based on your answers, we're identified a SIMPLE haircare routine to bring back shine and softness to your damaged dry hair...
-        <br/><br/>
-
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
+        
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
@@ -180,15 +167,10 @@ function proocessResultLogic(content, first_name) {
 
         `;
     } else if (content === '😫 Irritation or dandruff') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62bacf9ca156d7c79935aef6/65252c5a99875d9c1e92cd57_2023_Lena_B_TP_LD.jpg";
+        dynamicImage.src = "Results_Chart/Result_Chart_scalp_issues.png";
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to restore your scalp balance and achieve voluminous and soft hair.
-
-        <br/><br/>
-
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
+   
 
         ✅ It only takes 10 minutes a day to complete. See and FEEL the results in the first few days.
         <br><br>
@@ -206,14 +188,9 @@ function proocessResultLogic(content, first_name) {
         Live a life FREE from embarrassing flakes, greasy hair or itchy scalps. Say hello to clean, shiny, voluminous hair and confidence.<br><br> You deserve this ${first_name}
         `;
     } else {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62bacf9ca156d7c79935aef6/65250c2eca99d431f92eeb5c_Mixed%20issues_LD.jpg";
+        dynamicImage.src = "Results_Chart/Result_Chart_other-mixed_issues.png";
         return `
 
-        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to restore your hair health, prevent further damage and make it look fabulous!
-        <br/><br/>
-
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
@@ -539,6 +516,32 @@ document.addEventListener('DOMContentLoaded', function() {
     var content = document.getElementById('content');
     content.style.display = 'block';
 
+        // Check for the result parameter in the URL
+       // var queryParams = new URLSearchParams(window.location.search);
+       // if (queryParams.has('result')) {
+            // If the parameter is present, load the result page directly
+       //     loadResultPageDirectly(); // This function needs to be implemented
+       // }
+    
+
     // Perform your JavaScript action here
     // You can add your code below this comment
   });
+
+  /*
+  function loadResultPageDirectly() {
+    // Implement the logic to directly load the results.
+    // For example, you might want to display the result section and hide the quiz section
+    var form_content = document.getElementById("content");
+    var result = document.getElementById("content1");
+    form_content.style.display = "none";
+    result.style.display = "block";
+    // You might need to set the result text or load the results from a cookie or local storage
+    var storedData = localStorage.getItem('user_profile');
+    if (storedData) {
+        var user = JSON.parse(storedData);
+        // Populate results on the page using the user data
+        displayResults(user); // Implement this function to actually show the results
+    }
+}
+*/
