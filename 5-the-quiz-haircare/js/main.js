@@ -101,7 +101,7 @@ function splitName(fullName) {
 function proocessResultLogic(content, first_name) {
     const dynamicImage = document.getElementById('dynamic-image');
     if (content === '😣 Hair loss or hair thinning') {
-        dynamicImage.src = "Results_Chart/Result_Chart_Hair_loss.png";
+        dynamicImage.src = "Results_Chart/Result_Chart_Hair_loss.svg";
         return `
 
    
@@ -125,7 +125,7 @@ function proocessResultLogic(content, first_name) {
         Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
         `;
     } else if (content === '😑 Split ends, frizz, and dryness') {
-        dynamicImage.src = "Results_Chart/Result_Chart_split_ends.png";
+        dynamicImage.src = "Results_Chart/Result_Chart_split_ends.svg";
         return `
     
 
@@ -146,7 +146,7 @@ function proocessResultLogic(content, first_name) {
 
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
-        dynamicImage.src = "Results_Chart/Result_Chart_damage_from_dye.png";
+        dynamicImage.src = "Results_Chart/Result_Chart_damage_from_dye.svg";
         return `
         
 
@@ -167,7 +167,7 @@ function proocessResultLogic(content, first_name) {
 
         `;
     } else if (content === '😫 Irritation or dandruff') {
-        dynamicImage.src = "Results_Chart/Result_Chart_scalp_issues.png";
+        dynamicImage.src = "Results_Chart/Result_Chart_scalp_issues.svg";
         return `
 
    
@@ -188,7 +188,7 @@ function proocessResultLogic(content, first_name) {
         Live a life FREE from embarrassing flakes, greasy hair or itchy scalps. Say hello to clean, shiny, voluminous hair and confidence.<br><br> You deserve this ${first_name}
         `;
     } else {
-        dynamicImage.src = "Results_Chart/Result_Chart_other-mixed_issues.png";
+        dynamicImage.src = "Results_Chart/Result_Chart_other-mixed_issues.svg";
         return `
 
 
