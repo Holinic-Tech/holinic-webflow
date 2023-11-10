@@ -613,14 +613,15 @@ fieldset.current {
   text-align: center;
   margin-bottom: auto;
   font-family: "Inter-Medium", Helvetica;
-  font-size: clamp(1.5rem, 2.5vw, 3rem); /* This will scale the size between 18px and 34px based on the viewport width */
+  font-size: clamp(1.5rem, 2.5vw, 4rem); /* This will scale the size between 18px and 34px based on the viewport width */
   font-weight: 500;
-  line-height: 32px;
-  letter-spacing: 0.8px;
+  
+  
   text-align: center;
-  max-width: 600px; /* This is an example; adjust to suit your design */
+  
   margin-left: auto;
   margin-right: auto;
+
   
 }
 
@@ -930,9 +931,3 @@ fieldset.current {
   height: -webkit-fill-available; 
 }
 
-.title, .labelbased p {
-  text-align: center;
-  max-width: 600px; 
-  margin-left: auto;
-  margin-right: auto;
-}
