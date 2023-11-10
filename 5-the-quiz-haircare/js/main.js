@@ -517,11 +517,11 @@ document.addEventListener('DOMContentLoaded', function() {
     content.style.display = 'block';
 
         // Check for the result parameter in the URL
-       // var queryParams = new URLSearchParams(window.location.search);
-       // if (queryParams.has('result')) {
+     //   var queryParams = new URLSearchParams(window.location.search);
+    //    if (queryParams.has('result')) {
             // If the parameter is present, load the result page directly
-       //     loadResultPageDirectly(); // This function needs to be implemented
-       // }
+     //       loadResultPageDirectly(); // This function needs to be implemented
+     //   }
     
 
     // Perform your JavaScript action here
