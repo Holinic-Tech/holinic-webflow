@@ -555,7 +555,7 @@ fieldset.current {
   max-width: 100%; /* Ensures the image is no wider than its container */
   height: auto; /* Maintains the aspect ratio of the image */
   display: block; /* Prevents inline spacing issues */
-  width: 100%;
+  width: 120%;
   margin-top: 10px;
 }
 
@@ -965,9 +965,9 @@ padding: 0 10px;
 .top-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* This will push the button to the bottom */
+  justify-content: space-evenly; /* This will push the button to the bottom */
   align-items: center;
-  height: 100vh;
+  height: 80ch;
   padding: 5px; /* Make sure the padding is not pushing content outside of the viewport */
   box-sizing: border-box; /* This ensures padding is included in the height */
 }
@@ -975,7 +975,7 @@ padding: 0 10px;
 /* Media query for larger screens */
 @media (min-width: 769px) {
   .image-container-chart {
-    max-width: 600px; /* This limits the image size on large screens */
+    max-width: 120%; /* This limits the image size on large screens */
     width: auto; /* Allows the image to scale up to the max-width */
   }
   .lg-join-button {
