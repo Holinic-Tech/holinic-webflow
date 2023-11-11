@@ -517,18 +517,18 @@ document.addEventListener('DOMContentLoaded', function() {
     content.style.display = 'block';
 
         // Check for the result parameter in the URL
-     //   var queryParams = new URLSearchParams(window.location.search);
-    //    if (queryParams.has('result')) {
+       var queryParams = new URLSearchParams(window.location.search);
+      if (queryParams.has('result')) {
             // If the parameter is present, load the result page directly
-     //       loadResultPageDirectly(); // This function needs to be implemented
-     //   }
+            loadResultPageDirectly(); // This function needs to be implemented
+        }
     
 
     // Perform your JavaScript action here
     // You can add your code below this comment
   });
 
-  /*
+  
   function loadResultPageDirectly() {
     // Implement the logic to directly load the results.
     // For example, you might want to display the result section and hide the quiz section
@@ -544,4 +544,4 @@ document.addEventListener('DOMContentLoaded', function() {
         displayResults(user); // Implement this function to actually show the results
     }
 }
-*/
+
