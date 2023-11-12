@@ -640,7 +640,7 @@ fieldset.current {
 */
 font-size: clamp(1.5rem, 5vw, 2.5rem);
 
-padding: 0 10px;
+
   overflow-wrap: break-word;
   word-wrap: break-word;
   color: #0a1f44;
@@ -651,8 +651,8 @@ padding: 0 10px;
   font-weight: 500;
   line-height: 32px;
   letter-spacing: 0.8px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  
+  margin-top: 6vw;
 }
 @media (max-width: 375px) {
   .title {
