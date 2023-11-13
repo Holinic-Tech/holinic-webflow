@@ -219,7 +219,7 @@ body {
   background: #f8f8f8; }
 
 .main {
-  padding: 1px; }
+  padding: 80px 0; }
 
 .container {
   width: 990px;
@@ -536,11 +536,6 @@ fieldset.current {
 
   .steps ul li, .signup-desc, .signup-form-conent {
     width: 100%; } }
-    .image-container {
-      max-width: 90%; /* You can adjust this percentage as needed */
-      margin: 0 auto; /* Center the container in the viewport */
-    }
-  
 @media screen and (max-width: 480px) {
   .actions ul li a {
     width: 100px; } }
@@ -550,16 +545,6 @@ fieldset.current {
   justify-content: center;
   align-items: center;
 }
-
-.image-container-chart {
-  max-width: 100%; /* Ensures the image is no wider than its container */
-  height: auto; /* Maintains the aspect ratio of the image */
-  display: block; /* Prevents inline spacing issues */
-  width: 120%;
-  margin-top: 10px;
-}
-
-
 
 .image-container img {
   width: 100%;
@@ -613,51 +598,12 @@ fieldset.current {
 }
 
 .container-img {
-  max-width: auto;
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   align-items: center;
   justify-content: center;
   text-align: center;
-}
-
-.title-result {
-  /*
-  margin-bottom: auto;
-  color: #0a1f44;
-  text-align: center;
-  margin-bottom: auto;
-  font-family: "Reckless Neue";
-  
-  font-size: clamp(2rem, 2.5vw, 4rem); 
-  font-weight: 500;
-  
-  
-  text-align: center;
-  
-  margin-left: auto;
-  margin-right: auto;
-*/
-font-size: clamp(1.5rem, 5vw, 2.5rem);
-
-
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  color: #0a1f44;
-  text-align: center;
-  
-  font-family: 'RecklessNeue';
-  
-  font-weight: 500;
-  
-  letter-spacing: 0.8px;
-  
-  margin-top: 6vw;
-}
-@media (max-width: 375px) {
-  .title-result {
-    font-size: clamp(1.25rem, 5vw, 2rem); /* Even smaller font size for small screens */
-  }
 }
 
 .title {
@@ -672,6 +618,7 @@ font-size: clamp(1.5rem, 5vw, 2.5rem);
   line-height: 32px;
   letter-spacing: 0.8px;
 }
+
 .subtitle {
   font-size: 18px;
   color: #888;
@@ -859,7 +806,7 @@ font-size: clamp(1.5rem, 5vw, 2.5rem);
   background-color: #E66A0B;
   border-radius: 5px;
   padding: 12px 32px;
-  font-size: clamp(1rem, 2.5vw, 1.125rem); /* Responsive font size */
+  font-size: 15px;
   font-weight: 600;
   border-radius: 30px;
   transition: background-color .2s ease-in;
@@ -882,124 +829,4 @@ font-size: clamp(1.5rem, 5vw, 2.5rem);
   padding-bottom: 15px;
   display: block;
   width: 100%;
-}
-.frame {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  position: relative;
-  background-color: #ecfdf3;
-  
-}
-
-.frame .div-wrapper {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
-  position: relative;
-  flex: 0 0 auto;
-
-}
-
-.frame .text-wrapper {
-  position: relative;
-  width: fit-content;
-  margin-top: -1px;
-  font-family: "Inter-Medium", Helvetica;
-  font-weight: 500;
-  color: #17b169;
-  font-size: 20px;
-  text-align: center;
-  letter-spacing: 0;
-  line-height: 28px;
-  white-space: nowrap;
-}
-
-.frame .chart-breakout {
-  position: relative;
-  width: 24px;
-  height: 24px;
-}
-
-
-.based-on-your {
-  position: relative;
-  width: 90%; /* Adjusted width to 90% of the parent to match the title width */
-  font-family: "Inter-Regular", Helvetica, sans-serif;
-  font-weight: 400;
-  color: #3f3f3f;
-  font-size: clamp(1rem, 3vw, 1.125rem);
-    text-align: center;
-  letter-spacing: 0;
-  line-height: 1.75rem; /* Adjusted line height for better readability */
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 5%; /* Added padding for consistency with the title */
-}
-
-.don-t-worry-this-ISN {
-  position: relative;
-  width: 90%; /* Adjusted width to match .based-on-your */
-  font-family: "Inter-Medium", Helvetica, sans-serif;
-  font-weight: 800;
-  color: #3f3f3f;
-  font-size: clamp(1rem, 1.5vw, 1.125rem); /* Adjusted font size for consistency */
-  text-align: center;
-  letter-spacing: 0;
-  line-height: 1.75rem; /* Adjusted line height for consistency */
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 5%; /* Added padding for consistency */
-}
-/*style="margin-top: 18px; text-align:center; font-size: 20px;font-weight:800;"*/
-
-
-/* You can use a media query to further adjust sizes for smaller screens */
-@media (max-width: 768px) {
-  
-  .based-on-your,
-  .don-t-worry-this-ISN {
-    max-width: 90%;
-    padding: 0 5%;
-    font-size: clamp(0.875rem, 1.5vw, 1.5rem); /* Smaller font sizse on small screens */
-  }
-  .image-container-chart {
-    width: 60%; /* You can adjust this to make the image smaller on small screens */
-  }
-  .lg-join-button {
-    width: 90%; /* Increase the width on small screens if needed */
-    padding: 12px 16px; /* Adjust padding for smaller screens */
-    font-size: clamp(0.875rem, 2.5vw, 1.5rem); /* Adjust font size clamp values for small screens */
-  }
-}
-.top-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly; /* This will push the button to the bottom */
-  align-items: center;
-  height: 80vh;
-  padding: 5px; /* Make sure the padding is not pushing content outside of the viewport */
-  box-sizing: border-box; /* This ensures padding is included in the height */
-}
-
-/* Media query for larger screens */
-@media (min-width: 769px) {
-  .image-container-chart {
-    max-width: 120%; /* This limits the image size on large screens */
-    width: auto; /* Allows the image to scale up to the max-width */
-  }
-  .lg-join-button {
-    max-width: 400px; /* Set a max-width if the button gets too wide on large screens */
-    margin: 0 auto; /* Center the button if using max-width */
-  }
-    .based-on-your,
-  .don-t-worry-this-ISN {
-    max-width: 90%;
-    padding: 0 5%;
-    font-size: clamp(1rem, 2.5vw, 2rem); /* Smaller font sizse on small screens */
-  }
 }
