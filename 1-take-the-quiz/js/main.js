@@ -99,7 +99,34 @@ function splitName(fullName) {
 };
 
 function proocessResultLogic(content, first_name) {
-    if (content === '😣 Hair loss or hair thinning') {
+    if (content === '😑 Split ends, frizz, and dryness') {
+        return `
+
+        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to repair your damaged hair and achieve silky ends... so you can go through the day with confidence every day!
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        <br/><br/>
+
+        ✅ It only takes 10 minutes a day to complete and you’ll get </u><b>VISIBLE results in the first few days.</b>
+
+        <br/><br/>
+
+        ✅ Less time in the bathroom, more time enjoying <b>soft and shiny hair.</b>
+
+        <br/><br/>
+
+        ✅ Watch the <b>lessons from anywhere</b> with online access.
+
+        <br/><br/>
+        ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br><br>
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
+
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
+        `;
+    } else if (content === '😣 Hair loss or hair thinning') {
         return `
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to increase new hair growth and reduce your hair loss. 
@@ -125,31 +152,6 @@ function proocessResultLogic(content, first_name) {
         <br><br>
 
         Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
-        `;
-    } else if (content === '😑 Split ends, frizz, and dryness') {
-        return `
-        Based on your answers, we’ve identified a SIMPLE haircare routine to repair your damaged hair and achieve silky ends...
-
-        <br/><br/>
-
-        <b>It’s NOT an ultra strict, long or complicated routine...</b>
-        <br/><br/>
-
-        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
-        <br><br>
-        ✅ <b>No more dry, frizzy and unmanageable hair</b> that makes you hide your hair and feel insecure and less unique than you really are
-        <br/><br/>
-
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
-
-        <br/><br/>
-        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
-        <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
-        <br><br>
-
-        Join now to get a life with soft, shiny and luxurious hair that will get you compliments every day.<br><br> You deserve this ${first_name}
-
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
         return `
@@ -178,32 +180,8 @@ function proocessResultLogic(content, first_name) {
     } else if (content === '😫 Irritation or dandruff') {
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to restore your scalp balance and achieve voluminous and soft hair.
+        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to trade this ugly,  embarrassing discomfort for a fresh and healthy scalp ... so you can go through the day with confidence every day!
 
-        <br/><br/>
-
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
-
-        ✅ It only takes 10 minutes a day to complete. See and FEEL the results in the first few days.
-        <br><br>
-        ✅ <b>Healthier, more comfortable scalp in just one wash only.</b> 
-        <br/><br/>
-
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
-
-        <br/><br/>
-        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
-        <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
-        <br><br>
-
-        Live a life FREE from embarrassing flakes, greasy hair or itchy scalps. Say hello to clean, shiny, voluminous hair and confidence.<br><br> You deserve this ${first_name}
-        `;
-    } else {
-        return `
-
-        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to restore your hair health, prevent further damage and make it look fabulous!
         <br/><br/>
 
         <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
@@ -211,20 +189,43 @@ function proocessResultLogic(content, first_name) {
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
-        ✅ <b>See reduced hair loss, activated hair growth and better-looking hair.</b> 
-        <br/><br/>
-
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
-
-        <br/><br/>
-        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
+        ✅ <b>Healthier, more comfortable scalp in a few washes only.</b> 
         <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
+          ✅ Watch the <b>lessons from anywhere</b> with online access.
+          <br><br>
+
+         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
         <br><br>
 
-        Life a life where you can enjoy the confidence that comes from your hair instead of losing time, money and energy on it. <br><br>
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
 
-Dense, long and silky hair is just a click away.<br><br> You deserve this ${first_name}
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
+        `;
+    } else {
+        return `
+
+        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to bring back your hair’s shine and density from the old days... so you can go through the day with confidence every day!
+
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        <br/><br/>
+
+        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
+        <br><br>
+        ✅ <b>Reduced hair loss, activated hair growth and better-looking hair.</b> 
+        <br><br>
+          ✅ Watch the <b>lessons from anywhere</b> with online access.
+          <br><br>
+
+         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
+        <br><br>
+
+        ✅ This Haircare Challenge has already <b>helped over 50,000 women</b> regain better hair.
+        <br><br>
+
+        Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
 
         `;
     }
@@ -373,7 +374,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
     // Prepare redirect URL
     var cvgUid = getCookieValue('__cvg_uid');
     // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
+    var redirectUrl = 'https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=' + cvgUid + '&billing_email=' + encodeURIComponent(email) + '&billing_first_name=' + encodeURIComponent(firstName) + '&billing_last_name=' + encodeURIComponent(lastName);
 
     // Post user's answers, name, and email to webhook - retry twicce
     $.ajax({
@@ -408,7 +409,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 function handleSkipButton() {
     var cvgUid = getCookieValue('__cvg_uid');
     // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?__cvg_uid=${cvgUid}`
+    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-90/?__cvg_uid=${cvgUid}`
     return window.top.location.href = redirectUrl;
 };
 
@@ -502,7 +503,7 @@ function handleSubmit(event) {
       }
   }
 
-  function loaderShow() {
+function loaderShow() {
     const loader = document.getElementById("loader");
     const content2 = document.getElementById("content1");
     const progressValue = loader.querySelector(".loader-progress-value");
@@ -541,8 +542,6 @@ function handleSubmit(event) {
     }, speed);
 }
 
-
-
 function scrollToTop() {
     var myElement = document.getElementById('scroll-top');
     myElement.scrollTop = 0;
@@ -560,4 +559,3 @@ document.addEventListener('DOMContentLoaded', function() {
     // Perform your JavaScript action here
     // You can add your code below this comment
   });
-
