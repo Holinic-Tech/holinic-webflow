@@ -62,6 +62,14 @@ body, html {
 .fa-check {
   margin-right: 5px;
 }
+.circle-fill-25 { background-color: #ffdd00; } /* Example color for 25% */
+.circle-fill-50 { background-color: #ffaa00; } /* Example color for 50% */
+.circle-fill-75 { background-color: #ff7700; } /* Example color for 75% */
+.circle-fill-100 { background-color: #ff4400; } /* Example color for 100% */
+
+/* Style for visible checkpoints */
+.checkpoint.visible .fa-check { color: #44ff44; } /* Example color for completed checkpoints */
+</style>
 </style>
 </head>
 <body>
@@ -88,11 +96,24 @@ $(document).ready(function() {
   var interval = setInterval(function() {
     percentage++;
     $('#loader-percentage').text(percentage + '%');
-    $('#loader').css('height', percentage + '%'); // Update the height to fill the circle
+    $('#loader').css('height', percentage + '%');
+    // Add classes based on percentage for color change
+    $('#loader').removeClass('circle-fill-25 circle-fill-50 circle-fill-75 circle-fill-100');
+    if(percentage > 75) {
+      $('#loader').addClass('circle-fill-100');
+    } else if(percentage > 50) {
+      $('#loader').addClass('circle-fill-75');
+    } else if(percentage > 25) {
+      $('#loader').addClass('circle-fill-50');
+    } else {
+      $('#loader').addClass('circle-fill-25');
+    }
+    // Show checkpoints as they are reached
+    $('.checkpoint').eq(Math.floor(percentage / 20)).addClass('visible');
     if (percentage >= 100) clearInterval(interval);
-  }, 60); // Update every 600ms for 1 minute duration
+  }, 600); // Adjust time as needed
 
-  var checkpointInterval = 6000 / $('div.checkpoint').length; // Distribute checkpoints evenly over the minute
+  var checkpointInterval = 60000 / $('div.checkpoint').length; // Distribute checkpoints evenly over the minute
   $('div.checkpoint').each(function(index) {
     var checkpoint = $(this);
     setTimeout(function() {
@@ -103,7 +124,7 @@ $(document).ready(function() {
   // Redirect after loader completes
   setTimeout(function() {
     window.location.href = 'loader.html'; // Change to your actual results page URL
-  }, 6000); // Redirect after 1 minute
+  }, 60000); // Redirect after 1 minute
 });
 </script>
 
