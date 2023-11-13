@@ -986,20 +986,20 @@ font-size: clamp(1.5rem, 5vw, 2.5rem);
   box-sizing: border-box; /* This ensures padding is included in the height */
 }
 
-/* Media query for larger screens */
+/* Media query for larger screens 
 @media (min-width: 769px) {
   .image-container-chart {
-    max-width: 120%; /* This limits the image size on large screens */
-    width: auto; /* Allows the image to scale up to the max-width */
+    max-width: 120%; 
+    width: auto; 
   }
   .lg-join-button {
-    max-width: 400px; /* Set a max-width if the button gets too wide on large screens */
-    margin: 0 auto; /* Center the button if using max-width */
+    max-width: 400px; 
+    margin: 0 auto; 
   }
     .based-on-your,
   .don-t-worry-this-ISN {
     max-width: 90%;
     padding: 0 5%;
-    font-size: clamp(1rem, 2.5vw, 2rem); /* Smaller font sizse on small screens */
+    font-size: clamp(1rem, 2.5vw, 2rem); 
   }
-}
+}*/
