@@ -1,132 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Loader with Filling Circle</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<style>
-body, html {
-  height: 100%;
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <style>
+
+* {
   margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: "Montserrat", sans-serif;
 }
 
-.wrapper {
-  position: relative;
-  width: 100px;
-  height: 100px;
-}
 
-.circle-bg {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #eee;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.circle {
-  width: 90%; /* slightly smaller to create a border effect */
-  height: 0;
-  background-color: green;
-  transition: height 0.6s ease-out; /* smooth transition for the height change */
+.progress {
   position: absolute;
+  top: 0;
   bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
-.loader-percentage {
-  position: absolute;
-  line-height: 100px; /* Same as the wrapper height */
-  text-align: center;
-  width: 100%;
-  font-size: 1.5em;
-  color: black;
-  z-index: 10;
+.progress-circle {
+  stroke-dasharray: 189;
+  stroke-dashoffset: 189;
 }
-
-.checkpoint {
-  color: green;
-  display: none;
-  text-align: center;
-  margin-top: 5px; /* Adjust spacing as needed */
-  font-size: 0.8em;
-}
-
-.fa-check {
-  margin-right: 5px;
-}
-.circle-fill-25 { background-color: #ffdd00; } /* Example color for 25% */
-.circle-fill-50 { background-color: #ffaa00; } /* Example color for 50% */
-.circle-fill-75 { background-color: #ff7700; } /* Example color for 75% */
-.circle-fill-100 { background-color: #ff4400; } /* Example color for 100% */
-
-/* Style for visible checkpoints */
-.checkpoint.visible .fa-check { color: #44ff44; } /* Example color for completed checkpoints */
-</style>
-</style>
+    </style>
 </head>
+
 <body>
+ 
+    <svg class="progress" width="100" height="100">
+        <circle class="progress-circle" cx="50" cy="50" stroke="green" r="30" fill="transparent" stroke-width="5" />
+        <text class="loading" fill="blue" x="50" y="50" alignment-baseline="middle" text-anchor="middle"></text>
+    </svg>
+    <span class=" loading"></span>
+    <script src="app.js"></script>
 
-<div id="loader-wrapper" class="wrapper">
-  <div class="circle-bg">
-    <div id="loader" class="circle"></div>
-    <div id="loader-percentage" class="loader-percentage">0%</div>
-  </div>
-</div>
-<div id="checkpoints">
-  <div class="checkpoint"><i class="fas fa-check"></i> Initializing...</div>
-  <div class="checkpoint"><i class="fas fa-check"></i> Analyzing answers...</div>
-  <div class="checkpoint"><i class="fas fa-check"></i> Calculating scores...</div>
-  <div class="checkpoint"><i class="fas fa-check"></i> Synthesizing results...</div>
-  <div class="checkpoint"><i class="fas fa-check"></i> Finalizing report...</div>
-  <div class="checkpoint"><i class="fas fa-check"></i> Preparation complete!</div>
-</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="./grasp_mobile_progress_circle-1.0.0.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-  var percentage = 0;
-  var interval = setInterval(function() {
-    percentage++;
-    $('#loader-percentage').text(percentage + '%');
-    $('#loader').css('height', percentage + '%');
-    // Add classes based on percentage for color change
-    $('#loader').removeClass('circle-fill-25 circle-fill-50 circle-fill-75 circle-fill-100');
-    if(percentage > 75) {
-      $('#loader').addClass('circle-fill-100');
-    } else if(percentage > 50) {
-      $('#loader').addClass('circle-fill-75');
-    } else if(percentage > 25) {
-      $('#loader').addClass('circle-fill-50');
-    } else {
-      $('#loader').addClass('circle-fill-25');
-    }
-    // Show checkpoints as they are reached
-    $('.checkpoint').eq(Math.floor(percentage / 20)).addClass('visible');
-    if (percentage >= 100) clearInterval(interval);
-  }, 600); // Adjust time as needed
+    <script>
+      const circle = document.querySelector(".progress-circle");
+const loading = document.querySelector(".loading");
 
-  var checkpointInterval = 60000 / $('div.checkpoint').length; // Distribute checkpoints evenly over the minute
-  $('div.checkpoint').each(function(index) {
-    var checkpoint = $(this);
-    setTimeout(function() {
-      checkpoint.show();
-    }, checkpointInterval * index);
-  });
+const fakeUploadPercentage = [0, 10, 25, 40, 42, 60, 70, 75, 90, 100];
+let i = 0;
 
-  // Redirect after loader completes
-  setTimeout(function() {
-    window.location.href = 'loader.html'; // Change to your actual results page URL
-  }, 60000); // Redirect after 1 minute
-});
-</script>
+const circumference = circle.getTotalLength();
 
+const interval = setInterval(() => {
+  circle.style.strokeDashoffset =
+    circumference - (fakeUploadPercentage[i] / 100) * circumference;
+  loading.innerHTML = fakeUploadPercentage[i] + "%";
+  i++;
+  console.log(i);
+  if (i == fakeUploadPercentage.length) {
+    clearInterval(interval);
+    loading.innerHTML = "Ok :)";
+  }
+}, 1000);
+    </script>
 </body>
 </html>
