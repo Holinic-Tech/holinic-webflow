@@ -1,70 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
-    <title>Document</title>
-    <style>
+    <html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Circular Progress Bar </title>
 
-* {
-  margin: 0;
-  font-family: "Montserrat", sans-serif;
+        <!-- CSS -->
+        <!--<link rel="stylesheet" href="css/style.css">-->
+          <style>
+
+            /* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+body{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+}
+.container{
+    display: flex;
+    width: 420px;
+    padding: 50px 0;
+    border-radius: 8px;
+    background: #ffffff;
+    row-gap: 30px;
+    flex-direction: column;
+    align-items: center;
+}
+.circular-progress{
+    position: relative;
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    background: conic-gradient(#17B26A 3.6deg, #ededed 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.circular-progress::before{
+    content: "";
+    position: absolute;
+    height: 210px;
+    width: 210px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+.progress-value{
+    position: relative;
+    color: var(--gray-900, #101828);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 39.086px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 48.857px; /* 125% */
+    letter-spacing: -0.782px;
+}
+.text{
+    font-size: 30px;
+    font-weight: 500;
+    color: #606060;
+    
 }
 
-
-
-.progress {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
+.checkpoint {
+    font-size: 20px; /* Adjust as necessary */
+    color: #17B26A; /* Or any color you prefer */
+    opacity: 0; /* Hidden by default */
+}
+.checkpoint .fa-check {
+    color: green; /* Checkmark color */
+}
+.checkpoint-text {
+    color: rgb(10, 10, 10); /* Text color */
+    font-size: 16px; /* Adjust text size as necessary */
+    margin-left: 5px; /* Space between icon and text */
+    font-weight: 500;
 }
 
-.progress-circle {
-  stroke-dasharray: 189;
-  stroke-dashoffset: 189;
+/* Positioning examples (you'll need to adjust these based on your design) */
+.checkpoint[data-value="25"] {
+    top: 10%;
+    left: 50%;
 }
-    </style>
-</head>
+.checkpoint[data-value="50"] {
+    top: 50%;
+    left: 10%;
+}
+.checkpoint[data-value="75"] {
+    bottom: 10%;
+    left: 50%;
+}
+.checkpoint[data-value="100"] {
+    top: 50%;
+    right: 10%;
+}
 
-<body>
- 
-    <svg class="progress" width="100" height="100">
-        <circle class="progress-circle" cx="50" cy="50" stroke="green" r="30" fill="transparent" stroke-width="5" />
-        <text class="loading" fill="blue" x="50" y="50" alignment-baseline="middle" text-anchor="middle"></text>
-    </svg>
-    <span class=" loading"></span>
-    <script src="app.js"></script>
+          </style>                              
+    </head>
+    <body>
+      <div class="container">
+        <div class="circular-progress">
+            <span class="progress-value">0%</span>
+        </div>
+        <div class="checkpoints">
+            <div class="checkpoint" data-value="25">
+                <i class="fa-solid fa-check"></i>
+                <span class="checkpoint-text">Initializing...</span>
+            </div>
+            <div class="checkpoint" data-value="50">
+                <i class="fa-solid fa-check"></i>
+                <span class="checkpoint-text">Analyzing answers...</span>
+            </div>
+            <div class="checkpoint" data-value="75">
+                <i class="fa-solid fa-check"></i>
+                <span class="checkpoint-text">Synthesizing results...</span>
+            </div>
+            <div class="checkpoint" data-value="100">
+                <i class="fa-solid fa-check"></i>
+                <span class="checkpoint-text">Completing analysis...</span>
+            </div>
+        </div>
+    </div>
+    
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="./grasp_mobile_progress_circle-1.0.0.js"></script>
+        <!-- JavaScript -->
+        <script >
+            let circularProgress = document.querySelector(".circular-progress"),
+    progressValue = document.querySelector(".progress-value");
+    let checkpoints = document.querySelectorAll(".checkpoint");
 
-    <script>
-      const circle = document.querySelector(".progress-circle");
-const loading = document.querySelector(".loading");
+let progressStartValue = 0,    
+    progressEndValue = 100,    
+    speed = 100;
+    
 
-const fakeUploadPercentage = [0, 10, 25, 40, 42, 60, 70, 75, 90, 100];
-let i = 0;
+let progress = setInterval(() => {
+    progressStartValue++;
 
-const circumference = circle.getTotalLength();
+    progressValue.textContent = `${progressStartValue}%`;
+    circularProgress.style.background = `conic-gradient(#17b26a ${progressStartValue * 3.6}deg, #ededed 0deg)`;
 
-const interval = setInterval(() => {
-  circle.style.strokeDashoffset =
-    circumference - (fakeUploadPercentage[i] / 100) * circumference;
-  loading.innerHTML = fakeUploadPercentage[i] + "%";
-  i++;
-  console.log(i);
-  if (i == fakeUploadPercentage.length) {
-    clearInterval(interval);
-    loading.innerHTML = "Ok :)";
-  }
-}, 1000);
-    </script>
-</body>
+    checkpoints.forEach(checkpoint => {
+        if (progressStartValue >= checkpoint.getAttribute('data-value')) {
+            checkpoint.style.opacity = 1;
+        }
+    });
+
+    if(progressStartValue == progressEndValue){
+        clearInterval(progress);
+    }
+}, speed);
+
+        </script>
+    </body>
 </html>
