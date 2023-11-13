@@ -48,6 +48,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; 
 }
 .circular-progress::before{
     content: "";
@@ -81,7 +82,7 @@ body{
     opacity: 0; /* Hidden by default */
 }
 .checkpoint .fa-check {
-    color: green; /* Checkmark color */
+    color: #17B26A; /* Checkmark color */
 }
 .checkpoint-text {
     color: rgb(10, 10, 10); /* Text color */
@@ -107,6 +108,25 @@ body{
     top: 50%;
     right: 10%;
 }
+.circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; /* Adjust size as needed */
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgb(131, 131, 131); /* Initial grey background */
+    opacity: 0.5; /* Make it semi-transparent */
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.checkpoint.completed .circle {
+    background-color: #ECFDF3; /* Color when step is complete */
+    opacity: 1; /* Make it fully opaque */
+}
+
 
           </style>                              
     </head>
@@ -116,22 +136,23 @@ body{
             <span class="progress-value">0%</span>
         </div>
         <div class="checkpoints">
-            <div class="checkpoint" data-value="25">
-                <i class="fa-solid fa-check"></i>
-                <span class="checkpoint-text">Initializing...</span>
-            </div>
-            <div class="checkpoint" data-value="50">
-                <i class="fa-solid fa-check"></i>
-                <span class="checkpoint-text">Analyzing answers...</span>
-            </div>
-            <div class="checkpoint" data-value="75">
-                <i class="fa-solid fa-check"></i>
-                <span class="checkpoint-text">Synthesizing results...</span>
-            </div>
-            <div class="checkpoint" data-value="100">
-                <i class="fa-solid fa-check"></i>
-                <span class="checkpoint-text">Completing analysis...</span>
-            </div>
+          <div class="checkpoint" data-value="25">
+            <span class="circle"><i class="fa-solid fa-check"></i></span>
+            <span class="checkpoint-text">Initializing...</span>
+        </div>
+        <div class="checkpoint" data-value="50">
+          <span class="circle"><i class="fa-solid fa-check"></i></span>
+          <span class="checkpoint-text">Analyzing answers...</span>
+      </div>
+      <div class="checkpoint" data-value="75">
+        <span class="circle"><i class="fa-solid fa-check"></i></span>
+        <span class="checkpoint-text">Synthesizing results...</span>
+    </div>
+    <div class="checkpoint" data-value="100">
+      <span class="circle"><i class="fa-solid fa-check"></i></span>
+      <span class="checkpoint-text">Completing analysis...</span>
+  </div>
+
         </div>
     </div>
     
@@ -154,10 +175,11 @@ let progress = setInterval(() => {
     circularProgress.style.background = `conic-gradient(#17b26a ${progressStartValue * 3.6}deg, #ededed 0deg)`;
 
     checkpoints.forEach(checkpoint => {
-        if (progressStartValue >= checkpoint.getAttribute('data-value')) {
-            checkpoint.style.opacity = 1;
-        }
-    });
+    if (progressStartValue >= checkpoint.getAttribute('data-value')) {
+        checkpoint.style.opacity = 1;
+        checkpoint.classList.add('completed'); // Add this line
+    }
+});
 
     if(progressStartValue == progressEndValue){
         clearInterval(progress);
