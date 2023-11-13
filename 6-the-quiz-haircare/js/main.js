@@ -502,23 +502,46 @@ function handleSubmit(event) {
       }
   }
 
-function loaderShow() {
-    // Get the reference to the loader element
+  function loaderShow() {
     const loader = document.getElementById("loader");
     const content2 = document.getElementById("content1");
+    const progressValue = loader.querySelector(".loader-progress-value");
+    const circularProgress = loader.querySelector(".loader-circular-progress");
+    const loader_checkpoints = loader.querySelectorAll(".loader-checkpoint");
 
-    // Show the loader
-    loader.style.display = "block";
-    content2.style.display = "none";
+    if (!loader || !content2 || !progressValue || !circularProgress) {
+        console.error("One or more elements not found");
+        return;
+    }
 
-    // Run the loader for 2 seconds
-    setTimeout(() => {
-    // Hide the loader after 2 seconds
-    loader.style.display = "none";
-    content2.style.display = "block";
-    }, 2000);
+    loader.style.display = "flex"; // Show loader
+    content2.style.display = "none"; // Hide content
 
+    let progressStartValue = 0,
+        progressEndValue = 100,
+        speed = 100;
+
+    let progress = setInterval(() => {
+        progressStartValue++;
+        progressValue.textContent = `${progressStartValue}%`;
+        circularProgress.style.background = `conic-gradient(#17b26a ${progressStartValue * 3.6}deg, #ededed 0deg)`;
+
+        loader_checkpoints.forEach(checkpoint => {
+            if (progressStartValue >= checkpoint.getAttribute('data-value')) {
+                checkpoint.style.opacity = 1;
+                checkpoint.classList.add('completed');
+            }
+        });
+
+        if (progressStartValue == progressEndValue) {
+            clearInterval(progress);
+            loader.style.display = "none"; // Hide loader
+            content2.style.display = "block"; // Show content
+        }
+    }, speed);
 }
+
+
 
 function scrollToTop() {
     var myElement = document.getElementById('scroll-top');
@@ -537,3 +560,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Perform your JavaScript action here
     // You can add your code below this comment
   });
+

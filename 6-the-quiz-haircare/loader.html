@@ -29,7 +29,7 @@ body{
     justify-content: center;
     background: #ffffff;
 }
-.container{
+.loader-container{
     display: flex;
     width: 420px;
     padding: 50px 0;
@@ -39,10 +39,10 @@ body{
     flex-direction: column;
     align-items: center;
 }
-.circular-progress{
+.loader-circular-progress{
     position: relative;
-    height: 250px;
-    width: 250px;
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
     background: conic-gradient(#17B26A 3.6deg, #ededed 0deg);
     display: flex;
@@ -50,11 +50,11 @@ body{
     justify-content: center;
     overflow: hidden; 
 }
-.circular-progress::before{
+.loader-circular-progress::before{
     content: "";
     position: absolute;
-    height: 210px;
-    width: 210px;
+    height: 160px;
+    width: 160px;
     border-radius: 50%;
     background-color: #fff;
 }
@@ -63,9 +63,9 @@ body{
     color: var(--gray-900, #101828);
     text-align: center;
     font-family: 'Inter', sans-serif;
-    font-size: 39.086px;
+    font-size: 25px;
     font-style: normal;
-    font-weight: 900;
+    font-weight: 600;
     line-height: 48.857px; /* 125% */
     letter-spacing: -0.782px;
 }
@@ -76,15 +76,15 @@ body{
     
 }
 
-.checkpoint {
+.loader-checkpoint {
     font-size: 20px; /* Adjust as necessary */
     color: #17B26A; /* Or any color you prefer */
     opacity: 0; /* Hidden by default */
 }
-.checkpoint .fa-check {
+.loader-checkpoint .fa-check {
     color: #17B26A; /* Checkmark color */
 }
-.checkpoint-text {
+.loader-checkpoint-text {
     color: rgb(10, 10, 10); /* Text color */
     font-size: 16px; /* Adjust text size as necessary */
     margin-left: 5px; /* Space between icon and text */
@@ -92,23 +92,23 @@ body{
 }
 
 /* Positioning examples (you'll need to adjust these based on your design) */
-.checkpoint[data-value="25"] {
+.loader-checkpoint[data-value="25"] {
     top: 10%;
     left: 50%;
 }
-.checkpoint[data-value="50"] {
+.loader-checkpoint[data-value="50"] {
     top: 50%;
     left: 10%;
 }
-.checkpoint[data-value="75"] {
+.loader-checkpoint[data-value="75"] {
     bottom: 10%;
     left: 50%;
 }
-.checkpoint[data-value="100"] {
+.loader-checkpoint[data-value="100"] {
     top: 50%;
     right: 10%;
 }
-.circle {
+.loader-circle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -122,7 +122,7 @@ body{
     margin-bottom: 20px;
 }
 
-.checkpoint.completed .circle {
+.loader-checkpoint.completed .loader-circle {
     background-color: #ECFDF3; /* Color when step is complete */
     opacity: 1; /* Make it fully opaque */
 }
@@ -131,26 +131,26 @@ body{
           </style>                              
     </head>
     <body>
-      <div class="container">
-        <div class="circular-progress">
+      <div class="loader-container">
+        <div class="loader-circular-progress">
             <span class="progress-value">0%</span>
         </div>
-        <div class="checkpoints">
-          <div class="checkpoint" data-value="25">
-            <span class="circle"><i class="fa-solid fa-check"></i></span>
-            <span class="checkpoint-text">Initializing...</span>
+        <div class="loader-checkpoints">
+          <div class="loader-checkpoint" data-value="25">
+            <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+            <span class="loader-checkpoint-text">Initializing...</span>
         </div>
-        <div class="checkpoint" data-value="50">
-          <span class="circle"><i class="fa-solid fa-check"></i></span>
-          <span class="checkpoint-text">Analyzing answers...</span>
+        <div class="loader-checkpoint" data-value="50">
+          <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+          <span class="loader-checkpoint-text">Analyzing answers...</span>
       </div>
-      <div class="checkpoint" data-value="75">
-        <span class="circle"><i class="fa-solid fa-check"></i></span>
-        <span class="checkpoint-text">Synthesizing results...</span>
+      <div class="loader-checkpoint" data-value="75">
+        <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+        <span class="loader-checkpoint-text">Synthesizing results...</span>
     </div>
-    <div class="checkpoint" data-value="100">
-      <span class="circle"><i class="fa-solid fa-check"></i></span>
-      <span class="checkpoint-text">Completing analysis...</span>
+    <div class="loader-checkpoint" data-value="100">
+      <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+      <span class="loader-checkpoint-text">Completing analysis...</span>
   </div>
 
         </div>
@@ -159,9 +159,9 @@ body{
 
         <!-- JavaScript -->
         <script >
-            let circularProgress = document.querySelector(".circular-progress"),
+            let circularProgress = document.querySelector(".loader-circular-progress"),
     progressValue = document.querySelector(".progress-value");
-    let checkpoints = document.querySelectorAll(".checkpoint");
+    let loader_checkpoints = document.querySelectorAll(".loader-checkpoint");
 
 let progressStartValue = 0,    
     progressEndValue = 100,    
@@ -174,7 +174,7 @@ let progress = setInterval(() => {
     progressValue.textContent = `${progressStartValue}%`;
     circularProgress.style.background = `conic-gradient(#17b26a ${progressStartValue * 3.6}deg, #ededed 0deg)`;
 
-    checkpoints.forEach(checkpoint => {
+    loader_checkpoints.forEach(checkpoint => {
     if (progressStartValue >= checkpoint.getAttribute('data-value')) {
         checkpoint.style.opacity = 1;
         checkpoint.classList.add('completed'); // Add this line

@@ -9,7 +9,10 @@
     <title>Is the Challenge right for you?</title>
 
     <link rel="icon" type="image/x-icon" href="./images/favicon.png">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        <meta charset="UTF-8">
     <style>
         #signup-form-p-0, #signup-form-p-1 {
             padding-top: 10px;
@@ -81,9 +84,32 @@
     <div class="main" id="scroll-top">
 
         <center>
-            <div id="loader">
-                <div class="loader-inner"></div>
-            </div>
+            
+                <div id="loader" class="loader-container">
+                    <div class="loader-circular-progress">
+                        <span class="loader-progress-value">0%</span>
+                    </div>
+                    <div class="loader-checkpoints">
+                      <div class="loader-checkpoint" data-value="25">
+                        <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+                        <span class="loader-checkpoint-text">Initializing...</span>
+                    </div>
+                    <div class="loader-checkpoint" data-value="50">
+                      <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+                      <span class="loader-checkpoint-text">Analyzing answers...</span>
+                  </div>
+                  <div class="loader-checkpoint" data-value="75">
+                    <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+                    <span class="loader-checkpoint-text">Synthesizing results...</span>
+                </div>
+                <div class="loader-checkpoint" data-value="100">
+                  <span class="loader-circle"><i class="fa-solid fa-check"></i></span>
+                  <span class="loader-checkpoint-text">Completing analysis...</span>
+              </div>
+            
+                    </div>
+                </div>
+            
         </center>
 
 
