@@ -520,7 +520,7 @@ function loaderShow() {
 
     let progressStartValue = 0,
         progressEndValue = 100,
-        speed = 100;
+        speed = 30;
 
     let progress = setInterval(() => {
         progressStartValue++;
