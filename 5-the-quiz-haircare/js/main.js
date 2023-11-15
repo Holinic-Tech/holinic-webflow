@@ -102,7 +102,7 @@ function proocessResultLogic(content, first_name) {
     const dynamicImage = document.getElementById('dynamic-image');
     const dynamictext = document.getElementById('dynamic-text');
     if (content === '😣 Hair loss or hair thinning') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/655439fc1d6c0446bbb58709_Result_Chart_Hair%20loss.svg";
+        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6554684a39732368f594e59f_Result_Chart_Hair%20loss.png";
         dynamictext.innerHTML = `
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to increase new hair growth and reduce your hair loss. 
@@ -132,7 +132,7 @@ function proocessResultLogic(content, first_name) {
         Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
         `;
     } else if (content === '😑 Split ends, frizz, and dryness') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/655439fcaa826e026b9b9d6f_Result_Chart_split%20ends.svg";
+        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6554684afc8e963bc0939e68_Result_Chart_split%20ends.png";
         dynamictext.innerHTML = `
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to repair your damaged hair and achieve silky ends...
@@ -161,7 +161,7 @@ function proocessResultLogic(content, first_name) {
 
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/655439fcf22553f435e9befb_Result_Chart_damage%20from%20dye.svg";
+        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6554684a9e7e9b3f9ceeac91_Result_Chart_damage%20from%20dye_V2.png";
         dynamictext.innerHTML = `
 
         Based on your answers, we're identified a SIMPLE haircare routine to bring back shine and softness to your damaged dry hair...
@@ -189,7 +189,7 @@ function proocessResultLogic(content, first_name) {
 
         `;
     } else if (content === '😫 Irritation or dandruff') {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/655439fc2d8be2355c42d1f9_Result_Chart_scalp%20issues.svg";
+        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6554684ac06bd3eef0ba9982_Result_Chart_scalp%20issues.png";
         dynamictext.innerHTML = `
 
         Based on your answers, we’ve identified a SIMPLE haircare routine to restore your scalp balance and achieve voluminous and soft hair.
@@ -217,7 +217,7 @@ function proocessResultLogic(content, first_name) {
         Live a life FREE from embarrassing flakes, greasy hair or itchy scalps. Say hello to clean, shiny, voluminous hair and confidence.<br><br> You deserve this ${first_name}
         `;
     } else {
-        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/655439fc2609d273b4acda76_Result_Chart_other-mixed%20issues.svg";
+        dynamicImage.src = "https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6554684a5bf84599b50b197e_Result_Chart_other-mixed%20issues.png";
         dynamictext.innerHTML = `
 
         Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to restore your hair health, prevent further damage and make it look fabulous!
