@@ -100,11 +100,18 @@ function splitName(fullName) {
 
 function proocessResultLogic(content, first_name) {
     const dynamicImage = document.getElementById('dynamic-image');
+    const dynamictext = document.getElementById('dynamic-text');
     if (content === '😣 Hair loss or hair thinning') {
         dynamicImage.src = "Results_Chart/Result_Chart_Hair_loss.svg";
-        return `
+        dynamictext.innerHTML = `
 
-   
+        Based on your answers, we’ve identified a SIMPLE haircare routine to increase new hair growth and reduce your hair loss. 
+        <br/><br/>
+
+        <b>It’s NOT an ultra strict, long or complicated routine...</b>
+        <br/><br/>
+        `;
+        return `
 
         ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
 
@@ -126,8 +133,16 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😑 Split ends, frizz, and dryness') {
         dynamicImage.src = "Results_Chart/Result_Chart_split_ends.svg";
+        dynamictext.innerHTML = `
+
+        Based on your answers, we’ve identified a SIMPLE haircare routine to repair your damaged hair and achieve silky ends...
+
+        <br/><br/>
+
+        <b>It’s NOT an ultra strict, long or complicated routine...</b>
+        <br/><br/>
+        `;
         return `
-    
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
@@ -147,8 +162,15 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
         dynamicImage.src = "Results_Chart/Result_Chart_damage_from_dye.svg";
+        dynamictext.innerHTML = `
+
+        Based on your answers, we're identified a SIMPLE haircare routine to bring back shine and softness to your damaged dry hair...
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        <br/><br/>
+        `;
         return `
-        
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
@@ -168,9 +190,16 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😫 Irritation or dandruff') {
         dynamicImage.src = "Results_Chart/Result_Chart_scalp_issues.svg";
-        return `
+        dynamictext.innerHTML = `
 
-   
+        Based on your answers, we’ve identified a SIMPLE haircare routine to restore your scalp balance and achieve voluminous and soft hair.
+
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        <br/><br/>
+        `;
+        return `
 
         ✅ It only takes 10 minutes a day to complete. See and FEEL the results in the first few days.
         <br><br>
@@ -189,8 +218,16 @@ function proocessResultLogic(content, first_name) {
         `;
     } else {
         dynamicImage.src = "Results_Chart/Result_Chart_other-mixed_issues.svg";
-        return `
+        dynamictext.innerHTML = `
 
+        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to restore your hair health, prevent further damage and make it look fabulous!
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        <br/><br/>
+
+        `;
+        return `
 
         ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
         <br><br>
@@ -389,7 +426,7 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 function handleSkipButton() {
     var cvgUid = getCookieValue('__cvg_uid');
     // print(cvgUid, 'COOKIEEE TRACCKING'); - $39 checkout
-    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85/?__cvg_uid=${cvgUid}`
+    var redirectUrl = `https://checkout.hairqare.co/buy/hairqare-challenge-save-85?__cvg_uid=${cvgUid}`
     return window.top.location.href = redirectUrl;
 };
 
@@ -511,37 +548,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hide the loader
     var loader = document.getElementById('loader');
     loader.style.display = 'none';
-
     // Show the content
     var content = document.getElementById('content');
     content.style.display = 'block';
-
         // Check for the result parameter in the URL
-       var queryParams = new URLSearchParams(window.location.search);
-      if (queryParams.has('result')) {
-            // If the parameter is present, load the result page directly
-            loadResultPageDirectly(); // This function needs to be implemented
-        }
-    
-
-    // Perform your JavaScript action here
-    // You can add your code below this comment
-  });
-
+/*         var queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.has('result')) {
+              // If the parameter is present, load the result page directly
+              loadResultPageDirectly(); // This function needs to be implemented
+          } */
+      
   
-  function loadResultPageDirectly() {
-    // Implement the logic to directly load the results.
-    // For example, you might want to display the result section and hide the quiz section
-    var form_content = document.getElementById("content");
-    var result = document.getElementById("content1");
-    form_content.style.display = "none";
-    result.style.display = "block";
-    // You might need to set the result text or load the results from a cookie or local storage
-    var storedData = localStorage.getItem('user_profile');
-    if (storedData) {
-        var user = JSON.parse(storedData);
-        // Populate results on the page using the user data
-        displayResults(user); // Implement this function to actually show the results
-    }
-}
-
+      // Perform your JavaScript action here
+      // You can add your code below this comment
+    });
+  
+    
+/*     function loadResultPageDirectly() {
+      // Implement the logic to directly load the results.
+      // For example, you might want to display the result section and hide the quiz section
+      var form_content = document.getElementById("content");
+      var result = document.getElementById("content1");
+      form_content.style.display = "none";
+      result.style.display = "block";
+      // You might need to set the result text or load the results from a cookie or local storage
+      var storedData = localStorage.getItem('user_profile');
+      if (storedData) {
+          var user = JSON.parse(storedData);
+          // Populate results on the page using the user data
+          displayResults(user); // Implement this function to actually show the results
+      }
+  }
+   */
