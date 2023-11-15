@@ -894,7 +894,7 @@ fieldset.current {
   margin-top: 10px;
 }
 .image-container-chart img {
-  max-width: 70%; /* Ensures the image scales with the container */
+  max-width: 75%; /* Ensures the image scales with the container */
   height: auto; /* Maintains aspect ratio */
 }
 /* You can use a media query to further adjust sizes for smaller screens */
