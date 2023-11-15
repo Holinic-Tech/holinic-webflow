@@ -109,7 +109,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
 
         <b>It’s NOT an ultra strict, long or complicated routine...</b>
-        <br/><br/>
+        
         `;
         return `
 
@@ -140,7 +140,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
 
         <b>It’s NOT an ultra strict, long or complicated routine...</b>
-        <br/><br/>
+       
         `;
         return `
 
@@ -168,7 +168,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
 
         <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
+        
         `;
         return `
 
@@ -197,7 +197,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
 
         <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
+        
         `;
         return `
 
@@ -224,7 +224,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
 
         <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
+        
 
         `;
         return `
@@ -552,11 +552,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var content = document.getElementById('content');
     content.style.display = 'block';
         // Check for the result parameter in the URL
-/*         var queryParams = new URLSearchParams(window.location.search);
+         var queryParams = new URLSearchParams(window.location.search);
         if (queryParams.has('result')) {
               // If the parameter is present, load the result page directly
               loadResultPageDirectly(); // This function needs to be implemented
-          } */
+          } 
       
   
       // Perform your JavaScript action here
@@ -564,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   
     
-/*     function loadResultPageDirectly() {
+     function loadResultPageDirectly() {
       // Implement the logic to directly load the results.
       // For example, you might want to display the result section and hide the quiz section
       var form_content = document.getElementById("content");
@@ -579,4 +579,4 @@ document.addEventListener('DOMContentLoaded', function() {
           displayResults(user); // Implement this function to actually show the results
       }
   }
-   */
+   
