@@ -1,0 +1,74 @@
+{
+    "questions": [
+      {
+        "question": "What best describes your hair problems?",
+        "choices": [
+          "😑 Split ends, frizz, and dryness",
+          "😣 Hair loss or hair thinning",
+          "😕 Damage from dye, heat, or chemical treatments",
+          "😫 Irritation or dandruff",
+          "🤷‍♀️ Other, mixed issues"
+        ]
+      },
+      {
+        "question": "How old are you?",
+        "choices": [
+          "👧 Under 18",
+          "🎓 18-24",
+          "💼 25-34",
+          "👩‍💼 35-44",
+          "👩‍💻 45+"
+        ]
+      },
+      {
+        "question": "What do you currently do for your hair?",
+        "choices": [
+          "💈 All-inclusive approach: salon treatments, products, doctors, supplements, etc.",
+          "🧴 Basic care: just shampoo and conditioner",
+          "🧖‍♀️ Occasional pampering: hair masks and treatments once in a while",
+          "🌿 Natural remedies: using oils, herbs, or DIY treatments",
+          "🤷‍♀️ None of the above"
+        ]
+      },
+      {
+        "question": "How much do you spend on a bottle of shampoo?",
+        "choices": [
+          "🧴 Less than $10",
+          "🧼 $10 - $20",
+          "🛁 $20 - $50",
+          "🛀 More than $50"
+        ]
+      },
+      {
+        "question": "What best describes your diet?",
+        "choices": [
+          "🍔 My eating habits are kinda unhealthy",
+          "⚖️ I mostly eat a healthy and balanced diet",
+          "👩‍🏫 I follow a special diet which I've researched and found suitable",
+          "🤷‍♀️ None of the answers described my diet"
+        ]
+      },
+      {
+        "question": "Which of these hair care myths do you currently believe?",
+        "choices": [
+          "🍚 Rice water will make your hair grow faster",
+          "🥥 Coconut oil is the best hair oil",
+          "💊 Biotin supplements make your hair grow",
+          "🌱 Natural and organic products are better",
+          "📋 All of them",
+          "🙅‍♀️ None of them"
+        ]
+      },
+      {
+        "question": "Which hair type do you have?",
+        "choices": [
+          "⎸ Straight",
+          "⌇ Curly",
+          "〜 Wavy",
+          "⦚ Coily",
+          "I don't know"
+        ]
+      }
+    ]
+  }
+  
