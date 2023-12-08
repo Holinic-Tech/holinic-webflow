@@ -108,7 +108,7 @@ function hideOverlay() {
     overlay.style.display = 'none';
     cssLoader.style.display = 'none'; // Hide the CSS loader
     textContainer.style.display = 'none'; // Hide the text container
-    animateTextLines();
+    
 }
 function showOverlay() {
     overlay.style.display = 'flex';
