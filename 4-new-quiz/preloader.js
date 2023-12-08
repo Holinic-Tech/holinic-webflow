@@ -105,7 +105,7 @@ function animateTextLines() {
 
 // Function to hide the overlay and display the CSS loader and text
 function hideOverlay() {
-    overlay.style.display = 'flex';
+    overlay.style.display = 'none';
     cssLoader.style.display = 'inline-block'; // Show the CSS loader
     textContainer.style.display = 'block';
     animateTextLines();
@@ -146,8 +146,8 @@ loaderStyle.textContent = `
 .lds-roller {
     display: inline-block;
    
-    width: 80px;
-    height: 80px;
+    width: 10vw; /* responsive width */
+    height: 10vw; /* responsive height */
     margin-bottom: 20px; /* Add some space between the loader and text */
 
   }
