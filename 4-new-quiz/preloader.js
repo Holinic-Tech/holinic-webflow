@@ -106,14 +106,20 @@ function animateTextLines() {
 // Function to hide the overlay and display the CSS loader and text
 function hideOverlay() {
     overlay.style.display = 'none';
-    cssLoader.style.display = 'inline-block'; // Show the CSS loader
-    textContainer.style.display = 'block';
+    cssLoader.style.display = 'none'; // Hide the CSS loader
+    textContainer.style.display = 'none'; // Hide the text container
     animateTextLines();
+}
+function showOverlay() {
+    overlay.style.display = 'flex';
+    cssLoader.style.display = 'inline-block'; // Show the CSS loader
+    textContainer.style.display = 'block'; // Show the text container
+    animateTextLines(); // Start the text animation
 }
 
 // Add event listeners for DOMContentLoaded and load events
-document.addEventListener('DOMContentLoaded', hideOverlay);
-window.addEventListener('load', hideOverlay);
+document.addEventListener('DOMContentLoaded', showOverlay); // Show the overlay when DOM is loaded
+window.addEventListener('load', hideOverlay); // Hide the overlay when everything is loaded
 
 // CSS for text boxes
 const style = document.createElement('style');
