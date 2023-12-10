@@ -12,6 +12,7 @@ overlay.style.cssText = `
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
     z-index: 999;
+    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
 `;
 
 // Create the CSS loader
@@ -38,6 +39,7 @@ centerContainer.style.cssText = `
     justify-content: center;
     align-items: center;
     height: 100%;
+    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
 `;
 
 // Append the CSS loader and text container to the center container
@@ -141,6 +143,8 @@ style.textContent = `
     display: flex; /* Flex display to align icon and text */
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
+    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
+
 }
 `;
 
