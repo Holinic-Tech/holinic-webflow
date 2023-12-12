@@ -108,8 +108,8 @@ function animateTextLines() {
 function hideOverlay() {
    
         overlay.style.display = 'none';
-        cssLoader.style.display = 'block'; 
-        textContainer.style.display = 'block'; 
+        cssLoader.style.display = 'none'; 
+        textContainer.style.display = 'none'; 
         animateTextLines();
     // Adjust the time (3000ms = 3 seconds) as needed
 }
@@ -117,6 +117,19 @@ function hideOverlay() {
 // Add event listeners for DOMContentLoaded and load events
 //document.addEventListener('DOMContentLoaded', hideOverlay);
 //window.addEventListener('load', hideOverlay);
+
+
+
+function showOverlay() {
+  overlay.style.display = 'flex';
+  cssLoader.style.display = 'inline-block'; // Show the CSS loader
+  textContainer.style.display = 'block'; // Show the text container
+  animateTextLines(); // Start the text animation
+}
+
+// Add event listeners for DOMContentLoaded and load events
+document.addEventListener('DOMContentLoaded', showOverlay); // Show the overlay when DOM is loaded
+
 document.onreadystatechange = function () {
   if (document.readyState === 'complete') {
       hideOverlay();
