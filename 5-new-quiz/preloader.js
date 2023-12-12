@@ -12,6 +12,7 @@ overlay.style.cssText = `
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
     z-index: 999;
+    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
 `;
 
 // Create the CSS loader
@@ -38,6 +39,7 @@ centerContainer.style.cssText = `
     justify-content: center;
     align-items: center;
     height: 100%;
+    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
 `;
 
 // Append the CSS loader and text container to the center container
@@ -106,8 +108,9 @@ function animateTextLines() {
 // Function to hide the overlay and display the CSS loader and text
 function hideOverlay() {
     overlay.style.display = 'none';
-    cssLoader.style.display = 'none'; // Hide the CSS loader
-    textContainer.style.display = 'none'; // Hide the text container
+    cssLoader.style.display = 'block'; // Hide the CSS loader
+    textContainer.style.display = 'block'; // Hide the text container
+    animateTextLines();
     
 }
 function showOverlay() {
@@ -116,6 +119,7 @@ function showOverlay() {
     textContainer.style.display = 'block'; // Show the text container
     animateTextLines(); // Start the text animation
 }
+
 
 // Add event listeners for DOMContentLoaded and load events
 document.addEventListener('DOMContentLoaded', showOverlay); // Show the overlay when DOM is loaded
@@ -141,6 +145,8 @@ style.textContent = `
     display: flex; /* Flex display to align icon and text */
     align-items: center; /* Center items vertically */
     justify-content: center; /* Center items horizontally */
+    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
+
 }
 `;
 
