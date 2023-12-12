@@ -105,18 +105,24 @@ function animateTextLines() {
 }
 
 // Function to hide the overlay and display the CSS loader and text
+// Function to hide the overlay and display the CSS loader and text
 function hideOverlay() {
-    setTimeout(() => {
-        overlay.style.display = 'none';
-        cssLoader.style.display = 'block'; 
-        textContainer.style.display = 'block'; 
-        animateTextLines();
-    }, 2500); // Adjust the time (3000ms = 3 seconds) as needed
+   
+  overlay.style.display = 'none';
+  cssLoader.style.display = 'block'; 
+  textContainer.style.display = 'block'; 
+  animateTextLines();
+// Adjust the time (3000ms = 3 seconds) as needed
 }
 
 // Add event listeners for DOMContentLoaded and load events
-document.addEventListener('DOMContentLoaded', hideOverlay);
-window.addEventListener('load', hideOverlay);
+//document.addEventListener('DOMContentLoaded', hideOverlay);
+//window.addEventListener('load', hideOverlay);
+document.onreadystatechange = function () {
+  if (document.readyState === 'complete') {
+      hideOverlay();
+  }
+}
 
 // CSS for text boxes
 const style = document.createElement('style');
