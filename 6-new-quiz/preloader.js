@@ -12,8 +12,8 @@ overlay.style.cssText = `
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
     z-index: 999;
-    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
 `;
+
 
 // Create the CSS loader
 const cssLoader = document.createElement('div');
@@ -39,7 +39,6 @@ centerContainer.style.cssText = `
     justify-content: center;
     align-items: center;
     height: 100%;
-    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
 `;
 
 // Append the CSS loader and text container to the center container
@@ -107,44 +106,56 @@ function animateTextLines() {
 
 // Function to hide the overlay and display the CSS loader and text
 function hideOverlay() {
-    overlay.style.display = 'none';
-    cssLoader.style.display = 'none'; // Hide the CSS loader
-    textContainer.style.display = 'none'; // Hide the text container
-    
-}
-function showOverlay() {
-    overlay.style.display = 'flex';
-    cssLoader.style.display = 'inline-block'; // Show the CSS loader
-    textContainer.style.display = 'block'; // Show the text container
-    animateTextLines(); // Start the text animation
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        cssLoader.style.display = 'block'; 
+        textContainer.style.display = 'block'; 
+        animateTextLines();
+    }, 2500); // Adjust the time (3000ms = 3 seconds) as needed
 }
 
 // Add event listeners for DOMContentLoaded and load events
-document.addEventListener('DOMContentLoaded', showOverlay); // Show the overlay when DOM is loaded
-window.addEventListener('load', hideOverlay); // Hide the overlay when everything is loaded
+document.addEventListener('DOMContentLoaded', hideOverlay);
+window.addEventListener('load', hideOverlay);
 
 // CSS for text boxes
 const style = document.createElement('style');
 style.textContent = `
-.text-box {
-    background-color: #FFFFFF; /* Light grey background */
-    border: 0px solid #dcdcdc; /* Slight border for definition */
-    border-radius: 20px; /* Rounded corners */
-    padding: 10px 20px; /* Padding inside the box */
-    margin: 10px auto; /* Margin for spacing between boxes, centered horizontally */
-    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Smooth transition for animation */
-    opacity: 0; /* Start with box invisible */
-    transform: translateY(20px); /* Start slightly lower */
-    width: 80%; /* Responsive width */
-    max-width: 400px; /* Maximum width */
-    text-align: center; /* Center the text */
-    font-size: 1.2em; /* Larger text */
-    display: flex; /* Flex display to align icon and text */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
-    font-family: 'RecklessNeueBook', sans-serif; /* Custom font with a fallback */
+#loader, .center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 
+}
+
+.text-box {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 25px 20px;
+    margin: 10px auto;
+    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    width: calc(100% - 40px); /* Responsive width with padding */
+    max-width: 400px; /* Maximum width for larger screens */
+    text-align: center;
+    font-size: 1.4em; /* Adjusted for mobile readability */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+@media (max-width: 600px) {
+    .text-box {
+        font-size: 1.6em; /* Larger text for smaller screens */
+    }
+    .lds-roller {
+        width: 80px; /* Smaller loader for small screens */
+        height: 80px;
+    }
 }
 `;
 
@@ -154,11 +165,12 @@ document.head.appendChild(style);
 const loaderStyle = document.createElement('style');
 loaderStyle.textContent = `
 .lds-roller {
-    display: inline-block;
-   
-    width: 10vw; /* responsive width */
-    height: 10vw; /* responsive height */
-    margin-bottom: 20px; /* Add some space between the loader and text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px; /* responsive width */
+    height: 50px; /* responsive height */
+    margin-bottom: 30px; /* Add some space between the loader and text */
 
   }
   .lds-roller div {
