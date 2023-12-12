@@ -107,11 +107,12 @@ function animateTextLines() {
 
 // Function to hide the overlay and display the CSS loader and text
 function hideOverlay() {
-    overlay.style.display = 'none';
-    cssLoader.style.display = 'block'; // Hide the CSS loader
-    textContainer.style.display = 'block'; // Hide the text container
-    animateTextLines();
-    
+  setTimeout(() => {
+      overlay.style.display = 'none';
+      cssLoader.style.display = 'block'; 
+      textContainer.style.display = 'block'; 
+      animateTextLines();
+  }, 3000); // Adjust the time (3000ms = 3 seconds) as needed
 }
 function showOverlay() {
     overlay.style.display = 'flex';
