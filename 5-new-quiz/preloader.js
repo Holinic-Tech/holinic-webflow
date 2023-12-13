@@ -259,7 +259,7 @@ function hideOverlay() {
       cssLoader.style.display = 'none'; 
       textContainer.style.display = 'none'; 
       animateTextLines();
-  }, 3000); // Adjust the time (3000ms = 3 seconds) as needed
+  }, 4000); // Adjust the time (3000ms = 3 seconds) as needed
 }
 // Add event listeners for DOMContentLoaded and load events
 //document.addEventListener('DOMContentLoaded', hideOverlay);
