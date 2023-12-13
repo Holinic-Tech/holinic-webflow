@@ -30,38 +30,58 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Hairqare-quiz">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="text/javascript">
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafgraph/spa-github-pages
+    // This script checks to see if a redirect is present in the query string,
+    // converts it back into the correct url and adds it to the
+    // browser's history using window.history.replaceState(...),
+    // which won't cause the browser to attempt to load the new url.
+    // When the single page app is loaded further down in this file,
+    // the correct url will be waiting in the browser's history for
+    // the single page app to route accordingly.
+    (function(l) {
+      if (l.search[1] === '/' ) {
+        var decoded = l.search.slice(1).split('&').map(function(s) { 
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+  </script>
   <script type="application/javascript" src="preloader.js" defer></script> 
 
 
-<script type="text/javascript">
-function trackEvent(eventName, properties, eventId, profileProperties, aliases) {
-    // Log all arguments to the console for debugging
-    console.log('Tracking Event:', {
-        eventName: eventName,
-        properties: properties,
-        eventId: eventId,
-        profileProperties: profileProperties,
-        aliases: aliases,
-    });
-
-    if (typeof window !== "undefined" && window["cvg"]) {
-        window["cvg"]({
-            method: "event",
-            event: eventName,
+  <script type="text/javascript">
+    function trackEvent(eventName, properties, eventId, profileProperties, aliases) {
+        // Log all arguments to the console for debugging
+        console.log('Tracking Event:', {
+            eventName: eventName,
             properties: properties,
             eventId: eventId,
             profileProperties: profileProperties,
             aliases: aliases,
         });
+    
+        if (typeof window !== "undefined" && window["cvg"]) {
+            window["cvg"]({
+                method: "event",
+                event: eventName,
+                properties: properties,
+                eventId: eventId,
+                profileProperties: profileProperties,
+                aliases: aliases,
+            });
+        }
     }
-}
-</script>
-
-
-
+    </script>
 <script type="text/javascript"> function getCookieValue(cookieName) {
     var name = cookieName + "=";
     var cookies = document.cookie.split(';');
@@ -136,7 +156,7 @@ Take our quiz and secure your seat in the next group of participants." />
   <link rel="manifest" href="manifest.json">
   <script>
     // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = "787062688";
+    const serviceWorkerVersion = "2746170510";
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
