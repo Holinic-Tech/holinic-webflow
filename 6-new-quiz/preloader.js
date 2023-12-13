@@ -10,7 +10,7 @@ overlay.style.cssText = `
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255);
     z-index: 999;
 `;
 
@@ -100,7 +100,7 @@ function animateTextLines() {
             }
         }, delay);
 
-        delay += 700; // Increment delay for the next line
+        delay += 500; // Increment delay for the next line
     });
 }
 
@@ -253,11 +253,10 @@ document.head.appendChild(loaderStyle);
 
 function hideOverlay() {
   setTimeout(() => {
-      overlay.style.display = 'none';
-      cssLoader.style.display = 'none'; 
-      textContainer.style.display = 'none'; 
-      animateTextLines();
-  }, 4000); // Adjust the time (3000ms = 3 seconds) as needed
+    overlay.style.display = 'none';
+    textContainer.style.display = 'block';
+    animateTextLines(); // This function animates your text lines
+  }, 3000); // Adjust the time (3000ms = 3 seconds) as needed
 }
 // Add event listeners for DOMContentLoaded and load events
 //document.addEventListener('DOMContentLoaded', hideOverlay);
@@ -275,8 +274,10 @@ function showOverlay() {
 // Add event listeners for DOMContentLoaded and load events
 document.addEventListener('DOMContentLoaded', showOverlay); // Show the overlay when DOM is loaded
 
-document.onreadystatechange = function () {
-  if (document.readyState === 'complete') {
-      hideOverlay();
-  }
-}
+// document.onreadystatechange = function () {
+//   if (document.readyState === 'complete') {
+//       hideOverlay();
+//   }
+// }
+// Add the window load event listener
+window.addEventListener('load', hideOverlay);
