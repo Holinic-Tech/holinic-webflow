@@ -4,17 +4,15 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg": "79b6723d2ab3206a7f8b664d281c6bd0",
-"assets/AssetManifest.bin": "799fafbfff436702a1e4db87d468a0a3",
-"assets/AssetManifest.json": "35e6d78ffea1602594040a264c09de68",
+"assets/AssetManifest.bin": "a3f1be458d1a6774c04d20691833fb37",
+"assets/AssetManifest.json": "b7f01d58e7edf162ec9252a2add50343",
 "assets/assets/audios/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/fonts/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/fonts/RecklessNeue-Book.otf": "d41d8cd98f00b204e9800998ecf8427e",
 "assets/assets/fonts/RecklessNeue-Book.ttf": "26127cb3331c52aa15260ddebd8d2de9",
 "assets/assets/images/6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg": "79b6723d2ab3206a7f8b664d281c6bd0",
-"assets/assets/images/error_image.jpg": "79b6723d2ab3206a7f8b664d281c6bd0",
 "assets/assets/images/favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"assets/assets/images/hq_loader_(1).svg": "4444d5880c1929f96cafede31eef950e",
-"assets/assets/lottie_animations/Copy_of_Animation_-_1701938074326_(4).json": "07413372d219086ff21412cb8db74367",
+"assets/assets/lottie_animations/circelanimation-notext.json": "4a9efd15464be7f823782314b025aff7",
 "assets/assets/lottie_animations/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/pdfs/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/rive_animations/favicon.png": "5dcef449791fa27946b3d35ad8803796",
@@ -22,7 +20,7 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "assets/assets/videos/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/FontManifest.json": "7eae4aaf01b3d82d08617fdb34141240",
 "assets/fonts/MaterialIcons-Regular.otf": "e7069dfd19b331be16bed984668fe080",
-"assets/NOTICES": "6a83fae98551d0128ea2c6460ef720f6",
+"assets/NOTICES": "43a9240800af5b59fa19d9cbaf958384",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
 "assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf": "f25e8e701660fb45e2a81ff3f43c6d5c",
 "assets/packages/font_awesome_flutter/lib/fonts/fa-regular-400.ttf": "a5d7457fda15b7622c14f432ba63039a",
@@ -41,9 +39,9 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "flutter.js": "6b515e434cea20006b3ef1726d2c8894",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"index.html": "a92dfb2e7e38b2335c5745248d758124",
-"/": "a92dfb2e7e38b2335c5745248d758124",
-"main.dart.js": "8abb109b7b952c7e90fcdb67ceace3ee",
+"index.html": "1815fb89bd8ff37384104eb1753ef5bb",
+"/": "1815fb89bd8ff37384104eb1753ef5bb",
+"main.dart.js": "b60c3c400deb2922755ff1a681657bf1",
 "version.json": "9d71ada4c653ad717272b36b812d1b1e"};
 // The application shell files that are downloaded before a service worker can
 // start.
