@@ -19,9 +19,9 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "assets/assets/rive_animations/liquid_download.riv": "7de01cccfbc17b47541a3d20e3ae26d6",
 "assets/assets/videos/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/FontManifest.json": "7eae4aaf01b3d82d08617fdb34141240",
-"assets/fonts/MaterialIcons-Regular.otf": "e7069dfd19b331be16bed984668fe080",
+"assets/fonts/MaterialIcons-Regular.otf": "c39d0cf55d0882a0867679b1800a2817",
 "assets/NOTICES": "43a9240800af5b59fa19d9cbaf958384",
-"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
+"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "89ed8f4e49bcdfc0b5bfc9b24591e347",
 "assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf": "f25e8e701660fb45e2a81ff3f43c6d5c",
 "assets/packages/font_awesome_flutter/lib/fonts/fa-regular-400.ttf": "a5d7457fda15b7622c14f432ba63039a",
 "assets/packages/font_awesome_flutter/lib/fonts/fa-solid-900.ttf": "b72c617acdf2227c8b1413215f620711",
@@ -39,9 +39,9 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "flutter.js": "6b515e434cea20006b3ef1726d2c8894",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"index.html": "1815fb89bd8ff37384104eb1753ef5bb",
-"/": "1815fb89bd8ff37384104eb1753ef5bb",
-"main.dart.js": "b60c3c400deb2922755ff1a681657bf1",
+"index.html": "0caab3c43366124b88196efc301fc23d",
+"/": "0caab3c43366124b88196efc301fc23d",
+"main.dart.js": "6dd60dcc2e256eb022477fa69d5f64c0",
 "version.json": "9d71ada4c653ad717272b36b812d1b1e"};
 // The application shell files that are downloaded before a service worker can
 // start.
