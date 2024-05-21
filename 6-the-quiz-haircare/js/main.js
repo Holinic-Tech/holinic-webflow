@@ -153,7 +153,7 @@ function proocessResultLogic(content, first_name) {
         `;
     } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
         return `
-        Based on your answers, we're identified a SIMPLE haircare routine to bring back shine and softness to your damaged dry hair...
+        Based on your answers, we've identified a SIMPLE haircare routine to bring back shine and softness to your damaged dry hair...
         <br/><br/>
 
         <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>

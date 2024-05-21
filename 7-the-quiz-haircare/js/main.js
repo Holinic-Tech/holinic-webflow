@@ -99,131 +99,178 @@ function splitName(fullName) {
 };
 
 function proocessResultLogic(content, first_name) {
-    if (content === '😣 Hair loss or hair thinning') {
+    if (content === '👧 Under 18') {
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to increase new hair growth and reduce your hair loss. 
+        Starting early can make all the difference in the world! At your age, it's crucial to establish healthy hair habits. 
+ 
+        <br/><br/>
+        By addressing hair loss now, you can prevent long-term damage and enjoy beautiful, strong hair 
+        as you grow.
+        
+        <br/><br/>
+        Based on your answers, we've identified a SIMPLE routine to reverse your hair loss and revive your thinning hair...
         <br/><br/>
 
-        <b>It’s NOT an ultra strict, long or complicated routine...</b>
+        <b>Don't worry, this ISN'T some ultra strict, long, or complicated routine…</b>
         <br/><br/>
 
         ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
 
         <br/><br/>
 
-        ✅  <b>You’ll stop worrying about going bald one day </b>or questioning if other people notice your thinning hair...</b>
+        ✅  <b>Regrow stronger & denser hair that will resist damage even with styling and coloring.</b>
 
         <br/><br/>
 
-        ✅ Watch lessons crafted by hair loss experts from anywhere with online access.
-
-        <br/><br/>
-        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
-        <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
-        <br><br>
-
-        Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
-        `;
-    } else if (content === '😑 Split ends, frizz, and dryness') {
-        return `
-        Based on your answers, we’ve identified a SIMPLE haircare routine to repair your damaged hair and achieve silky ends...
-
-        <br/><br/>
-
-        <b>It’s NOT an ultra strict, long or complicated routine...</b>
-        <br/><br/>
-
-        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
-        <br><br>
-        ✅ <b>Manageable, better-looking hair that stay beautiful for days after your wash.</b>
-        <br/><br/>
-
-        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
+        ✅ Watch the lessons from anywhere with online access. Complete in 14 days or at your own pace.
 
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
         <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
+        ✅ This Haircare Challenge has already helped over 73,000+ women regain better and fuller hair.
         <br><br>
 
-        Join now to get a life with dense, long, beautiful hair and feel confident every day.<br><br> You deserve this ${first_name}
-
+        Join now to start your journey to dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
         `;
-    } else if (content === '😕 Damage from dye, heat, or chemical treatments') {
-        return `
-        Based on your answers, we're identified a SIMPLE haircare routine to bring back shine and softness to your damaged dry hair...
-        <br/><br/>
-
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
-        <br/><br/>
-
-        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
-        <br><br>
-        ✅ <b>Stronger hair that will resist damage even with styling and coloring.</b> 
-        <br/><br/>
-
-        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
-
-        <br/><br/>
-        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
-        <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
-        <br><br>
-
-        Join now to get a life with vibrant, smooth and shiny hair styles that will make feel fabulous and unique every day.<br><br> You deserve this ${first_name}
-
-        `;
-    } else if (content === '😫 Irritation or dandruff') {
+    } else if (content === '🎓 18-24') {
         return `
 
-        Based on your answers, we’ve identified a SIMPLE haircare routine to restore your scalp balance and achieve voluminous and soft hair.
+        Early intervention can make a huge difference in your hair’s health! ✨
+ 
+ 
+        <br/><br/>
+        Your hair is still adapting to life cycle changes. By addressing hair loss now, you can ensure your hair stays strong and beautiful through these transformative years.
+        
+        <br/><br/>
+        Based on your answers, we've identified a SIMPLE routine to reverse your hair loss and revive your thinning hair...
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long, or complicated routine…</b>
+        <br/><br/>
+
+        ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
 
         <br/><br/>
 
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        ✅  <b>Regrow stronger & denser hair that will resist damage even with styling and coloring.</b>
+
         <br/><br/>
 
-        ✅ It only takes 10 minutes a day to complete. See and FEEL the results in the first few days.
-        <br><br>
-        ✅ <b>Healthier, more comfortable scalp in just one wash only.</b> 
-        <br/><br/>
-
-        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
+        ✅ Watch the lessons from anywhere with online access. Complete in 14 days or at your own pace.
 
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
         <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
+        ✅ This Haircare Challenge has already helped over 73,000+ women regain better and fuller hair.
         <br><br>
 
-        Live a life FREE from embarrassing flakes, greasy hair or itchy scalps. Say hello to clean, shiny, voluminous hair and confidence.<br><br> You deserve this ${first_name}
+        Join now to start your journey to dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
+        `;
+    } else if (content === '💼 25-34') {
+        return `
+
+        Taking action now can save you from future hair woes! 🌟
+
+        <br/><br/>
+        Balancing work, social life, and self-care can be challenging. 
+        <br/><br/>
+        Addressing hair loss now can help you maintain your confidence and manage stress more effectively.
+        
+        
+        <br/><br/>
+        Based on your answers, we've identified a SIMPLE routine to reverse your hair loss and revive your thinning hair...
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long, or complicated routine…</b>
+        <br/><br/>
+
+        ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
+
+        <br/><br/>
+
+        ✅  <b>Regrow stronger & denser hair that will resist damage even with styling and coloring.</b>
+
+        <br/><br/>
+
+        ✅ Watch the lessons from anywhere with online access. Complete in 14 days or at your own pace.
+
+        <br/><br/>
+        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
+        <br><br>
+        ✅ This Haircare Challenge has already helped over 73,000+ women regain better and fuller hair.
+        <br><br>
+
+        Join now to start your journey to dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
+        `;
+    } else if (content === '👩‍💼 35-44') {
+        return `
+
+        It’s never too late to reclaim your hair’s health! ✨
+
+        <br/><br/>
+        Juggling a busy life, stress levels and diet changes may be responsible for the changes in your hair. Pair this with your hair growth cycle shortening naturally as you age and you have a recipe for rapidly thinning hair.
+        <br/><br/>
+        Addressing hair loss now can rejuvenate your look and boost your confidence again.
+        <br/><br/>
+        Based on your answers, we've identified a SIMPLE routine to reverse your hair loss and revive your thinning hair...
+        <br/><br/>
+
+        <b>Don't worry, this ISN'T some ultra strict, long, or complicated routine…</b>
+        <br/><br/>
+
+        ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
+
+        <br/><br/>
+
+        ✅  <b>Regrow stronger & denser hair that will resist damage even with styling and coloring.</b>
+
+        <br/><br/>
+
+        ✅ Watch the lessons from anywhere with online access. Complete in 14 days or at your own pace.
+
+        <br/><br/>
+        ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
+        <br><br>
+        ✅ This Haircare Challenge has already helped over 73,000+ women regain better and fuller hair.
+        <br><br>
+
+        Join now to start your journey to dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
         `;
     } else {
         return `
 
-        Based on your answers, we’ve identified a <u>SIMPLE haircare routine</u> to restore your hair health, prevent further damage and make it look fabulous!
+
+        It’s never too late to achieve healthier hair! 🌟
+
+        <br/><br/>
+        As you age, your hair growth cyrcle shortens naturally leading to reduced hair density. That's why it becomes more important to adopt a personalized hair care routine to counteract those changes as you age. 
+        <br/><br/>
+        Addressing hair loss now can help you maintain your hair’s vitality and enjoy your beautiful locks for years to come.
+        <br/><br/>
+        Based on your answers, we've identified a SIMPLE routine to reverse your hair loss and revive your thinning hair...
         <br/><br/>
 
-        <b>Don't worry, this ISN'T some ultra strict, long or complicated routine...</b>
+        <b>Don't worry, this ISN'T some ultra strict, long, or complicated routine…</b>
         <br/><br/>
 
-        ✅ It only takes 10 minutes a day to complete and you’ll get <b>VISIBLE results in the first few days.</b>
-        <br><br>
-        ✅ <b>Reduced hair loss, activated hair growth and better-looking hair.</b> 
+        ✅ It only takes 10 minutes a day to complete and you’ll get </u>VISIBLE results in the first few days.
+
         <br/><br/>
 
-        ✅ Watch the lessons from anywhere with online access. In 14 days or at your own pace.
+        ✅  <b>Regrow stronger & denser hair that will resist damage even with styling and coloring.</b>
+
+        <br/><br/>
+
+        ✅ Watch the lessons from anywhere with online access. Complete in 14 days or at your own pace.
 
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
         <br><br>
-        ✅ This Haircare Challenge has already helped over 50,000 women regain better hair.
+        ✅ This Haircare Challenge has already helped over 73,000+ women regain better and fuller hair.
         <br><br>
 
-        Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
-
+        Join now to start your journey to dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
         `;
     }
 }
@@ -253,6 +300,7 @@ const option3Group = document.getElementsByName("option3");
 const option4Group = document.getElementsByName("option4");
 const option6Group = document.getElementsByName("option6");
 const option7Group = document.getElementsByName("option7");
+const option8Group = document.getElementsByName("option8");
 
 
 // Function to handle the radio button change event
@@ -328,7 +376,8 @@ function handleDataSubmission (email, firstName, lastName, answers) {
 
      // Save user's answers, name, and email to cookie with 90 day expiry
     var data = {
-        answers: answers,
+        //commented out answers to not pollute MP and AC data while testing
+     //   answers: answers, 
         name: `${firstName} ${lastName}`,
         email: email
     };
