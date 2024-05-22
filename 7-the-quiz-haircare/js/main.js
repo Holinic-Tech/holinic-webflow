@@ -244,7 +244,7 @@ function proocessResultLogic(content, first_name) {
         It’s never too late to achieve healthier hair! 🌟
 
         <br/><br/>
-        As you age, your hair growth cyrcle shortens naturally leading to reduced hair density. That's why it becomes more important to adopt a personalized hair care routine to counteract those changes as you age. 
+        As you age, your hair growth cycle shortens naturally leading to reduced hair density. That's why it becomes more important to adopt a personalized hair care routine to counteract those changes as you age. 
         <br/><br/>
         Addressing hair loss now can help you maintain your hair’s vitality and enjoy your beautiful locks for years to come.
         <br/><br/>
