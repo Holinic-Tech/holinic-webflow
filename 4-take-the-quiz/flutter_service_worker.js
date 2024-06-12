@@ -96,12 +96,12 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "Email_profile_img.svg": "d1ee7fa14e2e1a0336047efacad9199d",
 "favicon.png": "2704101cb06ce66e2000356a312be25c",
 "flutter.js": "383e55f7f3cce5be08fcf1f3881f585c",
-"flutter_bootstrap.js": "d9956172d788cd9c39429f26804d5e78",
+"flutter_bootstrap.js": "9314b3b0d7d8bca47a5383afcf0953b7",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "index.html": "f3c5f3ddb3349418c39225ab5396135c",
 "/": "f3c5f3ddb3349418c39225ab5396135c",
-"main.dart.js": "3080ff5cc8e623268fef6b7c5cf3cb89",
+"main.dart.js": "1496c048da1bc987229f44dc51caabc8",
 "manifest.json": "3cd2d2a2052c0896ba6e1d45fe72eb8c",
 "version.json": "dbc825e96eca3e040f92422c13c41da9"};
 // The application shell files that are downloaded before a service worker can
