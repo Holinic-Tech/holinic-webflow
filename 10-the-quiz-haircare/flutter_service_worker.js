@@ -80,12 +80,15 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "Email_profile_img.svg": "d1ee7fa14e2e1a0336047efacad9199d",
 "favicon.png": "2704101cb06ce66e2000356a312be25c",
 "flutter.js": "383e55f7f3cce5be08fcf1f3881f585c",
-"flutter_bootstrap.js": "7b435c13701a748da89db55d835bb08d",
+"flutter_bootstrap.js": "5409b8eac76c60d892f98a5c3316119b",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
+"icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
+"icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "index.html": "4dcba7c664c7ddd9805faef3cdff0b1f",
 "/": "4dcba7c664c7ddd9805faef3cdff0b1f",
-"main.dart.js": "403beaa4cd58a4932fdb37da3cf503d4",
+"main.dart.js": "bfe7ff26273059afbf7041f336f7655f",
+"manifest.json": "94af63f2b9359a8e3d236c88f09ad181",
 "version.json": "81c18a1fc3bca3c183d40942ae8665fa"};
 // The application shell files that are downloaded before a service worker can
 // start.
