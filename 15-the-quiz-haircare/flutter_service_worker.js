@@ -4,9 +4,9 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg": "79b6723d2ab3206a7f8b664d281c6bd0",
-"assets/AssetManifest.bin": "aeeb272bbc3688c967fbcd7f6450f419",
-"assets/AssetManifest.bin.json": "08004a4eaf8bf1c6e2f9e12cede1f55d",
-"assets/AssetManifest.json": "6e4e0c27f0d012ebf653561b2b3b3d83",
+"assets/AssetManifest.bin": "b7baf621a613d3d9d40a7b803613e20e",
+"assets/AssetManifest.bin.json": "79baf1e7d6749cbe37081c156cec3bf8",
+"assets/AssetManifest.json": "5f5ef8f1ce9a1f03ad65a82f681c566e",
 "assets/assets/audios/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/fonts/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/fonts/RecklessNeue-Book.otf": "d41d8cd98f00b204e9800998ecf8427e",
@@ -34,6 +34,7 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "assets/assets/rive_animations/blue_gradient_loading_bar.riv": "d21923cb3962481e1268082651092de7",
 "assets/assets/rive_animations/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/rive_animations/purple_loader_(1).riv": "a3e243ca266941577f88ecb519915a8a",
+"assets/assets/rive_animations/purple_loader_(2).riv": "4bb9e62f9bd3e712abcdb9e76920672b",
 "assets/assets/rive_animations/Rive_Editor_liquid_download.riv": "dfca69c81f0699b68eceddeb61759a52",
 "assets/assets/rive_animations/scrollgrey.riv": "bcdf55b71db3905390bd09f678062a89",
 "assets/assets/videos/favicon.png": "5dcef449791fa27946b3d35ad8803796",
@@ -60,12 +61,12 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "Email_profile_img.svg": "d1ee7fa14e2e1a0336047efacad9199d",
 "favicon.png": "2704101cb06ce66e2000356a312be25c",
 "flutter.js": "383e55f7f3cce5be08fcf1f3881f585c",
-"flutter_bootstrap.js": "faa61564818941700dacd885280c49ca",
+"flutter_bootstrap.js": "58053d7344139363861dfc204abf97f0",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "index.html": "0d41be2dc98eb4493b9f6b39e5424e4a",
 "/": "0d41be2dc98eb4493b9f6b39e5424e4a",
-"main.dart.js": "47c63fe24f721f5988d35914a96bde58",
+"main.dart.js": "baf8c86fd3d0e40f49d3f0ea3032d62e",
 "version.json": "e28a8ecad2f199118a4168fe169598fc"};
 // The application shell files that are downloaded before a service worker can
 // start.
