@@ -46,7 +46,12 @@
     <link rel="stylesheet" href="css/style.css?v=3">
 
     <!-- Start Converge Pixel Snippet -->
-    <script type="text/javascript">
+    <script src="https://static.runconverge.com/pixels/YGQUUS.js" async></script>
+    <script>
+      window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
+      cvg({method:"track",eventName:"$page_load"});
+    </script>
+    <!-- <script type="text/javascript">
         !function(e,n,i,t,s,o){e.cvg||((t=e.cvg=function(){t.process?
         t.process.apply(t,arguments):t.queue.push(arguments)}).queue=[],
         t.t=+new Date,(s=n.createElement(i)).async=1,
@@ -54,7 +59,7 @@
         (o=n.getElementsByTagName(i)[0]).parentNode.insertBefore(s,o))}
         (window,document,"script"),cvg({method:"init",id:"YGQUUS",params:{}});
         cvg({method:"event",event:"$page_load"});
-    </script>
+    </script> -->
     <!-- End Converge Pixel Snippet -->
 
     <!-- Google Tag Manager -->
