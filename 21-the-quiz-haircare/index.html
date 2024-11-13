@@ -62,14 +62,16 @@ function trackEvent(eventName, properties, eventId, profileProperties, aliases) 
     }
     return "";
 } </script>
-
-    <!-- Start Converge Pixel Snippet -->
-    <script src="https://static.runconverge.com/pixels/YGQUUS.js" async></script>
-    <script>
-      window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
-      cvg({method:"track",eventName:"$page_load"});
+<script type="text/javascript">
+        !function(e,n,i,t,s,o){e.cvg||((t=e.cvg=function(){t.process?
+        t.process.apply(t,arguments):t.queue.push(arguments)}).queue=[],
+        t.t=+new Date,(s=n.createElement(i)).async=1,
+        s.src="https://static.runconverge.com/convergepixelV3.js",
+        (o=n.getElementsByTagName(i)[0]).parentNode.insertBefore(s,o))}
+        (window,document,"script"),cvg({method:"init",id:"YGQUUS",params:{}});
+        cvg({method:"event",event:"$page_load"});
     </script>
-
+    <!-- End Converge Pixel Snippet -->
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -138,7 +140,7 @@ Read more: https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts
 if (!window._flutter) {
   window._flutter = {};
 }
-_flutter.buildConfig = {"engineRevision":"36335019a8eab588c3c2ea783c618d90505be233","builds":[{"compileTarget":"dart2js","renderer":"html","mainJsPath":"main.dart.js"}]};
+_flutter.buildConfig = {"engineRevision":"a6bd3f1de158bb61090e0c8053df93a10cb548e1","builds":[{"compileTarget":"dart2js","renderer":"html","mainJsPath":"main.dart.js"}]};
 
 
 _flutter.loader.load(
