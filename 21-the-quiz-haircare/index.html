@@ -8,6 +8,9 @@
     The path provided below has to start and end with a slash "/" in order for
     it to work correctly.
 
+    Alternatively, build your application passing the --base-href parameter
+    specifying the new root path of your web app.
+
     Fore more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
   -->
@@ -62,14 +65,11 @@ function trackEvent(eventName, properties, eventId, profileProperties, aliases) 
     }
     return "";
 } </script>
-
-    <!-- Start Converge Pixel Snippet -->
-    <script src="https://static.runconverge.com/pixels/YGQUUS.js" async></script>
+<script src="https://static.runconverge.com/pixels/YGQUUS.js" async></script>
     <script>
       window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
       cvg({method:"track",eventName:"$page_load"});
     </script>
-
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

@@ -66,9 +66,9 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "flutter_bootstrap.js": "7245e1fb841c13c012d1267266439e76",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"index.html": "136f3e025726f6f36f5753e3ce16ba67",
-"/": "136f3e025726f6f36f5753e3ce16ba67",
-"main.dart.js": "7c17c9cb958bd7bc5e41a317b025e79c",
+"index.html": "b262156bcb6bb2d87423d6d673628e16",
+"/": "b262156bcb6bb2d87423d6d673628e16",
+"main.dart.js": "38b77c42debf6f664f33c2ffe801e425",
 "version.json": "7e7d63cbb278aa699693b7a40b36353e"};
 // The application shell files that are downloaded before a service worker can
 // start.
