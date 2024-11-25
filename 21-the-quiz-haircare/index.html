@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script
-  src="https://js-de.sentry-cdn.com/5c946ef04ac027a5598343a05c10631c.min.js"
-  crossorigin="anonymous"
-></script>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -69,11 +65,16 @@ function trackEvent(eventName, properties, eventId, profileProperties, aliases) 
     }
     return "";
 } </script>
-<script src="https://static.runconverge.com/pixels/YGQUUS.js" async></script>
-    <script>
-      window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
-      cvg({method:"track",eventName:"$page_load"});
+<script type="text/javascript">
+        !function(e,n,i,t,s,o){e.cvg||((t=e.cvg=function(){t.process?
+        t.process.apply(t,arguments):t.queue.push(arguments)}).queue=[],
+        t.t=+new Date,(s=n.createElement(i)).async=1,
+        s.src="https://static.runconverge.com/convergepixelV3.js",
+        (o=n.getElementsByTagName(i)[0]).parentNode.insertBefore(s,o))}
+        (window,document,"script"),cvg({method:"init",id:"YGQUUS",params:{}});
+        cvg({method:"event",event:"$page_load"});
     </script>
+    <!-- End Converge Pixel Snippet -->
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

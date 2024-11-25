@@ -67,7 +67,7 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "index.html": "50d0530f5282c98f0b076fbed15f0cc6",
 "/": "50d0530f5282c98f0b076fbed15f0cc6",
-"main.dart.js": "96cf8da49759a2490463bb1b634c925f",
+"main.dart.js": "2f53fa8c28b1c1610710e04cb3026011",
 "version.json": "454a31681b3a85cd02880be581570074"};
 // The application shell files that are downloaded before a service worker can
 // start.
