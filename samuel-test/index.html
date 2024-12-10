@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YES Button</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom right, #4CAF50, #8BC34A);
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .yes-button {
+            font-size: 3rem;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 12px;
+            background-color: #ffffff;
+            color: #4CAF50;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .yes-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Fast and Beautiful Site</h1>
+    <button class="yes-button" onclick="alert('YES!')">YES</button>
+</body>
+</html>
