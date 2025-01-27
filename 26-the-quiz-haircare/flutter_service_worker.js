@@ -10,7 +10,7 @@ const RESOURCES = {"6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "version.json": "00967f16ba7015844d107d4fd47ee0fe",
 "flutter_bootstrap.js": "9b8bb30e29eef447ba98a81eda479a3c",
-"main.dart.js": "00b9cd55cd035d4d2d08e5e1ffa2170b",
+"main.dart.js": "753a1ff63be902ef054df501dfbd1391",
 "index.html": "40053d26e80e41b7148052656883a87f",
 "/": "40053d26e80e41b7148052656883a87f",
 "assets/AssetManifest.json": "78cc58610c534550f9f1f5729b27ec48",
