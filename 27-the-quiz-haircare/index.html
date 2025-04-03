@@ -120,8 +120,8 @@ Take our quiz and secure your seat in the next group of participants." />
 
   <link rel="manifest" href="manifest.json">
   
-  <!-- Make sure to use the correct path to flutter.js -->
-  <script src="flutter.js" defer></script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="https://unpkg.com/@flutter/flutter_bootstrap@0.0.1/flutter_bootstrap.js" defer></script>
 </head>
 <body>
   
@@ -181,112 +181,53 @@ Take our quiz and secure your seat in the next group of participants." />
   <script>
   // Wait for the flutter.js script to load
   window.addEventListener('load', function() {
-    console.log("Window loaded, checking for Flutter loader");
+    console.log("Window loaded, starting Flutter bootstrap");
     
-    // Function to dynamically load flutter.js if it's not already loaded
-    function loadFlutterScript() {
-      if (window.flutterConfiguration) {
-        console.log("Flutter configuration already exists");
-        return Promise.resolve();
-      }
-      
-      return new Promise((resolve, reject) => {
-        console.log("Attempting to load flutter.js dynamically");
-        const script = document.createElement('script');
-        script.src = "flutter.js";
-        script.onload = () => {
-          console.log("flutter.js loaded successfully");
-          resolve();
-        };
-        script.onerror = (error) => {
-          console.error("Failed to load flutter.js:", error);
-          reject(error);
-        };
-        document.body.appendChild(script);
-      });
-    }
-    
-    // Function to initialize Flutter once the loader is available
-    function initFlutter() {
-      if (typeof window.flutter === 'undefined') {
-        console.log("Flutter object not available yet, loading script");
-        loadFlutterScript().then(() => {
-          console.log("Script loaded, checking for Flutter object");
-          if (typeof window.flutter === 'undefined') {
-            console.error("Flutter object still not available after loading script");
-            // Display error on page
-            const errorDiv = document.createElement('div');
-            errorDiv.style.color = 'red';
-            errorDiv.style.padding = '20px';
-            errorDiv.innerHTML = '<p>Failed to load Flutter. Check console for details.</p>';
-            document.body.appendChild(errorDiv);
-          } else {
-            console.log("Flutter object available, proceeding with initialization");
-            startFlutterApp();
-          }
-        }).catch(error => {
-          console.error("Error loading Flutter script:", error);
-          // Display error on page
-          const errorDiv = document.createElement('div');
-          errorDiv.style.color = 'red';
-          errorDiv.style.padding = '20px';
-          errorDiv.innerHTML = '<p>Failed to load Flutter script. Check console for details.</p>';
-          document.body.appendChild(errorDiv);
-        });
-        return;
-      }
-      
-      startFlutterApp();
-    }
-    
-    function startFlutterApp() {
-      console.log("Starting Flutter app initialization");
-      
-      // Use the Flutter object directly
-      window.flutter.loader.load({
-        onEntrypointLoaded: async function(engineInitializer) {
-          console.log("Entrypoint loaded successfully");
-          try {
-            // Initialize the Flutter engine
-            console.log("Initializing Flutter engine...");
-            let appRunner = await engineInitializer.initializeEngine({
-              hostElement: document.querySelector('#flutter_target') || document.body,
-            });
-            console.log("Flutter engine initialized successfully");
-            
-            // Run the app
-            console.log("Starting to run the app...");
-            await appRunner.runApp();
-            console.log("App running successfully");
-          } catch (e) {
-            console.error("Detailed error during Flutter initialization:", e);
-            console.error("Error stack:", e.stack);
-            
-            // Display error on page
-            const errorDiv = document.createElement('div');
-            errorDiv.style.color = 'red';
-            errorDiv.style.padding = '20px';
-            errorDiv.innerHTML = '<p>Error initializing Flutter: ' + (e ? e.toString() : 'null error') + '</p>' +
-                                '<p>See console for more details.</p>';
-            document.body.appendChild(errorDiv);
-          }
-        },
-        onError: function(error) {
-          console.error("Loader error:", error);
+    // Download main.dart.js
+    _flutter.loader.loadEntrypoint({
+      serviceWorker: {
+        serviceWorkerVersion: serviceWorkerVersion,
+      },
+      onEntrypointLoaded: async function(engineInitializer) {
+        console.log("Entrypoint loaded successfully");
+        try {
+          // Initialize the Flutter engine
+          console.log("Initializing Flutter engine...");
+          let appRunner = await engineInitializer.initializeEngine({
+            hostElement: document.querySelector('#flutter_target') || document.body,
+            assetBase: "/27-the-quiz-haircare/"
+          });
+          console.log("Flutter engine initialized successfully");
+          
+          // Run the app
+          console.log("Starting to run the app...");
+          await appRunner.runApp();
+          console.log("App running successfully");
+        } catch (e) {
+          console.error("Detailed error during Flutter initialization:", e);
+          console.error("Error stack:", e.stack);
           
           // Display error on page
           const errorDiv = document.createElement('div');
           errorDiv.style.color = 'red';
           errorDiv.style.padding = '20px';
-          errorDiv.innerHTML = '<p>Error loading Flutter: ' + (error ? error.toString() : 'null error') + '</p>' +
+          errorDiv.innerHTML = '<p>Error initializing Flutter: ' + (e ? e.toString() : 'null error') + '</p>' +
                               '<p>See console for more details.</p>';
           document.body.appendChild(errorDiv);
         }
-      });
-    }
-
-    // Start the initialization process
-    initFlutter();
+      },
+      onError: function(error) {
+        console.error("Loader error:", error);
+        
+        // Display error on page
+        const errorDiv = document.createElement('div');
+        errorDiv.style.color = 'red';
+        errorDiv.style.padding = '20px';
+        errorDiv.innerHTML = '<p>Error loading Flutter: ' + (error ? error.toString() : 'null error') + '</p>' +
+                            '<p>See console for more details.</p>';
+        document.body.appendChild(errorDiv);
+      }
+    });
   });
   </script>
 </body>
