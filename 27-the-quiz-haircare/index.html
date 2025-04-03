@@ -176,5 +176,96 @@ Take our quiz and secure your seat in the next group of participants." />
 
     console.log("Flutter load initiated");
   </script>
+  <script src="flutter.js" defer></script>
+  <script>
+  // Wait for the flutter.js script to load
+  window.addEventListener('load', function() {
+    console.log("Window loaded, checking for Flutter loader");
+    
+    // Function to initialize Flutter once the loader is available
+    function initFlutter() {
+      if (!window._flutter) {
+        console.log("Creating _flutter object");
+        window._flutter = {};
+      }
+
+      if (!window._flutter.loader) {
+        console.error("Flutter loader not available yet");
+        // Try again in a moment
+        setTimeout(initFlutter, 100);
+        return;
+      }
+
+      console.log("Flutter loader found, proceeding with initialization");
+      
+      console.log("Setting build config");
+      _flutter.buildConfig = {
+        "engineRevision": "a6bd3f1de158bb61090e0c8053df93a10cb548e1",
+        "builds": [{
+          "compileTarget": "dart2js",
+          "renderer": "html",
+          "mainJsPath": "/27-the-quiz-haircare/main.dart.js"
+        }]
+      };
+
+      console.log("Preparing to load Flutter");
+      _flutter.loader.load({
+        onEntrypointLoaded: async function(engineInitializer) {
+          console.log("Entrypoint loaded successfully");
+          try {
+            // Initialize the Flutter engine
+            console.log("Initializing Flutter engine...");
+            let appRunner = await engineInitializer.initializeEngine({
+              hostElement: document.querySelector('#flutter_target') || document.body,
+            });
+            console.log("Flutter engine initialized successfully");
+            
+            // Run the app
+            console.log("Starting to run the app...");
+            await appRunner.runApp();
+            console.log("App running successfully");
+          } catch (e) {
+            console.error("Detailed error during Flutter initialization:", e);
+            console.error("Error stack:", e.stack);
+            console.error("Error type:", Object.prototype.toString.call(e));
+            
+            // Display error on page
+            const errorDiv = document.createElement('div');
+            errorDiv.style.color = 'red';
+            errorDiv.style.padding = '20px';
+            errorDiv.style.margin = '20px';
+            errorDiv.style.border = '1px solid red';
+            errorDiv.style.backgroundColor = '#ffeeee';
+            errorDiv.innerHTML = '<h3>Flutter Initialization Error</h3>' +
+                                '<p>' + (e ? e.toString() : 'null error') + '</p>' +
+                                '<p>See console for more details.</p>';
+            document.body.appendChild(errorDiv);
+          }
+        },
+        onError: function(error) {
+          console.error("Loader error:", error);
+          console.error("Error type:", Object.prototype.toString.call(error));
+          
+          // Display error on page
+          const errorDiv = document.createElement('div');
+          errorDiv.style.color = 'red';
+          errorDiv.style.padding = '20px';
+          errorDiv.style.margin = '20px';
+          errorDiv.style.border = '1px solid red';
+          errorDiv.style.backgroundColor = '#ffeeee';
+          errorDiv.innerHTML = '<h3>Flutter Loader Error</h3>' +
+                            '<p>' + (error ? error.toString() : 'null error') + '</p>' +
+                            '<p>See console for more details.</p>';
+          document.body.appendChild(errorDiv);
+        }
+      });
+
+      console.log("Flutter load initiated");
+    }
+
+    // Start the initialization process
+    initFlutter();
+  });
+  </script>
 </body>
 </html>
