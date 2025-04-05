@@ -13,8 +13,8 @@ const RESOURCES = {"canvaskit/skwasm.js": "ac0f73826b925320a1e9b0d3fd7da61c",
 "canvaskit/chromium/canvaskit.wasm": "ea5ab288728f7200f398f60089048b48",
 "canvaskit/chromium/canvaskit.js": "b7ba6d908089f706772b2007c37e6da4",
 "canvaskit/chromium/canvaskit.js.symbols": "e115ddcfad5f5b98a90e389433606502",
-"index.html": "123bead450bb906586a0cfed71db43ab",
-"/": "123bead450bb906586a0cfed71db43ab",
+"index.html": "ff5492a2ae97b7f2b8de55675653c1d9",
+"/": "ff5492a2ae97b7f2b8de55675653c1d9",
 "assets/NOTICES": "baf6842b2989a2913427db3c9cc52803",
 "assets/assets/jsons/favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "assets/assets/pdfs/favicon.png": "5dcef449791fa27946b3d35ad8803796",
@@ -52,7 +52,7 @@ const RESOURCES = {"canvaskit/skwasm.js": "ac0f73826b925320a1e9b0d3fd7da61c",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "Result_Page-_Days_Images_copy_4.png": "a884e67a313013c5c47af535473258e2",
 "favicon.png": "2704101cb06ce66e2000356a312be25c",
-"flutter_bootstrap.js": "6166c4de8d543ddc7ae8760b69779d26"};
+"flutter_bootstrap.js": "7a017b234c52ea9e746e56cb37ed3218"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
