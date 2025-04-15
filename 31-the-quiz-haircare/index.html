@@ -92,7 +92,7 @@ function trackEvent(eventName, properties, eventId, profileProperties, aliases) 
         })(window,document,'script','dataLayer','GTM-TT5MJDF');</script>
         <!-- End Google Tag Manager -->
 
-  <meta name="robots" content="noindex" />
+  
 
   <!-- Favicon -->
   <link rel="icon" href="clover-Plum.svg" sizes="any"/>
@@ -143,7 +143,7 @@ _flutter.loader.load(
     {
         onEntrypointLoaded: async function(engineInitializer) {
             // Initialize the Flutter engine
-            let appRunner = await engineInitializer.initializeEngine({});
+            let appRunner = await engineInitializer.initializeEngine({useColorEmoji: true,});
             // Run the app
             await appRunner.runApp();
           }
