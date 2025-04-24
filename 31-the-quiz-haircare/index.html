@@ -50,6 +50,7 @@ function trackEvent(eventName, properties, eventId, profileProperties, aliases) 
         profileProperties: profileProperties,
         aliases: aliases,
     });
+
     if (typeof window !== "undefined" && window["cvg"]) {
         window["cvg"]({
             method: "event",
@@ -62,6 +63,9 @@ function trackEvent(eventName, properties, eventId, profileProperties, aliases) 
     }
 }
 </script>
+
+
+
 <script type="text/javascript"> function getCookieValue(cookieName) {
     var name = cookieName + "=";
     var cookies = document.cookie.split(';');
@@ -73,10 +77,9 @@ function trackEvent(eventName, properties, eventId, profileProperties, aliases) 
     }
     return "";
 } </script>
-<script src="https://hairqare.co/cvg/static/pixels/PmzQC4.js" async></script>
+<script src="https://static.runconverge.com/pixels/PmzQC4.js" async></script>
 <script>
   window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
-  cvg({method: "proxy", tracking: "https://hairqare.co/cvg", static: "https://hairqare.co/cvg/static"});
   cvg({method:"track",eventName:"$page_load"});
 </script>
 
