@@ -1,57 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="author" content="hairqare.com">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Is the Challenge right for you?</title>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
 
-    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
 
-    <style>
-        #signup-form-p-0, #signup-form-p-1 {
-            padding-top: 10px;
-        }
-        .actions {
-            display: none;
-        }
-        #content1 {
-            display: none;
-        }
-        #result-text {
-            color: #3a2d32;
-            text-align:left;
-            vertical-align: middle;
-            font-size: 16px;
-            font-family: 'Inter';
-            letter-spacing: 0.2px;
-            margin-top: 20px;
-            line-height: 1.7;
-        }
-        br {
-            margin-top: 20px; /* Adjust the top margin as needed */
-            margin-bottom: 20px; /* Adjust the bottom margin as needed */
-        }
-    </style>
-    <!-- Font Icon -->
-    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+    Alternatively, build your application passing the --base-href parameter
+    specifying the new root path of your web app.
 
-    <!-- Main css -->
-    <link rel="stylesheet" href="css/style.css?v=3">
+    Fore more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  -->
+  <base href="./">
 
-    <!-- Start Converge Pixel Snippet -->
-    <script type="text/javascript">
-        !function(e,n,i,t,s,o){e.cvg||((t=e.cvg=function(){t.process?
-        t.process.apply(t,arguments):t.queue.push(arguments)}).queue=[],
-        t.t=+new Date,(s=n.createElement(i)).async=1,
-        s.src="https://static.runconverge.com/convergepixelV3.js",
-        (o=n.getElementsByTagName(i)[0]).parentNode.insertBefore(s,o))}
-        (window,document,"script"),cvg({method:"init",id:"YGQUUS",params:{}});
-        cvg({method:"event",event:"$page_load"});
-    </script>
-    <!-- End Converge Pixel Snippet -->
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Hairqare Quiz">
+
+  
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-15HXMXW4HW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-15HXMXW4HW');
+</script>
+
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<script type="application/javascript" src=" https://cdn.jsdelivr.net/gh/mohalmah/hq-quiz_preloader@main/preloader4.js" defer></script> 
+
+
+<script type="text/javascript">
+function trackEvent(eventName, properties, eventId, profileProperties, aliases) {
+    // Log all arguments to the console for debugging
+    console.log('Tracking Event:', {
+        eventName: eventName,
+        properties: properties,
+        eventId: eventId,
+        profileProperties: profileProperties,
+        aliases: aliases,
+    });
+    if (typeof window !== "undefined" && window["cvg"]) {
+        window["cvg"]({
+            method: "event",
+            event: eventName,
+            properties: properties,
+            eventId: eventId,
+            profileProperties: profileProperties,
+            aliases: aliases,
+        });
+    }
+}
+</script>
+<script type="text/javascript"> function getCookieValue(cookieName) {
+    var name = cookieName + "=";
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+} </script>
+<script src="https://hairqare.co/cvg/static/pixels/PmzQC4.js" async></script>
+<script>
+  window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
+  cvg({method: "proxy", tracking: "https://hairqare.co/cvg", static: "https://hairqare.co/cvg/static"});
+  cvg({method:"track",eventName:"$page_load"});
+</script>
+
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -61,350 +89,64 @@
         })(window,document,'script','dataLayer','GTM-TT5MJDF');</script>
         <!-- End Google Tag Manager -->
 
-                <!-- ended vwo -->
+  <meta name="robots" content="noindex" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="clover-Plum.svg" sizes="any"/>
+  
+
+  <!-- Open Graph & SEO tags -->
+  <meta property="og:title" content="Hairqare Challenge Quiz" />
+  <meta property="og:description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+  <meta property="og:image" content="/assets/assets/images/Result_Page-_Days_Images_copy_4.png" /> 
+  <meta name="twitter:title" content="Hairqare Challenge Quiz" />
+  <meta name="twitter:description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+  <meta name="twitter:image" content="/assets/assets/images/Result_Page-_Days_Images_copy_4.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <title> Hairqare Challenge Quiz </title>
+  <meta name="description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+    
+
+  <!-- Status Bar color in Safari browser (iOS) and PWA -->
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f4f8">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#f1f4f8">
+
+  <link rel="manifest" href="manifest.json">
+  
 </head>
-
 <body>
-
-    <div class="main" id="scroll-top">
-
-        <center>
-            <div id="loader">
-                <div class="loader-inner"></div>
-            </div>
-        </center>
-
-
-        <div class="container" id="content1" style="background-color: #e9ebfb;">
-                <!-- Google Tag Manager (noscript) -->
-                <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT5MJDF"
-                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-                <!-- End Google Tag Manager (noscript) -->
-            <form onsubmit="handleSubmit(event)" id="result-form" class="signup-form" enctype="multipart/form-data">
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <div class="title" style="letter-spacing: 3px;margin-top: 25px; text-align:center; font-size: 34px;">Wow you are a great fit for the challenge ✨</div>
-                        <div class="subtitle" id="result-text">... </div>
-
-                        <div class="container-lg-button" style="margin-bottom: 20px;">
-                            <!-- <div id="button-prev" class="button">Previous</div> -->
-                            <div class="lg-join-button" style="letter-spacing: 0.4px;">JOIN THE CHALLENGE NOW</div>
-                        </div>
-
-                        <br/>
-
-                        <div class="image-container">
-                            <div style="position: relative; padding-top: 56.25%;">
-                                <iframe src="https://www.youtube.com/embed/rul244vxNec?rel=0" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" title="Haircare Challenge Introduction" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                <!-- <iframe src="https://customer-k0rv29ogkuomtqhl.cloudflarestream.com/8f9ee1302d047e1e405f71477fd07ddf/iframe?poster=https%3A%2F%2Fi.postimg.cc%2FrpBwzWKW%2FClean-Shot-2023-06-06-at-12-37-58.jpg" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe> -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- button -->
-
-                </fieldset>
-            </form>
-        </div>
-
-        <div class="container" id="content" style="display: none;">
-            <form onsubmit="handleSubmit(event)" id="signup-form" class="signup-form" enctype="multipart/form-data">
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <div class="title">Find out if the Haircare Challenge is right for you✨</div>
-                        <div class="subtitle">Take our quiz and secure your seat in the next group of participants. </div>
-                        <div class="image-container">
-                        <img src="https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/6480589508a7fb99895cef2e_BHC-Offerstack-flashy-leaves_LD.jpg" alt="Img">
-                        </div>
-
-                        <br/>
-
-                        <div class="container-lg-button">
-                            <!-- <div id="button-prev" class="button">Previous</div> -->
-                            <div id="button-next" class="lg-button-home button-next">START THE QUIZ</div>
-                            <a  href="#" onclick="handleSkipButton()"  class="lg-button-outline">SKIP**</a>
-                        </div>
-
-                        <br/>
-
-                        <center>
-                            <div id="bottom-text">
-                                ** Only skip the quiz if you have already done it as it helps to ensure that you are a fit for the Challenge.
-                            </div>
-                        </center>
-                    </div>
-                    <!-- button -->
-
-                </fieldset>
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <label for="your_review" class="section-text">What best describes your hair problems?</label>
-                            <div>
-                                <input type="radio" class="radio-option" id="option1" name="options" value="Split_dryness">
-                                <label for="option1" class="radio-option-label">😑 Split ends, frizz, and dryness</label>
-
-                                <input type="radio" class="radio-option" id="option2" name="options" value="Hair_loss">
-                                <label for="option2" class="radio-option-label">😣 Hair loss or hair thinning</label>
-
-                                <input type="radio" class="radio-option" id="option3" name="options" value="Damage_dye">
-                                <label for="option3" class="radio-option-label">😕 Damage from dye, heat, or chemical treatments</label>
-
-                                <input type="radio" class="radio-option" id="option4" name="options" value="Irritation_dandruff">
-                                <label for="option4" class="radio-option-label">😫 Irritation or dandruff</label>
-
-                                <input type="radio" class="radio-option" id="option5" name="options" value="None">
-                                <label for="option5" class="radio-option-label">🤷‍♀️ None of the above</label>
-                            </div>
-
-                            <br/>
-
-                        <div class="container-button">
-                            <div  class="button-prev previous">
-                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
-                                <div class="previous-button-2">Previous</div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <label for="your_review" class="section-text">How old are you?</label>
-                            <div>
-                                <input type="radio" class="radio-option" id="option12" name="option1" value="one2">
-                                <label for="option12" class="radio-option-label">👧 Under 18</label>
-
-                                <input type="radio" class="radio-option" id="option22" name="option1" value="two2">
-                                <label for="option22" class="radio-option-label">🎓 18-24</label>
-
-                                <input type="radio" class="radio-option" id="option32" name="option1" value="three2">
-                                <label for="option32" class="radio-option-label">💼 25-34</label>
-
-                                <input type="radio" class="radio-option" id="option42" name="option1" value="four2">
-                                <label for="option42" class="radio-option-label">👩‍💼 35-44</label>
-
-                                <input type="radio" class="radio-option" id="option52" name="option1" value="five2">
-                                <label for="option52" class="radio-option-label">👩‍💻 45+</label>
-                            </div>
-
-                            <br/>
-
-                        <div class="container-button">
-                            <div  class="button-prev previous">
-                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
-                                <div class="previous-button-2">Previous</div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- BREAK -->
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <label for="your_review" class="section-text">What do you currently do for your hair?</label>
-                            <div>
-                                <input type="radio" class="radio-option" id="option13" name="option2" value="one2">
-                                <label for="option13" class="radio-option-label">💈 All-inclusive approach: salon treatments, products, doctors, supplements, etc.</label>
-
-                                <input type="radio" class="radio-option" id="option23" name="option2" value="two2">
-                                <label for="option23" class="radio-option-label">🧴 Basic care: just shampoo and conditioner</label>
-
-                                <input type="radio" class="radio-option" id="option33" name="option2" value="three2">
-                                <label for="option33" class="radio-option-label">🧖‍♀️ Occasional pampering: hair masks and treatments once in a while</label>
-
-                                <input type="radio" class="radio-option" id="option43" name="option2" value="four2">
-                                <label for="option43" class="radio-option-label">🌿 Natural remedies: using oils, herbs, or DIY treatments</label>
-
-                                <input type="radio" class="radio-option" id="option53" name="option2" value="five2">
-                                <label for="option53" class="radio-option-label">🤷‍♀️ None of the above</label>
-                            </div>
-
-                            <br/>
-
-                        <div class="container-button">
-                            <div  class="button-prev previous">
-                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
-                                <div class="previous-button-2">Previous</div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Spending on Shampoo -->
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <label for="your_review" class="section-text">How much do you spend on a bottle of shampoo?</label>
-                            <div>
-                                <input type="radio" class="radio-option" id="option14" name="option3" value="one2">
-                                <label for="option14" class="radio-option-label">🧴 Less than $10</label>
-
-                                <input type="radio" class="radio-option" id="option24" name="option3" value="two2">
-                                <label for="option24" class="radio-option-label">🧼 $10 - $20</label>
-
-                                <input type="radio" class="radio-option" id="option34" name="option3" value="three2">
-                                <label for="option34" class="radio-option-label">🛁 $20 - $50</label>
-
-                                <input type="radio" class="radio-option" id="option44" name="option3" value="four2">
-                                <label for="option44" class="radio-option-label">🛀 More than $50</label>
-                            </div>
-
-                            <br/>
-
-                        <div class="container-button">
-                            <div  class="button-prev previous">
-                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
-                                <div class="previous-button-2">Previous</div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- DIet -->
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <label for="your_review" class="section-text">What best describes your diet?</label>
-                            <div>
-                                <input type="radio" class="radio-option" id="option15" name="option4" value="one2">
-                                <label for="option15" class="radio-option-label">🍔 My eating habits are kinda unhealthy</label>
-
-                                <input type="radio" class="radio-option" id="option25" name="option4" value="two2">
-                                <label for="option25" class="radio-option-label">⚖️ I mostly eat a healthy and balanced diet</label>
-
-                                <input type="radio" class="radio-option" id="option35" name="option4" value="three2">
-                                <label for="option35" class="radio-option-label">👩‍🏫 I follow a special diet which I've researched and found suitable</label>
-
-                                <input type="radio" class="radio-option" id="option45" name="option4" value="four2">
-                                <label for="option45" class="radio-option-label">🤷‍♀️ None of the answers described my diet</label>
-                            </div>
-
-                            <br/>
-
-                        <div class="container-button">
-                            <div  class="button-prev previous">
-                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
-                                <div class="previous-button-2">Previous</div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Myth -->
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <label for="your_review" class="section-text">Which of these hair care myths do you currently believe?</label>
-                            <div>
-                                <input type="radio" class="radio-option" id="option17" name="option6" value="one2">
-                                <label for="option17" class="radio-option-label">🍚 Rice water will make your hair grow faster</label>
-
-                                <input type="radio" class="radio-option" id="option27" name="option6" value="two2">
-                                <label for="option27" class="radio-option-label">🥥 Coconut oil is the best hair oil</label>
-
-                                <input type="radio" class="radio-option" id="option37" name="option6" value="three2">
-                                <label for="option37" class="radio-option-label">💊 Biotin supplements make your hair grow</label>
-
-                                <input type="radio" class="radio-option" id="option47" name="option6" value="four2">
-                                <label for="option47" class="radio-option-label">🌱 Natural and organic products are better</label>
-
-                                <input type="radio" class="radio-option" id="option57" name="option6" value="four2">
-                                <label for="option57" class="radio-option-label">📋 All of them</label>
-
-                                <input type="radio" class="radio-option" id="option67" name="option6" value="four2">
-                                <label for="option67" class="radio-option-label">🙅‍♀️ None of them</label>
-                            </div>
-
-                            <br/>
-
-                        <div class="container-button">
-                            <div  class="button-prev previous">
-                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
-                                <div class="previous-button-2">Previous</div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- Hair Type -->
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <label for="your_review" class="section-text">Which hair type do you have?</label>
-                            <div>
-                                <input type="radio" class="radio-option" id="option18" name="option7" value="one2">
-                                <label for="option18" class="radio-option-label">⎸ Straight</label>
-
-                                <input type="radio" class="radio-option" id="option28" name="option7" value="two2">
-                                <label for="option28" class="radio-option-label">⌇ Curly</label>
-
-                                <input type="radio" class="radio-option" id="option38" name="option7" value="three2">
-                                <label for="option38" class="radio-option-label">〜 Wavy</label>
-
-                                <input type="radio" class="radio-option" id="option48" name="option7" value="four2">
-                                <label for="option48" class="radio-option-label">⦚ Coily</label>
-
-                                <input type="radio" class="radio-option" id="option411" name="option7" value="four2">
-                                <label for="option411" class="radio-option-label">I don't know</label>
-                            </div>
-
-                            <br/>
-
-                        <div class="container-button">
-                            <div  class="button-prev previous">
-                                <img src="https://uploads-ssl.webflow.com/649403ebe02b9ba4e310f30c/649403ece02b9ba4e310f375_arrow.svg" alt="" class="arrow-2">
-                                <div class="previous-button-2">Previous</div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-                <!-- BREAK -->
-
-                <h3></h3>
-                <fieldset>
-                    <div class="container-img">
-                        <div class="title">Your results are almost there!</div>
-                        <div class="subtitle">Enter your name and email to calculate your Challenge fit. </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <input type="text" style="font-size: 14pt; font-family: Inter;" name="full_name" id="full_name" placeholder="Please enter your full name" required/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" style="font-size: 14pt; font-family: Inter;" name="email" id="email" placeholder="Please enter your email" required/>
-                            </div>
-
-                            <br/>
-
-                            <button type="submit" class="button submit-result">Analyze my profile</button>
-
-                            <br/>
-                            <br/>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-
-    </div>
-
-    <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
-    <script src="vendor/jquery-steps/jquery.steps.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <script src="js/main.js"></script>
+  
+  
+  
+  
+  
+  <script>
+    (()=>{var L=()=>navigator.vendor==="Google Inc."||navigator.agent==="Edg/",E=()=>typeof ImageDecoder>"u"?!1:L(),P=()=>typeof Intl.v8BreakIterator<"u"&&typeof Intl.Segmenter<"u",W=()=>{let a=[0,97,115,109,1,0,0,0,1,5,1,95,1,120,0];return WebAssembly.validate(new Uint8Array(a))},w={hasImageCodecs:E(),hasChromiumBreakIterators:P(),supportsWasmGC:W(),crossOriginIsolated:window.crossOriginIsolated};function d(...a){return new URL(_(...a),document.baseURI).toString()}function _(...a){return a.filter(t=>!!t).map((t,i)=>i===0?S(t):j(S(t))).filter(t=>t.length).join("/")}function j(a){let t=0;for(;t<a.length&&a.charAt(t)==="/";)t++;return a.substring(t)}function S(a){let t=a.length;for(;t>0&&a.charAt(t-1)==="/";)t--;return a.substring(0,t)}function T(a,t){return a.canvasKitBaseUrl?a.canvasKitBaseUrl:t.engineRevision&&!t.useLocalCanvasKit?_("https://www.gstatic.com/flutter-canvaskit",t.engineRevision):"canvaskit"}var v=class{constructor(){this._scriptLoaded=!1}setTrustedTypesPolicy(t){this._ttPolicy=t}async loadEntrypoint(t){let{entrypointUrl:i=d("main.dart.js"),onEntrypointLoaded:r,nonce:e}=t||{};return this._loadJSEntrypoint(i,r,e)}async load(t,i,r,e,n){n??=o=>{o.initializeEngine(r).then(l=>l.runApp())};let{entryPointBaseUrl:s}=r;if(t.compileTarget==="dart2wasm")return this._loadWasmEntrypoint(t,i,s,n);{let o=t.mainJsPath??"main.dart.js",l=d(s,o);return this._loadJSEntrypoint(l,n,e)}}didCreateEngineInitializer(t){typeof this._didCreateEngineInitializerResolve=="function"&&(this._didCreateEngineInitializerResolve(t),this._didCreateEngineInitializerResolve=null,delete _flutter.loader.didCreateEngineInitializer),typeof this._onEntrypointLoaded=="function"&&this._onEntrypointLoaded(t)}_loadJSEntrypoint(t,i,r){let e=typeof i=="function";if(!this._scriptLoaded){this._scriptLoaded=!0;let n=this._createScriptTag(t,r);if(e)console.debug("Injecting <script> tag. Using callback."),this._onEntrypointLoaded=i,document.head.append(n);else return new Promise((s,o)=>{console.debug("Injecting <script> tag. Using Promises. Use the callback approach instead!"),this._didCreateEngineInitializerResolve=s,n.addEventListener("error",o),document.head.append(n)})}}async _loadWasmEntrypoint(t,i,r,e){if(!this._scriptLoaded){this._scriptLoaded=!0,this._onEntrypointLoaded=e;let{mainWasmPath:n,jsSupportRuntimePath:s}=t,o=d(r,n),l=d(r,s);this._ttPolicy!=null&&(l=this._ttPolicy.createScriptURL(l));let c=(await import(l)).compileStreaming(fetch(o)),f;t.renderer==="skwasm"?f=(async()=>{let m=await i.skwasm;return window._flutter_skwasmInstance=m,{skwasm:m.wasmExports,skwasmWrapper:m,ffi:{memory:m.wasmMemory}}})():f=Promise.resolve({}),await(await(await c).instantiate(await f)).invokeMain()}}_createScriptTag(t,i){let r=document.createElement("script");r.type="application/javascript",i&&(r.nonce=i);let e=t;return this._ttPolicy!=null&&(e=this._ttPolicy.createScriptURL(t)),r.src=e,r}};async function b(a,t,i){if(t<0)return a;let r,e=new Promise((n,s)=>{r=setTimeout(()=>{s(new Error(`${i} took more than ${t}ms to resolve. Moving on.`,{cause:b}))},t)});return Promise.race([a,e]).finally(()=>{clearTimeout(r)})}var y=class{setTrustedTypesPolicy(t){this._ttPolicy=t}loadServiceWorker(t){if(!t)return console.debug("Null serviceWorker configuration. Skipping."),Promise.resolve();if(!("serviceWorker"in navigator)){let o="Service Worker API unavailable.";return window.isSecureContext||(o+=`
+The current context is NOT secure.`,o+=`
+Read more: https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts`),Promise.reject(new Error(o))}let{serviceWorkerVersion:i,serviceWorkerUrl:r=d(`flutter_service_worker.js?v=${i}`),timeoutMillis:e=4e3}=t,n=r;this._ttPolicy!=null&&(n=this._ttPolicy.createScriptURL(n));let s=navigator.serviceWorker.register(n).then(o=>this._getNewServiceWorker(o,i)).then(this._waitForServiceWorkerActivation);return b(s,e,"prepareServiceWorker")}async _getNewServiceWorker(t,i){if(!t.active&&(t.installing||t.waiting))return console.debug("Installing/Activating first service worker."),t.installing||t.waiting;if(t.active.scriptURL.endsWith(i))return console.debug("Loading from existing service worker."),t.active;{let r=await t.update();return console.debug("Updating service worker."),r.installing||r.waiting||r.active}}async _waitForServiceWorkerActivation(t){if(!t||t.state==="activated")if(t){console.debug("Service worker already active.");return}else throw new Error("Cannot activate a null service worker!");return new Promise((i,r)=>{t.addEventListener("statechange",()=>{t.state==="activated"&&(console.debug("Activated new service worker."),i())})})}};var g=class{constructor(t,i="flutter-js"){let r=t||[/\.js$/,/\.mjs$/];window.trustedTypes&&(this.policy=trustedTypes.createPolicy(i,{createScriptURL:function(e){if(e.startsWith("blob:"))return e;let n=new URL(e,window.location),s=n.pathname.split("/").pop();if(r.some(l=>l.test(s)))return n.toString();console.error("URL rejected by TrustedTypes policy",i,":",e,"(download prevented)")}}))}};var k=a=>{let t=WebAssembly.compileStreaming(fetch(a));return(i,r)=>((async()=>{let e=await t,n=await WebAssembly.instantiate(e,i);r(n,e)})(),{})};var I=(a,t,i,r)=>(window.flutterCanvasKitLoaded=(async()=>{if(window.flutterCanvasKit)return window.flutterCanvasKit;let e=i.hasChromiumBreakIterators&&i.hasImageCodecs;if(!e&&t.canvasKitVariant=="chromium")throw"Chromium CanvasKit variant specifically requested, but unsupported in this browser";let n=e&&t.canvasKitVariant!=="full",s=r;n&&(s=d(s,"chromium"));let o=d(s,"canvaskit.js");a.flutterTT.policy&&(o=a.flutterTT.policy.createScriptURL(o));let l=k(d(s,"canvaskit.wasm")),p=await import(o);return window.flutterCanvasKit=await p.default({instantiateWasm:l}),window.flutterCanvasKit})(),window.flutterCanvasKitLoaded);var U=async(a,t,i,r)=>{let e=d(r,"skwasm.js"),n=e;a.flutterTT.policy&&(n=a.flutterTT.policy.createScriptURL(n));let s=k(d(r,"skwasm.wasm"));return await(await import(n)).default({instantiateWasm:s,locateFile:(l,p)=>{let c=p+l;return c.endsWith(".worker.js")?URL.createObjectURL(new Blob([`importScripts('${c}');`],{type:"application/javascript"})):c},mainScriptUrlOrBlob:e})};var C=class{async loadEntrypoint(t){let{serviceWorker:i,...r}=t||{},e=new g,n=new y;n.setTrustedTypesPolicy(e.policy),await n.loadServiceWorker(i).catch(o=>{console.warn("Exception while loading service worker:",o)});let s=new v;return s.setTrustedTypesPolicy(e.policy),this.didCreateEngineInitializer=s.didCreateEngineInitializer.bind(s),s.loadEntrypoint(r)}async load({serviceWorkerSettings:t,onEntrypointLoaded:i,nonce:r,config:e}={}){e??={};let n=_flutter.buildConfig;if(!n)throw"FlutterLoader.load requires _flutter.buildConfig to be set";let s=u=>{switch(u){case"skwasm":return w.crossOriginIsolated&&w.hasChromiumBreakIterators&&w.hasImageCodecs&&w.supportsWasmGC;default:return!0}},o=(u,m)=>{switch(u.renderer){case"auto":return m=="canvaskit"||m=="html";default:return u.renderer==m}},l=u=>u.compileTarget==="dart2wasm"&&!w.supportsWasmGC||e.renderer&&!o(u,e.renderer)?!1:s(u.renderer),p=n.builds.find(l);if(!p)throw"FlutterLoader could not find a build compatible with configuration and environment.";let c={};c.flutterTT=new g,t&&(c.serviceWorkerLoader=new y,c.serviceWorkerLoader.setTrustedTypesPolicy(c.flutterTT.policy),await c.serviceWorkerLoader.loadServiceWorker(t).catch(u=>{console.warn("Exception while loading service worker:",u)}));let f=T(e,n);p.renderer==="canvaskit"?c.canvasKit=I(c,e,w,f):p.renderer==="skwasm"&&(c.skwasm=U(c,e,w,f));let h=new v;return h.setTrustedTypesPolicy(c.flutterTT.policy),this.didCreateEngineInitializer=h.didCreateEngineInitializer.bind(h),h.load(p,c,e,r,i)}};window._flutter||(window._flutter={});window._flutter.loader||(window._flutter.loader=new C);})();
+//# sourceMappingURL=flutter.js.map
+
+if (!window._flutter) {
+  window._flutter = {};
+}
+_flutter.buildConfig = {"engineRevision":"e672b006cb34c921db85b8e2f482ed3144a4574b","builds":[{"compileTarget":"dart2js","renderer":"html","mainJsPath":"main.dart.js"}]};
+
+
+_flutter.loader.load(
+    {
+        onEntrypointLoaded: async function(engineInitializer) {
+            // Initialize the Flutter engine
+            let appRunner = await engineInitializer.initializeEngine({});
+            // Run the app
+            await appRunner.runApp();
+          }
+    }
+);
+
+  </script>
 </body>
-
 </html>
