@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Worker API</title>
+    <style>
+        body { font-family: monospace; margin: 20px; }
+        button { padding: 10px; margin: 10px; }
+        pre { background: #f0f0f0; padding: 10px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Test Worker API</h1>
+    
+    <div>
+        <label>Webflow Token: <input type="password" id="token" placeholder="Your Webflow token"></label>
+    </div>
+    
+    <div>
+        <label>OpenAI Key: <input type="password" id="openai" placeholder="Your OpenAI key"></label>
+    </div>
+    
+    <button onclick="testTranslation()">Test Translation</button>
+    
+    <h2>Results:</h2>
+    <pre id="output"></pre>
+    
+    <script>
+        async function testTranslation() {
+            const output = document.getElementById('output');
+            const token = document.getElementById('token').value;
+            const openaiKey = document.getElementById('openai').value;
+            
+            if (!token) {
+                alert('Please enter your Webflow token');
+                return;
+            }
+            
+            output.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('https://holinic-webflow-translation-worker.dndgroup.workers.dev/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer test-auth-token'
+                    },
+                    body: JSON.stringify({
+                        urlPatterns: ['the-haircare-challenge'],  // Without the slash
+                        targetLanguage: 'de',
+                        action: 'translate',
+                        webflowToken: token,
+                        openaiKey: openaiKey || 'sk-test'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                output.innerHTML = `<div class="${response.ok ? 'success' : 'error'}">
+Status: ${response.status}
+Response:
+${JSON.stringify(data, null, 2)}
+</div>`;
+                
+            } catch (error) {
+                output.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

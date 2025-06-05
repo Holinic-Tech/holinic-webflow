@@ -1,4 +1,4 @@
-// worker-fixed.js - Cloudflare Worker for Webflow Translation with fixes
+// worker-debug.js - Debug version with extensive logging for Webflow DOM API
 
 export default {
   async fetch(request, env, ctx) {
@@ -17,11 +17,17 @@ export default {
     try {
       const url = new URL(request.url);
       
-      // Authentication check
-      if (!request.headers.get('Authorization')?.startsWith('Bearer ')) {
+      // Authentication check (relaxed for debug endpoint)
+      const isDebugEndpoint = url.pathname.startsWith('/debug/');
+      if (!isDebugEndpoint && !request.headers.get('Authorization')?.startsWith('Bearer ')) {
         return new Response('Unauthorized', { status: 401, headers: corsHeaders });
       }
 
+      // Route handling
+      if (url.pathname.startsWith('/debug/')) {
+        return await handleDebug(request, env, url);
+      }
+      
       switch (url.pathname) {
         case '/translate':
           return await handleTranslation(request, env);
@@ -32,13 +38,477 @@ export default {
       }
     } catch (error) {
       console.error('Worker error:', error);
-      return new Response(JSON.stringify({ error: error.message }), {
+      console.error('Error stack:', error.stack);
+      return new Response(JSON.stringify({ 
+        error: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
   }
 };
+
+// DEBUG ENDPOINT - Fetch and analyze a single page
+async function handleDebug(request, env, url) {
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+
+  try {
+    // Extract page slug from URL
+    const pathParts = url.pathname.split('/');
+    const pageSlug = pathParts[2]; // /debug/{pageSlug}
+    
+    if (!pageSlug) {
+      return new Response(JSON.stringify({ 
+        error: 'No page slug provided',
+        usage: 'GET /debug/{pageSlug}'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    console.log(`[DEBUG] Starting debug analysis for page: ${pageSlug}`);
+    
+    // Get the token from query params or env
+    const urlParams = new URLSearchParams(url.search);
+    const WEBFLOW_TOKEN = urlParams.get('token') || env.WEBFLOW_TOKEN;
+    const WEBFLOW_SITE_ID = urlParams.get('siteId') || env.WEBFLOW_SITE_ID;
+    
+    if (!WEBFLOW_TOKEN || !WEBFLOW_SITE_ID) {
+      return new Response(JSON.stringify({ 
+        error: 'Missing Webflow token or site ID',
+        help: 'Provide ?token=YOUR_TOKEN&siteId=YOUR_SITE_ID or set env variables'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    console.log(`[DEBUG] Using Webflow Site ID: ${WEBFLOW_SITE_ID}`);
+    console.log(`[DEBUG] Token provided: ${WEBFLOW_TOKEN ? 'Yes' : 'No'}`);
+
+    // Step 1: Get all pages to find the target page
+    console.log('[DEBUG] Fetching all pages from Webflow...');
+    const pages = await getWebflowPagesDebug(WEBFLOW_TOKEN, WEBFLOW_SITE_ID);
+    
+    // Find the page by slug
+    const targetPage = pages.find(p => p.slug === pageSlug);
+    if (!targetPage) {
+      return new Response(JSON.stringify({ 
+        error: `Page not found: ${pageSlug}`,
+        availablePages: pages.map(p => ({ id: p.id, slug: p.slug, title: p.title }))
+      }), {
+        status: 404,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    console.log(`[DEBUG] Found page:`, JSON.stringify(targetPage, null, 2));
+
+    // Step 2: Get the page DOM content
+    console.log(`[DEBUG] Fetching DOM content for page ID: ${targetPage.id}`);
+    const pageContent = await getPageContentDebug(targetPage.id, WEBFLOW_TOKEN);
+    
+    // Step 3: Analyze the DOM structure
+    console.log('[DEBUG] Analyzing DOM structure...');
+    const analysis = analyzeDOMStructure(pageContent);
+    
+    // Step 4: Extract content with detailed logging
+    console.log('[DEBUG] Extracting translatable content...');
+    const extractedContent = extractTranslatableContentDebug(pageContent);
+    
+    // Step 5: Test link processing
+    console.log('[DEBUG] Testing link processing...');
+    const linkTests = testLinkProcessing(extractedContent.links);
+    
+    // Prepare comprehensive debug response
+    const debugResponse = {
+      pageInfo: {
+        id: targetPage.id,
+        slug: targetPage.slug,
+        title: targetPage.title,
+        parentId: targetPage.parentId
+      },
+      domStructure: {
+        hasNodes: !!pageContent.nodes,
+        nodesIsArray: Array.isArray(pageContent.nodes),
+        nodeCount: pageContent.nodes?.length || 0,
+        sampleNodes: pageContent.nodes?.slice(0, 3) || [],
+        fullStructure: analysis
+      },
+      extractedContent: {
+        title: extractedContent.title,
+        textCount: extractedContent.texts.length,
+        linkCount: extractedContent.links.length,
+        sampleTexts: extractedContent.texts.slice(0, 5),
+        sampleLinks: extractedContent.links.slice(0, 5),
+        seo: extractedContent.seo
+      },
+      nodeTypeAnalysis: analysis.nodeTypes,
+      textNodeAnalysis: analysis.textNodes,
+      linkAnalysis: linkTests,
+      rawPageContent: {
+        // Include first 1000 chars of stringified content for inspection
+        preview: JSON.stringify(pageContent).substring(0, 1000) + '...',
+        fullSize: JSON.stringify(pageContent).length
+      },
+      debugTimestamp: new Date().toISOString()
+    };
+
+    console.log('[DEBUG] Debug analysis complete');
+    
+    return new Response(JSON.stringify(debugResponse, null, 2), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+    
+  } catch (error) {
+    console.error('[DEBUG] Error in debug handler:', error);
+    console.error('[DEBUG] Error stack:', error.stack);
+    
+    return new Response(JSON.stringify({ 
+      error: error.message,
+      stack: error.stack,
+      type: error.constructor.name,
+      timestamp: new Date().toISOString()
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+// Debug version of getWebflowPages with extra logging
+async function getWebflowPagesDebug(apiToken, siteId) {
+  console.log(`[DEBUG] Calling Webflow API: GET /sites/${siteId}/pages`);
+  
+  const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
+    headers: {
+      'Authorization': `Bearer ${apiToken}`,
+      'Accept': 'application/json'
+    }
+  });
+
+  console.log(`[DEBUG] Webflow API Response Status: ${response.status}`);
+  console.log(`[DEBUG] Response Headers:`, Object.fromEntries(response.headers.entries()));
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`[DEBUG] Webflow API error: ${response.status} - ${errorText}`);
+    throw new Error(`Webflow API error: ${response.status} - ${errorText}`);
+  }
+
+  const data = await response.json();
+  console.log(`[DEBUG] Webflow returned ${data.pages?.length || 0} pages`);
+  
+  return data.pages || [];
+}
+
+// Debug version of getPageContent with extra logging
+async function getPageContentDebug(pageId, apiToken) {
+  console.log(`[DEBUG] Calling Webflow DOM API: GET /pages/${pageId}/dom`);
+  
+  const response = await fetch(`https://api.webflow.com/v2/pages/${pageId}/dom`, {
+    headers: {
+      'Authorization': `Bearer ${apiToken}`,
+      'Accept': 'application/json'
+    }
+  });
+
+  console.log(`[DEBUG] Webflow DOM API Response Status: ${response.status}`);
+  console.log(`[DEBUG] Response Headers:`, Object.fromEntries(response.headers.entries()));
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`[DEBUG] Failed to get page content: ${response.status} - ${errorText}`);
+    throw new Error(`Failed to get page content: ${response.status} - ${errorText}`);
+  }
+
+  const content = await response.json();
+  console.log(`[DEBUG] Page content structure:`, {
+    hasTitle: !!content.title,
+    hasNodes: !!content.nodes,
+    hasSeo: !!content.seo,
+    topLevelKeys: Object.keys(content)
+  });
+  
+  return content;
+}
+
+// Analyze DOM structure in detail
+function analyzeDOMStructure(pageContent) {
+  const analysis = {
+    topLevelKeys: Object.keys(pageContent),
+    nodeTypes: {},
+    textNodes: {
+      total: 0,
+      byType: {},
+      withNonStringText: []
+    },
+    maxDepth: 0,
+    totalNodes: 0
+  };
+
+  function analyzeNodes(nodes, depth = 0) {
+    if (!nodes || !Array.isArray(nodes)) {
+      console.log(`[DEBUG] Invalid nodes at depth ${depth}:`, typeof nodes);
+      return;
+    }
+
+    analysis.maxDepth = Math.max(analysis.maxDepth, depth);
+
+    for (const node of nodes) {
+      analysis.totalNodes++;
+      
+      // Track node types
+      if (node.tag) {
+        analysis.nodeTypes[node.tag] = (analysis.nodeTypes[node.tag] || 0) + 1;
+      }
+      
+      // Analyze text nodes in detail
+      if (node.text !== undefined && node.text !== null) {
+        analysis.textNodes.total++;
+        
+        const textType = typeof node.text;
+        analysis.textNodes.byType[textType] = (analysis.textNodes.byType[textType] || 0) + 1;
+        
+        // Log non-string text nodes for investigation
+        if (textType !== 'string') {
+          analysis.textNodes.withNonStringText.push({
+            id: node.id,
+            tag: node.tag,
+            textType: textType,
+            textValue: node.text,
+            textValueStringified: JSON.stringify(node.text),
+            attributes: node.attributes
+          });
+          
+          console.log(`[DEBUG] Non-string text node found:`, {
+            id: node.id,
+            tag: node.tag,
+            textType: textType,
+            textValue: node.text,
+            textIsArray: Array.isArray(node.text),
+            textKeys: typeof node.text === 'object' ? Object.keys(node.text) : null
+          });
+        }
+      }
+      
+      // Log the full structure of first few nodes at each level
+      if (analysis.totalNodes <= 10) {
+        console.log(`[DEBUG] Node ${analysis.totalNodes} at depth ${depth}:`, {
+          id: node.id,
+          tag: node.tag,
+          hasText: node.text !== undefined,
+          textType: typeof node.text,
+          hasChildren: !!node.children,
+          childrenCount: node.children?.length || 0,
+          attributes: node.attributes,
+          allKeys: Object.keys(node)
+        });
+      }
+      
+      if (node.children && Array.isArray(node.children)) {
+        analyzeNodes(node.children, depth + 1);
+      }
+    }
+  }
+
+  if (pageContent.nodes) {
+    analyzeNodes(pageContent.nodes);
+  }
+
+  return analysis;
+}
+
+// Debug version of extractTranslatableContent with detailed logging
+function extractTranslatableContentDebug(pageContent) {
+  console.log('[DEBUG] Starting content extraction...');
+  
+  const content = {
+    title: pageContent.title || '',
+    texts: [],
+    links: [],
+    seo: {
+      title: pageContent.seo?.title || '',
+      description: pageContent.seo?.description || ''
+    }
+  };
+
+  let nodeCount = 0;
+  let textNodeCount = 0;
+  let linkNodeCount = 0;
+
+  // Recursively extract text and links from DOM nodes
+  function extractFromNodes(nodes, path = 'root') {
+    if (!nodes || !Array.isArray(nodes)) {
+      console.log(`[DEBUG] Invalid nodes at path ${path}:`, typeof nodes);
+      return;
+    }
+    
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      const nodePath = `${path}[${i}]`;
+      nodeCount++;
+      
+      // Detailed logging for text extraction
+      if (node.text !== undefined && node.text !== null) {
+        const textType = typeof node.text;
+        const isString = textType === 'string';
+        const trimmedText = isString ? node.text.trim() : '';
+        
+        console.log(`[DEBUG] Text node at ${nodePath}:`, {
+          id: node.id,
+          tag: node.tag,
+          textType: textType,
+          isString: isString,
+          textLength: isString ? node.text.length : 'N/A',
+          trimmedLength: isString ? trimmedText.length : 'N/A',
+          hasContent: isString && trimmedText.length > 0,
+          preview: isString ? node.text.substring(0, 50) : JSON.stringify(node.text)
+        });
+        
+        // Only process string text that has content
+        if (isString && trimmedText) {
+          textNodeCount++;
+          content.texts.push({
+            id: node.id || `generated_${Math.random().toString(36).substr(2, 9)}`,
+            text: node.text,
+            tag: node.tag,
+            attributes: node.attributes || {},
+            path: nodePath
+          });
+        } else if (!isString) {
+          console.warn(`[DEBUG] Non-string text at ${nodePath}:`, node.text);
+        }
+      }
+      
+      // Extract and process links with logging
+      if (node.tag === 'a' && node.attributes?.href) {
+        linkNodeCount++;
+        const href = node.attributes.href;
+        const processedLink = processLinkForLocalizationDebug(href);
+        
+        console.log(`[DEBUG] Link at ${nodePath}:`, {
+          id: node.id,
+          href: href,
+          processed: processedLink
+        });
+        
+        content.links.push({
+          id: node.id || `link_${Math.random().toString(36).substr(2, 9)}`,
+          originalHref: href,
+          newHref: processedLink.newHref,
+          shouldUpdate: processedLink.shouldUpdate,
+          linkType: processedLink.linkType,
+          path: nodePath
+        });
+      }
+      
+      if (node.children && Array.isArray(node.children)) {
+        extractFromNodes(node.children, `${nodePath}.children`);
+      }
+    }
+  }
+
+  if (pageContent.nodes && Array.isArray(pageContent.nodes)) {
+    console.log(`[DEBUG] Processing ${pageContent.nodes.length} top-level nodes...`);
+    extractFromNodes(pageContent.nodes);
+  } else {
+    console.warn('[DEBUG] No valid nodes array found in pageContent');
+  }
+
+  console.log('[DEBUG] Extraction complete:', {
+    totalNodes: nodeCount,
+    textNodes: textNodeCount,
+    linkNodes: linkNodeCount,
+    extractedTexts: content.texts.length,
+    extractedLinks: content.links.length
+  });
+
+  return content;
+}
+
+// Debug version of link processing with logging
+function processLinkForLocalizationDebug(href, targetLanguage = 'de') {
+  console.log(`[DEBUG] Processing link: ${href}`);
+  
+  // Handle different link types based on your requirements
+  
+  // Checkout links - add language prefix
+  if (href.includes('checkout.hairqare.co/buy/')) {
+    const result = {
+      newHref: href.replace('checkout.hairqare.co/buy/', `checkout.hairqare.co/${targetLanguage}/buy/`),
+      shouldUpdate: true,
+      linkType: 'checkout'
+    };
+    console.log(`[DEBUG] Checkout link processed:`, result);
+    return result;
+  }
+  
+  // Quiz links - add language prefix  
+  if (href.includes('join.hairqare.co/') && !href.includes(`/${targetLanguage}/`)) {
+    const result = {
+      newHref: href.replace('join.hairqare.co/', `join.hairqare.co/${targetLanguage}/`),
+      shouldUpdate: true,
+      linkType: 'quiz'
+    };
+    console.log(`[DEBUG] Quiz link processed:`, result);
+    return result;
+  }
+  
+  // Internal relative links that should be localized (same domain pages)
+  if (href.startsWith('/') && !href.startsWith(`/${targetLanguage}/`)) {
+    const result = {
+      newHref: `/${targetLanguage}${href}`,
+      shouldUpdate: true,
+      linkType: 'internal'
+    };
+    console.log(`[DEBUG] Internal link processed:`, result);
+    return result;
+  }
+  
+  // External links and other cases - don't modify
+  const result = {
+    newHref: href,
+    shouldUpdate: false,
+    linkType: 'external'
+  };
+  console.log(`[DEBUG] External/other link - no change:`, result);
+  return result;
+}
+
+// Test link processing with various examples
+function testLinkProcessing(extractedLinks) {
+  const testLinks = [
+    'https://checkout.hairqare.co/buy/product-123',
+    'https://join.hairqare.co/quiz-start',
+    '/about-us',
+    '/de/already-translated',
+    'https://external-site.com/page',
+    'mailto:test@example.com',
+    '#section-anchor'
+  ];
+  
+  const results = {
+    extractedLinksProcessed: extractedLinks,
+    testCases: testLinks.map(href => ({
+      original: href,
+      processed: processLinkForLocalizationDebug(href, 'de')
+    }))
+  };
+  
+  return results;
+}
+
+// Include all the original functions from worker.js below for completeness
+// (These are the same as in worker.js but included here to make this file standalone)
 
 async function handleTranslation(request, env) {
   const body = await request.json();
@@ -63,19 +533,12 @@ async function handleTranslation(request, env) {
 
   try {
     // Get all pages from Webflow
-    console.log(`Fetching pages from Webflow site: ${env.WEBFLOW_SITE_ID}`);
     const pages = await getWebflowPages(WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
-    console.log(`Total pages fetched from Webflow: ${pages.length}`);
-    
-    // Log first few page slugs for debugging
-    if (pages.length > 0) {
-      console.log('Sample page slugs:', pages.slice(0, 5).map(p => p.slug).join(', '));
-    }
     
     // Filter pages based on URL patterns
     const matchingPages = filterPagesByPatterns(pages, urlPatterns, action === 'update');
     
-    console.log(`Found ${matchingPages.length} matching pages for pattern: ${urlPatterns.join(', ')}`);
+    console.log(`Found ${matchingPages.length} matching pages`);
 
     // Process pages sequentially (queued, not parallel)
     for (let i = 0; i < matchingPages.length; i++) {
@@ -92,7 +555,7 @@ async function handleTranslation(request, env) {
           
           results.success.push({
             slug: page.slug,
-            newSlug: `${targetLanguage}-${page.slug}`,
+            newSlug: `${targetLanguage}/${page.slug}`,
             cost: result.cost || 0,
             fallbackUsed: result.fallbackUsed || false
           });
@@ -181,9 +644,6 @@ async function handleStatus(request, env) {
 }
 
 async function getWebflowPages(apiToken, siteId) {
-  console.log(`Making API call to Webflow for site: ${siteId}`);
-  console.log(`Using token: ${apiToken ? apiToken.substring(0, 10) + '...' : 'Missing'}`);
-  
   const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
     headers: {
       'Authorization': `Bearer ${apiToken}`,
@@ -194,11 +654,10 @@ async function getWebflowPages(apiToken, siteId) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`Webflow API error: ${response.status} - ${errorText}`);
-    throw new Error(`Webflow API error: ${response.status} - ${errorText}`);
+    throw new Error(`Webflow API error: ${response.status}`);
   }
 
   const data = await response.json();
-  console.log(`API response has pages: ${data.pages ? 'yes' : 'no'}, count: ${data.pages?.length || 0}`);
   return data.pages || [];
 }
 
@@ -213,8 +672,8 @@ function filterPagesByPatterns(pages, patterns, isUpdate = false) {
         const regex = new RegExp(pattern.replace(/\*/g, '.*'));
         return regex.test(slug);
       } else {
-        // Exact match only (unless wildcard is used)
-        return slug === pattern;
+        // Exact match or contains pattern
+        return slug === pattern || slug.includes(pattern);
       }
     });
   });
@@ -239,11 +698,11 @@ async function translatePage(page, targetLanguage, env) {
     const { translations, cost } = await translateWithOpenAI(content, targetLanguage, env.OPENAI_API_KEY);
     totalCost += cost || 0;
     
-    // Create new page with language prefix
+    // Create new page with translated slug
     const newPageData = {
       title: translations.title,
       slug: `${targetLanguage}-${page.slug}`,
-      parentId: null  // For now, create in root until folder IDs are configured
+      parentId: page.parentId || env.WEBFLOW_FOLDER_ID || null
     };
     
     console.log(`Creating new page: ${newPageData.slug}`);
@@ -279,7 +738,7 @@ async function translatePage(page, targetLanguage, env) {
       const newPageData = {
         title: `${page.title} (${targetLanguage.toUpperCase()})`,
         slug: `${targetLanguage}-${page.slug}`,
-        parentId: null  // For now, create in root until folder IDs are configured
+        parentId: page.parentId || env.WEBFLOW_FOLDER_ID || null
       };
       
       const fallbackPage = await createWebflowPage(newPageData, env.WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
@@ -385,30 +844,14 @@ function extractTranslatableContent(pageContent) {
     if (!nodes || !Array.isArray(nodes)) return;
     
     for (const node of nodes) {
-      // Extract translatable text - Handle Webflow v2 API structure
-      if (node.text !== undefined && node.text !== null) {
-        let textContent = '';
-        let htmlContent = '';
-        
-        // Webflow v2 API returns text as an object with 'text' and 'html' properties
-        if (typeof node.text === 'object' && node.text.text) {
-          textContent = node.text.text;
-          htmlContent = node.text.html || '';
-        } else if (typeof node.text === 'string') {
-          // Fallback for v1 API or simple string text
-          textContent = node.text;
-          htmlContent = node.text;
-        }
-        
-        if (textContent && textContent.trim()) {
-          content.texts.push({
-            id: node.id || Math.random().toString(36),
-            text: textContent,
-            html: htmlContent,
-            tag: node.tag,
-            attributes: node.attributes || {}
-          });
-        }
+      // Extract translatable text - FIX: Check if node.text exists and is a string
+      if (node.text !== undefined && node.text !== null && typeof node.text === 'string' && node.text.trim()) {
+        content.texts.push({
+          id: node.id || Math.random().toString(36),
+          text: node.text,
+          tag: node.tag,
+          attributes: node.attributes || {}
+        });
       }
       
       // Extract and process links
@@ -431,11 +874,7 @@ function extractTranslatableContent(pageContent) {
     }
   }
 
-  // Handle different possible structures from Webflow API
   if (pageContent.nodes && Array.isArray(pageContent.nodes)) {
-    extractFromNodes(pageContent.nodes);
-  } else if (pageContent.pageId && pageContent.nodes && Array.isArray(pageContent.nodes)) {
-    // Some responses have pageId at root level
     extractFromNodes(pageContent.nodes);
   }
 
@@ -521,9 +960,7 @@ Return the response as JSON with this structure:
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'OpenAI-Organization': 'org-28gTXkK79Dwavp7PrHOIqG1e',
-      'OpenAI-Project': 'proj_wZf0IPqwIEKAtsjFZDoq5KTa'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: 'gpt-4o-mini',
@@ -547,21 +984,11 @@ Return the response as JSON with this structure:
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`OpenAI API error: ${response.status} - ${errorText}`);
-    console.error(`Using API key: ${apiKey ? apiKey.substring(0, 10) + '...' : 'Missing'}`);
-    throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+    throw new Error(`OpenAI API error: ${response.status}`);
   }
 
   const data = await response.json();
-  let messageContent = data.choices[0].message.content;
-  
-  // Handle case where OpenAI returns JSON wrapped in markdown code blocks
-  if (messageContent.includes('```json')) {
-    messageContent = messageContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  } else if (messageContent.includes('```')) {
-    messageContent = messageContent.replace(/```\n?/g, '').trim();
-  }
-  
-  const translatedContent = JSON.parse(messageContent);
+  const translatedContent = JSON.parse(data.choices[0].message.content);
   
   // Calculate cost based on token usage
   const inputTokens = data.usage.prompt_tokens;
@@ -603,22 +1030,9 @@ function applyTranslations(originalContent, translations, links, targetLanguage)
     return nodes.map(node => {
       const updatedNode = { ...node };
       
-      // Update translatable text - Handle Webflow v2 API structure
+      // Update translatable text
       if (updatedNode.text !== undefined && updatedNode.text !== null && textMap[updatedNode.id]) {
-        const translatedText = textMap[updatedNode.id];
-        
-        // Preserve the Webflow v2 API structure
-        if (typeof updatedNode.text === 'object' && updatedNode.text.text) {
-          // Update both text and html properties
-          updatedNode.text = {
-            ...updatedNode.text,
-            text: translatedText,
-            html: translatedText // For now, use same text for HTML (could be enhanced later)
-          };
-        } else {
-          // Fallback for v1 API or simple string
-          updatedNode.text = translatedText;
-        }
+        updatedNode.text = textMap[updatedNode.id];
       }
       
       // Update links for checkout/quiz/internal pages
@@ -654,8 +1068,6 @@ function applyTranslations(originalContent, translations, links, targetLanguage)
 }
 
 async function createWebflowPage(pageData, apiToken, siteId) {
-  console.log(`Attempting to create page with data:`, JSON.stringify(pageData));
-  
   const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
     method: 'POST',
     headers: {
@@ -668,13 +1080,10 @@ async function createWebflowPage(pageData, apiToken, siteId) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`Failed to create page: ${response.status} - ${errorText}`);
-    console.error(`Page data was:`, JSON.stringify(pageData));
-    throw new Error(`Failed to create page: ${response.status} - ${errorText}`);
+    throw new Error(`Failed to create page: ${response.status}`);
   }
 
-  const createdPage = await response.json();
-  console.log(`Successfully created page: ${createdPage.slug} with ID: ${createdPage.id}`);
-  return createdPage;
+  return await response.json();
 }
 
 async function updatePageContent(pageId, content, apiToken) {

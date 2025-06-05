@@ -20,6 +20,6 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.7.0"
   }
 }

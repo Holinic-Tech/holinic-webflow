@@ -63,19 +63,12 @@ async function handleTranslation(request, env) {
 
   try {
     // Get all pages from Webflow
-    console.log(`Fetching pages from Webflow site: ${env.WEBFLOW_SITE_ID}`);
     const pages = await getWebflowPages(WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
-    console.log(`Total pages fetched from Webflow: ${pages.length}`);
-    
-    // Log first few page slugs for debugging
-    if (pages.length > 0) {
-      console.log('Sample page slugs:', pages.slice(0, 5).map(p => p.slug).join(', '));
-    }
     
     // Filter pages based on URL patterns
     const matchingPages = filterPagesByPatterns(pages, urlPatterns, action === 'update');
     
-    console.log(`Found ${matchingPages.length} matching pages for pattern: ${urlPatterns.join(', ')}`);
+    console.log(`Found ${matchingPages.length} matching pages`);
 
     // Process pages sequentially (queued, not parallel)
     for (let i = 0; i < matchingPages.length; i++) {
@@ -92,7 +85,7 @@ async function handleTranslation(request, env) {
           
           results.success.push({
             slug: page.slug,
-            newSlug: `${targetLanguage}-${page.slug}`,
+            newSlug: `${targetLanguage}/${page.slug}`,
             cost: result.cost || 0,
             fallbackUsed: result.fallbackUsed || false
           });
@@ -181,9 +174,6 @@ async function handleStatus(request, env) {
 }
 
 async function getWebflowPages(apiToken, siteId) {
-  console.log(`Making API call to Webflow for site: ${siteId}`);
-  console.log(`Using token: ${apiToken ? apiToken.substring(0, 10) + '...' : 'Missing'}`);
-  
   const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
     headers: {
       'Authorization': `Bearer ${apiToken}`,
@@ -194,11 +184,10 @@ async function getWebflowPages(apiToken, siteId) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`Webflow API error: ${response.status} - ${errorText}`);
-    throw new Error(`Webflow API error: ${response.status} - ${errorText}`);
+    throw new Error(`Webflow API error: ${response.status}`);
   }
 
   const data = await response.json();
-  console.log(`API response has pages: ${data.pages ? 'yes' : 'no'}, count: ${data.pages?.length || 0}`);
   return data.pages || [];
 }
 
@@ -213,8 +202,8 @@ function filterPagesByPatterns(pages, patterns, isUpdate = false) {
         const regex = new RegExp(pattern.replace(/\*/g, '.*'));
         return regex.test(slug);
       } else {
-        // Exact match only (unless wildcard is used)
-        return slug === pattern;
+        // Exact match or contains pattern
+        return slug === pattern || slug.includes(pattern);
       }
     });
   });
@@ -239,11 +228,11 @@ async function translatePage(page, targetLanguage, env) {
     const { translations, cost } = await translateWithOpenAI(content, targetLanguage, env.OPENAI_API_KEY);
     totalCost += cost || 0;
     
-    // Create new page with language prefix
+    // Create new page with translated slug
     const newPageData = {
       title: translations.title,
       slug: `${targetLanguage}-${page.slug}`,
-      parentId: null  // For now, create in root until folder IDs are configured
+      parentId: page.parentId || env.WEBFLOW_FOLDER_ID || null
     };
     
     console.log(`Creating new page: ${newPageData.slug}`);
@@ -279,7 +268,7 @@ async function translatePage(page, targetLanguage, env) {
       const newPageData = {
         title: `${page.title} (${targetLanguage.toUpperCase()})`,
         slug: `${targetLanguage}-${page.slug}`,
-        parentId: null  // For now, create in root until folder IDs are configured
+        parentId: page.parentId || env.WEBFLOW_FOLDER_ID || null
       };
       
       const fallbackPage = await createWebflowPage(newPageData, env.WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
@@ -385,30 +374,14 @@ function extractTranslatableContent(pageContent) {
     if (!nodes || !Array.isArray(nodes)) return;
     
     for (const node of nodes) {
-      // Extract translatable text - Handle Webflow v2 API structure
-      if (node.text !== undefined && node.text !== null) {
-        let textContent = '';
-        let htmlContent = '';
-        
-        // Webflow v2 API returns text as an object with 'text' and 'html' properties
-        if (typeof node.text === 'object' && node.text.text) {
-          textContent = node.text.text;
-          htmlContent = node.text.html || '';
-        } else if (typeof node.text === 'string') {
-          // Fallback for v1 API or simple string text
-          textContent = node.text;
-          htmlContent = node.text;
-        }
-        
-        if (textContent && textContent.trim()) {
-          content.texts.push({
-            id: node.id || Math.random().toString(36),
-            text: textContent,
-            html: htmlContent,
-            tag: node.tag,
-            attributes: node.attributes || {}
-          });
-        }
+      // Extract translatable text - FIX: Check if node.text exists and is a string
+      if (node.text !== undefined && node.text !== null && typeof node.text === 'string' && node.text.trim()) {
+        content.texts.push({
+          id: node.id || Math.random().toString(36),
+          text: node.text,
+          tag: node.tag,
+          attributes: node.attributes || {}
+        });
       }
       
       // Extract and process links
@@ -431,11 +404,7 @@ function extractTranslatableContent(pageContent) {
     }
   }
 
-  // Handle different possible structures from Webflow API
   if (pageContent.nodes && Array.isArray(pageContent.nodes)) {
-    extractFromNodes(pageContent.nodes);
-  } else if (pageContent.pageId && pageContent.nodes && Array.isArray(pageContent.nodes)) {
-    // Some responses have pageId at root level
     extractFromNodes(pageContent.nodes);
   }
 
@@ -521,9 +490,7 @@ Return the response as JSON with this structure:
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'OpenAI-Organization': 'org-28gTXkK79Dwavp7PrHOIqG1e',
-      'OpenAI-Project': 'proj_wZf0IPqwIEKAtsjFZDoq5KTa'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: 'gpt-4o-mini',
@@ -547,21 +514,11 @@ Return the response as JSON with this structure:
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`OpenAI API error: ${response.status} - ${errorText}`);
-    console.error(`Using API key: ${apiKey ? apiKey.substring(0, 10) + '...' : 'Missing'}`);
-    throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+    throw new Error(`OpenAI API error: ${response.status}`);
   }
 
   const data = await response.json();
-  let messageContent = data.choices[0].message.content;
-  
-  // Handle case where OpenAI returns JSON wrapped in markdown code blocks
-  if (messageContent.includes('```json')) {
-    messageContent = messageContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  } else if (messageContent.includes('```')) {
-    messageContent = messageContent.replace(/```\n?/g, '').trim();
-  }
-  
-  const translatedContent = JSON.parse(messageContent);
+  const translatedContent = JSON.parse(data.choices[0].message.content);
   
   // Calculate cost based on token usage
   const inputTokens = data.usage.prompt_tokens;
@@ -603,22 +560,9 @@ function applyTranslations(originalContent, translations, links, targetLanguage)
     return nodes.map(node => {
       const updatedNode = { ...node };
       
-      // Update translatable text - Handle Webflow v2 API structure
+      // Update translatable text
       if (updatedNode.text !== undefined && updatedNode.text !== null && textMap[updatedNode.id]) {
-        const translatedText = textMap[updatedNode.id];
-        
-        // Preserve the Webflow v2 API structure
-        if (typeof updatedNode.text === 'object' && updatedNode.text.text) {
-          // Update both text and html properties
-          updatedNode.text = {
-            ...updatedNode.text,
-            text: translatedText,
-            html: translatedText // For now, use same text for HTML (could be enhanced later)
-          };
-        } else {
-          // Fallback for v1 API or simple string
-          updatedNode.text = translatedText;
-        }
+        updatedNode.text = textMap[updatedNode.id];
       }
       
       // Update links for checkout/quiz/internal pages
@@ -654,8 +598,6 @@ function applyTranslations(originalContent, translations, links, targetLanguage)
 }
 
 async function createWebflowPage(pageData, apiToken, siteId) {
-  console.log(`Attempting to create page with data:`, JSON.stringify(pageData));
-  
   const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
     method: 'POST',
     headers: {
@@ -668,13 +610,10 @@ async function createWebflowPage(pageData, apiToken, siteId) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`Failed to create page: ${response.status} - ${errorText}`);
-    console.error(`Page data was:`, JSON.stringify(pageData));
-    throw new Error(`Failed to create page: ${response.status} - ${errorText}`);
+    throw new Error(`Failed to create page: ${response.status}`);
   }
 
-  const createdPage = await response.json();
-  console.log(`Successfully created page: ${createdPage.slug} with ID: ${createdPage.id}`);
-  return createdPage;
+  return await response.json();
 }
 
 async function updatePageContent(pageId, content, apiToken) {

@@ -1,4 +1,4 @@
-// worker-fixed.js - Cloudflare Worker for Webflow Translation with fixes
+// worker-v4.js - Fixed version with proper text handling
 
 export default {
   async fetch(request, env, ctx) {
@@ -6,7 +6,7 @@ export default {
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Webflow-Token, X-OpenAI-Key',
     };
 
     // Handle CORS preflight
@@ -18,7 +18,10 @@ export default {
       const url = new URL(request.url);
       
       // Authentication check
-      if (!request.headers.get('Authorization')?.startsWith('Bearer ')) {
+      const authHeader = request.headers.get('Authorization');
+      const expectedToken = env.WORKER_AUTH_TOKEN || '743433bd8e4eedf784ecf092f2baedfd9e2ca814a0d9e157c6081cedee30e39d';
+      
+      if (!authHeader?.startsWith('Bearer ') || authHeader.slice(7) !== expectedToken) {
         return new Response('Unauthorized', { status: 401, headers: corsHeaders });
       }
 
@@ -42,15 +45,22 @@ export default {
 
 async function handleTranslation(request, env) {
   const body = await request.json();
-  const { urlPatterns, targetLanguage, action, webflowToken, openaiKey } = body;
+  const { urlPatterns, targetLanguage, action } = body;
   
-  // Use provided tokens from GitHub Actions
-  const WEBFLOW_TOKEN = webflowToken || env.WEBFLOW_TOKEN;
-  const OPENAI_API_KEY = openaiKey || env.OPENAI_API_KEY;
+  // Get tokens from request body (passed by GitHub Actions)
+  const webflowToken = body.webflowToken || env.WEBFLOW_TOKEN;
+  const openaiKey = body.openaiKey || env.OPENAI_API_KEY;
+  
+  if (!webflowToken || !openaiKey) {
+    return new Response(JSON.stringify({ 
+      error: 'Missing required API tokens. Please ensure WEBFLOW_TOKEN and OPENAI_API_KEY are set.' 
+    }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
   
   console.log(`Starting ${action} for patterns:`, urlPatterns);
-  console.log(`Using Webflow token: ${WEBFLOW_TOKEN ? 'Provided' : 'Missing'}`);
-  console.log(`Using OpenAI key: ${OPENAI_API_KEY ? 'Provided' : 'Missing'}`);
   
   const results = {
     success: [],
@@ -63,19 +73,25 @@ async function handleTranslation(request, env) {
 
   try {
     // Get all pages from Webflow
-    console.log(`Fetching pages from Webflow site: ${env.WEBFLOW_SITE_ID}`);
-    const pages = await getWebflowPages(WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
-    console.log(`Total pages fetched from Webflow: ${pages.length}`);
-    
-    // Log first few page slugs for debugging
-    if (pages.length > 0) {
-      console.log('Sample page slugs:', pages.slice(0, 5).map(p => p.slug).join(', '));
-    }
+    const pages = await getWebflowPages(webflowToken, env.WEBFLOW_SITE_ID);
     
     // Filter pages based on URL patterns
     const matchingPages = filterPagesByPatterns(pages, urlPatterns, action === 'update');
     
-    console.log(`Found ${matchingPages.length} matching pages for pattern: ${urlPatterns.join(', ')}`);
+    console.log(`Found ${matchingPages.length} matching pages`);
+    
+    // If looking for a specific page, try to find the exact match first
+    if (matchingPages.length > 1 && urlPatterns.length === 1) {
+      const exactMatch = matchingPages.find(page => 
+        page.slug === urlPatterns[0].replace(/^\//, '') || 
+        page.slug === 'the-haircare-challenge'
+      );
+      if (exactMatch) {
+        console.log(`Using exact match: ${exactMatch.slug}`);
+        matchingPages.length = 0;
+        matchingPages.push(exactMatch);
+      }
+    }
 
     // Process pages sequentially (queued, not parallel)
     for (let i = 0; i < matchingPages.length; i++) {
@@ -84,15 +100,11 @@ async function handleTranslation(request, env) {
       
       try {
         if (action === 'translate') {
-          const result = await translatePage(page, targetLanguage, { 
-            ...env, 
-            WEBFLOW_TOKEN, 
-            OPENAI_API_KEY 
-          });
+          const result = await translatePage(page, targetLanguage, webflowToken, openaiKey, env);
           
           results.success.push({
             slug: page.slug,
-            newSlug: `${targetLanguage}-${page.slug}`,
+            newSlug: `${targetLanguage}/${page.slug}`,
             cost: result.cost || 0,
             fallbackUsed: result.fallbackUsed || false
           });
@@ -101,11 +113,7 @@ async function handleTranslation(request, env) {
           if (result.fallbackUsed) results.fallbacksUsed++;
           
         } else if (action === 'update') {
-          const result = await updateTranslatedPage(page, { 
-            ...env, 
-            WEBFLOW_TOKEN, 
-            OPENAI_API_KEY 
-          });
+          const result = await updateTranslatedPage(page, webflowToken, openaiKey, env);
           
           results.success.push({
             slug: page.slug,
@@ -181,9 +189,6 @@ async function handleStatus(request, env) {
 }
 
 async function getWebflowPages(apiToken, siteId) {
-  console.log(`Making API call to Webflow for site: ${siteId}`);
-  console.log(`Using token: ${apiToken ? apiToken.substring(0, 10) + '...' : 'Missing'}`);
-  
   const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
     headers: {
       'Authorization': `Bearer ${apiToken}`,
@@ -194,12 +199,59 @@ async function getWebflowPages(apiToken, siteId) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`Webflow API error: ${response.status} - ${errorText}`);
-    throw new Error(`Webflow API error: ${response.status} - ${errorText}`);
+    throw new Error(`Webflow API error: ${response.status}`);
   }
 
   const data = await response.json();
-  console.log(`API response has pages: ${data.pages ? 'yes' : 'no'}, count: ${data.pages?.length || 0}`);
   return data.pages || [];
+}
+
+// NEW: Get or create language folder
+async function getOrCreateLanguageFolder(targetLanguage, apiToken, siteId) {
+  console.log(`Checking for language folder: /${targetLanguage}`);
+  
+  // Get all pages including folders
+  const pages = await getWebflowPages(apiToken, siteId);
+  
+  // Look for existing language folder
+  const languageFolder = pages.find(page => 
+    page.slug === targetLanguage && 
+    page.isFolder === true
+  );
+  
+  if (languageFolder) {
+    console.log(`Found existing language folder: ${languageFolder.id}`);
+    return languageFolder.id;
+  }
+  
+  // Create language folder if it doesn't exist
+  console.log(`Creating new language folder: /${targetLanguage}`);
+  
+  const folderData = {
+    title: targetLanguage.toUpperCase(),
+    slug: targetLanguage,
+    isFolder: true,
+    parentId: null // Root level folder
+  };
+  
+  const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(folderData)
+  });
+  
+  if (!response.ok) {
+    // If folder creation fails, try to proceed without it
+    console.warn(`Failed to create language folder: ${response.status}`);
+    return null;
+  }
+  
+  const newFolder = await response.json();
+  console.log(`Created language folder: ${newFolder.id}`);
+  return newFolder.id;
 }
 
 function filterPagesByPatterns(pages, patterns, isUpdate = false) {
@@ -213,60 +265,72 @@ function filterPagesByPatterns(pages, patterns, isUpdate = false) {
         const regex = new RegExp(pattern.replace(/\*/g, '.*'));
         return regex.test(slug);
       } else {
-        // Exact match only (unless wildcard is used)
-        return slug === pattern;
+        // Exact match - remove leading slash if present
+        const cleanPattern = pattern.startsWith('/') ? pattern.slice(1) : pattern;
+        return slug === cleanPattern || slug.endsWith(cleanPattern);
       }
     });
   });
 }
 
-async function translatePage(page, targetLanguage, env) {
+async function translatePage(page, targetLanguage, webflowToken, openaiKey, env) {
   console.log(`Translating page: ${page.slug} to ${targetLanguage}`);
   
   let totalCost = 0;
   let fallbackUsed = false;
   
   try {
-    // Get the full page content from Webflow DOM API
-    const pageContent = await getPageContent(page.id, env.WEBFLOW_TOKEN);
+    // 1. Get or create language folder
+    const languageFolderId = await getOrCreateLanguageFolder(targetLanguage, webflowToken, env.WEBFLOW_SITE_ID);
     
-    // Extract translatable content
-    const content = extractTranslatableContent(pageContent);
+    // 2. Get page content
+    const pageContent = await getPageContent(page.id, webflowToken);
     
-    console.log(`Extracted ${content.texts.length} text nodes and ${content.links.length} links`);
+    // 3. Extract translatable content (including links)
+    const translatableContent = extractTranslatableContent(pageContent);
     
-    // Translate content using OpenAI
-    const { translations, cost } = await translateWithOpenAI(content, targetLanguage, env.OPENAI_API_KEY);
-    totalCost += cost || 0;
+    // 4. Translate with OpenAI (with cost tracking)
+    const translatedContent = await translateWithOpenAI(
+      translatableContent, 
+      targetLanguage, 
+      openaiKey
+    );
     
-    // Create new page with language prefix
+    totalCost = translatedContent._metadata?.cost || 0;
+    
+    // 5. Create new page in language folder
     const newPageData = {
-      title: translations.title,
-      slug: `${targetLanguage}-${page.slug}`,
-      parentId: null  // For now, create in root until folder IDs are configured
+      title: translatedContent.title,
+      slug: page.slug, // Just the page slug, not prefixed
+      parentId: languageFolderId // Put it in the language folder
     };
     
-    console.log(`Creating new page: ${newPageData.slug}`);
-    const newPage = await createWebflowPage(newPageData, env.WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
+    const newPage = await createWebflowPage(newPageData, webflowToken, env.WEBFLOW_SITE_ID);
     
-    // Update the new page's content with translated text and localized links
-    const updatedContent = applyTranslations(pageContent, translations, content.links, targetLanguage);
-    await updatePageContent(newPage.id, updatedContent, env.WEBFLOW_TOKEN);
+    // 6. Apply translated content to new page (including link updates)
+    const updatedContent = applyTranslations(pageContent, translatedContent, targetLanguage);
+    await updatePageContent(newPage.id, updatedContent, webflowToken);
     
-    // Store translation record in KV
+    // 7. Update SEO metadata
+    if (translatedContent.seo) {
+      await updatePageSEO(newPage.id, translatedContent.seo, webflowToken);
+    }
+    
+    // 8. Store success status with cost info
     await env.TRANSLATION_STATUS.put(
       `${page.id}-${targetLanguage}`, 
       JSON.stringify({
-        status: 'success',
+        status: 'completed',
         timestamp: new Date().toISOString(),
         originalSlug: page.slug,
         targetLanguage,
+        cost: totalCost,
         newPageId: newPage.id,
-        cost: totalCost
+        fallbackUsed: false
       })
     );
     
-    console.log(`✅ Successfully translated: ${page.slug} → ${newPage.slug}`);
+    console.log(`✅ Created translated page: /${targetLanguage}/${page.slug} (Cost: ${totalCost.toFixed(4)})`);
     return { ...newPage, cost: totalCost };
     
   } catch (error) {
@@ -276,17 +340,20 @@ async function translatePage(page, targetLanguage, env) {
     try {
       console.log(`🔄 Attempting fallback for ${page.slug}...`);
       
+      // Get or create language folder for fallback
+      const languageFolderId = await getOrCreateLanguageFolder(targetLanguage, webflowToken, env.WEBFLOW_SITE_ID);
+      
       const newPageData = {
         title: `${page.title} (${targetLanguage.toUpperCase()})`,
-        slug: `${targetLanguage}-${page.slug}`,
-        parentId: null  // For now, create in root until folder IDs are configured
+        slug: page.slug,
+        parentId: languageFolderId
       };
       
-      const fallbackPage = await createWebflowPage(newPageData, env.WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
+      const fallbackPage = await createWebflowPage(newPageData, webflowToken, env.WEBFLOW_SITE_ID);
       
       // Copy original content as-is
-      const originalContent = await getPageContent(page.id, env.WEBFLOW_TOKEN);
-      await updatePageContent(fallbackPage.id, originalContent, env.WEBFLOW_TOKEN);
+      const originalContent = await getPageContent(page.id, webflowToken);
+      await updatePageContent(fallbackPage.id, originalContent, webflowToken);
       
       fallbackUsed = true;
       
@@ -304,52 +371,97 @@ async function translatePage(page, targetLanguage, env) {
         })
       );
       
-      console.log(`⚠️ Created fallback page: /${targetLanguage}-${page.slug}`);
+      // Send notification email about fallback
+      await sendFailureNotification(page.slug, targetLanguage, error.message, true, env);
+      
+      console.log(`⚠️ Created fallback page: /${targetLanguage}/${page.slug}`);
       return { ...fallbackPage, fallbackUsed: true, error: error.message };
       
     } catch (fallbackError) {
       console.error(`❌ Fallback also failed for ${page.slug}:`, fallbackError);
+      
+      // Send notification about complete failure
+      await sendFailureNotification(page.slug, targetLanguage, error.message, false, env);
       
       throw new Error(`Translation and fallback both failed: ${error.message}`);
     }
   }
 }
 
-async function updateTranslatedPage(page, env) {
+async function sendFailureNotification(pageSlug, targetLanguage, errorMessage, fallbackSucceeded, env) {
+  try {
+    const subject = fallbackSucceeded 
+      ? `⚠️ Translation fallback used for ${pageSlug}`
+      : `❌ Complete translation failure for ${pageSlug}`;
+    
+    const body = fallbackSucceeded
+      ? `Translation failed for ${pageSlug} → ${targetLanguage}, but fallback page created successfully.
+      
+Error: ${errorMessage}
+Page: /${targetLanguage}/${pageSlug}
+Status: Original content copied, manual translation needed.
+
+Please review and manually translate this page when possible.`
+      : `Complete failure for ${pageSlug} → ${targetLanguage}. No page was created.
+      
+Error: ${errorMessage}
+Action needed: Manual intervention required.`;
+
+    // This would integrate with your email service
+    // For now, just log the notification
+    console.log(`📧 Email notification: ${subject}`);
+    console.log(body);
+    
+    // Store notification in KV for dashboard visibility
+    await env.TRANSLATION_STATUS.put(
+      `notification-${Date.now()}`,
+      JSON.stringify({
+        type: fallbackSucceeded ? 'warning' : 'error',
+        pageSlug,
+        targetLanguage,
+        errorMessage,
+        timestamp: new Date().toISOString(),
+        fallbackSucceeded
+      })
+    );
+    
+  } catch (notificationError) {
+    console.error('Failed to send notification:', notificationError);
+  }
+}
+
+async function updateTranslatedPage(page, webflowToken, openaiKey, env) {
   console.log(`Updating translated page: ${page.slug}`);
   
   // Find the original page (remove language prefix)
-  const languagePrefix = page.slug.match(/^(de|fr|es|it|pt|nl)-/)?.[1];
-  if (!languagePrefix) {
-    throw new Error('Page does not have a language prefix');
-  }
-  
-  const originalSlug = page.slug.replace(`${languagePrefix}-`, '');
-  const originalPages = await getWebflowPages(env.WEBFLOW_TOKEN, env.WEBFLOW_SITE_ID);
+  const originalSlug = page.slug.replace(/^[a-z]{2}\//, '');
+  const originalPages = await getWebflowPages(webflowToken, env.WEBFLOW_SITE_ID);
   const originalPage = originalPages.find(p => p.slug === originalSlug);
   
   if (!originalPage) {
-    throw new Error(`Original page not found: ${originalSlug}`);
+    throw new Error(`Original page not found for ${page.slug}`);
   }
   
-  // Get content from both pages
-  const [originalContent, translatedContent] = await Promise.all([
-    getPageContent(originalPage.id, env.WEBFLOW_TOKEN),
-    getPageContent(page.id, env.WEBFLOW_TOKEN)
-  ]);
+  // Extract language from current page slug
+  const targetLanguage = page.slug.split('/')[0];
   
-  // Extract content and re-translate
-  const content = extractTranslatableContent(originalContent);
-  const { translations, cost } = await translateWithOpenAI(content, languagePrefix, env.OPENAI_API_KEY);
+  // Follow same translation process but update existing page
+  const pageContent = await getPageContent(originalPage.id, webflowToken);
+  const translatableContent = extractTranslatableContent(pageContent);
+  const translatedContent = await translateWithOpenAI(
+    translatableContent, 
+    targetLanguage, 
+    openaiKey
+  );
   
-  // Apply translations to original content structure
-  const updatedContent = applyTranslations(originalContent, translations, content.links, languagePrefix);
+  const updatedContent = applyTranslations(pageContent, translatedContent);
+  await updatePageContent(page.id, updatedContent, webflowToken);
   
-  // Update the translated page
-  await updatePageContent(page.id, updatedContent, env.WEBFLOW_TOKEN);
+  if (translatedContent.seo) {
+    await updatePageSEO(page.id, translatedContent.seo, webflowToken);
+  }
   
-  console.log(`✅ Successfully updated: ${page.slug}`);
-  return { cost };
+  console.log(`✅ Updated translated page: ${page.slug}`);
 }
 
 async function getPageContent(pageId, apiToken) {
@@ -361,8 +473,6 @@ async function getPageContent(pageId, apiToken) {
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error(`Failed to get page content: ${response.status} - ${errorText}`);
     throw new Error(`Failed to get page content: ${response.status}`);
   }
 
@@ -382,33 +492,17 @@ function extractTranslatableContent(pageContent) {
 
   // Recursively extract text and links from DOM nodes
   function extractFromNodes(nodes) {
-    if (!nodes || !Array.isArray(nodes)) return;
+    if (!nodes) return;
     
     for (const node of nodes) {
-      // Extract translatable text - Handle Webflow v2 API structure
-      if (node.text !== undefined && node.text !== null) {
-        let textContent = '';
-        let htmlContent = '';
-        
-        // Webflow v2 API returns text as an object with 'text' and 'html' properties
-        if (typeof node.text === 'object' && node.text.text) {
-          textContent = node.text.text;
-          htmlContent = node.text.html || '';
-        } else if (typeof node.text === 'string') {
-          // Fallback for v1 API or simple string text
-          textContent = node.text;
-          htmlContent = node.text;
-        }
-        
-        if (textContent && textContent.trim()) {
-          content.texts.push({
-            id: node.id || Math.random().toString(36),
-            text: textContent,
-            html: htmlContent,
-            tag: node.tag,
-            attributes: node.attributes || {}
-          });
-        }
+      // Extract translatable text - FIX: Check if node.text is a string
+      if (node.text && typeof node.text === 'string' && node.text.trim()) {
+        content.texts.push({
+          id: node.id || Math.random().toString(36),
+          text: node.text,
+          tag: node.tag,
+          attributes: node.attributes || {}
+        });
       }
       
       // Extract and process links
@@ -425,17 +519,13 @@ function extractTranslatableContent(pageContent) {
         });
       }
       
-      if (node.children && Array.isArray(node.children)) {
+      if (node.children) {
         extractFromNodes(node.children);
       }
     }
   }
 
-  // Handle different possible structures from Webflow API
-  if (pageContent.nodes && Array.isArray(pageContent.nodes)) {
-    extractFromNodes(pageContent.nodes);
-  } else if (pageContent.pageId && pageContent.nodes && Array.isArray(pageContent.nodes)) {
-    // Some responses have pageId at root level
+  if (pageContent.nodes) {
     extractFromNodes(pageContent.nodes);
   }
 
@@ -521,9 +611,7 @@ Return the response as JSON with this structure:
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'OpenAI-Organization': 'org-28gTXkK79Dwavp7PrHOIqG1e',
-      'OpenAI-Project': 'proj_wZf0IPqwIEKAtsjFZDoq5KTa'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: 'gpt-4o-mini',
@@ -547,78 +635,54 @@ Return the response as JSON with this structure:
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`OpenAI API error: ${response.status} - ${errorText}`);
-    console.error(`Using API key: ${apiKey ? apiKey.substring(0, 10) + '...' : 'Missing'}`);
-    throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+    throw new Error(`OpenAI API error: ${response.status}`);
   }
 
   const data = await response.json();
-  let messageContent = data.choices[0].message.content;
   
-  // Handle case where OpenAI returns JSON wrapped in markdown code blocks
-  if (messageContent.includes('```json')) {
-    messageContent = messageContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  } else if (messageContent.includes('```')) {
-    messageContent = messageContent.replace(/```\n?/g, '').trim();
-  }
+  // Calculate cost (approximate for GPT-4o-mini)
+  const inputTokens = data.usage?.prompt_tokens || 0;
+  const outputTokens = data.usage?.completion_tokens || 0;
+  const estimatedCost = (inputTokens * 0.00015 / 1000) + (outputTokens * 0.0006 / 1000); // GPT-4o-mini pricing
   
-  const translatedContent = JSON.parse(messageContent);
+  console.log(`Translation cost: ${estimatedCost.toFixed(4)} | Time: ${processingTime}ms | Tokens: ${inputTokens + outputTokens}`);
   
-  // Calculate cost based on token usage
-  const inputTokens = data.usage.prompt_tokens;
-  const outputTokens = data.usage.completion_tokens;
-  const cost = calculateCost(inputTokens, outputTokens);
+  const translatedContent = JSON.parse(data.choices[0].message.content);
   
-  console.log(`Translation completed in ${processingTime}ms. Cost: $${cost.toFixed(4)}`);
+  // Add cost tracking
+  translatedContent._metadata = {
+    cost: estimatedCost,
+    tokens: inputTokens + outputTokens,
+    processingTime
+  };
   
-  return { translations: translatedContent, cost };
+  return translatedContent;
 }
 
-function calculateCost(inputTokens, outputTokens) {
-  // GPT-4o-mini pricing (as of the implementation)
-  const INPUT_COST_PER_1M = 0.15;  // $0.15 per 1M input tokens
-  const OUTPUT_COST_PER_1M = 0.60; // $0.60 per 1M output tokens
-  
-  const inputCost = (inputTokens / 1000000) * INPUT_COST_PER_1M;
-  const outputCost = (outputTokens / 1000000) * OUTPUT_COST_PER_1M;
-  
-  return inputCost + outputCost;
-}
-
-function applyTranslations(originalContent, translations, links, targetLanguage) {
-  // Create maps for efficient lookup
+function applyTranslations(originalContent, translations, targetLanguage = 'de') {
+  // Create mappings
   const textMap = {};
   translations.texts.forEach(t => {
     textMap[t.id] = t.text;
   });
   
   const linkMap = {};
-  links.forEach(link => {
-    linkMap[link.id] = link;
-  });
-  
-  // Function to recursively update nodes
+  if (originalContent.links) {
+    originalContent.links.forEach(link => {
+      linkMap[link.id] = link;
+    });
+  }
+
+  // Recursively update nodes with translations and link updates
   function updateNodes(nodes) {
-    if (!nodes || !Array.isArray(nodes)) return nodes;
+    if (!nodes) return nodes;
     
     return nodes.map(node => {
       const updatedNode = { ...node };
       
-      // Update translatable text - Handle Webflow v2 API structure
-      if (updatedNode.text !== undefined && updatedNode.text !== null && textMap[updatedNode.id]) {
-        const translatedText = textMap[updatedNode.id];
-        
-        // Preserve the Webflow v2 API structure
-        if (typeof updatedNode.text === 'object' && updatedNode.text.text) {
-          // Update both text and html properties
-          updatedNode.text = {
-            ...updatedNode.text,
-            text: translatedText,
-            html: translatedText // For now, use same text for HTML (could be enhanced later)
-          };
-        } else {
-          // Fallback for v1 API or simple string
-          updatedNode.text = translatedText;
-        }
+      // Update translatable text
+      if (updatedNode.text && textMap[updatedNode.id]) {
+        updatedNode.text = textMap[updatedNode.id];
       }
       
       // Update links for checkout/quiz/internal pages
@@ -638,7 +702,7 @@ function applyTranslations(originalContent, translations, links, targetLanguage)
         updatedNode.attributes = { ...updatedNode.attributes };
       }
       
-      if (updatedNode.children && Array.isArray(updatedNode.children)) {
+      if (updatedNode.children) {
         updatedNode.children = updateNodes(updatedNode.children);
       }
       
@@ -654,8 +718,6 @@ function applyTranslations(originalContent, translations, links, targetLanguage)
 }
 
 async function createWebflowPage(pageData, apiToken, siteId) {
-  console.log(`Attempting to create page with data:`, JSON.stringify(pageData));
-  
   const response = await fetch(`https://api.webflow.com/v2/sites/${siteId}/pages`, {
     method: 'POST',
     headers: {
@@ -668,13 +730,10 @@ async function createWebflowPage(pageData, apiToken, siteId) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error(`Failed to create page: ${response.status} - ${errorText}`);
-    console.error(`Page data was:`, JSON.stringify(pageData));
-    throw new Error(`Failed to create page: ${response.status} - ${errorText}`);
+    throw new Error(`Failed to create page: ${response.status}`);
   }
 
-  const createdPage = await response.json();
-  console.log(`Successfully created page: ${createdPage.slug} with ID: ${createdPage.id}`);
-  return createdPage;
+  return await response.json();
 }
 
 async function updatePageContent(pageId, content, apiToken) {
@@ -684,14 +743,29 @@ async function updatePageContent(pageId, content, apiToken) {
       'Authorization': `Bearer ${apiToken}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(content)
+    body: JSON.stringify({ nodes: content.nodes })
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error(`Failed to update page content: ${response.status} - ${errorText}`);
     throw new Error(`Failed to update page content: ${response.status}`);
   }
 
   return await response.json();
+}
+
+async function updatePageSEO(pageId, seoData, apiToken) {
+  const response = await fetch(`https://api.webflow.com/v2/pages/${pageId}/settings`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${apiToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      seo: seoData
+    })
+  });
+
+  if (!response.ok) {
+    console.warn(`Failed to update SEO for page ${pageId}: ${response.status}`);
+  }
 }

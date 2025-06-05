@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webflow Translation Debug Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .success {
+            color: #155724;
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-size: 14px;
+        }
+        .loading {
+            display: none;
+            color: #666;
+            margin-top: 20px;
+        }
+        .section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .stat-box h4 {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .stat-box .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .non-string-items {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Webflow Translation Debug Test</h1>
+        
+        <p>This tool helps debug the Webflow DOM API to understand why translations are failing.</p>
+        
+        <div class="form-group">
+            <label for="webflowToken">Webflow API Token:</label>
+            <input type="password" id="webflowToken" placeholder="Enter your Webflow API token">
+        </div>
+        
+        <div class="form-group">
+            <label for="pageSlug">Page Slug to Test:</label>
+            <input type="text" id="pageSlug" value="the-haircare-challenge" placeholder="e.g., the-haircare-challenge">
+        </div>
+        
+        <div class="form-group">
+            <label for="openaiKey">OpenAI API Key (for translation test):</label>
+            <input type="password" id="openaiKey" placeholder="Enter your OpenAI API key (optional for debug test)">
+        </div>
+        
+        <button onclick="runDebugTest()" id="testBtn">🧪 Run Debug Test</button>
+        <button onclick="runTranslationTest()" id="translateBtn">🌐 Test Translation</button>
+        
+        <div class="loading" id="loading">
+            ⏳ Running test... This may take a moment...
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function runDebugTest() {
+            const token = document.getElementById('webflowToken').value;
+            const pageSlug = document.getElementById('pageSlug').value;
+            const resultsDiv = document.getElementById('results');
+            const loading = document.getElementById('loading');
+            const testBtn = document.getElementById('testBtn');
+            
+            if (!token) {
+                alert('Please enter your Webflow API token');
+                return;
+            }
+            
+            loading.style.display = 'block';
+            testBtn.disabled = true;
+            resultsDiv.innerHTML = '';
+            
+            try {
+                const response = await fetch(`https://webflow-translation-debug.dndgroup.workers.dev/debug/${pageSlug}?token=${token}&siteId=62cbaa353a301eb715aa33d0`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Request failed');
+                }
+                
+                console.log('Debug response:', data);
+                displayDebugResults(data);
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="results error">
+                    <h3>❌ Error</h3>
+                    <pre>${error.message}</pre>
+                    ${error.stack ? `<pre>${error.stack}</pre>` : ''}
+                </div>`;
+            } finally {
+                loading.style.display = 'none';
+                testBtn.disabled = false;
+            }
+        }
+        
+        function displayDebugResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            // Handle case where data might be an error or unexpected format
+            if (!data || typeof data !== 'object') {
+                resultsDiv.innerHTML = `<div class="results error">
+                    <h3>❌ Unexpected Response Format</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>`;
+                return;
+            }
+            
+            let html = '<div class="results success"><h3>✅ Debug Results</h3>';
+            
+            // Page Info
+            if (data.pageInfo) {
+                html += `<div class="section">
+                    <h3>📄 Page Information</h3>
+                    <pre>${JSON.stringify(data.pageInfo, null, 2)}</pre>
+                </div>`;
+            }
+            
+            // Text Node Analysis
+            if (data.textNodeAnalysis) {
+                const analysis = data.textNodeAnalysis;
+                html += `<div class="section">
+                    <h3>📝 Text Node Analysis</h3>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <h4>Total Text Nodes</h4>
+                            <div class="value">${analysis.totalTextNodes || 0}</div>
+                        </div>
+                        <div class="stat-box">
+                            <h4>String Nodes</h4>
+                            <div class="value">${analysis.stringTextNodes || 0}</div>
+                        </div>
+                        <div class="stat-box">
+                            <h4>Non-String Nodes</h4>
+                            <div class="value">${analysis.nonStringTextNodes || 0}</div>
+                        </div>
+                    </div>`;
+                
+                if (analysis.nonStringDetails && analysis.nonStringDetails.length > 0) {
+                    html += `<div class="non-string-items">
+                        <h4>⚠️ Non-String Text Nodes Found:</h4>
+                        <pre>${JSON.stringify(analysis.nonStringDetails, null, 2)}</pre>
+                    </div>`;
+                }
+                
+                html += '</div>';
+            }
+            
+            // DOM Structure
+            if (data.domStructure) {
+                html += `<div class="section">
+                    <h3>🏗️ DOM Structure</h3>
+                    <p>Total nodes: ${data.domStructure.totalNodes || 0}</p>
+                    <p>Sample nodes (first 10):</p>
+                    <pre>${JSON.stringify(data.domStructure.sampleNodes || [], null, 2)}</pre>
+                </div>`;
+            }
+            
+            // Extracted Content
+            if (data.extractedContent) {
+                const texts = data.extractedContent.texts || [];
+                const links = data.extractedContent.links || [];
+                html += `<div class="section">
+                    <h3>📤 Extracted Content</h3>
+                    <p>Texts extracted: ${texts.length}</p>
+                    <p>Links extracted: ${links.length}</p>
+                    <details>
+                        <summary>View sample texts (first 5)</summary>
+                        <pre>${JSON.stringify(texts.slice(0, 5), null, 2)}</pre>
+                    </details>
+                    <details>
+                        <summary>View sample links (first 5)</summary>
+                        <pre>${JSON.stringify(links.slice(0, 5), null, 2)}</pre>
+                    </details>
+                </div>`;
+            }
+            
+            // Error info if present
+            if (data.error) {
+                html += `<div class="section">
+                    <h3>⚠️ Error Information</h3>
+                    <pre>${JSON.stringify({error: data.error, details: data.details || null}, null, 2)}</pre>
+                </div>`;
+            }
+            
+            // Full Response
+            html += `<div class="section">
+                <h3>🔍 Full Response</h3>
+                <details>
+                    <summary>Click to view complete response</summary>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </details>
+            </div>`;
+            
+            html += '</div>';
+            resultsDiv.innerHTML = html;
+        }
+        
+        async function runTranslationTest() {
+            const token = document.getElementById('webflowToken').value;
+            const pageSlug = document.getElementById('pageSlug').value;
+            const resultsDiv = document.getElementById('results');
+            const loading = document.getElementById('loading');
+            const translateBtn = document.getElementById('translateBtn');
+            
+            if (!token) {
+                alert('Please enter your Webflow API token');
+                return;
+            }
+            
+            loading.style.display = 'block';
+            translateBtn.disabled = true;
+            resultsDiv.innerHTML = '';
+            
+            try {
+                const response = await fetch('https://holinic-webflow-translation-worker.dndgroup.workers.dev/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer test-token'
+                    },
+                    body: JSON.stringify({
+                        urlPatterns: [pageSlug],
+                        targetLanguage: 'de',
+                        action: 'translate',
+                        webflowToken: token,
+                        openaiKey: document.getElementById('openaiKey').value || 'test-key'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                resultsDiv.innerHTML = `<div class="results ${response.ok ? 'success' : 'error'}">
+                    <h3>${response.ok ? '✅ Translation Test Results' : '❌ Translation Failed'}</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>`;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="results error">
+                    <h3>❌ Error</h3>
+                    <pre>${error.message}</pre>
+                </div>`;
+            } finally {
+                loading.style.display = 'none';
+                translateBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
