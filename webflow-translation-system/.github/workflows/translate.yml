@@ -1,0 +1,165 @@
+name: Webflow Translation
+
+on:
+  workflow_dispatch:
+    inputs:
+      url_patterns:
+        description: 'URL patterns to translate (one per line)'
+        required: true
+        type: string
+      target_language:
+        description: 'Target language code'
+        required: true
+        default: 'de'
+        type: choice
+        options:
+          - de
+          - fr
+          - es
+          - it
+          - pt
+          - nl
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'translate'
+        type: choice
+        options:
+          - translate
+          - update
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install node-fetch@2
+      
+      - name: Trigger Cloudflare Worker
+        env:
+          CLOUDFLARE_WORKER_URL: ${{ secrets.CLOUDFLARE_WORKER_URL }}
+          WORKER_AUTH_TOKEN: ${{ secrets.WORKER_AUTH_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          WEBFLOW_TOKEN: ${{ secrets.WEBFLOW_TOKEN }}
+        run: |
+          node -e "
+          const fetch = require('node-fetch');
+          
+          async function triggerTranslation() {
+            try {
+              console.log('🚀 Starting translation process...');
+              
+              const payload = {
+                urlPatterns: \`${{ github.event.inputs.url_patterns }}\`.split('\n').filter(p => p.trim()),
+                targetLanguage: '${{ github.event.inputs.target_language }}',
+                action: '${{ github.event.inputs.action }}'
+              };
+              
+              console.log('Payload:', JSON.stringify(payload, null, 2));
+              
+              const response = await fetch(\`\${process.env.CLOUDFLARE_WORKER_URL}/translate\`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': \`Bearer \${process.env.WORKER_AUTH_TOKEN}\`
+                },
+                body: JSON.stringify(payload)
+              });
+              
+              const result = await response.json();
+              
+              if (response.ok) {
+                console.log('✅ Translation request successful');
+                console.log('Results:', JSON.stringify(result, null, 2));
+                
+                // Set output for potential email notification
+                process.env.TRANSLATION_RESULT = JSON.stringify(result);
+              } else {
+                console.error('❌ Translation request failed');
+                console.error('Error:', result);
+                process.exit(1);
+              }
+            } catch (error) {
+              console.error('❌ Error triggering translation:', error);
+              process.exit(1);
+            }
+          }
+          
+          triggerTranslation();
+          "
+      
+      - name: Send Email Notification on Success
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "✅ Webflow Translation Completed - ${{ github.event.inputs.target_language }}"
+          body: |
+            Translation workflow completed successfully! 🎉
+            
+            **Details:**
+            - Target Language: ${{ github.event.inputs.target_language }}
+            - URL Patterns: ${{ github.event.inputs.url_patterns }}
+            - Action: ${{ github.event.inputs.action }}
+            - Triggered: ${{ github.event.head_commit.timestamp }}
+            
+            **Next Steps:**
+            1. Check your Webflow site for the new translated pages
+            2. Review the translations for quality
+            3. Test the updated links for checkout/quiz pages
+            
+            **Links to check:**
+            - Checkout links should now go to: checkout.hairqare.co/${{ github.event.inputs.target_language }}/buy/...
+            - Quiz links should now go to: join.hairqare.co/${{ github.event.inputs.target_language }}/...
+            
+            View full results in the GitHub Actions log.
+          to: toby@holinic.co
+          from: ${{ secrets.EMAIL_USERNAME }}
+      
+      - name: Send Email Notification on Failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "❌ Webflow Translation Failed - Action Required"
+          body: |
+            Translation workflow failed! ⚠️
+            
+            **Failed Details:**
+            - Target Language: ${{ github.event.inputs.target_language }}
+            - URL Patterns: ${{ github.event.inputs.url_patterns }}
+            - Action: ${{ github.event.inputs.action }}
+            - Failed at: ${{ github.event.head_commit.timestamp }}
+            
+            **Possible Issues:**
+            - Webflow API rate limiting
+            - OpenAI API issues or rate limits
+            - Invalid URL patterns
+            - Cloudflare Worker errors
+            
+            **Action Required:**
+            1. Check GitHub Actions logs for specific error details
+            2. Verify all API keys are valid and have sufficient quota
+            3. Check if any fallback pages were created
+            4. Retry the translation process if needed
+            
+            View detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          to: toby@holinic.co
+          from: ${{ secrets.EMAIL_USERNAME }}

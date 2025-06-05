@@ -1,0 +1,20 @@
+name = "holinic-webflow-translation-worker"
+main = "src/worker.js"
+compatibility_date = "2024-05-15"
+account_id = "7776689e1c22aeed19a74763a55800f2"
+
+# KV Namespace for storing translation status
+[[kv_namespaces]]
+binding = "TRANSLATION_STATUS"
+id = "113cf97455944cc5a76331ef8443567e"
+preview_id = "02626f9f16b74b1bb057f8e5b8550ce1"
+
+# Environment variables (set via CLI or dashboard)
+[vars]
+# These are non-sensitive variables
+WEBFLOW_SITE_ID = "62cbaa353a301eb715aa33d0"
+
+# Secrets (set via `wrangler secret put`)
+# WEBFLOW_TOKEN (matches GitHub secret name)
+# OPENAI_API_KEY (matches GitHub secret name)
+# WORKER_AUTH_TOKEN

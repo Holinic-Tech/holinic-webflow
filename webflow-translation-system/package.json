@@ -1,0 +1,25 @@
+{
+  "name": "webflow-translation-system",
+  "version": "1.0.0",
+  "description": "Automated translation system for Webflow websites",
+  "main": "src/worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webflow",
+    "translation",
+    "cloudflare",
+    "openai"
+  ],
+  "author": "Holinic",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
