@@ -63,7 +63,9 @@ jobs:
               const payload = {
                 urlPatterns: \`${{ github.event.inputs.url_patterns }}\`.split('\n').filter(p => p.trim()),
                 targetLanguage: '${{ github.event.inputs.target_language }}',
-                action: '${{ github.event.inputs.action }}'
+                action: '${{ github.event.inputs.action }}',
+                webflowToken: process.env.WEBFLOW_TOKEN,
+                openaiKey: process.env.OPENAI_API_KEY
               };
               
               console.log('Payload:', JSON.stringify(payload, null, 2));
