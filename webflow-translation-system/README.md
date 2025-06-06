@@ -1,23 +1,24 @@
 # Webflow Translation System
 
-A simplified translation system for Webflow pages using the Data API v2. This system translates existing pages that you've manually created in language-specific folders.
+A comprehensive system for translating Webflow pages to different languages using the Webflow API v2 and OpenAI GPT-4. Now with full locale support for automatic translation to German and other languages.
 
 ## Features
 
-- 🌍 Translate Webflow pages to 6 languages (German, French, Spanish, Italian, Portuguese, Dutch)
-- ✅ Preserves page layout and design
-- 🔄 Uses Webflow Data API for reliable content updates
-- 📝 Three access methods: CLI, Web UI, API
+- 🌍 Automatic translation to multiple languages (German fully configured)
+- ✅ Handles large pages with progressive batch processing
+- 🔄 Uses Webflow API v2 with locale support
+- 📝 Multiple access methods: CLI scripts, Web UI, API
 - 🚀 Automatic page publishing after translation
-- 🧪 Mock mode for testing without API keys
+- 💾 Progress saving and resume capability
+- 🔧 Specific translation rules (currency conversion, brand names, etc.)
 
 ## How It Works
 
-1. **You manually create** pages in language folders (/de, /es, /fr, etc.)
-2. **The system fetches** page content using Webflow's Data API
-3. **Text is translated** using OpenAI GPT-4
-4. **Content is updated** back to Webflow via Data API
-5. **Page is published** automatically
+1. **Fetches page content** using Webflow's DOM API
+2. **Identifies text nodes** that need translation
+3. **Translates in batches** using OpenAI GPT-4
+4. **Applies translations** to the specific locale
+5. **Publishes automatically** to make translations live
 
 ## Quick Start
 
@@ -35,59 +36,76 @@ A simplified translation system for Webflow pages using the Data API v2. This sy
    npm install
    ```
 
-2. **Set up your API keys**
+2. **Create environment file**
    ```bash
-   cp .env.example .env
-   # Edit .env with your actual API keys
+   # Create .env file with:
+   WEBFLOW_TOKEN=your_webflow_api_token
+   WEBFLOW_SITE_ID=your_site_id
+   OPENAI_API_KEY=your_openai_api_key
    ```
 
-3. **Test the setup**
-   ```bash
-   node test-setup.js
+3. **Configure page to translate**
+   - Edit `translate-all-english-progressive.js` line 65:
+   ```javascript
+   const page = pagesData.pages.find(p => p.slug === 'your-page-slug');
    ```
 
-4. **Try a mock translation** (no API keys needed)
+4. **Run translation**
    ```bash
-   node translate-mock.js --url="hairqare.co/de/the-haircare-challenge" --lang="de"
-   ```
-
-5. **Run a real translation**
-   ```bash
-   node translate-existing-page.js --url="hairqare.co/de/the-haircare-challenge" --lang="de"
+   node translate-all-english-progressive.js
    ```
 
 ## Usage
 
-### Method 1: Command Line
+### Method 1: Progressive Translation (Recommended)
 
 ```bash
-node translate-existing-page.js --url="hairqare.co/de/page-name" --lang="de"
+# Translate entire page progressively
+node translate-all-english-progressive.js
+
+# Check translation status
+node check-challenge-status.js
+
+# Fix specific issues (currency, phrases)
+node check-and-fix-german-translations.js
 ```
 
 ### Method 2: Web Interface
 
-1. Open `translate-page.html` in your browser
-2. Enter the page URL
-3. Select target language
-4. Click "Translate Page Content"
+1. Open `translation-dashboard.html` in your browser
+2. Enter the page slug (e.g., "challenge")
+3. Select target language (German)
+4. Choose translation mode (full or untranslated only)
+5. Click "Start Translation" and monitor progress
 
-### Method 3: API (after Cloudflare deployment)
+### Method 3: Quick Scripts
 
 ```bash
-curl -X POST https://your-worker.workers.dev/translate-page \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer your-token" \
-  -d '{
-    "url": "hairqare.co/de/page-name",
-    "targetLanguage": "de"
-  }'
+# Complete partial translations
+node complete-challenge-translation.js
+
+# Rapid parallel translation
+node rapid-complete-translation.js
+
+# Fix currency symbols
+node fix-remaining-currency.js
 ```
 
-## Workflow Example
+## German Translation Configuration
 
-1. **In Webflow**: Duplicate `/the-haircare-challenge` to `/de/the-haircare-challenge`
-2. **Run translation**: `node translate-existing-page.js --url="hairqare.co/de/the-haircare-challenge" --lang="de"`
-3. **Result**: All text on the German page is now translated
+The system includes specific rules for German translations:
+
+```javascript
+// Key translations enforced:
+"14-Day Haircare Challenge" → "14-Tage-Haarpflege-Challenge"
+"Good hair days" → "Tage mit perfektem Haar"
+"Challenge" (standalone) → "Challenge" (kept as-is)
+"Hairqare" → "Hairqare" (brand name, never translated)
+
+// Currency conversion:
+$99 → €99
+USD → EUR
+```
 
 ## What Gets Translated
 
@@ -120,33 +138,50 @@ curl -X POST https://your-worker.workers.dev/translate-page \
 - Check that the page isn't using dynamic CMS content
 - Verify the API has write permissions
 
-## Files
+## Key Files
 
-- `translate-existing-page.js` - Command-line translation script
-- `translate-page.html` - Web interface for translations
-- `src/worker-simple.js` - Cloudflare Worker API endpoint
-- `translate-mock.js` - Mock translation for testing
-- `test-setup.js` - Setup verification script
-- `DEPLOYMENT_GUIDE.md` - Detailed deployment instructions
+### Main Translation Scripts
+- `translate-all-english-progressive.js` - Primary translation script with progress saving
+- `complete-challenge-translation.js` - Completes partial translations
+- `rapid-complete-translation.js` - Fast parallel translation for remaining nodes
+- `check-and-fix-german-translations.js` - Fixes specific German translation issues
+
+### Utility Scripts
+- `check-challenge-status.js` - Shows translation progress and status
+- `fix-remaining-currency.js` - Converts USD to EUR symbols
+- `verify-live-page.js` - Verifies translations on live site
+- `find-all-dollar-signs.js` - Searches for remaining currency symbols
+
+### UI and Configuration
+- `translation-dashboard.html` - Web interface with real-time progress
+- `translate-via-cli.html` - CLI command generator
+- `src/translation-worker-complete.js` - Cloudflare Worker implementation
+- `wrangler-dashboard.toml` - Worker configuration
 
 ## Cloudflare Deployment
 
-For production use with the API endpoint:
+**Note**: OpenAI API has geographic restrictions that may block Cloudflare Workers. Use local scripts for reliable operation.
 
 ```bash
-# Deploy worker
-wrangler deploy src/worker-simple.js -c wrangler-simple.toml
+# Deploy worker (if in supported region)
+wrangler deploy --config wrangler-dashboard.toml
 
 # Set secrets
 wrangler secret put WEBFLOW_TOKEN
 wrangler secret put OPENAI_API_KEY
 ```
 
-See `DEPLOYMENT_GUIDE.md` for full instructions.
+## Known Limitations
+
+1. **Rich Text Content**: Some prices/content in Webflow Designer Rich Text elements must be updated manually
+2. **CMS Content**: CMS-driven content requires separate handling
+3. **OpenAI Geographic Restrictions**: Cloudflare Workers may be blocked; use local scripts instead
+4. **Rate Limits**: Webflow API has rate limits; scripts include automatic delays
 
 ## Support
 
 For issues or questions:
-- Check `DEPLOYMENT_GUIDE.md` for detailed setup
-- Review `WORK_LOG_2025_01_06.md` for implementation details
-- Create an issue in the GitHub repository
+- Check `WORK_LOG_2025_01_06_FINAL.md` for detailed implementation notes
+- Review error messages in console output
+- Verify Webflow localization is enabled for your site
+- Ensure API tokens have proper permissions

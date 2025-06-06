@@ -1,0 +1,15 @@
+name = "webflow-translation-dashboard"
+main = "src/translation-worker-us-proxy.js"
+compatibility_date = "2024-12-17"
+account_id = "7776689e1c22aeed19a74763a55800f2"
+
+# Environment variables
+[vars]
+WEBFLOW_SITE_ID = "62cbaa353a301eb715aa33d0"
+
+# Compatibility flags for better region support
+compatibility_flags = [ "nodejs_compat" ]
+
+# Secrets - set these via CLI:
+# wrangler secret put WEBFLOW_TOKEN
+# wrangler secret put OPENAI_API_KEY

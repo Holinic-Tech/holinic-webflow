@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Progressive translation - saves and applies as it goes to avoid timeouts
+// Translate ALL English text across all 520 nodes
 require('dotenv').config();
 const fetch = require('node-fetch');
 const fs = require('fs');
@@ -10,15 +10,9 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const SITE_ID = process.env.WEBFLOW_SITE_ID;
 const GERMAN_LOCALE_ID = '684230454832f0132d5f6ccf';
 
-const GERMAN_INSTRUCTIONS = `Use informal "du" throughout. Keep "Challenge" untranslated when standalone. Natural conversational German.
+const GERMAN_INSTRUCTIONS = `Use informal "du" throughout. Keep "Challenge" untranslated. Natural conversational German.
 "Hassle" → "Stress" (NOT "Ärger"). Keep "DIY" as is. Friendly and relatable tone.
-KEY TRANSLATIONS:
-- "14-Day Haircare Challenge" → "14-Tage-Haarpflege-Challenge"
-- "Good hair days" → "Tage mit perfektem Haar"
-- "Challenge" (standalone/capitalized) → keep as "Challenge"
-- "Hairqare" → NEVER translate (brand name)
-- "DIY" → keep as "DIY"
-CURRENCY: Convert all USD ($, US$) to EUR (€). Examples: $47 → €47, 300 $ → 300€`;
+NEVER TRANSLATE: "14-Day Haircare Challenge", "Challenge" (capitalized), "Hairqare", "DIY"`;
 
 // Common German words to detect already translated content
 const GERMAN_INDICATORS = [
@@ -48,6 +42,26 @@ function isLikelyGerman(text) {
   return germanWordCount >= 2;
 }
 
+function isLikelyEnglish(text) {
+  if (!text || text.length < 5) return false;
+  
+  // Skip very short text or numbers/symbols only
+  if (!/[a-zA-Z]{3,}/.test(text)) return false;
+  
+  // Skip if it's already German
+  if (isLikelyGerman(text)) return false;
+  
+  // Common English indicators
+  const englishIndicators = ['the', 'is', 'are', 'have', 'has', 'with', 'for', 'and', 'you', 'your'];
+  const lowerText = text.toLowerCase();
+  
+  return englishIndicators.some(word => 
+    lowerText.includes(` ${word} `) || 
+    lowerText.startsWith(`${word} `) || 
+    lowerText.endsWith(` ${word}`)
+  );
+}
+
 async function getAllNodes() {
   console.log('📥 Fetching ALL 520 nodes...\n');
   
@@ -62,7 +76,7 @@ async function getAllNodes() {
   );
   
   const pagesData = await pagesResponse.json();
-  const page = pagesData.pages.find(p => p.slug === 'challenge');
+  const page = pagesData.pages.find(p => p.slug === 'the-haircare-challenge');
   
   let allNodes = [];
   let offset = 0;
@@ -145,28 +159,8 @@ async function translateBatch(texts) {
   }
 }
 
-async function updateNodesProgressively(pageId, translations) {
-  const response = await fetch(
-    `https://api.webflow.com/v2/pages/${pageId}/dom?localeId=${GERMAN_LOCALE_ID}`,
-    {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${WEBFLOW_API_TOKEN}`,
-        'Content-Type': 'application/json',
-        'accept': 'application/json'
-      },
-      body: JSON.stringify({
-        nodes: translations
-      })
-    }
-  );
-  
-  const result = await response.json();
-  return result;
-}
-
-async function translateAllEnglishProgressively() {
-  console.log('\n🌐 Progressive Translation - ALL English text to German...\n');
+async function translateAllEnglishNodes() {
+  console.log('\n🌐 Translating ALL English text to German...\n');
   
   try {
     // 1. Get all nodes
@@ -215,82 +209,92 @@ async function translateAllEnglishProgressively() {
       return;
     }
     
-    // 3. Process in smaller chunks and save/apply progressively
-    console.log('\n🔄 Translating and applying progressively...');
-    const chunkSize = 50; // Process 50 nodes at a time
-    const batchSize = 10; // Translate 10 at a time
-    let totalTranslated = 0;
+    // 3. Show sample of what we're translating
+    console.log('\n📝 Sample texts to translate:');
+    nodesToTranslate.slice(0, 5).forEach(node => {
+      console.log(`   "${node.text.substring(0, 50)}..."`);
+    });
     
-    for (let chunkStart = 0; chunkStart < nodesToTranslate.length; chunkStart += chunkSize) {
-      const chunk = nodesToTranslate.slice(chunkStart, Math.min(chunkStart + chunkSize, nodesToTranslate.length));
-      const chunkTranslations = [];
+    // 4. Translate in batches
+    console.log('\n🔄 Translating English content...');
+    const translations = [];
+    const batchSize = 10;
+    
+    for (let i = 0; i < nodesToTranslate.length; i += batchSize) {
+      const batch = nodesToTranslate.slice(i, i + batchSize);
+      const progress = Math.min(i + batchSize, nodesToTranslate.length);
+      console.log(`   Progress: ${progress}/${nodesToTranslate.length} nodes...`);
       
-      console.log(`\n📦 Processing chunk ${Math.floor(chunkStart/chunkSize) + 1}/${Math.ceil(nodesToTranslate.length/chunkSize)}...`);
+      const batchTranslations = await translateBatch(batch.map(n => n.text));
       
-      // Translate this chunk
-      for (let i = 0; i < chunk.length; i += batchSize) {
-        const batch = chunk.slice(i, i + batchSize);
-        const progress = chunkStart + i + batch.length;
-        console.log(`   Translating: ${progress}/${nodesToTranslate.length} nodes...`);
+      batch.forEach((node, j) => {
+        const translatedText = batchTranslations[j];
+        let finalText = translatedText;
         
-        const batchTranslations = await translateBatch(batch.map(n => n.text));
-        
-        batch.forEach((node, j) => {
-          const translatedText = batchTranslations[j];
-          let finalText = translatedText;
-          
-          if (node.hasHtml && node.html) {
-            const htmlPattern = /^(<[^>]+>)(.*?)(<\/[^>]+>)$/;
-            const match = node.html.match(htmlPattern);
-            if (match) {
-              finalText = match[1] + translatedText + match[3];
-            }
+        if (node.hasHtml && node.html) {
+          const htmlPattern = /^(<[^>]+>)(.*?)(<\/[^>]+>)$/;
+          const match = node.html.match(htmlPattern);
+          if (match) {
+            finalText = match[1] + translatedText + match[3];
           }
-          
-          chunkTranslations.push({
-            nodeId: node.id,
-            text: finalText
-          });
-        });
-        
-        if (i + batchSize < chunk.length) {
-          await new Promise(resolve => setTimeout(resolve, 300));
         }
-      }
+        
+        translations.push({
+          nodeId: node.id,
+          text: finalText
+        });
+      });
       
-      // Apply this chunk's translations
-      console.log(`   Applying ${chunkTranslations.length} translations...`);
-      const updateResult = await updateNodesProgressively(pageId, chunkTranslations);
-      
-      if (updateResult.errors?.length > 0) {
-        console.log(`   ⚠️  ${updateResult.errors.length} errors in this chunk`);
-      } else {
-        console.log(`   ✅ Chunk applied successfully`);
-      }
-      
-      totalTranslated += chunkTranslations.length;
-      
-      // Save progress
-      const progressFile = `translation-progress-${Date.now()}.json`;
-      fs.writeFileSync(progressFile, JSON.stringify({
-        pageId: pageId,
-        timestamp: new Date().toISOString(),
-        totalNodes: nodesToTranslate.length,
-        translatedSoFar: totalTranslated,
-        lastChunk: chunkTranslations
-      }, null, 2));
-      console.log(`   💾 Progress saved: ${progressFile}`);
-      
-      // Small delay between chunks
-      if (chunkStart + chunkSize < nodesToTranslate.length) {
-        console.log(`   ⏳ Pausing before next chunk...`);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+      if (i + batchSize < nodesToTranslate.length) {
+        await new Promise(resolve => setTimeout(resolve, 500));
       }
     }
     
-    console.log(`\n✅ Translated ${totalTranslated} nodes total`);
+    console.log(`\n✅ Translated ${translations.length} nodes`);
     
-    // 4. Publish
+    // 5. Save complete backup
+    const timestamp = Date.now();
+    const backupFile = `complete-english-translation-de-${timestamp}.json`;
+    fs.writeFileSync(backupFile, JSON.stringify({
+      pageId: pageId,
+      timestamp: new Date().toISOString(),
+      totalNodes: nodes.length,
+      translatedNodes: translations.length,
+      skippedGerman: skippedGerman,
+      skippedOther: skippedOther,
+      translations: translations
+    }, null, 2));
+    console.log(`\n💾 Complete backup saved: ${backupFile}`);
+    
+    // 6. Update page
+    console.log('\n📤 Updating all English nodes...');
+    const updateResponse = await fetch(
+      `https://api.webflow.com/v2/pages/${pageId}/dom?localeId=${GERMAN_LOCALE_ID}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${WEBFLOW_API_TOKEN}`,
+          'Content-Type': 'application/json',
+          'accept': 'application/json'
+        },
+        body: JSON.stringify({
+          nodes: translations
+        })
+      }
+    );
+    
+    const result = await updateResponse.json();
+    
+    if (result.errors?.length > 0) {
+      console.log(`⚠️  ${result.errors.length} errors occurred`);
+      result.errors.slice(0, 5).forEach(err => {
+        console.log(`   - ${err.nodeId}: ${err.error}`);
+      });
+    } else {
+      console.log('✅ All English nodes updated successfully');
+    }
+    
+    // 7. Publish
     console.log('\n📢 Publishing...');
     try {
       await fetch(
@@ -303,7 +307,7 @@ async function translateAllEnglishProgressively() {
             'accept': 'application/json'
           },
           body: JSON.stringify({
-            publishToWebflowSubdomain: true
+            publishTargets: ['live']
           })
         }
       );
@@ -312,14 +316,14 @@ async function translateAllEnglishProgressively() {
       console.log('⚠️  Publish warning:', err.message);
     }
     
-    console.log('\n✨ Progressive translation complete!');
+    console.log('\n✨ Complete translation finished!');
     console.log('\n📊 Summary:');
     console.log(`   - Checked all ${nodes.length} nodes`);
-    console.log(`   - Translated ${totalTranslated} English text nodes`);
+    console.log(`   - Translated ${translations.length} English text nodes`);
     console.log(`   - Skipped ${skippedGerman} already German nodes`);
     console.log(`   - Skipped ${skippedOther} non-text nodes`);
     console.log('\n🔗 Check the fully translated page:');
-    console.log('   https://hairqare.co/de/challenge\n');
+    console.log('   https://hairqare.co/de/the-haircare-challenge\n');
     
   } catch (error) {
     console.error('\n❌ Error:', error.message);
@@ -328,5 +332,5 @@ async function translateAllEnglishProgressively() {
 
 // Run
 if (require.main === module) {
-  translateAllEnglishProgressively();
+  translateAllEnglishNodes();
 }
