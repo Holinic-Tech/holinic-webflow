@@ -1,168 +1,152 @@
 # Webflow Translation System
 
-An automated translation system for Webflow websites that integrates GitHub Actions, Cloudflare Workers, and OpenAI to provide seamless multi-language page creation and management.
+A simplified translation system for Webflow pages using the Data API v2. This system translates existing pages that you've manually created in language-specific folders.
 
 ## Features
 
 - 🌍 Translate Webflow pages to 6 languages (German, French, Spanish, Italian, Portuguese, Dutch)
-- 🔗 Automatic link localization for checkout and quiz flows
-- 💰 Cost tracking and reporting
-- 🔄 Fallback mechanism for failed translations
-- 📧 Email notifications for status updates
-- 🎯 Pattern-based page selection for batch translation
-- 🔍 SEO metadata translation
+- ✅ Preserves page layout and design
+- 🔄 Uses Webflow Data API for reliable content updates
+- 📝 Three access methods: CLI, Web UI, API
+- 🚀 Automatic page publishing after translation
+- 🧪 Mock mode for testing without API keys
 
-## Architecture
+## How It Works
 
-- **GitHub Actions**: Orchestrates translation workflows
-- **Cloudflare Worker**: Handles Webflow API interactions and translations
-- **OpenAI API**: Provides high-quality translations
-- **Dashboard**: Web interface for triggering translations
-- **KV Storage**: Tracks translation status and history
+1. **You manually create** pages in language folders (/de, /es, /fr, etc.)
+2. **The system fetches** page content using Webflow's Data API
+3. **Text is translated** using OpenAI GPT-4
+4. **Content is updated** back to Webflow via Data API
+5. **Page is published** automatically
 
 ## Quick Start
 
 ### Prerequisites
 
-1. Webflow API token
+1. Webflow API token (with page edit permissions)
 2. OpenAI API key
-3. Cloudflare account
-4. GitHub repository with Actions enabled
+3. Node.js v14 or higher
 
 ### Setup Instructions
 
-1. **Clone the repository**
+1. **Install dependencies**
    ```bash
-   git clone https://github.com/Holinic-Tech/holinic-webflow.git
-   cd holinic-webflow/webflow-translation-system
-   ```
-
-2. **Install dependencies**
-   ```bash
+   cd webflow-translation-system
    npm install
    ```
 
-3. **Configure Cloudflare Worker**
+2. **Set up your API keys**
    ```bash
-   # Login to Cloudflare
-   wrangler login
-   
-   # Create KV namespaces
-   wrangler kv:namespace create "TRANSLATION_STATUS"
-   wrangler kv:namespace create "TRANSLATION_STATUS" --preview
-   
-   # Update wrangler.toml with the returned namespace IDs
+   cp .env.example .env
+   # Edit .env with your actual API keys
    ```
 
-4. **Set Cloudflare secrets**
+3. **Test the setup**
    ```bash
-   wrangler secret put WEBFLOW_TOKEN
-   wrangler secret put OPENAI_API_KEY
-   wrangler secret put WORKER_AUTH_TOKEN
+   node test-setup.js
    ```
 
-5. **Update configuration**
-   - Edit `wrangler.toml` and add your Webflow Site ID
-   - Get Site ID from: Webflow Site Settings → General → Site ID
-
-6. **Deploy Worker**
+4. **Try a mock translation** (no API keys needed)
    ```bash
-   wrangler publish
+   node translate-mock.js --url="hairqare.co/de/the-haircare-challenge" --lang="de"
    ```
 
-7. **Configure GitHub Secrets**
-   
-   In your GitHub repository settings → Secrets and variables → Actions:
-   
-   Already configured:
-   - `OPENAI_ORG_ID`
-   - `OPENAI_API_KEY`
-   - `WEBFLOW_TOKEN`
-   
-   Still needed:
-   - `CLOUDFLARE_WORKER_URL`: Your worker URL (e.g., https://holinic-webflow-translation-worker.YOUR_SUBDOMAIN.workers.dev)
-   - `WORKER_AUTH_TOKEN`: Same token you set in Cloudflare
-   - `EMAIL_USERNAME`: Gmail address for notifications
-   - `EMAIL_PASSWORD`: Gmail app password
+5. **Run a real translation**
+   ```bash
+   node translate-existing-page.js --url="hairqare.co/de/the-haircare-challenge" --lang="de"
+   ```
 
 ## Usage
 
-### Via GitHub Actions
+### Method 1: Command Line
 
-1. Go to Actions tab in your repository
-2. Select "Webflow Translation" workflow
-3. Click "Run workflow"
-4. Enter URL patterns and target language
-5. Monitor progress in Actions log
+```bash
+node translate-existing-page.js --url="hairqare.co/de/page-name" --lang="de"
+```
 
-### Via Dashboard
+### Method 2: Web Interface
 
-1. Access the dashboard at your GitHub Pages URL
-2. Enter URL patterns to translate
+1. Open `translate-page.html` in your browser
+2. Enter the page URL
 3. Select target language
-4. Click "Start Translation"
+4. Click "Translate Page Content"
 
-### URL Pattern Examples
+### Method 3: API (after Cloudflare deployment)
 
-- `/blog/*` - All blog pages
-- `/products/*/overview` - Specific product pages
-- `/about` - Exact page match
-- `*pricing*` - Pages containing "pricing"
+```bash
+curl -X POST https://your-worker.workers.dev/translate-page \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-token" \
+  -d '{
+    "url": "hairqare.co/de/page-name",
+    "targetLanguage": "de"
+  }'
+```
 
-## Link Localization
+## Workflow Example
 
-The system automatically updates links:
-- Checkout links: `checkout.hairqare.co/buy/...` → `checkout.hairqare.co/{lang}/buy/...`
-- Quiz links: `join.hairqare.co/...` → `join.hairqare.co/{lang}/...`
-- Internal links: `/page` → `/{lang}/page`
+1. **In Webflow**: Duplicate `/the-haircare-challenge` to `/de/the-haircare-challenge`
+2. **Run translation**: `node translate-existing-page.js --url="hairqare.co/de/the-haircare-challenge" --lang="de"`
+3. **Result**: All text on the German page is now translated
 
-## Cost Tracking
+## What Gets Translated
 
-- Uses GPT-4o-mini for cost-effective translations
-- Tracks token usage and cost per page
-- Provides total cost summary for each batch
+- ✅ All text content (headings, paragraphs, buttons)
+- ✅ SEO metadata (if accessible)
+- ✅ Alt text for images
+- ✅ Link text
 
-## Monitoring
+## What Stays the Same
 
-- Email notifications on success/failure
-- KV storage for translation history
-- Dashboard for checking status
+- ✅ Page structure and layout
+- ✅ Styles and design
+- ✅ Images and media
+- ✅ Components and interactions
 
 ## Troubleshooting
 
-### Common Issues
+### "Page not found" error
+- Ensure the page is published in Webflow
+- Check the URL includes the language folder
+- Try using just the slug without domain
 
-1. **Rate Limiting**
-   - The system includes delays between API calls
-   - For large batches, consider splitting into smaller groups
+### "Translation failed" error
+- Check your OpenAI API quota
+- Verify API keys are correct
+- Try translating a smaller page first
 
-2. **Translation Failures**
-   - System creates fallback pages with original content
-   - Manual translation can be done later
+### Text not updating
+- Make sure the page was published after duplication
+- Check that the page isn't using dynamic CMS content
+- Verify the API has write permissions
 
-3. **Authentication Errors**
-   - Verify all API tokens are correct
-   - Check worker URL matches GitHub secret
+## Files
 
-## Development
+- `translate-existing-page.js` - Command-line translation script
+- `translate-page.html` - Web interface for translations
+- `src/worker-simple.js` - Cloudflare Worker API endpoint
+- `translate-mock.js` - Mock translation for testing
+- `test-setup.js` - Setup verification script
+- `DEPLOYMENT_GUIDE.md` - Detailed deployment instructions
 
-### Local Testing
+## Cloudflare Deployment
+
+For production use with the API endpoint:
+
 ```bash
-npm run dev
+# Deploy worker
+wrangler deploy src/worker-simple.js -c wrangler-simple.toml
+
+# Set secrets
+wrangler secret put WEBFLOW_TOKEN
+wrangler secret put OPENAI_API_KEY
 ```
 
-### Deploy Changes
-```bash
-npm run deploy
-```
+See `DEPLOYMENT_GUIDE.md` for full instructions.
 
 ## Support
 
 For issues or questions:
+- Check `DEPLOYMENT_GUIDE.md` for detailed setup
+- Review `WORK_LOG_2025_01_06.md` for implementation details
 - Create an issue in the GitHub repository
-- Check the work log for implementation details
-- Review task files for specific features
-
-## License
-
-MIT License - see LICENSE file for details

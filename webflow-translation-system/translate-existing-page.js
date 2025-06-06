@@ -4,11 +4,21 @@
 // Usage: node translate-existing-page.js --url="hairqare.co/de/the-haircare-challenge" --lang="de"
 
 const fetch = require('node-fetch');
+require('dotenv').config();
 
 // Configuration
-const WEBFLOW_API_TOKEN = process.env.WEBFLOW_TOKEN || 'YOUR_WEBFLOW_API_TOKEN';
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || 'YOUR_OPENAI_API_KEY';
-const SITE_ID = '62cbaa353a301eb715aa33d0';
+const WEBFLOW_API_TOKEN = process.env.WEBFLOW_TOKEN;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const SITE_ID = process.env.WEBFLOW_SITE_ID || '62cbaa353a301eb715aa33d0';
+
+// Check for required environment variables
+if (!WEBFLOW_API_TOKEN || !OPENAI_API_KEY) {
+  console.error('\n❌ Missing required environment variables!');
+  console.error('Please ensure your .env file contains:');
+  console.error('- WEBFLOW_TOKEN');
+  console.error('- OPENAI_API_KEY\n');
+  process.exit(1);
+}
 
 const LANGUAGE_NAMES = {
   de: 'German',
@@ -34,10 +44,18 @@ function parseArgs() {
 
 // Extract page slug from URL
 function extractPageSlug(url) {
-  // Remove protocol and domain
-  const cleanUrl = url.replace(/^https?:\/\/[^\/]+/, '');
-  // Remove leading slash
-  return cleanUrl.replace(/^\//, '');
+  // Remove protocol if present
+  let cleanUrl = url.replace(/^https?:\/\//, '');
+  
+  // Remove domain if present (anything before the first /)
+  if (cleanUrl.includes('/')) {
+    cleanUrl = cleanUrl.substring(cleanUrl.indexOf('/') + 1);
+  }
+  
+  // Remove leading slash if present
+  cleanUrl = cleanUrl.replace(/^\//, '');
+  
+  return cleanUrl;
 }
 
 // Get page ID from slug
@@ -105,12 +123,22 @@ async function translateText(text, targetLanguage) {
   if (!text || !text.trim()) return text;
   
   try {
+    const headers = {
+      'Authorization': `Bearer ${OPENAI_API_KEY}`,
+      'Content-Type': 'application/json'
+    };
+    
+    // Add OpenAI organization and project headers if available
+    if (process.env.OPENAI_ORG_ID) {
+      headers['OpenAI-Organization'] = process.env.OPENAI_ORG_ID;
+    }
+    if (process.env.OPENAI_PROJECT_ID) {
+      headers['OpenAI-Project'] = process.env.OPENAI_PROJECT_ID;
+    }
+    
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
+      headers,
       body: JSON.stringify({
         model: 'gpt-4-turbo-preview',
         messages: [
