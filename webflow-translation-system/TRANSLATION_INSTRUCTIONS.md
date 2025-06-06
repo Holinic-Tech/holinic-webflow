@@ -63,6 +63,7 @@ Many English words are commonly used in target languages. Consider keeping:
    - DE: "Mach mit bei der 14-Tage-Haarpflege-Challenge"
    - ES: "Únete al Reto de Cuidado Capilar de 14 Días"
    - FR: "Rejoins le Challenge Capillaire de 14 Jours"
+   - Note: Always translate "14-Day Haircare Challenge" consistently as shown above
 
 2. **"0% Hassle"**
    - DE: "0% Stress"
@@ -73,6 +74,11 @@ Many English words are commonly used in target languages. Consider keeping:
    - DE: "Starte die Challenge"
    - ES: "Empieza el Challenge"
    - FR: "Commence le Challenge"
+
+4. **"Good hair days"**
+   - DE: "Tage mit perfektem Haar"
+   - ES: "Días de cabello perfecto"
+   - FR: "Jours de cheveux parfaits"
 
 ## Translation Checklist
 
@@ -103,6 +109,17 @@ Before finalizing any translation:
 - "14-Day" → "14-Tage" (German)
 - "14 días" (Spanish)
 - "14 jours" (French)
+
+### Currency Conversion
+For European language translations (German, French, Spanish, Italian, etc.):
+- **Convert all USD symbols** ($, US$, USD) to EUR (€, EUR)
+- **Keep numeric values the same** (e.g., $47 → €47)
+- **Update currency-related text** (e.g., "dollars" → "Euro")
+- Common conversions:
+  - $ → €
+  - US$ → €
+  - USD → EUR
+  - "dollars" → "Euro"
 
 ## Examples to Avoid
 
@@ -137,7 +154,10 @@ Strings known to be in components:
 ## Updates Log
 
 - 2025-01-06: Initial guidelines created
-- Focus on informal voice
-- Keep "Challenge" untranslated
-- Natural adaptation over literal translation
-- Added note about component-based content
+  - Focus on informal voice
+  - Keep "Challenge" untranslated when standalone
+  - Natural adaptation over literal translation
+  - Added note about component-based content
+  - Added currency conversion rules for EUR countries
+  - Updated "14-Day Haircare Challenge" to translate as "14-Tage-Haarpflege-Challenge"
+  - Added "Good hair days" translation as "Tage mit perfektem Haar"
