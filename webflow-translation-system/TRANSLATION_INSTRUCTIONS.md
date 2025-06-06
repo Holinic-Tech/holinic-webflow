@@ -119,9 +119,25 @@ Before finalizing any translation:
 3. **Emphasis**: Maintain CAPS and bold where used
 4. **Links**: Don't translate URL slugs
 
+## Known Issues & Solutions
+
+### Missing Translations
+Some content may not translate because it's in:
+1. **Webflow Components/Symbols** - Must be edited in the component definition
+2. **Rich Text blocks** - May need special handling
+3. **CMS Collections** - Require separate translation
+
+Strings known to be in components:
+- "Say the Challenge is life changing"
+- "See our 100% money-back guarantee"
+- "No matter what you try, the solution to your hair loss remains out of reach. 😭"
+
+**Solution**: These need to be translated directly in Webflow's Designer in the component/symbol definition.
+
 ## Updates Log
 
 - 2025-01-06: Initial guidelines created
 - Focus on informal voice
 - Keep "Challenge" untranslated
 - Natural adaptation over literal translation
+- Added note about component-based content
