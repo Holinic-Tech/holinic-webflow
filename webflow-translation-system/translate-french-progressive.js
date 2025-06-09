@@ -256,27 +256,23 @@ async function translateAllFrenchProgressively() {
       // Prepare update data
       const updateNodes = unprocessed.map((node, index) => {
         const translatedText = translations[index];
+        let finalText = translatedText;
         
-        // If node had HTML, try to preserve the tags
+        // If node had HTML, preserve the HTML structure
         if (node.hasHtml && node.html) {
-          const htmlWithTranslation = node.html.replace(
-            node.text,
-            translatedText
-          );
-          return {
-            id: node.id,
-            text: {
-              text: translatedText,
-              html: htmlWithTranslation
-            }
-          };
+          const htmlPattern = /^(<[^>]+>)(.*?)(<\/[^>]+>)$/;
+          const match = node.html.match(htmlPattern);
+          if (match) {
+            finalText = match[1] + translatedText + match[3];
+          } else {
+            // For more complex HTML, try to replace just the text content
+            finalText = node.html.replace(node.text, translatedText);
+          }
         }
         
         return {
-          id: node.id,
-          text: {
-            text: translatedText
-          }
+          nodeId: node.id,
+          text: finalText
         };
       });
       

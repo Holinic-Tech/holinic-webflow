@@ -201,21 +201,9 @@ async function translateBatch(texts) {
 async function updateNodesProgressively(pageId, translations) {
   console.log(`\n🔄 Applying translations to ${LOCALE_CONFIG.name} locale...\n`);
   
-  const updatePayload = {
-    locale: LOCALE_CONFIG.id,
-    fields: {}
-  };
-  
-  for (const translation of translations) {
-    // For French locale, we need to use the nodeId directly as the key
-    updatePayload.fields[translation.nodeId] = {
-      text: translation.text
-    };
-  }
-  
   try {
     const response = await fetch(
-      `https://api.webflow.com/v2/pages/${pageId}/update`,
+      `https://api.webflow.com/v2/pages/${pageId}/dom?localeId=${LOCALE_CONFIG.id}`,
       {
         method: 'POST',
         headers: {
@@ -223,17 +211,25 @@ async function updateNodesProgressively(pageId, translations) {
           'Content-Type': 'application/json',
           'accept': 'application/json'
         },
-        body: JSON.stringify(updatePayload)
+        body: JSON.stringify({
+          nodes: translations
+        })
       }
     );
     
+    const result = await response.json();
+    
     if (!response.ok) {
-      const error = await response.text();
-      console.error(`   ❌ Update failed: ${error}`);
+      console.error(`   ❌ Update failed:`, result);
       return false;
     }
     
-    console.log(`   ✅ Applied ${translations.length} translations`);
+    if (result.errors && result.errors.length > 0) {
+      console.log(`   ⚠️  Some errors occurred:`, result.errors);
+    } else {
+      console.log(`   ✅ Applied ${translations.length} translations`);
+    }
+    
     return true;
     
   } catch (error) {
@@ -376,11 +372,25 @@ async function main() {
     // Translate batch
     const translations = await translateBatch(textsToTranslate);
     
-    // Prepare update data
-    const updateData = batch.map((node, index) => ({
-      nodeId: node.id,
-      text: translations[index]
-    }));
+    // Prepare update data with HTML preservation
+    const updateData = batch.map((node, index) => {
+      const translatedText = translations[index];
+      let finalText = translatedText;
+      
+      // Preserve HTML structure if present
+      if (node.text?.html) {
+        const htmlPattern = /^(<[^>]+>)(.*?)(<\/[^>]+>)$/;
+        const match = node.text.html.match(htmlPattern);
+        if (match) {
+          finalText = match[1] + translatedText + match[3];
+        }
+      }
+      
+      return {
+        nodeId: node.id,
+        text: finalText
+      };
+    });
     
     // Apply translations
     const success = await updateNodesProgressively(pageId, updateData);
