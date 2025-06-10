@@ -26,7 +26,7 @@ const LANGUAGE_CONFIG = {
   },
   fr: {
     name: 'French',
-    localeId: 'REPLACE_WITH_FRENCH_LOCALE_ID',
+    localeId: '684683d87f6a3ae6079ec99f',
     instructions: `Use informal "tu" throughout. Keep "Challenge" untranslated. Natural conversational French.`
   }
 };

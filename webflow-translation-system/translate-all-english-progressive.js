@@ -9,6 +9,7 @@ const WEBFLOW_API_TOKEN = process.env.WEBFLOW_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const SITE_ID = process.env.WEBFLOW_SITE_ID;
 const GERMAN_LOCALE_ID = '684230454832f0132d5f6ccf';
+const FRENCH_LOCALE_ID = '684683d87f6a3ae6079ec99f';
 
 const GERMAN_INSTRUCTIONS = `Use informal "du" throughout. Keep "Challenge" untranslated when standalone. Natural conversational German.
 "Hassle" → "Stress" (NOT "Ärger"). Keep "DIY" as is. Friendly and relatable tone.
@@ -20,6 +21,18 @@ KEY TRANSLATIONS:
 - "DIY" → keep as "DIY"
 CURRENCY: Convert all USD ($, US$) to EUR (€). Examples: $47 → €47, 300 $ → 300€`;
 
+const FRENCH_INSTRUCTIONS = `Use informal "tu" throughout - like talking to a girlfriend. Keep "Challenge" untranslated when standalone.
+Write in friendly, conversational French that sounds natural for women aged 25-35. Avoid formal language.
+KEY TRANSLATIONS:
+- "14-Day Haircare Challenge" → "Challenge capillaire de 14 jours"
+- "Good hair days" → "Des cheveux parfaits tous les jours"
+- "Challenge" (standalone/capitalized) → keep as "Challenge"
+- "Hairqare" → NEVER translate (brand name)
+- "DIY" → keep as "DIY"
+- "Hassle" → "Galère" or "Prise de tête" (NOT "Tracas")
+TONE: Like chatting with your best friend - warm, encouraging, relatable. Use expressions young French women actually say.
+CURRENCY: Convert all USD ($, US$) to EUR (€). Examples: $47 → €47, 300 $ → 300€`;
+
 // Common German words to detect already translated content
 const GERMAN_INDICATORS = [
   'der', 'die', 'das', 'und', 'ist', 'sind', 'haben', 'werden', 'können',
@@ -27,6 +40,15 @@ const GERMAN_INDICATORS = [
   'für', 'mit', 'bei', 'auf', 'aus', 'nach', 'zu', 'über', 'unter',
   'wenn', 'aber', 'oder', 'nicht', 'kein', 'keine', 'mehr', 'schon',
   'auch', 'noch', 'nur', 'sehr', 'gut', 'alle', 'machen', 'sehen'
+];
+
+// Common French words to detect already translated content
+const FRENCH_INDICATORS = [
+  'le', 'la', 'les', 'un', 'une', 'de', 'du', 'des', 'et', 'est', 'sont',
+  'tu', 'ton', 'ta', 'tes', 'toi', 'te', 'vous', 'votre', 'vos',
+  'pour', 'avec', 'dans', 'sur', 'sous', 'chez', 'par', 'sans',
+  'mais', 'ou', 'donc', 'car', 'ne', 'pas', 'plus', 'très', 'bien',
+  'tout', 'tous', 'faire', 'avoir', 'être'
 ];
 
 function isLikelyGerman(text) {
@@ -46,6 +68,25 @@ function isLikelyGerman(text) {
   
   // If we find 2+ German words in the text, it's likely already translated
   return germanWordCount >= 2;
+}
+
+function isLikelyFrench(text) {
+  if (!text || text.length < 10) return false;
+  
+  const lowerText = text.toLowerCase();
+  let frenchWordCount = 0;
+  
+  // Count French indicator words
+  FRENCH_INDICATORS.forEach(word => {
+    if (lowerText.includes(` ${word} `) || 
+        lowerText.startsWith(`${word} `) || 
+        lowerText.endsWith(` ${word}`)) {
+      frenchWordCount++;
+    }
+  });
+  
+  // If we find 2+ French words in the text, it's likely already translated
+  return frenchWordCount >= 2;
 }
 
 async function getAllNodes() {

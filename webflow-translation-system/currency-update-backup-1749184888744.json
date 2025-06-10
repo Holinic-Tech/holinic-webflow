@@ -1,0 +1,32 @@
+{
+  "pageId": "672c82dd7bb594490ba42d38",
+  "pageSlug": "the-haircare-challenge",
+  "localeId": "684230454832f0132d5f6ccf",
+  "timestamp": "2025-06-06T04:41:28.744Z",
+  "updates": [
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c762",
+      "text": "<div class=\"price-old red-ugly\">normalerweise 300€</div>",
+      "originalText": "normalerweise 300 $",
+      "hasHtml": true
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c764",
+      "text": "<p class=\"price-card-top-bubble absolute bfcm-2024 tof-sp\">✨ Selbstpflege-Special ✨ - Spare 263€</p>",
+      "originalText": "✨ Selbstpflege-Special ✨ - Spare 263 $",
+      "hasHtml": true
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c790",
+      "text": "<p class=\"offerstack-price-text\">5€/Monat</p>",
+      "originalText": "5 $/Monat",
+      "hasHtml": true
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7f0",
+      "text": "<div class=\"button-alternative-text larger tof-sp\">JETZT BEITRETEN 263€ 37€</div>",
+      "originalText": "JETZT BEITRETEN 263 $ 37 $",
+      "hasHtml": true
+    }
+  ]
+}

@@ -1,0 +1,293 @@
+{
+  "timestamp": "2025-06-06T08:55:32.377Z",
+  "issues": {
+    "currency": [
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c760",
+        "text": "<div class=\"price h5-semi-bold green tof-sp\">$37</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c762",
+        "text": "<div class=\"price-old red-ugly\">normally $300</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c764",
+        "text": "<p class=\"price-card-top-bubble absolute bfcm-2024 tof-sp\">✨ <strong id=\"bhc-promo-text\" class=\"norm..."
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c76d",
+        "text": "<p class=\"offerstack-price-text\">$99</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c772",
+        "text": "<p class=\"offerstack-price-text\">$29</p>"
+      },
+      {
+        "nodeId": "4c0079d9-dd5e-c06f-58ec-4e93ff8f68ac",
+        "text": "<p class=\"offerstack-price-text\">$39</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c777",
+        "text": "<p class=\"offerstack-price-text\">$35</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c77c",
+        "text": "<p class=\"offerstack-price-text\">$29</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c781",
+        "text": "<p class=\"offerstack-price-text\">$29</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c786",
+        "text": "<p class=\"offerstack-price-text\">$15</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c78b",
+        "text": "<p class=\"offerstack-price-text\">$20</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c790",
+        "text": "<p class=\"offerstack-price-text\">$5/mo</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7a7",
+        "text": "<p class=\"offerstack-price-text no-width\">$149</p>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d0",
+        "text": "<div class=\"prices-table body-l-semibold test-salespage\">$2499</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d2",
+        "text": "<div class=\"prices-table body-l-semibold test-salespage\">$49</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d4",
+        "text": "<div class=\"prices-table body-l-semibold\">$49</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d6",
+        "text": "<div class=\"prices-table body-l-semibold\">$99</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d8",
+        "text": "<div class=\"prices-table body-l-semibold\">$99</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7da",
+        "text": "<div class=\"prices-table body-l-semibold\">$99</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7dc",
+        "text": "<div class=\"prices-table body-l-semibold\">$29</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7de",
+        "text": "<div class=\"prices-table body-l-semibold\">$99</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e0",
+        "text": "<div class=\"prices-table body-l-semibold\">$199</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e2",
+        "text": "<div class=\"prices-table body-l-semibold\">$49</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e4",
+        "text": "<div class=\"prices-table body-l-semibold\">$49</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e6",
+        "text": "<div class=\"prices-table body-l-semibold\">$249</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7ec",
+        "text": "<div class=\"prices-table body-l-semibold test-salespage\">$49</div>"
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7f0",
+        "text": "<div class=\"button-alternative-text larger tof-sp\">JOIN Now <strong class=\"cta-crossed-red\">$263</st..."
+      }
+    ],
+    "challengeTranslation": [
+      {
+        "nodeId": "70714f18-e920-1bce-aa27-189337127317",
+        "text": "<p class=\"large-text specia-full-bg-pic bottom-mg-mobile less-bottom-mg\">Join the <strong>14-Day Hai..."
+      },
+      {
+        "nodeId": "3139a905-05d3-7fbf-522f-185cba74fb63",
+        "text": "<p class=\"large-text-18pt top-mg max-width-mobile-90\">The 14 Day Haircare Challenge will teach you h..."
+      },
+      {
+        "nodeId": "9f2c5fbf-e5fa-af2e-3577-00e738c9b908",
+        "text": "<p class=\"paragraph-text-4 special-slider-card\">So I have collected all of my best haircare secrets ..."
+      },
+      {
+        "nodeId": "b0a7005c-b0e7-95f3-85ac-998b48b9505a",
+        "text": "<p class=\"large-text special-money-back\">Worst case scenario is that you invest in the 14-day Hairca..."
+      },
+      {
+        "nodeId": "9cd3041c-59ce-f398-e10f-82b03c3c4a27",
+        "text": "<h3 class=\"large-heading smaller-mobile system-fonts\">But... what is the 14 Day Haircare Challenge e..."
+      },
+      {
+        "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c75d",
+        "text": "<h4 class=\"pricetable-title max-width white-font\">14-Day Haircare Challenge Includes:</h4>"
+      },
+      {
+        "nodeId": "d552bedb-b999-ee2d-6ffa-9f461219d037",
+        "text": "<p class=\"large-text text-center margin-bottom-64 width-720\">If you checked off at least one of the ..."
+      }
+    ],
+    "goodHairDays": [
+      {
+        "nodeId": "07a18b81-3882-e9dd-30d2-b4a484ecf7e3",
+        "text": "<h3 class=\"large-heading bottom-margin-32 text-center system-fonts\">What if good hair days were up t..."
+      }
+    ]
+  },
+  "fixes": [
+    {
+      "nodeId": "70714f18-e920-1bce-aa27-189337127317",
+      "text": "<p class=\"large-text specia-full-bg-pic bottom-mg-mobile less-bottom-mg\">Join the <strong>14-Tage-Haarpflege-Challenge</strong> and say goodbye to your hair problems, PERMANENTLY.</p>"
+    },
+    {
+      "nodeId": "3139a905-05d3-7fbf-522f-185cba74fb63",
+      "text": "<p class=\"large-text-18pt top-mg max-width-mobile-90\">The 14-Tage-Haarpflege-Challenge will teach you how to take care of your hair the “RIGHT” way. <br>‍<br>With professional guidance, personalized solutions, holistic remedies, and an effective routine -- <strong>you'll unlock the path to healthy scalp and hair. PERMANENTLY.</strong>‍</p>"
+    },
+    {
+      "nodeId": "9f2c5fbf-e5fa-af2e-3577-00e738c9b908",
+      "text": "<p class=\"paragraph-text-4 special-slider-card\">So I have collected all of my best haircare secrets in the 14-Tage-Haarpflege-Challenge. 13+ years of research &amp; experience for <strong>fast, reliable and long lasting hair transformation</strong>.<br></p>"
+    },
+    {
+      "nodeId": "b0a7005c-b0e7-95f3-85ac-998b48b9505a",
+      "text": "<p class=\"large-text special-money-back\">Worst case scenario is that you invest in the 14-Tage-Haarpflege-Challenge and it doesn't work for you... right?<br><br>Well, if for <strong>any reason</strong> (or no reason at all) you don't like this course, simply email us and we'll refund you 100% of your money immediately,<strong> no questions asked</strong>!<br>‍<br>Why? because we want you to be there if YOU want to be here. It's not good for you AND for us, if you are forced to pay for a program you get nothing from.</p>"
+    },
+    {
+      "nodeId": "9cd3041c-59ce-f398-e10f-82b03c3c4a27",
+      "text": "<h3 class=\"large-heading smaller-mobile system-fonts\">But... what is the 14-Tage-Haarpflege-Challenge exactly?</h3>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c75d",
+      "text": "<h4 class=\"pricetable-title max-width white-font\">14-Tage-Haarpflege-Challenge Includes:</h4>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c760",
+      "text": "<div class=\"price h5-semi-bold green tof-sp\">€37</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c762",
+      "text": "<div class=\"price-old red-ugly\">normally €300</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c764",
+      "text": "<p class=\"price-card-top-bubble absolute bfcm-2024 tof-sp\">✨ <strong id=\"bhc-promo-text\" class=\"normal-text-for-id\">Self-care special</strong> ✨ - <span class=\"underlined\">Save €263</span></p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c76d",
+      "text": "<p class=\"offerstack-price-text\">€99</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c772",
+      "text": "<p class=\"offerstack-price-text\">€29</p>"
+    },
+    {
+      "nodeId": "4c0079d9-dd5e-c06f-58ec-4e93ff8f68ac",
+      "text": "<p class=\"offerstack-price-text\">€39</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c777",
+      "text": "<p class=\"offerstack-price-text\">€35</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c77c",
+      "text": "<p class=\"offerstack-price-text\">€29</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c781",
+      "text": "<p class=\"offerstack-price-text\">€29</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c786",
+      "text": "<p class=\"offerstack-price-text\">€15</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c78b",
+      "text": "<p class=\"offerstack-price-text\">€20</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c790",
+      "text": "<p class=\"offerstack-price-text\">€5/mo</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7a7",
+      "text": "<p class=\"offerstack-price-text no-width\">€149</p>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d0",
+      "text": "<div class=\"prices-table body-l-semibold test-salespage\">€2499</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d2",
+      "text": "<div class=\"prices-table body-l-semibold test-salespage\">€49</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d4",
+      "text": "<div class=\"prices-table body-l-semibold\">€49</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d6",
+      "text": "<div class=\"prices-table body-l-semibold\">€99</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7d8",
+      "text": "<div class=\"prices-table body-l-semibold\">€99</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7da",
+      "text": "<div class=\"prices-table body-l-semibold\">€99</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7dc",
+      "text": "<div class=\"prices-table body-l-semibold\">€29</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7de",
+      "text": "<div class=\"prices-table body-l-semibold\">€99</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e0",
+      "text": "<div class=\"prices-table body-l-semibold\">€199</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e2",
+      "text": "<div class=\"prices-table body-l-semibold\">€49</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e4",
+      "text": "<div class=\"prices-table body-l-semibold\">€49</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7e6",
+      "text": "<div class=\"prices-table body-l-semibold\">€249</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7ec",
+      "text": "<div class=\"prices-table body-l-semibold test-salespage\">€49</div>"
+    },
+    {
+      "nodeId": "e0abcc05-cfbe-5b30-1e92-34ac71e7c7f0",
+      "text": "<div class=\"button-alternative-text larger tof-sp\">JOIN Now <strong class=\"cta-crossed-red\">€263</strong> <strong class=\"cta-focus-price green\">€37</strong></div>"
+    },
+    {
+      "nodeId": "d552bedb-b999-ee2d-6ffa-9f461219d037",
+      "text": "<p class=\"large-text text-center margin-bottom-64 width-720\">If you checked off at least one of the above questions then you might soon join the 91,000+ women who've already changed their lives with the 14-Tage-Haarpflege-Challenge.</p>"
+    },
+    {
+      "nodeId": "07a18b81-3882-e9dd-30d2-b4a484ecf7e3",
+      "text": "<h3 class=\"large-heading bottom-margin-32 text-center system-fonts\">What if Tage mit perfektem Haar were up to you?<a href=\"https://hairqare.co/challenge-quiz\"><strong><br></strong></a></h3>"
+    }
+  ]
+}

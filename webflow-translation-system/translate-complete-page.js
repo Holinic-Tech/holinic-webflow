@@ -25,6 +25,21 @@ const LANGUAGE_CONFIG = {
     - "Hairqare" → NEVER translate (brand name)
     - "DIY" → keep as "DIY"
     CURRENCY: Convert all USD ($, US$) to EUR (€). Examples: $47 → €47, 300 $ → 300€`
+  },
+  fr: {
+    name: 'French',
+    localeId: '684683d87f6a3ae6079ec99f',
+    instructions: `Use informal "tu" throughout - like talking to a girlfriend. Keep "Challenge" untranslated when standalone.
+    Write in friendly, conversational French that sounds natural for women aged 25-35. Avoid formal language.
+    KEY TRANSLATIONS:
+    - "14-Day Haircare Challenge" → "Challenge capillaire de 14 jours"
+    - "Good hair days" → "Des cheveux parfaits tous les jours"
+    - "Challenge" (standalone/capitalized) → keep as "Challenge"
+    - "Hairqare" → NEVER translate (brand name)
+    - "DIY" → keep as "DIY"
+    - "Hassle" → "Galère" or "Prise de tête" (NOT "Tracas")
+    TONE: Like chatting with your best friend - warm, encouraging, relatable. Use expressions young French women actually say.
+    CURRENCY: Convert all USD ($, US$) to EUR (€). Examples: $47 → €47, 300 $ → 300€`
   }
 };
 
@@ -181,6 +196,10 @@ async function updatePageWithPagination(pageId, localeId, translations) {
 
 async function translateCompletePage(pageSlug, targetLang) {
   const config = LANGUAGE_CONFIG[targetLang];
+  
+  if (!config) {
+    throw new Error(`Language not supported: ${targetLang}. Supported languages: ${Object.keys(LANGUAGE_CONFIG).join(', ')}`);
+  }
   
   console.log(`\n🌐 Translating COMPLETE page "${pageSlug}" to ${config.name}...\n`);
   

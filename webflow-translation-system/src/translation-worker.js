@@ -56,7 +56,7 @@ CURRENCY: Convert all USD ($, US$) to EUR (€).`
   },
   fr: {
     name: 'French',
-    localeId: '',
+    localeId: '684683d87f6a3ae6079ec99f',
     baseInstructions: `Use informal "tu" throughout. Keep "Challenge" untranslated. Natural conversational French.
 CURRENCY: Convert all USD ($, US$) to EUR (€).`
   }

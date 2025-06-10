@@ -1,0 +1,908 @@
+{
+  "pageId": "672c82dd7bb594490ba42d38",
+  "nodes": [
+    {
+      "id": "70714f18-e920-1bce-aa27-189337127315",
+      "type": "text",
+      "text": {
+        "html": "<h1 class=\"display-heading responsive-text less-line-height smaller-long-text max-width system-font\">Reduce hair loss and achieve healthier, happier hair in just 14 days.</h1>",
+        "text": "Reduce hair loss and achieve healthier, happier hair in just 14 days."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "8ad9aa00-c41e-c7a1-f905-a9b0f3ab7fd5",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "67989197ebe093c58f1d507c"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "70714f18-e920-1bce-aa27-189337127317",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"large-text specia-full-bg-pic bottom-mg-mobile less-bottom-mg\">Join the <strong>14-Day Haircare Challenge</strong> and say goodbye to your hair problems, PERMANENTLY.</p>",
+        "text": "Join the 14-Day Haircare Challenge and say goodbye to your hair problems, PERMANENTLY."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "244dff6d-9fb0-a3af-680a-d9efdedb2656",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "664b0a5d81ad906e12b8931f"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "244dff6d-9fb0-a3af-680a-d9efdedb2657",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"offerstack-item-text atf-font\">Address the root cause of your hair loss</p>",
+        "text": "Address the root cause of your hair loss"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "ec113be0-e34e-f4fd-83fb-b8de7b1251ad",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "664b0a5d81ad906e12b8931f"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "ec113be0-e34e-f4fd-83fb-b8de7b1251ae",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"offerstack-item-text atf-font\">Create personalised remedies for your specific hair type and concerns</p>",
+        "text": "Create personalised remedies for your specific hair type and concerns"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "aa1599fc-25d6-8a86-2d3b-a70f267a0d2e",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "664b0a5d81ad906e12b8931f"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "aa1599fc-25d6-8a86-2d3b-a70f267a0d2f",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"offerstack-item-text atf-font\">Make your own DIY shampoo &amp; conditioner suited to you</p>",
+        "text": "Make your own DIY shampoo & conditioner suited to you"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "7dddf458-d30d-0217-f3d1-ca91bd4390db",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"button-text-main\">Start the challenge</div>",
+        "text": "Start the challenge"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "bbca20c5-f1b0-4a09-11ca-10c33db82eed",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"start-date-mini-title\">Starting on:</p>",
+        "text": "Starting on:"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "74c681c1-9cd1-2f42-6e2c-08411bade045",
+      "type": "component-instance",
+      "componentId": "661f1ba1-e819-3586-2cc3-801654c73733",
+      "propertyOverrides": []
+    },
+    {
+      "id": "7dddf458-d30d-0217-f3d1-ca91bd4390e0",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"_100 smaller-mobile less-side-mg system-fonts\">100%</p>",
+        "text": "100%"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "7dddf458-d30d-0217-f3d1-ca91bd4390e2",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"get-started-add-on no-width tof\">Satisfaction Guaranteed or get your money back.</p>",
+        "text": "Satisfaction Guaranteed or get your money back."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "7dddf458-d30d-0217-f3d1-ca91bd4390de",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"divider-100 visible-mobile\">|</p>",
+        "text": "|"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "290cf559-bbfb-8fe5-7298-3ba55d092962",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"_100 smaller-mobile less-side-mg system-fonts\">0%</p>",
+        "text": "0%"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "34f72d00-523c-a70a-e6b1-93db3e7a144d",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"get-started-add-on no-width\">Hassle</p>",
+        "text": "Hassle"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "648bf037-b3de-3ca4-4412-d5fba25d8d3d",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"sticky-small-text center\"><strong id=\"bhc-promo-text\" class=\"normal-text-for-id\">SELF-CARE Special</strong> | 85%&nbsp;OFF</div>",
+        "text": "SELF-CARE Special | 85% OFF"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "927b0856-7e54-190d-2262-dc649598798f",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"button-text-main sticky-bar-cta\">Start the challenge</div>",
+        "text": "Start the challenge"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a85a2e0c-39d3-bd6a-a150-00cdde97fee2",
+      "type": "text",
+      "text": {
+        "html": "<h3 class=\"small-heading centered font-32\">91,000+ Women have already taken this challenge</h3>",
+        "text": "91,000+ Women have already taken this challenge"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "987fb1d4-c17f-da41-5f80-f96728bf2b02",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"_100 smaller-mobile no-mg system-fonts\">92%</p>",
+        "text": "92%"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "987fb1d4-c17f-da41-5f80-f96728bf2b04",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"get-started-add-on no-max-width\">Started seeing results in just 14 days</p>",
+        "text": "Started seeing results in just 14 days"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "4b9418b7-b612-9030-c355-898b2e2cecaa",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"video-title-text with-mg\">How I Overcame 10 Years of Excessive Hair Loss in Just 14 Days.</div>",
+        "text": "How I Overcame 10 Years of Excessive Hair Loss in Just 14 Days."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "b106d956-a3c2-74a4-e1ee-240445427579",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"video-title-text with-mg\">My hair improved SOO dramatically in 14 days my friends had to join the Challenge too!</div>",
+        "text": "My hair improved SOO dramatically in 14 days my friends had to join the Challenge too!"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "22e438a2-1cff-6298-6b3f-1ba6aa024e78",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"video-title-text with-mg\">How I found a more affordable (and more effective) way to care for my curls after a decade of overspending.</div>",
+        "text": "How I found a more affordable (and more effective) way to care for my curls after a decade of overspending."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "b64ac806-f250-adbd-dddf-7ace37d779ca",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"cta-small-text\">85% OFF now</div>",
+        "text": "85% OFF now"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "b64ac806-f250-adbd-dddf-7ace37d779cc",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"cta-main-text\">Start the challenge </div>",
+        "text": "Start the challenge "
+      },
+      "attributes": {}
+    },
+    {
+      "id": "b64ac806-f250-adbd-dddf-7ace37d779cf",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"text-block-12 bigger-typo\">Start the Challenge</div>",
+        "text": "Start the Challenge"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc5b",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74ac99"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc5d",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">Before</p>",
+        "text": "Before"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc60",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">After</p>",
+        "text": "After"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc64",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "673db2cd716b1d61c48e6e05"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "ce9e57bc-7c86-7a0b-1c03-07edfa2acdaa",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "673db37a71e0f65e1b98bf2d"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc67",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74ab42"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc69",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">Day 1</p>",
+        "text": "Day 1"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc6c",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">Day 14</p>",
+        "text": "Day 14"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "fc3e37f8-c82a-5184-0653-992c23ac96cc",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "673db3b4444df5d6f7536556"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc70",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "673db2e8456668dfc4c08596"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc73",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74ac9c"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc75",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">Day 1</p>",
+        "text": "Day 1"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc78",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">Day 14</p>",
+        "text": "Day 14"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc7c",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74ac50"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc7e",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">Day 14</p>",
+        "text": "Day 14"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc80",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74ac42"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc82",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"day-1-text\">Day 1</p>",
+        "text": "Day 1"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "0fd4ffa6-1b95-ba2a-9daa-8c39caad6ee5",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "664b1014e30cb0f0ef5420fe"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc86",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74ac9e"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "4cc1e310-9af2-4f6d-7e4d-564410846bd4",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "664b0ebc3f74d97f08e84392"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a88493a4-d996-5b8a-e882-da421bca243e",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c31dc5e3e7a78fd8c2c85"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "769a374e-aa23-9435-9330-9a11670eb6d1",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c318ec4946f92c40080ff"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "da8d1f79-d00b-b1cf-2b38-83221122f06c",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "673da90d8a93971b216ae42b"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc88",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a80d"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "e95c600c-1c54-9cc2-a72d-63155f01dc8a",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a818"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "4d0c6838-cb9a-a7f4-a94c-613fc3b4cf62",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"cta-small-text\">85% OFF now</div>",
+        "text": "85% OFF now"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "4d0c6838-cb9a-a7f4-a94c-613fc3b4cf64",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"cta-main-text\">Start the challenge </div>",
+        "text": "Start the challenge "
+      },
+      "attributes": {}
+    },
+    {
+      "id": "1bc8be93-d913-ac1d-9ebf-8f5b37c62ddb",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"text-block-12 bigger-typo\">Start the Challenge</div>",
+        "text": "Start the Challenge"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0db0",
+      "type": "text",
+      "text": {
+        "html": "<h3 class=\"large-heading-2 align-center smaller-mobile system-font\">Hair problems? We know your pain. </h3>",
+        "text": "Hair problems? We know your pain. "
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0db2",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"large-text-18pt top-mg no-padding center\">These issues don't just affect your appearance; they take a toll on your confidence and self-esteem.<br><br>Each day becomes a struggle as you try to manage your hair, feeling helpless and in pain. <br><br>You miss feeling beautiful and feminine, like the version of yourself you used to be. You've lost confidence and find yourself avoiding social situations because of your hair.</p>",
+        "text": "These issues don't just affect your appearance; they take a toll on your confidence and self-esteem.\n\nEach day becomes a struggle as you try to manage your hair, feeling helpless and in pain. \n\nYou miss feeling beautiful and feminine, like the version of yourself you used to be. You've lost confidence and find yourself avoiding social situations because of your hair."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0dbb",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c26970d4e626bebcf35be"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0dbc",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c2697a2e9171c82e449c8"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0dbe",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c26963027a7d2c34e24d4"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0dbf",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c2697fcbeccc421d89360"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0dc0",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"medium-heading system-fonts\">It's true!  There are so many factors that affect your hair health.</p>",
+        "text": "It's true!  There are so many factors that affect your hair health."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "10059b80-9bdb-397f-b23b-1e6cd5ed0dc2",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c297d136a82984db42947"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "12666970-00db-5487-d47c-6a1fd2b7db36",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c2b52b7d280b612e587b3"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "12666970-00db-5487-d47c-6a1fd2b7db38",
+      "type": "text",
+      "text": {
+        "html": "<h6 class=\"gradient-text-heading centered black-font\">Nutrition</h6>",
+        "text": "Nutrition"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "12666970-00db-5487-d47c-6a1fd2b7db3a",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"card-text centered\">Eating foods which are not rich in protein, vitamins and minerals blocks hair growth.</div>",
+        "text": "Eating foods which are not rich in protein, vitamins and minerals blocks hair growth."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "5f0ddb09-12be-e2a4-d772-c1a1ea68a4d4",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c2b5ce4d4d9013a40a0c8"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "5f0ddb09-12be-e2a4-d772-c1a1ea68a4d6",
+      "type": "text",
+      "text": {
+        "html": "<h6 class=\"gradient-text-heading centered black-font\">Metabolism</h6>",
+        "text": "Metabolism"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "5f0ddb09-12be-e2a4-d772-c1a1ea68a4d8",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"card-text centered\">Slow metabolism can result in your hair becoming dry, brittle, coarse and even break off.</div>",
+        "text": "Slow metabolism can result in your hair becoming dry, brittle, coarse and even break off."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "dbeb6d53-ec1e-e859-948c-7c1259b2a0cd",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c2b51c4946f92c4fbb578"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "dbeb6d53-ec1e-e859-948c-7c1259b2a0cf",
+      "type": "text",
+      "text": {
+        "html": "<h6 class=\"gradient-text-heading centered black-font\">Hormones</h6>",
+        "text": "Hormones"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "dbeb6d53-ec1e-e859-948c-7c1259b2a0d1",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"card-text centered\">DHT hormone attacks your hair follicle thereby causing hair thinning and hair fall.</div>",
+        "text": "DHT hormone attacks your hair follicle thereby causing hair thinning and hair fall."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "afdcbe8b-20eb-cc94-7925-b4b5f375f0b6",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c2b5256ddce1a04402a97"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "afdcbe8b-20eb-cc94-7925-b4b5f375f0b8",
+      "type": "text",
+      "text": {
+        "html": "<h6 class=\"gradient-text-heading centered black-font\">Stress</h6>",
+        "text": "Stress"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "afdcbe8b-20eb-cc94-7925-b4b5f375f0ba",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"card-text centered\">Increased cortisol levels disrupts your hair cycle causing hair loss.</div>",
+        "text": "Increased cortisol levels disrupts your hair cycle causing hair loss."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "dba3205f-5550-9839-68d8-ce419498f57c",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666c2ce4dacec95c3839a9c2"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "dba3205f-5550-9839-68d8-ce419498f57e",
+      "type": "text",
+      "text": {
+        "html": "<h6 class=\"gradient-text-heading centered black-font\">Environment</h6>",
+        "text": "Environment"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "dba3205f-5550-9839-68d8-ce419498f580",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"card-text centered\">Sweat, heat, dust and pollution can lead to poor health of the hair follicle and eventual hair damage.</div>",
+        "text": "Sweat, heat, dust and pollution can lead to poor health of the hair follicle and eventual hair damage."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "aa22df36-8c2f-8f30-f884-25ef8fd47561",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a80d"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "aa22df36-8c2f-8f30-f884-25ef8fd47563",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a818"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "7711753e-9e14-45c7-da94-489da84929d3",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"large-text-standalone\">One-size-fits-all solutions simply won’t address them all.</p>",
+        "text": "One-size-fits-all solutions simply won’t address them all."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "7711753e-9e14-45c7-da94-489da84929d5",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"big-quote-text width-800 font-38 system-font\">If you want to solve your hair issues, you need to LEARN how to take care of your hair.</p>",
+        "text": "If you want to solve your hair issues, you need to LEARN how to take care of your hair."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "7711753e-9e14-45c7-da94-489da84929d7",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "664b1b3d0a7ae2112805bcf6"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "7711753e-9e14-45c7-da94-489da84929d9",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "666bcbe5c0862d09ef214ead"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f6191e",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "665d48617f0de91bc19ff3b7"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61921",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a81d"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "3f87de6c-6c68-2300-b523-2bcbbcc90a5a",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "6530b38a8fb38929ccbe6cf4"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "3f87de6c-6c68-2300-b523-2bcbbcc90a5d",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a81d"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "284c7984-ac6f-3a75-c1a1-2536daf5bdc1",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74ac99"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "284c7984-ac6f-3a75-c1a1-2536daf5bdc4",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a81d"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "284c7984-ac6f-3a75-c1a1-2536daf5bdbc",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "664b30695a1d9a18aa450b5f"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "284c7984-ac6f-3a75-c1a1-2536daf5bdbf",
+      "type": "image",
+      "image": {
+        "alt": "__wf_reserved_inherit",
+        "assetId": "64fab17c41d7a2600b74a81d"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61902",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"small-cap-purple-new special-flexbox\">Stop the guesswork<br></div>",
+        "text": "Stop the guesswork\n"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61905",
+      "type": "text",
+      "text": {
+        "html": "<h3 class=\"medium-heading system-fonts\">Create a personalised routine to reduce hair loss and achieve healthier hair.</h3>",
+        "text": "Create a personalised routine to reduce hair loss and achieve healthier hair."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61907",
+      "type": "text",
+      "text": {
+        "html": "<p class=\"paragraph-text left-align top-margin-40 max-width\">◆ Tailored hair care routine to <strong class=\"bold-text-15 blue-bg in-text-color\">strengthen and revitalise your strands.</strong><br><br>◆ A nutrient-rich meal plan to <strong class=\"bold-text-15 blue-bg in-text-color\">minimise hair loss</strong> and enhance hair thickness.<br><br>◆ Efficient morning routine for a confident start to your day with <strong class=\"bold-text-15 blue-bg in-text-color\">healthier, fuller hair throughout the day.</strong></p>",
+        "text": "◆ Tailored hair care routine to strengthen and revitalise your strands.\n\n◆ A nutrient-rich meal plan to minimise hair loss and enhance hair thickness.\n\n◆ Efficient morning routine for a confident start to your day with healthier, fuller hair throughout the day."
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61911",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"mini-title-text\">92%</div>",
+        "text": "92%"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61913",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"body-s-regular condensed-text\">See results after 14 days</div>",
+        "text": "See results after 14 days"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61915",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"divider-reviews hide-responsive hide-tablet\">|</div>",
+        "text": "|"
+      },
+      "attributes": {}
+    },
+    {
+      "id": "a849f8a5-91db-a207-b9d6-a984f9f61918",
+      "type": "text",
+      "text": {
+        "html": "<div class=\"mini-title-text\">86%</div>",
+        "text": "86%"
+      },
+      "attributes": {}
+    }
+  ],
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "total": 520
+  },
+  "lastUpdated": "2025-06-05T03:44:08.847Z"
+}
