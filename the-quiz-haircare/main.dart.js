@@ -34706,7 +34706,7 @@ if(q.length!==0)p[r]=q[0].toUpperCase()+B.e.bJ(q,1)}return B.b.cc(p," ")},
 b2D(){var s=0,r=A.A(t.y),q,p,o
 var $async$b2D=A.B(function(a,b){if(a===1)return A.x(b,r)
 while(true)switch(s){case 0:p=window.navigator.userAgent.toLowerCase()
-o=B.e.p(p,"fban")||B.e.p(p,"fbav")||B.e.p(p,"fb_iab")||B.e.p(p,"fbios")||B.e.p(p,"fblc")||B.e.p(p,"instagram")
+o=(B.e.p(p,"fban")||B.e.p(p,"fbios")||B.e.p(p,"fb_iab"))&&!B.e.p(p,"instagram")
 A.ci("User Agent: "+p)
 A.ci("Is Facebook WebView: "+o)
 q=o
