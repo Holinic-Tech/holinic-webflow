@@ -1,365 +1,323 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuesta de Calidad de Traducción</title>
-    <style>
-        .translation-survey {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 16px;
-            padding: 24px;
-            max-width: 400px;
-            margin: 20px auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Encuesta de Calidad de Traducción</title>
+  <meta name="description" content="Evalúa la calidad de la traducción y deja comentarios para mejorar." />
 
-        .translation-survey.expanded {
-            max-width: 450px;
-            padding: 28px;
-        }
+  <!-- Canonical -->
+  <link rel="canonical" href="https://join.hairqare.co/es-feedback-widget.html" />
 
-        .translation-survey::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            z-index: -1;
-        }
+  <!-- Performance hints -->
+  <link rel="preconnect" href="https://hook.us1.make.com" crossorigin />
+  <link rel="dns-prefetch" href="https://hook.us1.make.com" />
 
-        .survey-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Encuesta de Calidad de Traducción" />
+  <meta property="og:description" content="Evalúa la calidad de la traducción y deja comentarios para mejorar." />
+  <meta property="og:url" content="https://join.hairqare.co/es-feedback-widget.html" />
+  <!-- Replace with an actual image you host -->
+  <meta property="og:image" content="https://join.hairqare.co/assets/translation-widget-cover.jpg" />
 
-        .rating-container {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-            gap: 8px;
-        }
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Encuesta de Calidad de Traducción" />
+  <meta name="twitter:description" content="Evalúa la calidad de la traducción y deja comentarios para mejorar." />
+  <meta name="twitter:image" content="https://join.hairqare.co/assets/translation-widget-cover.jpg" />
 
-        .rating-emoji {
-            font-size: 32px;
-            cursor: pointer;
-            padding: 12px;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(255,255,255,0.1);
-            border: 2px solid transparent;
-            user-select: none;
-        }
+  <!-- Iframely explicit discovery: ask for a clean iframe render of THIS URL -->
+  <!-- You can adjust media (aspect-ratio or height). -->
+  <link
+    rel="iframely app"
+    href="https://join.hairqare.co/es-feedback-widget.html"
+    type="text/html"
+    media="aspect-ratio: 4/3"
+  />
 
-        .rating-emoji:hover {
-            transform: translateY(-4px) scale(1.1);
-            background: rgba(255,255,255,0.2);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
+  <!-- Optional: oEmbed discovery (implement /oembed on your host to return iframe HTML) -->
+  <!-- If you don't implement it, Iframely will still use the rel=iframely tag above. -->
+  <link
+    rel="alternate"
+    type="application/json+oembed"
+    href="https://join.hairqare.co/oembed?url=https%3A%2F%2Fjoin.hairqare.co%2Fes-feedback-widget.html&format=json"
+    title="Encuesta de Calidad de Traducción"
+  />
 
-        .rating-emoji.selected {
-            background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.5);
-            transform: translateY(-2px) scale(1.05);
-        }
+  <!-- NOTE: Browsers enforce frame-ancestors only from RESPONSE HEADERS.
+       Set on your server (examples):
+       X-Frame-Options:            (remove or empty)
+       Content-Security-Policy:    frame-ancestors https://*.iframely.net https://your-embed-host.com;
+  -->
 
-        .comment-section {
-            margin-top: 20px;
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transform: translateY(20px);
-            transition: all 0.4s ease;
-        }
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
 
-        .comment-section.show {
-            opacity: 1;
-            max-height: 200px;
-            transform: translateY(0);
-        }
+    .translation-survey {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 400px;
+      margin: 20px auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .translation-survey.expanded { max-width: 450px; padding: 28px; }
+    .translation-survey::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      z-index: -1;
+    }
+    .survey-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
 
-        .comment-textarea {
-            width: 100%;
-            min-height: 80px;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.9);
-            color: #333;
-            font-family: inherit;
-            font-size: 14px;
-            resize: vertical;
-            box-sizing: border-box;
-        }
+    .rating-container { display: flex; justify-content: space-between; margin: 20px 0; gap: 8px; }
+    .rating-emoji {
+      font-size: 32px; cursor: pointer; padding: 12px; border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(255,255,255,0.1); border: 2px solid transparent; user-select: none;
+    }
+    .rating-emoji:hover {
+      transform: translateY(-4px) scale(1.1);
+      background: rgba(255,255,255,0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .rating-emoji.selected {
+      background: rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px) scale(1.05);
+    }
 
-        .comment-textarea::placeholder {
-            color: #666;
-        }
+    .comment-section {
+      margin-top: 20px; opacity: 0; max-height: 0; overflow: hidden; transform: translateY(20px);
+      transition: all 0.4s ease;
+    }
+    .comment-section.show { opacity: 1; max-height: 240px; transform: translateY(0); }
 
-        .submit-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
+    .comment-textarea {
+      width: 100%; min-height: 100px; padding: 12px; border: none; border-radius: 8px;
+      background: rgba(255,255,255,0.9); color: #333; font-family: inherit; font-size: 14px; resize: vertical;
+    }
+    .comment-textarea::placeholder { color: #666; }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
-        }
+    .submit-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600;
+      cursor: pointer; margin-top: 12px; transition: all 0.3s ease; font-size: 14px;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4); }
 
-        .thank-you {
-            display: none;
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 16px;
-            font-weight: 500;
-        }
+    .thank-you {
+      display: none; background: linear-gradient(45deg, #00b894, #00cec9);
+      padding: 20px; border-radius: 12px; margin-top: 16px; font-weight: 500;
+    }
+    .loading { display: none; font-size: 14px; opacity: 0.9; margin-top: 10px; }
 
-        .loading {
-            display: none;
-            font-size: 14px;
-            opacity: 0.8;
-            margin-top: 10px;
-        }
+    .rating-labels { display: flex; justify-content: space-between; font-size: 10px; opacity: 0.8; margin-top: 8px; }
 
-        .rating-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            opacity: 0.8;
-            margin-top: 8px;
-        }
-
-        @media (max-width: 480px) {
-            .translation-survey {
-                margin: 10px;
-                padding: 20px;
-            }
-            
-            .rating-emoji {
-                font-size: 28px;
-                padding: 8px;
-            }
-            
-            .survey-title {
-                font-size: 16px;
-            }
-        }
-    </style>
+    @media (max-width: 480px) {
+      .translation-survey { margin: 10px; padding: 20px; }
+      .rating-emoji { font-size: 28px; padding: 8px; }
+      .survey-title { font-size: 16px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="translation-survey" id="translationSurvey">
-        <h3 class="survey-title">¿Qué tan buena estuvo la traducción de este video?</h3>
-        
-        <div class="rating-container">
-            <div class="rating-emoji" data-rating="1" title="Muy mala">🤮</div>
-            <div class="rating-emoji" data-rating="2" title="Mala">😞</div>
-            <div class="rating-emoji" data-rating="3" title="Regular">😐</div>
-            <div class="rating-emoji" data-rating="4" title="Buena">😊</div>
-            <div class="rating-emoji" data-rating="5" title="Excelente">🤩</div>
-        </div>
-        
-        <div class="rating-labels">
-            <span>Muy mala</span>
-            <span>Excelente</span>
-        </div>
+  <div class="translation-survey" id="translationSurvey" role="region" aria-labelledby="surveyTitle">
+    <h3 id="surveyTitle" class="survey-title">¿Qué tan buena estuvo la traducción de este video?</h3>
 
-        <div class="comment-section" id="commentSection">
-            <textarea 
-                class="comment-textarea" 
-                id="commentText" 
-                placeholder="Cuéntanos más detalles: ¿Qué específicamente estuvo bien o mal? ¿Hubo palabras confusas?"
-                maxlength="500">
-            </textarea>
-            <button class="submit-btn" id="submitComment">Enviar comentario</button>
-        </div>
-
-        <div class="loading" id="loading">Enviando...</div>
-        <div class="thank-you" id="thankYou">¡Gracias por tu feedback! 🙏</div>
+    <div class="rating-container" role="radiogroup" aria-label="Calificación de la traducción">
+      <button class="rating-emoji" data-rating="1" title="Muy mala" aria-label="Muy mala" aria-pressed="false">🤮</button>
+      <button class="rating-emoji" data-rating="2" title="Mala" aria-label="Mala" aria-pressed="false">😞</button>
+      <button class="rating-emoji" data-rating="3" title="Regular" aria-label="Regular" aria-pressed="false">😐</button>
+      <button class="rating-emoji" data-rating="4" title="Buena" aria-label="Buena" aria-pressed="false">😊</button>
+      <button class="rating-emoji" data-rating="5" title="Excelente" aria-label="Excelente" aria-pressed="false">🤩</button>
     </div>
 
-    <script>
-        class TranslationSurvey {
-            constructor() {
-                this.selectedRating = null;
-                this.pageUrl = window.location.href;
-                this.userData = this.getUserData();
-                this.submissionId = this.generateSubmissionId();
-                this.ratingSubmitted = false;
-                
-                this.init();
-            }
+    <div class="rating-labels" aria-hidden="true">
+      <span>Muy mala</span>
+      <span>Excelente</span>
+    </div>
 
-            init() {
-                this.bindEvents();
-            }
+    <div class="comment-section" id="commentSection">
+      <label for="commentText" class="sr-only">Cuéntanos más detalles</label>
+      <textarea
+        class="comment-textarea"
+        id="commentText"
+        placeholder="Cuéntanos más detalles: ¿Qué específicamente estuvo bien o mal? ¿Hubo palabras confusas?"
+        maxlength="500"
+      ></textarea>
+      <button class="submit-btn" id="submitComment" type="button">Enviar comentario</button>
+    </div>
 
-            getUserEmail() {
-                // Get Circle.so user email from the circleUser object
-                return window.circleUser?.email || 'anonymous@unknown.com';
-            }
+    <div class="loading" id="loading">Enviando...</div>
+    <div class="thank-you" id="thankYou" role="status" aria-live="polite">¡Gracias por tu feedback! 🙏</div>
+  </div>
 
-            getUserData() {
-                // Get additional Circle user data
-                const user = window.circleUser || {};
-                return {
-                    email: user.email || 'anonymous@unknown.com',
-                    firstName: user.firstName || '',
-                    lastName: user.lastName || '',
-                    name: user.name || '',
-                    publicUid: user.publicUid || '',
-                    isAdmin: user.isAdmin || false,
-                    isModerator: user.isModerator || false
-                };
-            }
+  <script>
+    (() => {
+      // Guard against double init
+      if (window.__translationSurveyInitialized) return;
+      window.__translationSurveyInitialized = true;
 
-            generateSubmissionId() {
-                return Date.now().toString(36) + Math.random().toString(36).substr(2);
-            }
+      class TranslationSurvey {
+        constructor() {
+          this.selectedRating = null;
+          this.pageUrl = location.href;
+          this.userData = this.getUserData();
+          this.submissionId = this.generateSubmissionId();
+          this.ratingSubmitted = false;
 
-            bindEvents() {
-                const emojis = document.querySelectorAll('.rating-emoji');
-                const submitBtn = document.getElementById('submitComment');
+          this.$survey = document.getElementById('translationSurvey');
+          this.$commentSection = document.getElementById('commentSection');
+          this.$commentText = document.getElementById('commentText');
+          this.$submitBtn = document.getElementById('submitComment');
+          this.$loading = document.getElementById('loading');
+          this.$thankYou = document.getElementById('thankYou');
 
-                emojis.forEach(emoji => {
-                    emoji.addEventListener('click', (e) => this.handleRatingClick(e));
-                });
-
-                submitBtn.addEventListener('click', () => this.submitComment());
-            }
-
-            async handleRatingClick(e) {
-                const rating = parseInt(e.target.dataset.rating);
-                this.selectedRating = rating;
-
-                // Visual feedback
-                document.querySelectorAll('.rating-emoji').forEach(emoji => {
-                    emoji.classList.remove('selected');
-                });
-                e.target.classList.add('selected');
-
-                // Submit rating immediately
-                await this.submitRating();
-
-                // Expand survey and show comment section
-                document.getElementById('translationSurvey').classList.add('expanded');
-                setTimeout(() => {
-                    document.getElementById('commentSection').classList.add('show');
-                }, 200);
-            }
-
-            async submitRating() {
-                if (this.ratingSubmitted) return; // Prevent duplicate submissions
-                
-                const data = {
-                    type: 'rating',
-                    submissionId: this.submissionId,
-                    rating: this.selectedRating,
-                    pageUrl: this.pageUrl,
-                    userData: this.userData,
-                    timestamp: new Date().toISOString(),
-                    userAgent: navigator.userAgent
-                };
-
-                await this.sendData(data);
-                this.ratingSubmitted = true;
-                console.log('Rating submitted:', this.selectedRating);
-            }
-
-            async submitComment() {
-                const comment = document.getElementById('commentText').value.trim();
-                
-                if (!comment) {
-                    // If no comment, just show thank you
-                    this.showThankYou();
-                    return;
-                }
-
-                const data = {
-                    type: 'comment',
-                    submissionId: this.submissionId,
-                    rating: this.selectedRating,
-                    comment: comment,
-                    pageUrl: this.pageUrl,
-                    userData: this.userData,
-                    timestamp: new Date().toISOString()
-                };
-
-                document.getElementById('loading').style.display = 'block';
-                
-                await this.sendData(data);
-                
-                this.showThankYou();
-            }
-
-            showThankYou() {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('commentSection').style.display = 'none';
-                document.getElementById('thankYou').style.display = 'block';
-            }
-
-            async sendData(data) {
-                try {
-                    // Your Make.com webhook URL
-                    const webhookUrl = 'https://hook.us1.make.com/p2ghvuhu3d9msqcnqpzrgcv6vtyek37m';
-                    
-                    const response = await fetch(webhookUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    console.log('Data sent successfully:', data);
-                } catch (error) {
-                    console.error('Error sending data:', error);
-                    // Fallback: store in localStorage for later retry
-                    this.storeDataLocally(data);
-                }
-            }
-
-            storeDataLocally(data) {
-                const stored = JSON.parse(localStorage.getItem('pendingFeedback') || '[]');
-                stored.push(data);
-                localStorage.setItem('pendingFeedback', JSON.stringify(stored));
-            }
+          this.bindEvents();
         }
 
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            new TranslationSurvey();
-        });
-
-        // If already loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => new TranslationSurvey());
-        } else {
-            new TranslationSurvey();
+        getUserData() {
+          const u = window.circleUser || {};
+          return {
+            email: u.email || 'anonymous@unknown.com',
+            firstName: u.firstName || '',
+            lastName: u.lastName || '',
+            name: u.name || '',
+            publicUid: u.publicUid || '',
+            isAdmin: !!u.isAdmin,
+            isModerator: !!u.isModerator
+          };
         }
-    </script>
+
+        generateSubmissionId() {
+          return (Date.now().toString(36) + Math.random().toString(36).slice(2));
+        }
+
+        bindEvents() {
+          document.querySelectorAll('.rating-emoji').forEach(btn => {
+            btn.addEventListener('click', () => this.handleRatingClick(btn));
+            btn.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.handleRatingClick(btn); }
+            });
+          });
+          this.$submitBtn.addEventListener('click', () => this.submitComment());
+        }
+
+        async handleRatingClick(btn) {
+          const rating = parseInt(btn.dataset.rating, 10);
+          if (Number.isNaN(rating)) return;
+
+          this.selectedRating = rating;
+
+          // Visual state
+          document.querySelectorAll('.rating-emoji').forEach(el => {
+            el.classList.toggle('selected', el === btn);
+            el.setAttribute('aria-pressed', el === btn ? 'true' : 'false');
+          });
+
+          // Submit rating immediately (once)
+          await this.submitRating();
+
+          // Expand survey and show comment box
+          this.$survey.classList.add('expanded');
+          requestAnimationFrame(() => this.$commentSection.classList.add('show'));
+        }
+
+        async submitRating() {
+          if (this.ratingSubmitted || !this.selectedRating) return;
+
+          const data = {
+            type: 'rating',
+            submissionId: this.submissionId,
+            rating: this.selectedRating,
+            pageUrl: this.pageUrl,
+            userData: this.userData,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+          };
+
+          try {
+            await this.sendData(data);
+            this.ratingSubmitted = true;
+            console.log('Rating submitted:', this.selectedRating);
+          } catch (e) {
+            console.error('Rating send failed:', e);
+          }
+        }
+
+        async submitComment() {
+          const comment = (this.$commentText.value || '').trim();
+
+          // If no comment, just show thank you (rating already sent)
+          if (!comment) return this.showThankYou();
+
+          const data = {
+            type: 'comment',
+            submissionId: this.submissionId,
+            rating: this.selectedRating,
+            comment,
+            pageUrl: this.pageUrl,
+            userData: this.userData,
+            timestamp: new Date().toISOString()
+          };
+
+          this.$loading.style.display = 'block';
+
+          try {
+            await this.sendData(data);
+            this.showThankYou();
+          } catch (e) {
+            console.error('Comment send failed:', e);
+            this.storeDataLocally(data);
+            this.showThankYou();
+          }
+        }
+
+        showThankYou() {
+          this.$loading.style.display = 'none';
+          this.$commentSection.style.display = 'none';
+          this.$thankYou.style.display = 'block';
+        }
+
+        async sendData(payload) {
+          const webhookUrl = 'https://hook.us1.make.com/p2ghvuhu3d9msqcnqpzrgcv6vtyek37m';
+          const res = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            keepalive: true
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return true;
+        }
+
+        storeDataLocally(payload) {
+          try {
+            const key = 'pendingFeedback';
+            const stored = JSON.parse(localStorage.getItem(key) || '[]');
+            stored.push(payload);
+            localStorage.setItem(key, JSON.stringify(stored));
+          } catch {}
+        }
+      }
+
+      // Init once DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => new TranslationSurvey(), { once: true });
+      } else {
+        new TranslationSurvey();
+      }
+    })();
+  </script>
 </body>
 </html>
