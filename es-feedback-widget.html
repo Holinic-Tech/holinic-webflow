@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta de Calidad de Traducción</title>
+    <style>
+        .translation-survey {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .translation-survey.expanded {
+            max-width: 450px;
+            padding: 28px;
+        }
+
+        .translation-survey::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .survey-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 8px;
+        }
+
+        .rating-emoji {
+            font-size: 32px;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            user-select: none;
+        }
+
+        .rating-emoji:hover {
+            transform: translateY(-4px) scale(1.1);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .rating-emoji.selected {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .comment-section {
+            margin-top: 20px;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+
+        .comment-section.show {
+            opacity: 1;
+            max-height: 200px;
+            transform: translateY(0);
+        }
+
+        .comment-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .comment-textarea::placeholder {
+            color: #666;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+        }
+
+        .thank-you {
+            display: none;
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 16px;
+            font-weight: 500;
+        }
+
+        .loading {
+            display: none;
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        .rating-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .translation-survey {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .rating-emoji {
+                font-size: 28px;
+                padding: 8px;
+            }
+            
+            .survey-title {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="translation-survey" id="translationSurvey">
+        <h3 class="survey-title">¿Qué tan buena estuvo la traducción de este video?</h3>
+        
+        <div class="rating-container">
+            <div class="rating-emoji" data-rating="1" title="Muy mala">🤮</div>
+            <div class="rating-emoji" data-rating="2" title="Mala">😞</div>
+            <div class="rating-emoji" data-rating="3" title="Regular">😐</div>
+            <div class="rating-emoji" data-rating="4" title="Buena">😊</div>
+            <div class="rating-emoji" data-rating="5" title="Excelente">🤩</div>
+        </div>
+        
+        <div class="rating-labels">
+            <span>Muy mala</span>
+            <span>Excelente</span>
+        </div>
+
+        <div class="comment-section" id="commentSection">
+            <textarea 
+                class="comment-textarea" 
+                id="commentText" 
+                placeholder="Cuéntanos más detalles: ¿Qué específicamente estuvo bien o mal? ¿Hubo palabras confusas?"
+                maxlength="500">
+            </textarea>
+            <button class="submit-btn" id="submitComment">Enviar comentario</button>
+        </div>
+
+        <div class="loading" id="loading">Enviando...</div>
+        <div class="thank-you" id="thankYou">¡Gracias por tu feedback! 🙏</div>
+    </div>
+
+    <script>
+        class TranslationSurvey {
+            constructor() {
+                this.selectedRating = null;
+                this.pageUrl = window.location.href;
+                this.userData = this.getUserData();
+                this.submissionId = this.generateSubmissionId();
+                this.ratingSubmitted = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+            }
+
+            getUserEmail() {
+                // Get Circle.so user email from the circleUser object
+                return window.circleUser?.email || 'anonymous@unknown.com';
+            }
+
+            getUserData() {
+                // Get additional Circle user data
+                const user = window.circleUser || {};
+                return {
+                    email: user.email || 'anonymous@unknown.com',
+                    firstName: user.firstName || '',
+                    lastName: user.lastName || '',
+                    name: user.name || '',
+                    publicUid: user.publicUid || '',
+                    isAdmin: user.isAdmin || false,
+                    isModerator: user.isModerator || false
+                };
+            }
+
+            generateSubmissionId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            bindEvents() {
+                const emojis = document.querySelectorAll('.rating-emoji');
+                const submitBtn = document.getElementById('submitComment');
+
+                emojis.forEach(emoji => {
+                    emoji.addEventListener('click', (e) => this.handleRatingClick(e));
+                });
+
+                submitBtn.addEventListener('click', () => this.submitComment());
+            }
+
+            async handleRatingClick(e) {
+                const rating = parseInt(e.target.dataset.rating);
+                this.selectedRating = rating;
+
+                // Visual feedback
+                document.querySelectorAll('.rating-emoji').forEach(emoji => {
+                    emoji.classList.remove('selected');
+                });
+                e.target.classList.add('selected');
+
+                // Submit rating immediately
+                await this.submitRating();
+
+                // Expand survey and show comment section
+                document.getElementById('translationSurvey').classList.add('expanded');
+                setTimeout(() => {
+                    document.getElementById('commentSection').classList.add('show');
+                }, 200);
+            }
+
+            async submitRating() {
+                if (this.ratingSubmitted) return; // Prevent duplicate submissions
+                
+                const data = {
+                    type: 'rating',
+                    submissionId: this.submissionId,
+                    rating: this.selectedRating,
+                    pageUrl: this.pageUrl,
+                    userData: this.userData,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                };
+
+                await this.sendData(data);
+                this.ratingSubmitted = true;
+                console.log('Rating submitted:', this.selectedRating);
+            }
+
+            async submitComment() {
+                const comment = document.getElementById('commentText').value.trim();
+                
+                if (!comment) {
+                    // If no comment, just show thank you
+                    this.showThankYou();
+                    return;
+                }
+
+                const data = {
+                    type: 'comment',
+                    submissionId: this.submissionId,
+                    rating: this.selectedRating,
+                    comment: comment,
+                    pageUrl: this.pageUrl,
+                    userData: this.userData,
+                    timestamp: new Date().toISOString()
+                };
+
+                document.getElementById('loading').style.display = 'block';
+                
+                await this.sendData(data);
+                
+                this.showThankYou();
+            }
+
+            showThankYou() {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('commentSection').style.display = 'none';
+                document.getElementById('thankYou').style.display = 'block';
+            }
+
+            async sendData(data) {
+                try {
+                    // Your Make.com webhook URL
+                    const webhookUrl = 'https://hook.us1.make.com/p2ghvuhu3d9msqcnqpzrgcv6vtyek37m';
+                    
+                    const response = await fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    console.log('Data sent successfully:', data);
+                } catch (error) {
+                    console.error('Error sending data:', error);
+                    // Fallback: store in localStorage for later retry
+                    this.storeDataLocally(data);
+                }
+            }
+
+            storeDataLocally(data) {
+                const stored = JSON.parse(localStorage.getItem('pendingFeedback') || '[]');
+                stored.push(data);
+                localStorage.setItem('pendingFeedback', JSON.stringify(stored));
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new TranslationSurvey();
+        });
+
+        // If already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => new TranslationSurvey());
+        } else {
+            new TranslationSurvey();
+        }
+    </script>
+</body>
+</html>
