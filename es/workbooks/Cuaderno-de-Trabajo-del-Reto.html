@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto de 14 Días - Mejor Cabello y Salud | Hairqare</title>
+    <meta name="description" content="Transforma tu cabello y salud en 14 días con nuestro reto completo. Aprende a desintoxicar tu rutina capilar y crear hábitos saludables.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3A2D32;
+            --secondary-color: #7375A6;
+            --accent-color: #F2B485;
+            --light-accent: #B1BAE3;
+            --lighter-accent: #E8EBFC;
+            --light-gray: #F5F5F5;
+            --white: #FFFFFF;
+            --gray-light: #F5F5F5;
+            --gray-medium: #CCCCCC;
+            --gray-dark: #666666;
+            --text-primary: #3A2D32;
+            --text-secondary: #666666;
+            --shadow: 0 4px 20px rgba(58, 45, 50, 0.1);
+            --shadow-light: 0 2px 10px rgba(58, 45, 50, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--light-bg) 0%, var(--white) 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--white);
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .week-tabs {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .week-tab {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .week-tab:hover,
+        .week-tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Mission Cards */
+        .missions-section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .mission-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(44, 24, 16, 0.15);
+        }
+
+        .mission-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .mission-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            line-height: 1.3;
+            padding-right: 70px;
+        }
+
+        .mission-description {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .mission-checklist {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .mission-checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .mission-checklist li:hover {
+            background: var(--light-bg);
+        }
+
+        .mission-checklist li::before {
+            content: '✓';
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            min-width: 20px;
+        }
+
+        .mission-worksheet {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .worksheet-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .worksheet-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-medium);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .worksheet-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .worksheet-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Planner Section */
+        .planner-section {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 80px 0;
+        }
+
+        .planner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .planner-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .planner-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .planner-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--white);
+            padding: 60px 0 40px;
+            border-top: 1px solid var(--gray-light);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: var(--light-bg);
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--gray-light);
+            padding-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .missions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mission-card {
+                padding: 30px 20px;
+            }
+
+            .planner-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .week-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Interactive elements */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--accent-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(242, 180, 133, 0.4);
+            background: #ED9F6B;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: #656BA0;
+            box-shadow: 0 4px 15px rgba(115, 117, 166, 0.4);
+        }
+
+        /* Download Section */
+        .download-notice {
+            background: linear-gradient(135deg, #FFF8F3 0%, #F0F4FF 100%);
+            border: 2px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .download-notice::before {
+            content: '⚠️';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .download-notice h3 {
+            color: var(--primary-color);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .download-notice p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .sticky-download {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .sticky-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(242, 180, 133, 0.4);
+        }
+
+        /* Mission completion tracking */
+        .mission-completed {
+            border-left: 4px solid var(--accent-color);
+            background: linear-gradient(135deg, var(--light-bg), rgba(212, 175, 55, 0.1));
+        }
+
+        .completion-badge {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 30px;
+            height: 30px;
+            background: var(--accent-color);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Hairqare</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Reto de 14 Días<br>Mejor Cabello y Salud</h1>
+                <p class="subtitle">Transforma tu cabello y salud con nuestro reto integral. Desintoxica tu rutina capilar y crea hábitos saludables para toda la vida.</p>
+                <div class="week-tabs">
+                    <a href="#week1" class="week-tab active" onclick="switchWeek(1)">Semana 1: Construyendo Impulso</a>
+                    <a href="#week2" class="week-tab" onclick="switchWeek(2)">Semana 2: Resultados Duraderos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="download-notice">
+            <h3>📱 Workbook Digital - Información Importante</h3>
+            <p><strong>¡Atención!</strong> Este workbook está disponible solo de forma digital. Tus respuestas <strong>NO se guardan automáticamente</strong> en el navegador.</p>
+            <p>Si cierras esta página sin descargar tu progreso, tendrás que empezar de nuevo. Te recomendamos encarecidamente:</p>
+            <div class="download-buttons">
+                <button class="btn" onclick="downloadBlankPDF()">
+                    📄 Descargar Workbook en Blanco (PDF)
+                </button>
+                <button class="btn btn-secondary" onclick="downloadFilledPDF()">
+                    💾 Descargar con mis Respuestas (PDF)
+                </button>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                💡 <strong>Consejo:</strong> Descarga el PDF en blanco para imprimirlo y completarlo offline, o completa el formulario aquí y descarga tus respuestas al final.
+            </p>
+        </div>
+    </section>
+
+    <section class="missions-section" id="week1">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Semana 1: Construyendo Impulso</h2>
+                <p class="section-subtitle">¡Despeguemos! Esta primera semana nos enfocaremos en limpiar tu rutina y establecer las bases para un cabello más saludable.</p>
+            </div>
+            
+            <div class="missions-grid">
+                <div class="mission-card" data-mission="1">
+                    <div class="mission-number">1</div>
+                    <h3 class="mission-title">Limpieza de tu Rutina Capilar</h3>
+                    <p class="mission-description">Eliminamos el daño a largo plazo limpiando productos dañinos de tu rutina.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Usa la Biblia de Ingredientes Capilares para aprender sobre los ingredientes</li>
+                        <li>Analiza tus productos</li>
+                        <li>Limpia tu rutina</li>
+                        <li>Remueve productos con ingredientes de lista negra</li>
+                        <li>Completa los ejercicios de hoy</li>
+                        <li>¡Muéstranos lo que desechaste!</li>
+                        <li>Actualiza a la comunidad</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Qué productos removiste?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista los productos que eliminaste de tu rutina..."></textarea>
+                        
+                        <div class="worksheet-title">¿Cuáles fueron los 3 ingredientes riesgosos más comunes?</div>
+                        <input type="text" class="worksheet-input" placeholder="1.">
+                        <input type="text" class="worksheet-input" placeholder="2.">
+                        <input type="text" class="worksheet-input" placeholder="3.">
+                        
+                        <div class="worksheet-title">¿Cómo crees que esos ingredientes riesgosos estaban afectando tu cabello?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Reflexiona sobre los efectos que notaste..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="2">
+                    <div class="mission-number">2</div>
+                    <h3 class="mission-title">Desenmascarando el Asesino Silencioso de tu Cabello y Salud</h3>
+                    <p class="mission-description">Ordena tu reserva de suplementos y entiende cómo los suplementos pueden hacer más daño que bien.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Aprende sobre la rueda mineral</li>
+                        <li>Completa las hojas de trabajo</li>
+                        <li>Comparte tu experiencia con la comunidad</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Qué minerales suplementas?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista los minerales que tomas..."></textarea>
+                        
+                        <div class="worksheet-title">¿Qué otros nutrientes suplementas?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista otros suplementos..."></textarea>
+                        
+                        <div class="worksheet-title">¿Qué interferencias tienen tus suplementos?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Identifica las interacciones..."></textarea>
+                        
+                        <div class="worksheet-title">¿Qué suplementos vas a pausar?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista los suplementos que pausarás..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="3">
+                    <div class="mission-number">3</div>
+                    <h3 class="mission-title">Reiniciando tu Cuero Cabelludo para un Crecimiento Capilar Saludable</h3>
+                    <p class="mission-description">Replantea uno de los ingredientes capilares más malentendidos y aprende a aprovecharlo para una mejor salud capilar.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Estudia los sulfatos</li>
+                        <li>Revisa tu rutina</li>
+                        <li>Usa las hojas de trabajo</li>
+                        <li>Comparte tus resultados</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Qué pensabas antes sobre los sulfatos?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Comparte tu perspectiva anterior..."></textarea>
+                        
+                        <div class="worksheet-title">¿Qué piensas ahora sobre los sulfatos?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Comparte tu nueva perspectiva..."></textarea>
+                        
+                        <div class="worksheet-title">Productos con Sulfatos - Revisión</div>
+                        <input type="text" class="worksheet-input" placeholder="Nombre del producto">
+                        <select class="worksheet-input">
+                            <option>¿Contiene sulfatos?</option>
+                            <option>Sí</option>
+                            <option>No</option>
+                        </select>
+                        <select class="worksheet-input">
+                            <option>¿Ingredientes de lista negra?</option>
+                            <option>Sí</option>
+                            <option>No</option>
+                        </select>
+                        <input type="text" class="worksheet-input" placeholder="¿Cómo usarlo?">
+                        <input type="text" class="worksheet-input" placeholder="¿Con qué frecuencia?">
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="4">
+                    <div class="mission-number">4</div>
+                    <h3 class="mission-title">Maximiza tu Producción de Queratina y Colágeno</h3>
+                    <p class="mission-description">¿Estás obteniendo suficiente proteína para una salud capilar y general óptima?</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Evalúa tus necesidades de proteína</li>
+                        <li>Rastrea tu ingesta diaria</li>
+                        <li>Descarga la app myfitnesspal</li>
+                        <li>Completa la hoja de trabajo</li>
+                        <li>Comparte tus resultados</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">Tu Perfil de Proteína - Hagamos las cuentas</div>
+                        <input type="number" class="worksheet-input" placeholder="Peso actual (kg)">
+                        <input type="number" class="worksheet-input" placeholder="Porcentaje de grasa corporal (%)">
+                        <input type="number" class="worksheet-input" placeholder="Masa muscular magra (kg)">
+                        <input type="number" class="worksheet-input" placeholder="Proteína requerida (g)">
+                        
+                        <div class="worksheet-title">Verificación de Realidad Proteica</div>
+                        <input type="number" class="worksheet-input" placeholder="Proteína Requerida (g)">
+                        <input type="number" class="worksheet-input" placeholder="Ingesta Real (g)">
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Notas sobre tu ingesta de proteína..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="5">
+                    <div class="mission-number">5</div>
+                    <h3 class="mission-title">Adoptando las Siliconas para un Mejor Cabello</h3>
+                    <p class="mission-description">Imagina un mundo donde las siliconas no arruinen tu cabello. Ese mundo existe. Sin este ingrediente podrías perderte de mucho.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Estudia las siliconas</li>
+                        <li>Revisa tus productos</li>
+                        <li>Usa las hojas de trabajo</li>
+                        <li>Comparte tus resultados</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Qué pensabas antes sobre las siliconas?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Comparte tu perspectiva anterior..."></textarea>
+                        
+                        <div class="worksheet-title">¿Qué piensas ahora sobre las siliconas?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Comparte tu nueva perspectiva..."></textarea>
+                        
+                        <div class="worksheet-title">Revisión de Siliconas en tus Productos</div>
+                        <input type="text" class="worksheet-input" placeholder="Nombre del producto">
+                        <input type="text" class="worksheet-input" placeholder="Nombre de la silicona">
+                        <input type="text" class="worksheet-input" placeholder="Grupo de silicona">
+                        <input type="text" class="worksheet-input" placeholder="Cómo usarla">
+                        <input type="text" class="worksheet-input" placeholder="Cómo removerla">
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="6">
+                    <div class="mission-number">6</div>
+                    <h3 class="mission-title">Despertando a una Vida Más Equilibrada con tu Mejor Cabello y Salud</h3>
+                    <p class="mission-description">Domina tu mente para un mejor cabello y bienestar. Hoy es un día especial...</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Obtén el curso de meditación</li>
+                        <li>Completa la primera lección</li>
+                        <li>Encuentra tiempo tranquilo para meditar</li>
+                        <li>Completa la hoja de trabajo</li>
+                        <li>Comparte tus pensamientos</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">Momento de Reflexión</div>
+                        <div class="worksheet-title">¿Cómo me sentí después de la meditación?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Describe tu experiencia con la meditación..."></textarea>
+                        
+                        <div class="worksheet-title">¿Cómo cambiaría mi vida si hiciera esto cada mañana?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Reflexiona sobre el impacto potencial..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="7">
+                    <div class="mission-number">7</div>
+                    <h3 class="mission-title">¿Cuál es la Causa Detrás de tus Problemas Capilares y de Salud?</h3>
+                    <p class="mission-description">Descubre qué le falta a tu dieta para que puedas agregar los nutrientes correctos.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Toma el test de deficiencias</li>
+                        <li>Lee los resultados cuidadosamente</li>
+                        <li>Completa las hojas de trabajo</li>
+                        <li>Comparte lo que has aprendido</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">Tus Resultados del Test</div>
+                        <div class="worksheet-title">Lista tus Deficiencias:</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista las deficiencias identificadas..."></textarea>
+                        
+                        <div class="worksheet-title">¿Por qué crees que las tienes?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Reflexiona sobre las posibles causas..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="missions-section" id="week2" style="display: none;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Semana 2: Resultados Duraderos</h2>
+                <p class="section-subtitle">Es hora de cosechar los frutos de tu arduo trabajo. Esta semana nos enfocamos en crear hábitos sostenibles y obtener resultados duraderos.</p>
+            </div>
+            
+            <div class="missions-grid">
+                <div class="mission-card" data-mission="8">
+                    <div class="mission-number">8</div>
+                    <h3 class="mission-title">Ingrediente Destacado: Aloe Vera</h3>
+                    <p class="mission-description">Exploramos un ingrediente simple que no solo es asequible, sino increíblemente versátil y beneficioso para muchos tipos de cabello.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Lee el destacado del ingrediente</li>
+                        <li>Ajusta tu rutina</li>
+                        <li>Completa la hoja de trabajo</li>
+                        <li>Comparte tus aprendizajes</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Qué productos podrías reemplazar con aloe vera?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista los productos que podrías reemplazar..."></textarea>
+                        
+                        <div class="worksheet-title">¿Cuál es tu forma favorita de usar aloe vera?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Describe tu método preferido..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="9">
+                    <div class="mission-number">9</div>
+                    <h3 class="mission-title">Cárgete de Nutrientes que Aman el Cabello</h3>
+                    <p class="mission-description">Aprende cómo optimizar tu dieta para un mejor cabello y bienestar general.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Completa las hojas de trabajo</li>
+                        <li>Comparte tu experiencia</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">Tu Perfil Dietético</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Alimentos con nutrientes que me faltan:"></textarea>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Desayunos que contienen los nutrientes que me faltan:"></textarea>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Almuerzos que contienen los nutrientes que me faltan:"></textarea>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Cenas que contienen los nutrientes que me faltan:"></textarea>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Snacks que contienen los nutrientes que me faltan:"></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="10">
+                    <div class="mission-number">10</div>
+                    <h3 class="mission-title">Poniendo Fin a las Puntas Abiertas</h3>
+                    <p class="mission-description">Ya eres consciente de los fundamentos para hacer crecer cabello fuerte desde adentro. Ahora aprenderemos cómo lidiar con el daño que ocurrió antes de comenzar este viaje.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Busca y destruye</li>
+                        <li>Elimina tantas puntas abiertas como sea posible</li>
+                        <li>Completa la hoja de trabajo</li>
+                        <li>Muéstranos tu conteo de puntas abiertas</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Cuántas puntas abiertas removiste?</div>
+                        <input type="number" class="worksheet-input" placeholder="Número de puntas abiertas eliminadas">
+                        
+                        <div class="worksheet-title">¿Qué crees que causó tus puntas abiertas en primer lugar?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Reflexiona sobre las posibles causas..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="11">
+                    <div class="mission-number">11</div>
+                    <h3 class="mission-title">Sudemos y Hagamos Crecer tu Cabello</h3>
+                    <p class="mission-description">¿Sabías que hacer crecer cabello más grueso es la mejor forma de prevenir las puntas abiertas? Introduciremos una rutina que nos ayuda a entregar más nutrientes a nuestro cuero cabelludo.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Haz ejercicio</li>
+                        <li>Completa la rutina las veces que puedas</li>
+                        <li>Nutre tu cabello</li>
+                        <li>Completa las hojas de trabajo</li>
+                        <li>Deja que te animemos</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Cuántas veces completaste la rutina?</div>
+                        <input type="number" class="worksheet-input" placeholder="Número de veces">
+                        
+                        <div class="worksheet-title">¿Qué bebida post-ejercicio que ama el cabello elegiste?</div>
+                        <input type="text" class="worksheet-input" placeholder="Tu bebida elegida">
+                        
+                        <div class="worksheet-title">¿Cómo te sentiste después?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Describe cómo te sentiste..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="12">
+                    <div class="mission-number">12</div>
+                    <h3 class="mission-title">Aprende a Hacer tu Propio Champú en Casa</h3>
+                    <p class="mission-description">Hoy aprenderemos qué tan fácil puede ser hacer nuestros propios productos en casa donde tenemos control total sobre lo que contienen.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Prepárate para mañana</li>
+                        <li>Comparte tus pensamientos</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Qué espero de hacer mi propio champú?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Comparte tus expectativas..."></textarea>
+                        
+                        <div class="worksheet-title">Notas sobre a qué prestar atención al hacer champú</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Toma notas importantes..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="13">
+                    <div class="mission-number">13</div>
+                    <h3 class="mission-title">Formula tu Propio Champú Natural y Suave</h3>
+                    <p class="mission-description">¡Hoy harás tu propio champú! Sigue la guía y documenta tu experiencia.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Haz tu propio champú</li>
+                        <li>Presume tu trabajo</li>
+                        <li>Úsalo</li>
+                        <li>Reséñalo</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">Revisión de tu Champú</div>
+                        <div class="worksheet-title">Limpieza (0-10)</div>
+                        <input type="range" class="worksheet-input" min="0" max="10" value="5" id="cleanse-rating">
+                        <span id="cleanse-value">5</span>
+                        
+                        <div class="worksheet-title">Volumen (0-10)</div>
+                        <input type="range" class="worksheet-input" min="0" max="10" value="5" id="volume-rating">
+                        <span id="volume-value">5</span>
+                        
+                        <div class="worksheet-title">Suavidad (0-10)</div>
+                        <input type="range" class="worksheet-input" min="0" max="10" value="5" id="softness-rating">
+                        <span id="softness-value">5</span>
+                        
+                        <div class="worksheet-title">Brillo (0-10)</div>
+                        <input type="range" class="worksheet-input" min="0" max="10" value="5" id="shine-rating">
+                        <span id="shine-value">5</span>
+                        
+                        <div class="worksheet-title">Notas del champú</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Comparte tu experiencia con el champú casero..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mission-card" data-mission="14">
+                    <div class="mission-number">14</div>
+                    <h3 class="mission-title">Terreno Resbaloso: Qué Evitar en un Aceite Capilar</h3>
+                    <p class="mission-description">Aprende qué buscar y qué evitar cuando selecciones aceites capilares.</p>
+                    <ul class="mission-checklist">
+                        <li>Mira el video de hoy</li>
+                        <li>Completa las hojas de trabajo</li>
+                        <li>Comparte tu hallazgo</li>
+                    </ul>
+                    <div class="mission-worksheet">
+                        <div class="worksheet-title">¿Qué aceites puede que le gusten a mi cabello?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista los aceites que podrían beneficiar tu cabello..."></textarea>
+                        
+                        <div class="worksheet-title">¿Qué evitar al buscar aceites capilares?</div>
+                        <textarea class="worksheet-input worksheet-textarea" placeholder="Lista los ingredientes o características a evitar..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="planner-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Planificador "Un Mejor Yo"</h2>
+                <p class="section-subtitle">Es hora de cosechar los frutos de tu arduo trabajo. Transfiere las prácticas que aprendiste durante el reto a los campos respectivos para concluir exitosamente el desafío.</p>
+            </div>
+            
+            <div class="planner-grid">
+                <div class="planner-card">
+                    <h3 class="planner-title">Mi Dieta</h3>
+                    <input type="text" class="planner-input" placeholder="Mi meta de proteína:">
+                    <input type="text" class="planner-input" placeholder="Mis deficiencias:">
+                    <textarea class="planner-input" rows="3" placeholder="Alimentos que necesito comer más:"></textarea>
+                    <h4 style="color: var(--accent-color); margin: 15px 0 10px;">Mi Plan de Comidas</h4>
+                    <textarea class="planner-input" rows="2" placeholder="Desayunos:"></textarea>
+                    <textarea class="planner-input" rows="2" placeholder="Almuerzos:"></textarea>
+                    <textarea class="planner-input" rows="2" placeholder="Cenas:"></textarea>
+                    <textarea class="planner-input" rows="2" placeholder="Snacks:"></textarea>
+                </div>
+
+                <div class="planner-card">
+                    <h3 class="planner-title">Rutina Capilar</h3>
+                    <input type="text" class="planner-input" placeholder="Champú:">
+                    <input type="text" class="planner-input" placeholder="Acondicionador:">
+                    <input type="text" class="planner-input" placeholder="Tratamiento para el cuero cabelludo:">
+                    <input type="text" class="planner-input" placeholder="Aceite capilar:">
+                    <textarea class="planner-input" rows="3" placeholder="Productos a evitar:"></textarea>
+                    <textarea class="planner-input" rows="3" placeholder="Productos e ingredientes a usar:"></textarea>
+                    <input type="text" class="planner-input" placeholder="Mi aceite capilar limpio:">
+                </div>
+
+                <div class="planner-card">
+                    <h3 class="planner-title">Rutina Matutina</h3>
+                    <input type="text" class="planner-input" placeholder="Hora y duración de meditación:">
+                    <input type="text" class="planner-input" placeholder="Hora del desayuno y comida/bebida:">
+                    <h4 style="color: var(--accent-color); margin: 15px 0 10px;">Horario para un inicio activo del día:</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center;">
+                        <input type="time" class="planner-input" placeholder="Hora">
+                        <input type="text" class="planner-input" placeholder="Actividad">
+                        <input type="time" class="planner-input" placeholder="Hora">
+                        <input type="text" class="planner-input" placeholder="Actividad">
+                        <input type="time" class="planner-input" placeholder="Hora">
+                        <input type="text" class="planner-input" placeholder="Actividad">
+                        <input type="time" class="planner-input" placeholder="Hora">
+                        <input type="text" class="planner-input" placeholder="Actividad">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="download-notice" style="margin-bottom: 40px;">
+                    <h3>🚨 Recordatorio Final</h3>
+                    <p><strong>¡No olvides descargar tu progreso!</strong> Si completaste las hojas de trabajo, asegúrate de descargar tus respuestas antes de cerrar esta página.</p>
+                    <div class="download-buttons">
+                        <button class="btn" onclick="downloadFilledPDF()">
+                            💾 Descargar mis Respuestas (PDF)
+                        </button>
+                    </div>
+                </div>
+                <h3>¡Excelente trabajo, retador!</h3>
+                <p>Has completado un viaje increíble hacia un cabello y salud mejores. Este es solo el comienzo de tu transformación.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">@hairgrowthlab</a>
+                    <a href="#" class="social-link">www.hairqare.co</a>
+                </div>
+                <div class="copyright">
+                    © 2025 Hairqare. Traducido con amor para la comunidad latina.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sticky Download Button -->
+    <button class="sticky-download" onclick="downloadFilledPDF()" title="Descargar mis respuestas">
+        💾 Descargar PDF
+    </button>
+
+    <script>
+        // Mission tracking (for visual feedback only)
+        let completedMissions = [];
+
+        // Cookie utility functions (background storage - users don't know about this)
+        function setCookie(name, value, days = 7) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const cookies = document.cookie.split(';');
+            for(let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                while (cookie.charAt(0) === ' ') cookie = cookie.substring(1, cookie.length);
+                if (cookie.indexOf(nameEQ) === 0) return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length));
+            }
+            return null;
+        }
+
+        function saveResponsesToCookie() {
+            const responses = {};
+            const allInputs = document.querySelectorAll('.worksheet-input, .planner-input');
+            allInputs.forEach((input, index) => {
+                if (input.value) {
+                    responses[`input_${index}`] = input.value;
+                }
+            });
+            setCookie('hairqare_responses', JSON.stringify(responses), 30); // 30 days
+        }
+
+        function loadResponsesFromCookie() {
+            const savedResponses = getCookie('hairqare_responses');
+            if (savedResponses) {
+                try {
+                    const responses = JSON.parse(savedResponses);
+                    const allInputs = document.querySelectorAll('.worksheet-input, .planner-input');
+                    allInputs.forEach((input, index) => {
+                        if (responses[`input_${index}`]) {
+                            input.value = responses[`input_${index}`];
+                        }
+                    });
+                } catch (e) {
+                    // Silently fail if cookie is corrupted
+                }
+            }
+        }
+
+        // PDF Generation Functions
+        function downloadBlankPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            // Set brand colors
+            const primaryColor = [58, 45, 50];
+            const accentColor = [242, 180, 133];
+            
+            let yPos = 20;
+            
+            // Title
+            doc.setFontSize(24);
+            doc.setTextColor(...primaryColor);
+            doc.text('Reto de 14 Días - Mejor Cabello y Salud', 105, yPos, { align: 'center' });
+            yPos += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(102, 102, 102);
+            doc.text('Workbook para Completar Offline', 105, yPos, { align: 'center' });
+            yPos += 20;
+            
+            // Week 1 missions
+            doc.setFontSize(18);
+            doc.setTextColor(...primaryColor);
+            doc.text('SEMANA 1: CONSTRUYENDO IMPULSO', 20, yPos);
+            yPos += 15;
+            
+            const missions = [
+                'Misión 1: Limpieza de tu Rutina Capilar',
+                'Misión 2: Desenmascarando el Asesino Silencioso',
+                'Misión 3: Reiniciando tu Cuero Cabelludo',
+                'Misión 4: Maximiza tu Producción de Queratina',
+                'Misión 5: Adoptando las Siliconas',
+                'Misión 6: Despertando a una Vida Equilibrada',
+                'Misión 7: Test de Deficiencias'
+            ];
+            
+            missions.forEach((mission, index) => {
+                doc.setFontSize(14);
+                doc.setTextColor(...primaryColor);
+                doc.text(mission, 20, yPos);
+                yPos += 10;
+                
+                // Add worksheet lines
+                for (let i = 0; i < 8; i++) {
+                    doc.setDrawColor(200, 200, 200);
+                    doc.line(20, yPos, 190, yPos);
+                    yPos += 5;
+                }
+                yPos += 10;
+                
+                // New page if needed
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+            });
+            
+            // Week 2
+            doc.addPage();
+            yPos = 20;
+            
+            doc.setFontSize(18);
+            doc.setTextColor(...primaryColor);
+            doc.text('SEMANA 2: RESULTADOS DURADEROS', 20, yPos);
+            yPos += 15;
+            
+            const missions2 = [
+                'Misión 8: Ingrediente Destacado: Aloe Vera',
+                'Misión 9: Cárgete de Nutrientes que Aman el Cabello',
+                'Misión 10: Poniendo Fin a las Puntas Abiertas',
+                'Misión 11: Sudemos y Hagamos Crecer tu Cabello',
+                'Misión 12: Aprende a Hacer tu Propio Champú',
+                'Misión 13: Formula tu Propio Champú Natural',
+                'Misión 14: Qué Evitar en un Aceite Capilar'
+            ];
+            
+            missions2.forEach((mission, index) => {
+                doc.setFontSize(14);
+                doc.setTextColor(...primaryColor);
+                doc.text(mission, 20, yPos);
+                yPos += 10;
+                
+                // Add worksheet lines
+                for (let i = 0; i < 8; i++) {
+                    doc.setDrawColor(200, 200, 200);
+                    doc.line(20, yPos, 190, yPos);
+                    yPos += 5;
+                }
+                yPos += 10;
+                
+                // New page if needed
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+            });
+            
+            // Planner section
+            doc.addPage();
+            yPos = 20;
+            
+            doc.setFontSize(18);
+            doc.setTextColor(...primaryColor);
+            doc.text('PLANIFICADOR "UN MEJOR YO"', 20, yPos);
+            yPos += 20;
+            
+            // Diet section
+            doc.setFontSize(14);
+            doc.text('MI DIETA:', 20, yPos);
+            yPos += 15;
+            
+            const plannerSections = [
+                'Mi meta de proteína:',
+                'Mis deficiencias:',
+                'Alimentos que necesito comer más:',
+                'Desayunos:',
+                'Almuerzos:',
+                'Cenas:',
+                'Snacks:'
+            ];
+            
+            plannerSections.forEach(section => {
+                doc.setFontSize(12);
+                doc.text(section, 20, yPos);
+                yPos += 7;
+                for (let i = 0; i < 3; i++) {
+                    doc.line(20, yPos, 190, yPos);
+                    yPos += 5;
+                }
+                yPos += 5;
+            });
+            
+            doc.save('Reto-14-Dias-Workbook-Hairqare.pdf');
+        }
+        
+        function downloadFilledPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            // Set brand colors
+            const primaryColor = [58, 45, 50];
+            const accentColor = [242, 180, 133];
+            
+            let yPos = 20;
+            
+            // Title
+            doc.setFontSize(24);
+            doc.setTextColor(...primaryColor);
+            doc.text('Reto de 14 Días - Mis Respuestas', 105, yPos, { align: 'center' });
+            yPos += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(102, 102, 102);
+            doc.text('Workbook Completado - ' + new Date().toLocaleDateString(), 105, yPos, { align: 'center' });
+            yPos += 20;
+            
+            // Collect all form data
+            const allInputs = document.querySelectorAll('.worksheet-input');
+            const missions = document.querySelectorAll('.mission-card');
+            
+            missions.forEach((mission, index) => {
+                const missionTitle = mission.querySelector('.mission-title').textContent;
+                const inputs = mission.querySelectorAll('.worksheet-input');
+                
+                if (inputs.length > 0) {
+                    // Check if we need a new page
+                    if (yPos > 220) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    
+                    doc.setFontSize(16);
+                    doc.setTextColor(...primaryColor);
+                    doc.text(`MISIÓN ${index + 1}: ${missionTitle}`, 20, yPos);
+                    yPos += 12;
+                    
+                    inputs.forEach(input => {
+                        // Get the label from the worksheet title div
+                        const worksheetTitle = input.closest('.mission-worksheet').querySelector('.worksheet-title');
+                        let label = '';
+                        
+                        if (worksheetTitle && input.previousElementSibling === worksheetTitle) {
+                            label = worksheetTitle.textContent;
+                        } else {
+                            // Find the closest preceding worksheet-title
+                            let currentElement = input.previousElementSibling;
+                            while (currentElement) {
+                                if (currentElement.classList && currentElement.classList.contains('worksheet-title')) {
+                                    label = currentElement.textContent;
+                                    break;
+                                }
+                                currentElement = currentElement.previousElementSibling;
+                            }
+                        }
+                        
+                        const value = input.value || '';
+                        
+                        if (label && label.trim()) {
+                            doc.setFontSize(12);
+                            doc.setTextColor(...primaryColor);
+                            doc.text(label, 20, yPos);
+                            yPos += 7;
+                            
+                            if (value.trim()) {
+                                doc.setFontSize(10);
+                                doc.setTextColor(102, 102, 102);
+                                
+                                // Split long text
+                                const lines = doc.splitTextToSize(value, 170);
+                                lines.forEach(line => {
+                                    doc.text(line, 25, yPos);
+                                    yPos += 5;
+                                });
+                            } else {
+                                // Leave blank space for empty responses
+                                yPos += 10;
+                            }
+                            yPos += 8; // More space between questions
+                        }
+                        
+                        // Check if we need a new page
+                        if (yPos > 260) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                    });
+                    yPos += 10;
+                }
+            });
+            
+            // Add planner data
+            const plannerInputs = document.querySelectorAll('.planner-input');
+            if (plannerInputs.length > 0) {
+                doc.addPage();
+                yPos = 20;
+                
+                doc.setFontSize(18);
+                doc.setTextColor(...primaryColor);
+                doc.text('PLANIFICADOR "UN MEJOR YO"', 20, yPos);
+                yPos += 15;
+                
+                plannerInputs.forEach(input => {
+                    const value = input.value || '';
+                    
+                    if (value.trim()) {
+                        doc.setFontSize(10);
+                        doc.setTextColor(102, 102, 102);
+                        
+                        const lines = doc.splitTextToSize(value, 170);
+                        lines.forEach(line => {
+                            doc.text(line, 20, yPos);
+                            yPos += 5;
+                        });
+                    } else {
+                        // Leave blank space for empty planner inputs
+                        yPos += 10;
+                    }
+                    yPos += 3;
+                    
+                    if (yPos > 260) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                });
+            }
+            
+            doc.save('Mis-Respuestas-Reto-14-Dias-Hairqare.pdf');
+        }
+
+        // No longer using progress bar
+
+        // Mission completion (visual feedback only)
+        document.querySelectorAll('.mission-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.type !== 'text' && e.target.type !== 'textarea' && e.target.tagName !== 'SELECT') {
+                    const missionId = this.dataset.mission;
+                    if (!completedMissions.includes(missionId)) {
+                        completedMissions.push(missionId);
+                        this.classList.add('mission-completed');
+                        
+                        // Add completion badge
+                        const badge = document.createElement('div');
+                        badge.className = 'completion-badge';
+                        badge.innerHTML = '✓';
+                        this.appendChild(badge);
+                        
+                        // Save to localStorage
+                        localStorage.setItem('completedMissions', JSON.stringify(completedMissions));
+                    }
+                }
+            });
+        });
+
+        // Week switching
+        function switchWeek(weekNumber) {
+            document.querySelectorAll('.week-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.missions-section').forEach(section => section.style.display = 'none');
+            
+            document.querySelector(`a[onclick="switchWeek(${weekNumber})"]`).classList.add('active');
+            document.getElementById(`week${weekNumber}`).style.display = 'block';
+        }
+
+        // Range slider updates
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', function() {
+                const valueDisplay = document.getElementById(this.id.replace('-rating', '-value'));
+                if (valueDisplay) {
+                    valueDisplay.textContent = this.value;
+                }
+            });
+        });
+
+        // Load saved mission completion state
+        window.addEventListener('load', function() {
+            const saved = localStorage.getItem('completedMissions');
+            if (saved) {
+                completedMissions = JSON.parse(saved);
+                completedMissions.forEach(missionId => {
+                    const card = document.querySelector(`[data-mission="${missionId}"]`);
+                    if (card) {
+                        card.classList.add('mission-completed');
+                        const badge = document.createElement('div');
+                        badge.className = 'completion-badge';
+                        badge.innerHTML = '✓';
+                        card.appendChild(badge);
+                    }
+                });
+            }
+
+            // Animate elements on scroll
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.mission-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        // Auto-save form inputs to cookies (background - users don't know)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved responses on page load
+            loadResponsesFromCookie();
+            
+            // Auto-save on input changes
+            document.querySelectorAll('.worksheet-input, .planner-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    // Debounce the save to avoid excessive cookie writes
+                    clearTimeout(input.saveTimeout);
+                    input.saveTimeout = setTimeout(saveResponsesToCookie, 1000);
+                });
+                
+                input.addEventListener('change', function() {
+                    saveResponsesToCookie();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
