@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Uso Inteligente de Siliconas y Sulfatos | Hairqare</title>
+    <meta name="description" content="Aprende a usar siliconas y sulfatos de manera inteligente para obtener todos los beneficios sin los efectos negativos. Guía científica completa.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3A2D32;
+            --secondary-color: #7375A6;
+            --accent-color: #F2B485;
+            --light-accent: #B1BAE3;
+            --lighter-accent: #E8EBFC;
+            --light-gray: #F5F5F5;
+            --white: #FFFFFF;
+            --gray-light: #F5F5F5;
+            --gray-medium: #CCCCCC;
+            --gray-dark: #666666;
+            --text-primary: #3A2D32;
+            --text-secondary: #666666;
+            --shadow: 0 4px 20px rgba(58, 45, 50, 0.1);
+            --shadow-light: 0 2px 10px rgba(58, 45, 50, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--light-gray) 0%, var(--white) 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--white);
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Download Notice */
+        .download-notice {
+            background: linear-gradient(135deg, #FFF8F3 0%, #F0F4FF 100%);
+            border: 2px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .download-notice::before {
+            content: '🧪';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .download-notice h3 {
+            color: var(--primary-color);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .download-notice p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        /* Section Styles - Single Column Layout */
+        .sections-container {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .content-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .content-header {
+            padding: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .content-header:hover {
+            background: var(--light-gray);
+        }
+
+        .content-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .content-info {
+            flex: 1;
+        }
+
+        .content-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        .content-description {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .content-expand-icon {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            transition: var(--transition);
+            transform: rotate(0deg);
+        }
+
+        .content-card.expanded .content-expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .content-body {
+            display: none;
+            padding: 0 30px 30px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-card.expanded .content-body {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .content-text strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .content-highlight {
+            background: var(--lighter-accent);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .content-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .content-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .content-list li:hover {
+            background: var(--light-gray);
+        }
+
+        .content-list li::before {
+            content: '•';
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.2rem;
+            min-width: 20px;
+        }
+
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .pros-card, .cons-card {
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .pros-card {
+            background: linear-gradient(135deg, #E8F8F0 0%, #F0FDF4 100%);
+            border-left-color: #10B981;
+        }
+
+        .cons-card {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%);
+            border-left-color: #EF4444;
+        }
+
+        .pros-card h4 {
+            color: #047857;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .cons-card h4 {
+            color: #DC2626;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .silicone-category {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid;
+            position: relative;
+        }
+
+        .silicone-category.no-go {
+            border-color: #EF4444;
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%);
+        }
+
+        .silicone-category.airy {
+            border-color: #06B6D4;
+            background: linear-gradient(135deg, #F0F9FF 0%, #F0FDFA 100%);
+        }
+
+        .silicone-category.friendly {
+            border-color: #10B981;
+            background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+        }
+
+        .silicone-category.resilient {
+            border-color: #8B5CF6;
+            background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
+        }
+
+        .silicone-category::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .silicone-category.no-go::before {
+            content: '⛔ EVITAR';
+            background: #EF4444;
+        }
+
+        .silicone-category.airy::before {
+            content: '💨 AÉREAS';
+            background: #06B6D4;
+        }
+
+        .silicone-category.friendly::before {
+            content: '✅ AMIGABLES';
+            background: #10B981;
+        }
+
+        .silicone-category.resilient::before {
+            content: '💪 RESISTENTES';
+            background: #8B5CF6;
+        }
+
+        .silicone-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        .silicone-category.no-go .silicone-title {
+            color: #DC2626;
+        }
+
+        .silicone-category.airy .silicone-title {
+            color: #0891B2;
+        }
+
+        .silicone-category.friendly .silicone-title {
+            color: #047857;
+        }
+
+        .silicone-category.resilient .silicone-title {
+            color: #7C3AED;
+        }
+
+        .ingredient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .ingredient-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .usage-principles {
+            background: var(--lighter-accent);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .usage-principles h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .usage-principles ol {
+            list-style: none;
+            counter-reset: principle-counter;
+        }
+
+        .usage-principles ol li {
+            counter-increment: principle-counter;
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .usage-principles ol li::before {
+            content: counter(principle-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--accent-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--accent-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(242, 180, 133, 0.4);
+            background: #ED9F6B;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: #656BA0;
+            box-shadow: 0 4px 15px rgba(115, 117, 166, 0.4);
+        }
+
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--white);
+            padding: 60px 0 40px;
+            border-top: 1px solid var(--gray-light);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: var(--light-gray);
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--gray-light);
+            padding-top: 20px;
+        }
+
+        /* Sticky Download Button */
+        .sticky-download {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .sticky-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(242, 180, 133, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0;
+            }
+
+            .content-header {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .content-body {
+                padding: 0 20px 20px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pros-cons-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .ingredient-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Hairqare</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Manual de Uso Inteligente<br>de Siliconas y Sulfatos</h1>
+                <p class="subtitle">Las siliconas y sulfatos han sido demonizados durante décadas por sus efectos secantes. Sin embargo, los efectos negativos tienen más que ver con el mal uso que con los ingredientes en sí.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="download-notice">
+            <h3>🧪 Manual Científico - Información Importante</h3>
+            <p>Esta guía está diseñada para ayudarte a entender los diferentes usos de siliconas y sulfatos para que puedas aprovechar todos sus beneficios mientras reduces los riesgos del mal uso.</p>
+            <p><strong>Imagina que compraste un par de zapatos de tacón alto nuevos.</strong> Se ven geniales y se sienten cómodos. Tu amiga decide ir a correr y tú decides usar tus tacones. Terminas con un tobillo torcido. ¿Significa que los tacones son malos zapatos? ¿O simplemente los usaste para el propósito incorrecto?</p>
+            <div class="download-buttons">
+                <button class="btn" onclick="downloadManualPDF()">
+                    📄 Descargar Manual Completo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="sections-container">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Guía Científica de Siliconas y Sulfatos</h2>
+                <p class="section-subtitle">Aprende a utilizar estos ingredientes de manera inteligente para obtener cabello más fuerte, brillante y saludable.</p>
+            </div>
+            
+            <div class="content-container">
+                <!-- Sulfates Section -->
+                <div class="content-card" data-section="sulfates">
+                    <div class="content-header" onclick="toggleSection('sulfates')">
+                        <div class="content-icon">🧽</div>
+                        <div class="content-info">
+                            <h3 class="content-title">¿Qué son los Sulfatos?</h3>
+                            <p class="content-description">Comprende la ciencia detrás de estos potentes agentes limpiadores y cómo funcionan en tu cabello.</p>
+                        </div>
+                        <div class="content-expand-icon">▼</div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-text">
+                            <strong>Los sulfatos son una clase de compuestos inorgánicos</strong> que son formalmente ésteres derivados de alcoholes y ácido sulfúrico. Muchos ésteres sulfatos se usan en detergentes, y se encuentran comúnmente en detergentes líquidos, desde champú hasta gel de baño hasta jabón para platos.
+                        </div>
+
+                        <div class="content-highlight">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">Principales Sulfatos en Champús:</h4>
+                            <ul class="content-list">
+                                <li><strong>Sodium Laureth Sulfate (SLES)</strong></li>
+                                <li><strong>Sodium Lauryl Sulfate (SLS)</strong></li>
+                                <li><strong>Ammonium Laureth Sulfate (ALES)</strong></li>
+                                <li><strong>Ammonium Lauryl Sulfate (ALS)</strong></li>
+                            </ul>
+                        </div>
+
+                        <div class="content-text">
+                            <strong>Los sulfatos se usan para romper la tensión superficial del agua</strong> lo que crea un efecto espumoso para remover aceite y suciedad de tu cabello. Comparado con otros ingredientes limpiadores en champú, los sulfatos tienen muy alta eficacia y han demostrado la capacidad de limpieza más efectiva entre otros surfactantes.
+                        </div>
+
+                        <div class="pros-cons-grid">
+                            <div class="pros-card">
+                                <h4>✅ Ventajas</h4>
+                                <ul class="content-list" style="margin: 0;">
+                                    <li>Hacen espuma bien y proporcionan una limpieza completa</li>
+                                    <li>Un lavado es usualmente suficiente para remover la mayoría del aceite y residuo</li>
+                                    <li>Más efectivos aliviando la caspa comparado con opciones sin sulfatos</li>
+                                    <li>Capaces de remover siliconas que no son solubles en agua</li>
+                                </ul>
+                            </div>
+                            <div class="cons-card">
+                                <h4>❌ Desventajas</h4>
+                                <ul class="content-list" style="margin: 0;">
+                                    <li>Remueven los aceites naturales del cabello</li>
+                                    <li>Pueden causar irritación en cueros cabelludos sensibles</li>
+                                    <li>Levantan el color del cabello teñido</li>
+                                    <li>El uso excesivo causa daño a la cutícula</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How to Use Sulfates Section -->
+                <div class="content-card" data-section="sulfates-usage">
+                    <div class="content-header" onclick="toggleSection('sulfates-usage')">
+                        <div class="content-icon">📋</div>
+                        <div class="content-info">
+                            <h3 class="content-title">Cómo Usar Sulfatos Correctamente</h3>
+                            <p class="content-description">Principios científicos para maximizar beneficios y minimizar efectos negativos.</p>
+                        </div>
+                        <div class="content-expand-icon">▼</div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-highlight">
+                            <h4 style="color: var(--primary-color); margin-bottom: 20px;">Clasificación por Fuerza:</h4>
+                            
+                            <div style="margin-bottom: 30px;">
+                                <h5 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 15px;">💪 Sulfatos de Alta Fuerza</h5>
+                                <div style="margin-bottom: 15px;">
+                                    <strong style="color: var(--primary-color);">Características:</strong> Alta eficacia, pueden ser irritantes. Mejores para remover siliconas resistentes.
+                                </div>
+                                <div class="ingredient-grid">
+                                    <div class="ingredient-item">Sodium Lauryl Sulfate</div>
+                                    <div class="ingredient-item">Ammonium Lauryl Sulfate</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h5 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 15px;">🌿 Sulfatos Moderados</h5>
+                                <div style="margin-bottom: 15px;">
+                                    <strong style="color: var(--primary-color);">Características:</strong> Más suaves comparado con la misma dosis de sulfatos fuertes y menos irritantes. Menor eficacia, podrían requerir múltiples aplicaciones.
+                                </div>
+                                <div class="ingredient-grid">
+                                    <div class="ingredient-item">Sodium Laureth Sulfate</div>
+                                    <div class="ingredient-item">Ammonium Laureth Sulfate</div>
+                                    <div class="ingredient-item">Sodium Myreth Sulfate</div>
+                                    <div class="ingredient-item">TEA Lauryl Sulfate</div>
+                                    <div class="ingredient-item">Ethyl PEG-15 Cocamine Sulfate</div>
+                                    <div class="ingredient-item">Sodium Coco Sulfate</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="usage-principles">
+                            <h4>Principios de Uso Inteligente:</h4>
+                            <ol>
+                                <li><strong>Úsalos una o dos veces al mes</strong> para reiniciar tu cabello y cuero cabelludo.</li>
+                                <li><strong>Usa productos diferentes para casos diferentes.</strong> Por ejemplo, casero/sin sulfatos para un lavado normal y sulfatos para remover acumulación.</li>
+                                <li><strong>Diluye tu champú con agua</strong> para bajar la concentración de sulfatos. Seguirá siendo igual de efectivo.</li>
+                                <li><strong>Asegúrate de que tu champú con sulfatos no incluya ingredientes de lista negra.</strong> Consulta la Lista Negra para más información.</li>
+                            </ol>
+                        </div>
+
+                        <div class="content-highlight">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">¿Es "Sin Sulfatos" Bueno o Malo?</h4>
+                            <p><strong>No hay investigación que demuestre que los champús sin sulfatos sean más suaves que los que contienen sulfatos, o que dejen más aceites naturales.</strong></p>
+                            <p>Los sulfatos son efectivos y seguros cuando se usan según las instrucciones y con moderación. Siempre depende de tu perfil capilar y cómo los uses.</p>
+                            <p><strong>Las marcas usan "sin sulfatos" para vender más productos,</strong> sin embargo, los surfactantes usados son igual de fuertes que los sulfatos. Por ejemplo, C14-16 olefin sulfonate ha demostrado remover siliconas no deseadas y son igual de fuertes que los sulfatos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sulfate-Free Surfactants Section -->
+                <div class="content-card" data-section="sulfate-free">
+                    <div class="content-header" onclick="toggleSection('sulfate-free')">
+                        <div class="content-icon">🌱</div>
+                        <div class="content-info">
+                            <h3 class="content-title">Surfactantes Sin Sulfatos</h3>
+                            <p class="content-description">Alternativas a los sulfatos: cuándo usarlas y cómo elegir las correctas.</p>
+                        </div>
+                        <div class="content-expand-icon">▼</div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-text">
+                            <strong>Un champú fuerte no se define tanto por su ingrediente individual sino por su concentración.</strong> Un champú que contiene 99% de un detergente "suave" seguirá siendo fuerte. La dosis es lo que hace el veneno y esa es una de las razones por las que encontrar el champú correcto es tan difícil.
+                        </div>
+
+                        <div class="content-highlight">
+                            <h4 style="color: var(--primary-color); margin-bottom: 20px;">Clasificación de Surfactantes Sin Sulfatos:</h4>
+                            
+                            <div style="margin-bottom: 30px;">
+                                <h5 style="color: #DC2626; font-size: 1.2rem; margin-bottom: 15px;">⚠️ Sin Sulfatos de Alta Fuerza</h5>
+                                <div style="margin-bottom: 15px;">
+                                    <strong style="color: var(--primary-color);">Características:</strong> Alta eficacia, alternativa efectiva para personas alérgicas a sulfatos, pueden ser irritantes. Trátalos exactamente tan fuerte como sulfatos y evítalos cuando busques un champú regular sin sulfatos. Mejores para remover siliconas resistentes.
+                                </div>
+                                <div class="ingredient-grid">
+                                    <div class="ingredient-item">C14-16 Olefin Sulfonate</div>
+                                    <div class="ingredient-item">Sodium C14-16 Olefin Sulfonate</div>
+                                    <div class="ingredient-item">Sodium Lauryl Glucose Carboxylate</div>
+                                    <div class="ingredient-item">Disodium Laureth Sulfosuccinate</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h5 style="color: #10B981; font-size: 1.2rem; margin-bottom: 15px;">✅ Sin Sulfatos Suaves</h5>
+                                <div style="margin-bottom: 15px;">
+                                    <strong style="color: var(--primary-color);">Características:</strong> Suaves comparado con la misma dosis de un detergente fuerte y menos irritantes. Menor eficacia y podrían requerir múltiples aplicaciones para remover residuo de productos. Mejores para remover siliconas amigables y como tu champú suave regular.
+                                </div>
+                                <div class="ingredient-grid">
+                                    <div class="ingredient-item">Sodium Cocoyl Isethionate</div>
+                                    <div class="ingredient-item">Sodium Methyl Cocoyl Taurate</div>
+                                    <div class="ingredient-item">Sodium Lauroyl Glutamate</div>
+                                    <div class="ingredient-item">Sodium Cocoyl Glutamate</div>
+                                    <div class="ingredient-item">Sodium Lauroyl Sarcosinate</div>
+                                    <div class="ingredient-item">Coco Glucoside</div>
+                                    <div class="ingredient-item">Decyl Glucoside</div>
+                                    <div class="ingredient-item">Lauryl Glucoside</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content-text">
+                            <strong>Una forma más confiable es entender los varios sulfatos y surfactantes y cómo usarlos efectivamente.</strong> La concentración es clave para determinar qué tan fuerte será el producto final.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- What Are Silicones Section -->
+                <div class="content-card" data-section="silicones">
+                    <div class="content-header" onclick="toggleSection('silicones')">
+                        <div class="content-icon">✨</div>
+                        <div class="content-info">
+                            <h3 class="content-title">¿Qué son las Siliconas?</h3>
+                            <p class="content-description">Descubre la ciencia detrás de estos versátiles ingredientes y por qué son tan efectivos.</p>
+                        </div>
+                        <div class="content-expand-icon">▼</div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-text">
+                            <strong>Las siliconas son un grupo de materiales inorgánicos</strong> que consisten en átomos de silicio (un elemento mineral de arena) y oxígeno. La mayoría de las siliconas pueden ser generalmente reconocidas por nombres que terminan en "-cone" o "-oxane".
+                        </div>
+
+                        <div class="content-highlight">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">¿Por qué las usamos?</h4>
+                            <p><strong>Las siliconas tienen una amplitud excepcional de propiedades químicas y físicas.</strong> Son altamente resistentes a temperaturas altas y bajas, resisten la degradación por rayos UV, repelen el agua, y exhiben un rango de otras características. Los objetos hechos con siliconas o que tienen siliconas aplicadas adoptan estas propiedades importantes.</p>
+                        </div>
+
+                        <div class="pros-cons-grid">
+                            <div class="pros-card">
+                                <h4>✅ Ventajas de las Siliconas</h4>
+                                <ul class="content-list" style="margin: 0;">
+                                    <li>Recubren y lubrican la hebra capilar haciendo el cabello más fácil de peinar y desenredar</li>
+                                    <li>Excelente protección contra peinado con calor y radiación UV</li>
+                                    <li>Sellan la humedad para prevenir sequedad</li>
+                                    <li>Reflejan luz dando al cabello una apariencia brillante</li>
+                                    <li>Reducen el frizz y agregan definición a los rizos</li>
+                                    <li>Suavizan y alisan la cutícula y agregan manejabilidad al cabello rebelde</li>
+                                </ul>
+                            </div>
+                            <div class="cons-card">
+                                <h4>❌ Desventajas</h4>
+                                <ul class="content-list" style="margin: 0;">
+                                    <li>Pesadez por usar siliconas pesadas</li>
+                                    <li>Acumulación de siliconas no solubles resultando en sequedad y grasa</li>
+                                </ul>
+                                <p style="margin-top: 15px;"><strong>La desventaja de usar siliconas es su naturaleza complicada y extensa.</strong> Vienen en muchas formas con muchas propiedades diferentes. Es fácil mal usarlas y esto resulta en efectos adversos.</p>
+                            </div>
+                        </div>
+
+                        <div class="content-highlight">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">¿Es "Sin Siliconas" Mejor?</h4>
+                            <p><strong>La industria actualmente usa Polímeros Catiónicos</strong> como Polyquaternium-4 o Polyquaternium-10 para lograr resultados similares a las siliconas. Sin embargo, no tienen tantos beneficios como las siliconas.</p>
+                            <p><strong>Lo que sí tienen son exactamente las mismas desventajas.</strong> Estos polímeros se agarran fuertemente a tu cabello y no se enjuagan fácilmente, dejando acumulación residual. Están en casi todos los acondicionadores, especialmente en productos sin siliconas.</p>
+                            <p><strong>El ingrediente es más caro y requieres más para obtener los beneficios.</strong> Cuando optas por evitar siliconas y eliges sin siliconas, estás pagando más por algo menos efectivo mientras te expones a exactamente los mismos riesgos. ¡Lo peor de todo? Ni siquiera los sulfatos pueden removerlos una vez que se han acumulado en la hebra.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Silicone Categories Section -->
+                <div class="content-card" data-section="silicone-types">
+                    <div class="content-header" onclick="toggleSection('silicone-types')">
+                        <div class="content-icon">🎯</div>
+                        <div class="content-info">
+                            <h3 class="content-title">Categorías de Siliconas</h3>
+                            <p class="content-description">Aprende las 4 categorías principales y cómo usar cada una a tu favor.</p>
+                        </div>
+                        <div class="content-expand-icon">▼</div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-text">
+                            <strong>Para lograr tu mejor cabello absoluto y obtener control completo sobre tus resultados capilares,</strong> es importante estar consciente de las propiedades únicas de siliconas individuales. Al entender las fortalezas y debilidades de cada silicona, puedes aprovechar los increíbles beneficios mientras mitiga cualquier efecto secundario negativo del mal uso.
+                        </div>
+
+                        <!-- No-Go Silicones -->
+                        <div class="silicone-category no-go">
+                            <h4 class="silicone-title">Siliconas No Deseadas</h4>
+                            <div class="content-text">
+                                <strong>Estas siliconas son las que le dieron a todas las siliconas su mala reputación.</strong> Sus desventajas superan sus ventajas y deben evitarse completamente.
+                            </div>
+                            <div class="content-text">
+                                El sello que crean alrededor de la hebra capilar es notablemente fuerte, lo que significa que también son notablemente difíciles de remover. En la mayoría de los casos, necesitarás limpiar múltiples veces para remover completamente. Sin remoción, la humedad puede ser bloqueada fuera del tallo capilar, resultando en hebras secas y posible rotura. También se acumularán con uso repetido.
+                            </div>
+                            <div class="ingredient-grid">
+                                <div class="ingredient-item">Behenoxy Dimethicone</div>
+                                <div class="ingredient-item">Bis-Phenylpropyl Dimethicone</div>
+                                <div class="ingredient-item">Cetearyl Methicone</div>
+                                <div class="ingredient-item">Cetyl Dimethicone</div>
+                                <div class="ingredient-item">Dimethiconol Hydroxystearate</div>
+                                <div class="ingredient-item">Polysilicone-18 Cetyl Phosphate</div>
+                                <div class="ingredient-item">Propyl Dimethicone</div>
+                                <div class="ingredient-item">Stearoxy Dimethicone</div>
+                                <div class="ingredient-item">Stearyl Dimethicone</div>
+                                <div class="ingredient-item">Stearyl Methicone</div>
+                                <div class="ingredient-item">Trimethylsiylamodimethicone</div>
+                                <div class="ingredient-item">Aminopropyl Dimethicone (solo en presencia de ingrediente catiónico)</div>
+                                <div class="ingredient-item">Aminopropyltriethoxysilane (solo en presencia de ingrediente catiónico)</div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 15px;"><strong>Nota:</strong> Los ingredientes catiónicos pueden ser identificados terminando en "bromide" o "chloride" o como polyquaternium.</p>
+                        </div>
+
+                        <!-- Airy Silicones -->
+                        <div class="silicone-category airy">
+                            <h4 class="silicone-title">Siliconas Aéreas</h4>
+                            <div class="content-text">
+                                <strong>Estas siliconas son completamente inofensivas para tu cabello.</strong> Se evaporan completamente de tu cabello después de 10 minutos a unas pocas horas después de la aplicación. No tienes que preocuparte por acumulación o pérdida de humedad.
+                            </div>
+                            <div class="content-text">
+                                Se usan principalmente como sistemas de entrega para otros ingredientes, ya que se distribuyen en una película delgada y uniforme y ayudan a otros ingredientes a extenderse bien y uniformemente sobre la hebra. A diferencia de los alcoholes secantes que también se evaporan, estas Siliconas Aéreas no absorberán la humedad de tu cabello. No tienes mucho de qué preocuparte cuando uses estas siliconas.
+                            </div>
+                            <div class="ingredient-grid">
+                                <div class="ingredient-item">Cyclomethicone</div>
+                                <div class="ingredient-item">Ingredientes Cyclo-....-siloxane</div>
+                                <div class="ingredient-item">Decamethylcyclotetrasiloxane</div>
+                                <div class="ingredient-item">Hexamethylcyclotrisiloxane</div>
+                                <div class="ingredient-item">Hexamethyldisiloxane</div>
+                                <div class="ingredient-item">Octamethylcyclotetrasiloxane</div>
+                            </div>
+                        </div>
+
+                        <!-- Friendly Silicones -->
+                        <div class="silicone-category friendly">
+                            <h4 class="silicone-title">Siliconas Amigables</h4>
+                            <div class="content-text">
+                                <strong>Estas siliconas no se evaporan,</strong> por lo que son útiles como agentes acondicionadores para obtener cabello más suave y menos encrespado. También protegen el cabello de radiación UV, peinado con calor y humedad, y se extienden uniformemente.
+                            </div>
+                            <div class="content-text">
+                                Se lavan con champús sin sulfatos y pueden incluso enjuagarse con acondicionador o aceites. Sin embargo, hay algunos riesgos al usar Siliconas Amigables. Tienen el potencial de bloquear la humedad del cabello si no te lavas el cabello a menudo. <strong>Si usas estas siliconas, asegúrate de lavar tu cabello dentro de 4 días.</strong>
+                            </div>
+                            <div class="ingredient-grid">
+                                <div class="ingredient-item">Dimethicone</div>
+                                <div class="ingredient-item">Dimethicone Copolyol</div>
+                                <div class="ingredient-item">Diphenyl Dimethicone</div>
+                                <div class="ingredient-item">Disiloxane</div>
+                                <div class="ingredient-item">Hydroxypropyl Polysiloxane</div>
+                                <div class="ingredient-item">Lauryl Methicone Copolyol</div>
+                                <div class="ingredient-item">Methicone con PEG/PPG en el nombre</div>
+                                <div class="ingredient-item">Dimethicone con PEG/PPG en el nombre</div>
+                                <div class="ingredient-item">Phenyltrimethicone</div>
+                                <div class="ingredient-item">Silica</div>
+                                <div class="ingredient-item">Silicone Resin</div>
+                                <div class="ingredient-item">Siloxysilicates</div>
+                                <div class="ingredient-item">Silsequioxanes</div>
+                                <div class="ingredient-item">Trisiloxane</div>
+                            </div>
+                        </div>
+
+                        <!-- Resilient Silicones -->
+                        <div class="silicone-category resilient">
+                            <h4 class="silicone-title">Siliconas Resistentes</h4>
+                            <div class="content-text">
+                                <strong>Estas siliconas proporcionan todas las excelentes propiedades protectoras</strong> que mencionamos anteriormente, ¡además de que no se acumulan en la hebra! Sin embargo, no son solubles y requieren un sulfato para remover.
+                            </div>
+                            <div class="content-text">
+                                Si tienes cabello muy dañado o peinas con calor mucho, siéntete libre de probar tratamientos sin enjuague que contengan cualquiera de las siliconas listadas abajo. Solo asegúrate de aplicarlas como el último paso de tu rutina. <strong>Debido a la forma en que se adhieren a tu hebra, cualquier producto que contenga estas siliconas necesita ser el último paso de tu rutina.</strong> De lo contrario, rechazarán cualquier otra cosa que apliques encima.
+                            </div>
+                            <div class="ingredient-grid">
+                                <div class="ingredient-item">Aminopropyl Dimethicone (a menos que esté en presencia de ingrediente catiónico)</div>
+                                <div class="ingredient-item">Aminopropyltriethoxysilane (a menos que esté en presencia de ingrediente catiónico)</div>
+                                <div class="ingredient-item">Amodimethicone</div>
+                                <div class="ingredient-item">Dimethiconol</div>
+                                <div class="ingredient-item">Cualquier cosa terminando en -dimethylsiloxane (solo en presencia de ingrediente catiónico)</div>
+                                <div class="ingredient-item">Bis-aminopropyl Dimethicone</div>
+                                <div class="ingredient-item">Dimethicone Crosspolymer</div>
+                                <div class="ingredient-item">Methicone con PEG/PPG en el nombre (solo en presencia de ingrediente catiónico)</div>
+                                <div class="ingredient-item">Dimethicone con PEG/PPG en el nombre (solo en presencia de ingrediente catiónico)</div>
+                                <div class="ingredient-item">Vinyldimethicone Crosspolymer</div>
+                            </div>
+                        </div>
+
+                        <div class="content-highlight">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">Propiedades Clave a Entender:</h4>
+                            <ul class="content-list">
+                                <li><strong>Solubilidad:</strong> Las siliconas solubles en agua se disuelven y enjuagan con agua. Las no solubles requieren detergente para remover.</li>
+                                <li><strong>Acumulación:</strong> Algunas siliconas tienen la habilidad de repeler cualquier material aplicado sobre ellas, haciendo imposible la acumulación. Otras se acumularán hasta ser removidas con el detergente correcto.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="download-notice" style="margin-bottom: 40px;">
+                    <h3>🧪 Descarga tu Manual</h3>
+                    <p>¿Quieres tener esta información científica siempre a mano? Descarga el manual completo en formato PDF.</p>
+                    <div class="download-buttons">
+                        <button class="btn" onclick="downloadManualPDF()">
+                            📄 Descargar Manual Completo
+                        </button>
+                    </div>
+                </div>
+                <h3>¡Excelente trabajo!</h3>
+                <p>Ahora entiendes cómo usar siliconas y sulfatos de manera inteligente. Aplica este conocimiento para obtener cabello más saludable y fuerte.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">@hairgrowthlab</a>
+                    <a href="#" class="social-link">www.hairqare.co</a>
+                </div>
+                <div class="copyright">
+                    © 2025 Hairqare. Traducido con amor para la comunidad latina.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sticky Download Button -->
+    <button class="sticky-download" onclick="downloadManualPDF()" title="Descargar manual completo">
+        🧪 Descargar Manual
+    </button>
+
+    <script>
+        // Section expansion functionality
+        function toggleSection(sectionId) {
+            const card = document.querySelector(`[data-section="${sectionId}"]`);
+            card.classList.toggle('expanded');
+        }
+
+        // PDF Generation Function
+        function downloadManualPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            // Set brand colors
+            const primaryColor = [58, 45, 50];
+            const accentColor = [242, 180, 133];
+            
+            let yPos = 20;
+            
+            // Title
+            doc.setFontSize(22);
+            doc.setTextColor(...primaryColor);
+            doc.text('Manual de Uso Inteligente de Siliconas y Sulfatos', 105, yPos, { align: 'center' });
+            yPos += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(102, 102, 102);
+            doc.text('Guía Científica para Uso Óptimo', 105, yPos, { align: 'center' });
+            yPos += 25;
+            
+            // Add introduction
+            doc.setFontSize(14);
+            doc.setTextColor(...primaryColor);
+            doc.text('Introducción', 20, yPos);
+            yPos += 10;
+            
+            doc.setFontSize(10);
+            doc.setTextColor(102, 102, 102);
+            const introText = 'Las siliconas y sulfatos han sido demonizados durante décadas por sus efectos secantes. Sin embargo, los efectos negativos tienen más que ver con el mal uso que con los ingredientes en sí. Esta guía te ayudará a usar estos ingredientes de manera inteligente.';
+            const introLines = doc.splitTextToSize(introText, 170);
+            introLines.forEach(line => {
+                doc.text(line, 20, yPos);
+                yPos += 5;
+            });
+            yPos += 15;
+
+            // Add sections
+            const sections = [
+                {
+                    title: '1. ¿Qué son los Sulfatos?',
+                    content: 'Compuestos inorgánicos derivados de alcoholes y ácido sulfúrico. Principales: SLES, SLS, ALES, ALS. Rompen la tensión superficial del agua para crear espuma y remover aceite y suciedad. Alta eficacia de limpieza entre surfactantes.'
+                },
+                {
+                    title: '2. Cómo Usar Sulfatos',
+                    content: 'Principios: 1) Usar 1-2 veces al mes para reiniciar cabello. 2) Productos diferentes para casos diferentes. 3) Diluir con agua para reducir concentración. 4) Evitar ingredientes de lista negra. Alta fuerza: SLS, ALS. Moderados: SLES, ALES.'
+                },
+                {
+                    title: '3. Surfactantes Sin Sulfatos',
+                    content: 'Alta fuerza: C14-16 olefin sulfonate (tratar como sulfatos). Suaves: sodium cocoyl isethionate, coco glucoside, decyl glucoside. La concentración determina la fuerza, no solo el ingrediente individual.'
+                },
+                {
+                    title: '4. ¿Qué son las Siliconas?',
+                    content: 'Materiales inorgánicos de silicio y oxígeno. Terminan en "-cone" o "-oxane". Beneficios: lubricación, protección térmica/UV, sellado de humedad, brillo, reducción de frizz. Desventajas: pesadez, acumulación si se mal usan.'
+                },
+                {
+                    title: '5. Categorías de Siliconas',
+                    content: 'NO DESEADAS: Behenoxy dimethicone, cetearyl methicone (evitar). AÉREAS: Cyclomethicone (se evaporan, seguras). AMIGABLES: Dimethicone (lavar cada 4 días). RESISTENTES: Amodimethicone (último paso, requieren sulfatos).'
+                }
+            ];
+
+            sections.forEach(section => {
+                if (yPos > 230) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFontSize(14);
+                doc.setTextColor(...primaryColor);
+                doc.text(section.title, 20, yPos);
+                yPos += 10;
+                
+                doc.setFontSize(10);
+                doc.setTextColor(102, 102, 102);
+                const lines = doc.splitTextToSize(section.content, 170);
+                lines.forEach(line => {
+                    if (yPos > 280) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    doc.text(line, 20, yPos);
+                    yPos += 5;
+                });
+                yPos += 15;
+            });
+
+            // Add disclaimer on new page
+            doc.addPage();
+            yPos = 20;
+            
+            doc.setFontSize(16);
+            doc.setTextColor(...primaryColor);
+            doc.text('Descargo de Responsabilidad', 20, yPos);
+            yPos += 15;
+            
+            doc.setFontSize(9);
+            doc.setTextColor(102, 102, 102);
+            const disclaimerText = 'La información proporcionada en este manual es solo para información general sobre cuidado capilar y no pretende ser un sustituto del consejo profesional. Los resultados pueden variar según el tipo de cabello individual. Si tienes condiciones específicas del cuero cabelludo o cabello, consulta con un profesional. Holinic LLC no será responsable por cualquier daño resultante del uso de esta información. © 2025 Hairqare - Traducido para la comunidad latina.';
+            
+            const disclaimerLines = doc.splitTextToSize(disclaimerText, 170);
+            disclaimerLines.forEach(line => {
+                doc.text(line, 20, yPos);
+                yPos += 4;
+            });
+            
+            doc.save('Manual-de-Uso-Inteligente-de-Siliconas-y-Sulfatos-Hairqare.pdf');
+        }
+
+        // Auto-expand first section on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Optional: You can auto-expand the first section
+            // toggleSection('sulfates');
+        });
+    </script>
+</body>
+</html>
