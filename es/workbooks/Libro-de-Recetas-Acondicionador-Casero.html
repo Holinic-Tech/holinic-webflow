@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro de Recetas: Acondicionador Casero de Lujo - HairQare</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f8f4f0 0%, #f0ebe6 100%);
+            color: #5a4a3a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            color: #8b7355;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #9b8a7a;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .download-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #d4a574 0%, #c09660 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(196, 150, 96, 0.3);
+            transition: all 0.3s ease;
+            margin: 0 10px 20px;
+            font-family: inherit;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(196, 150, 96, 0.4);
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #f7e6d3 0%, #f0d9c4 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #d4a574;
+            font-style: italic;
+            color: #8b6914;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(139, 115, 85, 0.1);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            box-shadow: 0 15px 40px rgba(139, 115, 85, 0.15);
+        }
+
+        .section-header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, #ede5d8 0%, #e8dfd2 100%);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .section-header h2 {
+            color: #8b7355;
+            font-size: 1.6em;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        .section-header::after {
+            content: '🌸';
+            font-size: 1.5em;
+            opacity: 0.6;
+            transition: transform 0.3s ease;
+        }
+
+        .section-card.expanded .section-header::after {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .section-card.expanded .section-content {
+            padding: 30px;
+            max-height: 2000px;
+        }
+
+        .recipe-card {
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1ec 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 165, 116, 0.3);
+        }
+
+        .recipe-card h3 {
+            color: #a67c52;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .recipe-card h3::before,
+        .recipe-card h3::after {
+            content: '✿';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d4a574;
+            opacity: 0.5;
+        }
+
+        .recipe-card h3::before {
+            left: -30px;
+        }
+
+        .recipe-card h3::after {
+            right: -30px;
+        }
+
+        .ingredients-list {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .ingredients-list li {
+            padding: 8px 0;
+            border-bottom: 1px dotted #e6ddd4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ingredients-list li:last-child {
+            border-bottom: none;
+        }
+
+        .percentage {
+            background: #d4a574;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .method-step {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #d4a574;
+            position: relative;
+        }
+
+        .method-step::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            top: -10px;
+            left: -15px;
+            background: #d4a574;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .method-container {
+            counter-reset: step-counter;
+        }
+
+        .utensils-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .utensil-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .pro-tip {
+            background: linear-gradient(135deg, #e8f4e8 0%, #d4e8d4 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 4px solid #7fb069;
+            position: relative;
+        }
+
+        .pro-tip::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #7fb069;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 1.2em;
+        }
+
+        .pro-tip h4 {
+            color: #4a6741;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .section-header {
+                padding: 20px;
+            }
+
+            .section-content {
+                padding: 0 20px;
+            }
+
+            .section-card.expanded .section-content {
+                padding: 20px;
+            }
+
+            .recipe-card h3::before,
+            .recipe-card h3::after {
+                display: none;
+            }
+
+            .utensils-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header fade-in">
+            <h1>Libro de Recetas</h1>
+            <p>Acondicionador Casero de Lujo</p>
+        </header>
+
+        <div class="download-section fade-in">
+            <button class="download-btn" onclick="generatePDF()">📄 Descargar PDF Completo</button>
+            <div class="warning">
+                ⚠️ Nota: Tus respuestas no se guardarán automáticamente. Descarga el PDF para conservar tu trabajo.
+            </div>
+        </div>
+
+        <div class="section-card fade-in" data-section="introduccion">
+            <div class="section-header" onclick="toggleSection('introduccion')">
+                <h2>Introducción</h2>
+            </div>
+            <div class="section-content">
+                <p>Bienvenida al arte de crear tu propio acondicionador de lujo personalizado. Este libro de recetas ha sido cuidadosamente diseñado para ayudarte a formular acondicionadores específicos según la porosidad de tu cabello.</p>
+                <p>Cada receta está balanceada científicamente para proporcionar la hidratación y nutrición exactas que tu cabello necesita, utilizando ingredientes naturales de la más alta calidad.</p>
+            </div>
+        </div>
+
+        <div class="section-card fade-in" data-section="recetas">
+            <div class="section-header" onclick="toggleSection('recetas')">
+                <h2>Recetas por Tipo de Porosidad</h2>
+            </div>
+            <div class="section-content">
+                <div class="recipe-card">
+                    <h3>Cabello de Baja Porosidad</h3>
+                    <p><em>Para cabello que repele la humedad y necesita ingredientes ligeros</em></p>
+                    <ul class="ingredients-list">
+                        <li>200 ml Agua <span class="percentage">84.25%</span></li>
+                        <li>12 ml Glicerina <span class="percentage">5%</span></li>
+                        <li>5 g BTMS 225/25 <span class="percentage">2.5%</span></li>
+                        <li>12 ml Aceite de Semilla de Meadowfoam <span class="percentage">5%</span></li>
+                        <li>3ml Aceite de Coco Fraccionado <span class="percentage">1.25%</span></li>
+                        <li>3ml Aceite de Jojoba <span class="percentage">1.25%</span></li>
+                        <li>3ml Aceite de Marula <span class="percentage">1.25%</span></li>
+                        <li>1.5ml Aceite Esencial de tu elección <span class="percentage">0.63%</span></li>
+                        <li>0.3 ml Sorbato de Potasio <span class="percentage">0.13%</span></li>
+                        <li>Goma Xantana (opcional)</li>
+                    </ul>
+                </div>
+
+                <div class="recipe-card">
+                    <h3>Cabello de Media Porosidad</h3>
+                    <p><em>Para cabello equilibrado que acepta y retiene humedad moderadamente</em></p>
+                    <ul class="ingredients-list">
+                        <li>190 ml Agua <span class="percentage">80.5%</span></li>
+                        <li>12 ml Glicerina <span class="percentage">5%</span></li>
+                        <li>8.5 g BTMS 225/25 <span class="percentage">3.75%</span></li>
+                        <li>3ml Aceite de Coco Fraccionado <span class="percentage">1.25%</span></li>
+                        <li>12 ml Aceite de Almendra <span class="percentage">5%</span></li>
+                        <li>3ml Aceite de Argán <span class="percentage">1.25%</span></li>
+                        <li>3ml Aceite de Marula <span class="percentage">1.25%</span></li>
+                        <li>3ml Proteína de Seda Hidrolizada (opcional) <span class="percentage">1.25%</span></li>
+                        <li>1.5ml Aceite Esencial de tu elección <span class="percentage">0.63%</span></li>
+                        <li>0.3 ml Sorbato de Potasio <span class="percentage">0.13%</span></li>
+                        <li>Goma Xantana (opcional)</li>
+                    </ul>
+                </div>
+
+                <div class="recipe-card">
+                    <h3>Cabello de Alta Porosidad</h3>
+                    <p><em>Para cabello que absorbe humedad rápidamente pero también la pierde fácilmente</em></p>
+                    <ul class="ingredients-list">
+                        <li>180 ml Agua <span class="percentage">75.50%</span></li>
+                        <li>12 ml Glicerina <span class="percentage">5%</span></li>
+                        <li>11.5 g BTMS 225/25 <span class="percentage">5%</span></li>
+                        <li>3ml Aceite de Coco Fraccionado <span class="percentage">1.25%</span></li>
+                        <li>15 ml Aceite de Almendra <span class="percentage">6.25%</span></li>
+                        <li>9ml Aceite de Argán <span class="percentage">3.75%</span></li>
+                        <li>3ml Aceite de Marula <span class="percentage">1.25%</span></li>
+                        <li>3ml Proteína de Seda Hidrolizada <span class="percentage">1.25%</span></li>
+                        <li>1.5ml Aceite Esencial de tu elección <span class="percentage">0.63%</span></li>
+                        <li>0.3 ml Sorbato de Potasio <span class="percentage">0.13%</span></li>
+                        <li>Goma Xantana (opcional)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card fade-in" data-section="cantidades">
+            <div class="section-header" onclick="toggleSection('cantidades')">
+                <h2>Cálculo de Cantidades</h2>
+            </div>
+            <div class="section-content">
+                <p>La receta base produce aproximadamente 250ml (8oz) de acondicionador. Para ajustar las cantidades según tus necesidades:</p>
+                
+                <div class="method-step">
+                    <h4>Fórmula de Cálculo</h4>
+                    <p><strong>(Cantidad total deseada) × (Porcentaje del ingrediente ÷ 100) = Cantidad del ingrediente</strong></p>
+                </div>
+
+                <div class="recipe-card">
+                    <h3>Ejemplo: Receta de 50ml para Baja Porosidad</h3>
+                    <ul class="ingredients-list">
+                        <li>Agua: 50ml × 84.25% = 42.1ml</li>
+                        <li>Glicerina: 50ml × 5% = 2.5ml</li>
+                        <li>BTMS 225/25: 50ml × 2.5% = 1.25g</li>
+                        <li>Aceite de Meadowfoam: 50ml × 5% = 2.5ml</li>
+                        <li>Otros aceites: según porcentajes indicados</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card fade-in" data-section="utensilios">
+            <div class="section-header" onclick="toggleSection('utensilios')">
+                <h2>Utensilios Necesarios</h2>
+            </div>
+            <div class="section-content">
+                <div class="utensils-grid">
+                    <div class="utensil-item">
+                        <h4>Báscula o Jarra Medidora</h4>
+                        <p>Para medir ingredientes con precisión</p>
+                    </div>
+                    <div class="utensil-item">
+                        <h4>Baño María</h4>
+                        <p>Una olla para calentar suavemente</p>
+                    </div>
+                    <div class="utensil-item">
+                        <h4>2 Recipientes Resistentes al Calor</h4>
+                        <p>Para separar fases acuosa y oleosa</p>
+                    </div>
+                    <div class="utensil-item">
+                        <h4>Cucharas para Mezclar</h4>
+                        <p>Preferiblemente de madera o silicona</p>
+                    </div>
+                    <div class="utensil-item">
+                        <h4>Tiras de pH y Limón</h4>
+                        <p>Para ajustar pH entre 3.6-7</p>
+                    </div>
+                    <div class="utensil-item">
+                        <h4>Envase de Vidrio Hermético</h4>
+                        <p>Para almacenamiento del producto final</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card fade-in" data-section="metodo">
+            <div class="section-header" onclick="toggleSection('metodo')">
+                <h2>Método de Preparación</h2>
+            </div>
+            <div class="section-content">
+                <div class="method-container">
+                    <div class="method-step">
+                        <h4>Preparación Inicial</h4>
+                        <p>Asegúrate de que todos los utensilios y el área de trabajo estén completamente limpios. Mide todos los ingredientes con precisión.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Fase Acuosa</h4>
+                        <p>En un recipiente, combina el agua, la glicerina y la goma xantana. Mezcla bien hasta que no queden grumos.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Agregar BTMS</h4>
+                        <p>Añade el BTMS 225/25 a la mezcla acuosa y reserva.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Fase Oleosa</h4>
+                        <p>En el segundo recipiente, combina todos los aceites específicos para tu tipo de porosidad. Mezcla completamente.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Agregar Proteína (si aplica)</h4>
+                        <p>Para cabello de media y alta porosidad, añade la Proteína de Seda Hidrolizada a la fase oleosa.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Calentamiento - Fase Acuosa</h4>
+                        <p>Calienta la solución acuosa a baño maría hasta 80-90°C. Remueve suavemente hasta que esté bien mezclado.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Calentamiento - Fase Oleosa</h4>
+                        <p>Calienta la solución oleosa de la misma manera hasta alcanzar una temperatura similar.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Enfriamiento</h4>
+                        <p>Deja que la solución oleosa se enfríe hasta una temperatura similar a la acuosa.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Combinación</h4>
+                        <p>Combina ambas fases, removiendo continuamente para crear una emulsión uniforme.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Conservante</h4>
+                        <p>Añade el Sorbato de Potasio como conservante natural.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Enfriamiento Final</h4>
+                        <p>Continúa removiendo mientras la mezcla se enfría completamente.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Reposo</h4>
+                        <p>Deja reposar la mezcla durante 24 horas para que se asiente completamente.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Aceite Esencial</h4>
+                        <p>Añade el aceite esencial de tu elección para dar fragancia (opcional).</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Ajuste de pH</h4>
+                        <p>Balancea el pH entre 3.6-7 usando jugo de limón. Prueba con tiras de pH.</p>
+                    </div>
+
+                    <div class="method-step">
+                        <h4>Almacenamiento</h4>
+                        <p>Transfiere a un envase de vidrio hermético. Tu acondicionador casero está listo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card fade-in" data-section="consejos">
+            <div class="section-header" onclick="toggleSection('consejos')">
+                <h2>Consejos de Experta</h2>
+            </div>
+            <div class="section-content">
+                <div class="pro-tip">
+                    <h4>Solución para BTMS que no se derrite</h4>
+                    <p>Si tienes problemas para derretir las bolitas de BTMS:</p>
+                    <ul>
+                        <li>Corta las bolitas de BTMS finamente o tritúralas hasta convertirlas en polvo</li>
+                        <li>Usa una tapa en la olla para una distribución uniforme del calor</li>
+                        <li>Alternativa: Añade el BTMS a la fase oleosa en lugar de la acuosa</li>
+                    </ul>
+                </div>
+
+                <div class="pro-tip">
+                    <h4>Consejos de Conservación</h4>
+                    <p>Tu acondicionador casero durará hasta 3 meses si:</p>
+                    <ul>
+                        <li>Lo guardas en un lugar fresco y seco</li>
+                        <li>Usas siempre manos limpias para tomarlo</li>
+                        <li>Mantienes el envase bien cerrado</li>
+                        <li>Observas cualquier cambio de olor, color o textura</li>
+                    </ul>
+                </div>
+
+                <div class="pro-tip">
+                    <h4>Personalización Avanzada</h4>
+                    <p>Una vez domines la receta base, puedes experimentar con:</p>
+                    <ul>
+                        <li>Diferentes combinaciones de aceites esenciales</li>
+                        <li>Añadir extractos botánicos (manzanilla, aloe vera)</li>
+                        <li>Ajustar las concentraciones según la respuesta de tu cabello</li>
+                        <li>Incorporar activos como ceramidas o ácido hialurónico</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(sectionName) {
+            const card = document.querySelector(`[data-section="${sectionName}"]`);
+            card.classList.toggle('expanded');
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.text('Libro de Recetas: Acondicionador Casero de Lujo', 20, 30);
+            
+            doc.setFontSize(12);
+            let yPosition = 50;
+            
+            const sections = [
+                'Este libro contiene recetas personalizadas para crear',
+                'acondicionadores caseros según la porosidad de tu cabello.',
+                '',
+                'RECETAS INCLUIDAS:',
+                '• Cabello de Baja Porosidad',
+                '• Cabello de Media Porosidad', 
+                '• Cabello de Alta Porosidad',
+                '',
+                'SECCIONES:',
+                '• Cálculo de cantidades',
+                '• Utensilios necesarios',
+                '• Método paso a paso',
+                '• Consejos de experta',
+                '',
+                'Descargado desde: HairQare Lab',
+                'Fecha: ' + new Date().toLocaleDateString('es-ES')
+            ];
+            
+            sections.forEach(line => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 30;
+                }
+                doc.text(line, 20, yPosition);
+                yPosition += 10;
+            });
+            
+            doc.save('Libro-Recetas-Acondicionador-Casero.pdf');
+        }
+
+        function saveToStorage() {
+            const data = {};
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                if (element.id) {
+                    data[element.id] = element.value;
+                }
+            });
+            document.cookie = `recipeData=${JSON.stringify(data)}; expires=${new Date(Date.now() + 365*24*60*60*1000).toUTCString()}; path=/`;
+        }
+
+        function loadFromStorage() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                if (cookie.trim().startsWith('recipeData=')) {
+                    try {
+                        const data = JSON.parse(cookie.split('=')[1]);
+                        Object.keys(data).forEach(key => {
+                            const element = document.getElementById(key);
+                            if (element) {
+                                element.value = data[key];
+                            }
+                        });
+                    } catch (e) {
+                        console.log('No saved data found');
+                    }
+                    break;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromStorage();
+            
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('change', saveToStorage);
+                element.addEventListener('input', saveToStorage);
+            });
+
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
