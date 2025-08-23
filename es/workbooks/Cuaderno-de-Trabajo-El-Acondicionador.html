@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuaderno de Trabajo - El Acondicionador Casero Definitivo | HairQare</title>
+    <meta name="description" content="Crea tu acondicionador perfecto con nuestra guía completa DIY. Fórmulas de calidad profesional adaptadas a la porosidad de tu cabello.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --bg: #f8f7fb;
+            --card: #fff;
+            --ink: #2b2437;
+            --muted: #5a5466;
+            --purple: #A8A4CB;
+            --purple-deep: #6F6A92;
+            --line: #e9e6f5;
+            --pill: #efeef8;
+            --accent: #F2B485;
+            --light-accent: #FFF8F3;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--ink);
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: clamp(16px, 2.4vw, 28px);
+        }
+
+        .header {
+            position: relative;
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.92));
+            box-shadow: 0 12px 32px rgba(111,106,146,.10);
+        }
+
+        .hero {
+            width: 100%;
+            aspect-ratio: 16/7;
+            background: url('https://i.ibb.co.com/3my007WY/square-conditioner.webp') center/cover no-repeat;
+            filter: saturate(.95) contrast(1.04);
+        }
+
+        .brand {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--line);
+            font-weight: 700;
+            letter-spacing: .5px;
+            box-shadow: 0 4px 16px rgba(0,0,0,.05);
+        }
+
+        .h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 3.6vw, 44px);
+            line-height: 1.1;
+            margin: 16px 0 6px;
+        }
+
+        .sub {
+            color: var(--muted);
+            margin: 0 0 18px 0;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--pill);
+            border: 1px solid #dedcf0;
+            color: var(--purple-deep);
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            gap: 22px;
+        }
+
+        @media(min-width:900px) {
+            .grid.two { grid-template-columns: 1.1fr .9fr; }
+            .grid.even { grid-template-columns: 1fr 1fr; }
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: clamp(18px, 2vw, 26px);
+            box-shadow: 0 10px 26px rgba(111,106,146,.08);
+            margin-bottom: 22px;
+        }
+
+        .card h2 {
+            font-family: 'Playfair Display', serif;
+            margin: 0 0 10px 0;
+        }
+
+        .hr {
+            height: 1px;
+            background: var(--line);
+            margin: 12px 0 18px;
+        }
+
+        .photo {
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 22px rgba(111,106,146,.08);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            font-size: 15px;
+        }
+
+        .table thead th {
+            background: linear-gradient(180deg, #c7c3df, #b2aed1);
+            color: #fff;
+            text-align: left;
+            padding: 12px 14px;
+        }
+
+        .table tbody td {
+            padding: 12px 14px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            vertical-align: top;
+        }
+
+        .callout {
+            border: 1px dashed #d9d6eb;
+            background: #f6f4ff;
+            color: #3d3752;
+            padding: 14px 16px;
+            border-radius: 16px;
+            margin: 10px 0;
+        }
+
+        .steps ol {
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        .steps li {
+            margin: .35rem 0 .6rem;
+            color: var(--muted);
+        }
+
+        .footer {
+            text-align: center;
+            color: #7a7490;
+            font-size: 13px;
+            padding: 24px 0 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 25px;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, #c7c3df, #b2aed1);
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: .3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 1rem;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(177, 174, 211, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: var(--ink);
+        }
+
+        .btn-secondary:hover {
+            background: #ED9F6B;
+            box-shadow: 0 4px 15px rgba(242, 180, 133, 0.4);
+        }
+
+        /* Workbook specific styles */
+        .download-notice {
+            background: linear-gradient(135deg, var(--light-accent) 0%, #F0F4FF 100%);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .download-notice::before {
+            content: '📋';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .download-notice h3 {
+            color: var(--ink);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .download-notice p {
+            color: var(--muted);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        /* Workbook sections */
+        .workbook-section {
+            background: var(--card);
+            border-radius: 22px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 26px rgba(111,106,146,.08);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--ink);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        .worksheet-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--ink);
+            display: block;
+        }
+
+        .worksheet-input,
+        .worksheet-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            background: var(--bg);
+        }
+
+        .worksheet-input:focus,
+        .worksheet-textarea:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(168, 164, 203, 0.1);
+        }
+
+        .worksheet-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: var(--bg);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Recipe table */
+        .recipe-table {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .recipe-table th,
+        .recipe-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .recipe-table th {
+            background: var(--pill);
+            font-weight: 600;
+            color: var(--purple-deep);
+        }
+
+        .recipe-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        /* Progress tracking */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--line);
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--accent));
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* Sticky save button */
+        .sticky-save {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--accent);
+            color: var(--ink);
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(242, 180, 133, 0.4);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .sticky-save:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(242, 180, 133, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .workbook-section {
+                padding: 20px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .recipe-table {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .download-notice,
+            .sticky-save,
+            .btn {
+                display: none !important;
+            }
+
+            .workbook-section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="brand">HAIRQARE</div>
+            <div class="hero"></div>
+            <div class="container" style="padding-top:16px;padding-bottom:22px">
+                <div class="h1">Cuaderno de Trabajo: El Acondicionador Casero Definitivo</div>
+                <div class="sub">Crea un acondicionador de calidad profesional en casa, perfectamente adaptado a la porosidad y necesidades de tu cabello</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Download Notice -->
+        <section class="download-notice">
+            <h3>📱 Cuaderno Digital - Información Importante</h3>
+            <p><strong>¡Atención!</strong> Este cuaderno es solo digital. Tus respuestas <strong>NO se guardan automáticamente</strong> en el navegador.</p>
+            <p>Si cierras esta página sin descargar tu progreso, tendrás que empezar de nuevo. Te recomendamos encarecidamente:</p>
+            <div class="download-buttons">
+                <button class="btn" onclick="downloadBlankPDF()">
+                    📄 Descargar Cuaderno en Blanco
+                </button>
+                <button class="btn btn-secondary" onclick="downloadFilledPDF()">
+                    💾 Descargar con tus Respuestas
+                </button>
+            </div>
+        </section>
+
+        <!-- Introduction Section -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">👋</span>
+                Bienvenida a tu Viaje del Acondicionador Casero
+            </h2>
+            <p>Este cuaderno completo te guiará para crear tu acondicionador perfecto. Ya seas principiante o tengas experiencia formulando, esta guía se adapta a tu nivel y a las necesidades de tu cabello.</p>
+            
+            <label class="worksheet-label">¿Cuál es tu nivel de experiencia con productos capilares caseros?</label>
+            <select class="worksheet-input" id="experience-level">
+                <option value="">Selecciona tu nivel...</option>
+                <option value="beginner">Principiante total - Nunca he hecho productos capilares</option>
+                <option value="some">Algo de experiencia - He hecho algunas recetas simples</option>
+                <option value="intermediate">Intermedio - Me siento cómoda formulando</option>
+                <option value="advanced">Avanzado - Formuladora experimentada</option>
+            </select>
+
+            <label class="worksheet-label">¿Cuáles son tus principales preocupaciones capilares? (Marca todas las que apliquen)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="concern-dry" name="hair-concerns" value="dryness">
+                    <label for="concern-dry">Resequedad y falta de hidratación</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="concern-frizz" name="hair-concerns" value="frizz">
+                    <label for="concern-frizz">Frizz y cabello rebelde</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="concern-damage" name="hair-concerns" value="damage">
+                    <label for="concern-damage">Daño por calor o procesos químicos</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="concern-tangles" name="hair-concerns" value="tangles">
+                    <label for="concern-tangles">Enredos y nudos</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="concern-protein" name="hair-concerns" value="protein">
+                    <label for="concern-protein">Desbalance proteína/hidratación</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="concern-buildup" name="hair-concerns" value="buildup">
+                    <label for="concern-buildup">Acumulación de producto</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hair Analysis Section -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔍</span>
+                Análisis Capilar y Test de Porosidad
+            </h2>
+            
+            <label class="worksheet-label">Haz el Test de Flotación: Coloca un cabello limpio en agua. ¿Qué sucede?</label>
+            <select class="worksheet-input" id="float-test">
+                <option value="">Selecciona el resultado...</option>
+                <option value="floats">Flota en la superficie - Porosidad Baja</option>
+                <option value="middle">Flota en el medio - Porosidad Media</option>
+                <option value="sinks">Se hunde rápidamente - Porosidad Alta</option>
+            </select>
+
+            <label class="worksheet-label">¿Cómo se siente tu cabello cuando está mojado?</label>
+            <textarea class="worksheet-textarea" id="wet-feel" placeholder="Describe la textura, ¿se siente áspero, suave, pegajoso, etc.?"></textarea>
+
+            <label class="worksheet-label">¿Cuánto tiempo tarda tu cabello en secarse naturalmente?</label>
+            <select class="worksheet-input" id="dry-time">
+                <option value="">Selecciona el tiempo de secado...</option>
+                <option value="very-long">Más de 4 horas - Porosidad Baja</option>
+                <option value="moderate">2-4 horas - Porosidad Media</option>
+                <option value="quick">Menos de 2 horas - Porosidad Alta</option>
+            </select>
+
+            <label class="worksheet-label">Basándote en tu análisis, la porosidad de tu cabello es:</label>
+            <select class="worksheet-input" id="porosity-result">
+                <option value="">Selecciona la porosidad...</option>
+                <option value="low">Porosidad Baja</option>
+                <option value="medium">Porosidad Media</option>
+                <option value="high">Porosidad Alta</option>
+            </select>
+        </section>
+
+        <!-- Ingredient Understanding Section -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">🧪</span>
+                Entendiendo tus Ingredientes
+            </h2>
+            
+            <div class="callout" style="margin-bottom: 20px;">
+                <strong>Roles Clave de los Ingredientes:</strong><br>
+                • <strong>BTMS:</strong> Agente acondicionador y emulsionante<br>
+                • <strong>Aceites:</strong> Hidratan y sellan la cutícula capilar<br>
+                • <strong>Glicerina:</strong> Humectante que atrae la humedad<br>
+                • <strong>Proteínas:</strong> Fortalecen y reparan el cabello dañado<br>
+                • <strong>Conservadores:</strong> Mantienen tu producto seguro y fresco
+            </div>
+
+            <label class="worksheet-label">¿Qué ingredientes ya tienes en casa?</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-btms" name="have-ingredients" value="btms">
+                    <label for="have-btms">BTMS-25 o BTMS-50</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-glycerin" name="have-ingredients" value="glycerin">
+                    <label for="have-glycerin">Glicerina Vegetal</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-coconut" name="have-ingredients" value="coconut">
+                    <label for="have-coconut">Aceite de Coco Fraccionado</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-almond" name="have-ingredients" value="almond">
+                    <label for="have-almond">Aceite de Almendras Dulces</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-argan" name="have-ingredients" value="argan">
+                    <label for="have-argan">Aceite de Argán</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-jojoba" name="have-ingredients" value="jojoba">
+                    <label for="have-jojoba">Aceite de Jojoba</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-preservative" name="have-ingredients" value="preservative">
+                    <label for="have-preservative">Conservador (Germall Plus, Optiphen, etc.)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="have-protein" name="have-ingredients" value="protein">
+                    <label for="have-protein">Proteína Hidrolizada (Seda, Trigo, etc.)</label>
+                </div>
+            </div>
+
+            <label class="worksheet-label">¿Cuál es tu presupuesto para los ingredientes que necesitas comprar?</label>
+            <input type="text" class="worksheet-input" id="ingredient-budget" placeholder="ej. $1000 pesos, mínimo, flexible">
+
+            <label class="worksheet-label">Lista los ingredientes que necesitas comprar:</label>
+            <textarea class="worksheet-textarea" id="ingredients-needed" placeholder="Enumera cada ingrediente que necesitas adquirir..."></textarea>
+        </section>
+
+        <!-- Custom Recipe Builder -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">📝</span>
+                Tu Receta Personalizada
+            </h2>
+            
+            <p style="margin-bottom: 20px;">Basándonos en la porosidad de tu cabello, recomendamos la siguiente fórmula base. Puedes ajustar estos porcentajes según tus necesidades específicas.</p>
+
+            <label class="worksheet-label">Tamaño del Lote (ml):</label>
+            <input type="number" class="worksheet-input" id="batch-size" value="250" min="50" max="1000">
+
+            <table class="recipe-table">
+                <thead>
+                    <tr>
+                        <th>Ingrediente</th>
+                        <th>Porcentaje (%)</th>
+                        <th>Cantidad</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Agua Destilada</td>
+                        <td><input type="number" id="water-percent" value="80" min="60" max="90" step="0.5"></td>
+                        <td><span id="water-amount">200 ml</span></td>
+                        <td><input type="text" placeholder="Temperatura ambiente"></td>
+                    </tr>
+                    <tr>
+                        <td>BTMS-25</td>
+                        <td><input type="number" id="btms-percent" value="4" min="2" max="8" step="0.5"></td>
+                        <td><span id="btms-amount">10 g</span></td>
+                        <td><input type="text" placeholder="Derretir completamente"></td>
+                    </tr>
+                    <tr>
+                        <td>Glicerina</td>
+                        <td><input type="number" id="glycerin-percent" value="5" min="2" max="10" step="0.5"></td>
+                        <td><span id="glycerin-amount">12.5 ml</span></td>
+                        <td><input type="text" placeholder="Humectante"></td>
+                    </tr>
+                    <tr>
+                        <td>Mezcla de Aceites</td>
+                        <td><input type="number" id="oil-percent" value="10" min="5" max="20" step="0.5"></td>
+                        <td><span id="oil-amount">25 ml</span></td>
+                        <td><input type="text" placeholder="Mezcla de aceites elegidos"></td>
+                    </tr>
+                    <tr>
+                        <td>Proteína (Opcional)</td>
+                        <td><input type="number" id="protein-percent" value="1" min="0" max="3" step="0.5"></td>
+                        <td><span id="protein-amount">2.5 ml</span></td>
+                        <td><input type="text" placeholder="Para cabello dañado"></td>
+                    </tr>
+                    <tr>
+                        <td>Conservador</td>
+                        <td><input type="number" id="preservative-percent" value="0.5" min="0.1" max="1" step="0.1"></td>
+                        <td><span id="preservative-amount">1.25 ml</span></td>
+                        <td><input type="text" placeholder="Según fabricante"></td>
+                    </tr>
+                    <tr>
+                        <td>Aceite Esencial</td>
+                        <td><input type="number" id="eo-percent" value="0.5" min="0" max="1" step="0.1"></td>
+                        <td><span id="eo-amount">1.25 ml</span></td>
+                        <td><input type="text" placeholder="Para fragancia"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <label class="worksheet-label">Desglose de la Mezcla de Aceites:</label>
+            <textarea class="worksheet-textarea" id="oil-blend" placeholder="Lista tus aceites elegidos y sus proporciones. Ejemplo:
+- Aceite de Argán: 40% (10ml)
+- Aceite de Coco: 30% (7.5ml)
+- Aceite de Jojoba: 30% (7.5ml)"></textarea>
+
+            <label class="worksheet-label">pH Objetivo y Plan de Ajuste:</label>
+            <textarea class="worksheet-textarea" id="ph-plan" placeholder="pH objetivo: 4.5-5.5
+Cómo ajustar: Usa ácido cítrico para bajar, o hidróxido de sodio para subir..."></textarea>
+        </section>
+
+        <!-- Equipment Checklist -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔧</span>
+                Lista de Equipo
+            </h2>
+            
+            <label class="worksheet-label">Marca el equipo que tienes listo:</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-scale" name="equipment" value="scale">
+                    <label for="equip-scale">Báscula digital (precisión 0.1g)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-beakers" name="equipment" value="beakers">
+                    <label for="equip-beakers">Recipientes resistentes al calor</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-double" name="equipment" value="double-boiler">
+                    <label for="equip-double">Baño maría o tazón apto para calor</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-thermometer" name="equipment" value="thermometer">
+                    <label for="equip-thermometer">Termómetro</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-mixer" name="equipment" value="mixer">
+                    <label for="equip-mixer">Batidora de inmersión o batidor</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-ph" name="equipment" value="ph-strips">
+                    <label for="equip-ph">Tiras o medidor de pH</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-containers" name="equipment" value="containers">
+                    <label for="equip-containers">Contenedores para almacenar (esterilizados)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="equip-gloves" name="equipment" value="gloves">
+                    <label for="equip-gloves">Guantes y lentes de seguridad</label>
+                </div>
+            </div>
+
+            <label class="worksheet-label">Equipo que necesito conseguir:</label>
+            <textarea class="worksheet-textarea" id="equipment-needed" placeholder="Lista cualquier equipo que aún necesites comprar o pedir prestado..."></textarea>
+        </section>
+
+        <!-- Step-by-Step Process -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">👩‍🔬</span>
+                Notas del Proceso Paso a Paso
+            </h2>
+            
+            <div class="callout" style="margin-bottom: 20px;">
+                <strong>Consejo Pro:</strong> Lee todos los pasos antes de comenzar. Ten todos los ingredientes medidos y el equipo listo. Trabaja en un espacio limpio y desinfectado.
+            </div>
+
+            <label class="worksheet-label">Lista de Pre-Producción:</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="prep-sanitize" name="prep" value="sanitize">
+                    <label for="prep-sanitize">Desinfecté todo el equipo con alcohol al 70%</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="prep-measure" name="prep" value="measure">
+                    <label for="prep-measure">Medí todos los ingredientes</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="prep-label" name="prep" value="label">
+                    <label for="prep-label">Preparé etiquetas con fecha</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="prep-workspace" name="prep" value="workspace">
+                    <label for="prep-workspace">Organicé un espacio de trabajo limpio</label>
+                </div>
+            </div>
+
+            <label class="worksheet-label">Temperatura de la Fase Acuosa:</label>
+            <input type="text" class="worksheet-input" id="water-temp" placeholder="Objetivo: 70-75°C, Real: ">
+
+            <label class="worksheet-label">Temperatura de la Fase Oleosa:</label>
+            <input type="text" class="worksheet-input" id="oil-temp" placeholder="Objetivo: 70-75°C, Real: ">
+
+            <label class="worksheet-label">Notas de Emulsificación:</label>
+            <textarea class="worksheet-textarea" id="emulsification-notes" placeholder="¿Cuánto tiempo mezclaste? ¿Hubo separación? Observaciones de textura..."></textarea>
+
+            <label class="worksheet-label">Notas de la Fase de Enfriamiento:</label>
+            <textarea class="worksheet-textarea" id="cooldown-notes" placeholder="¿A qué temperatura agregaste el conservador? ¿Los aceites esenciales? Textura final..."></textarea>
+
+            <label class="worksheet-label">Lectura Final de pH:</label>
+            <input type="text" class="worksheet-input" id="final-ph" placeholder="Objetivo: 4.5-5.5, Real: ">
+
+            <label class="worksheet-label">Ajuste de pH Realizado:</label>
+            <textarea class="worksheet-textarea" id="ph-adjustment" placeholder="¿Qué usaste? ¿Cuánto? pH final después del ajuste..."></textarea>
+        </section>
+
+        <!-- Testing & Results -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">🧪</span>
+                Pruebas y Resultados
+            </h2>
+            
+            <label class="worksheet-label">Primeras Impresiones (Justo Después de Hacer):</label>
+            <textarea class="worksheet-textarea" id="initial-impressions" placeholder="Color, aroma, textura, consistencia..."></textarea>
+
+            <label class="worksheet-label">Revisión de Estabilidad a las 24 Horas:</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="stable-separation" name="stability" value="no-separation">
+                    <label for="stable-separation">No se observó separación</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="stable-texture" name="stability" value="consistent-texture">
+                    <label for="stable-texture">La textura se mantuvo consistente</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="stable-color" name="stability" value="no-color-change">
+                    <label for="stable-color">Sin cambios de color</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="stable-smell" name="stability" value="smell-stable">
+                    <label for="stable-smell">El aroma se mantuvo agradable</label>
+                </div>
+            </div>
+
+            <label class="worksheet-label">Primera Prueba de Uso:</label>
+            <textarea class="worksheet-textarea" id="first-use" placeholder="¿Cómo se sintió al aplicar? ¿Deslizamiento? ¿Capacidad desenredante? ¿Facilidad de enjuague..."></textarea>
+
+            <label class="worksheet-label">Resultados en el Cabello (Después del Secado):</label>
+            <textarea class="worksheet-textarea" id="hair-results" placeholder="Suavidad, brillo, control del frizz, definición, satisfacción general..."></textarea>
+
+            <label class="worksheet-label">Seguimiento de 1 Semana:</label>
+            <textarea class="worksheet-textarea" id="week-followup" placeholder="¿Cómo está respondiendo tu cabello? ¿Alguna acumulación? Retención de humedad..."></textarea>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">🔧</span>
+                Solución de Problemas y Ajustes
+            </h2>
+            
+            <label class="worksheet-label">Problemas Encontrados:</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="issue-separate" name="issues" value="separation">
+                    <label for="issue-separate">Separación/No emulsiona correctamente</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="issue-thick" name="issues" value="too-thick">
+                    <label for="issue-thick">Muy espeso/difícil de esparcir</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="issue-thin" name="issues" value="too-thin">
+                    <label for="issue-thin">Muy líquido/aguado</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="issue-greasy" name="issues" value="greasy">
+                    <label for="issue-greasy">Deja el cabello grasoso/pesado</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="issue-dry" name="issues" value="not-moisturizing">
+                    <label for="issue-dry">No hidrata lo suficiente</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="issue-buildup" name="issues" value="buildup">
+                    <label for="issue-buildup">Causa acumulación</label>
+                </div>
+            </div>
+
+            <label class="worksheet-label">Soluciones Aplicadas:</label>
+            <textarea class="worksheet-textarea" id="solutions" placeholder="¿Qué ajustes hiciste? Resultados de los cambios..."></textarea>
+
+            <label class="worksheet-label">Ajustes de Fórmula para el Próximo Lote:</label>
+            <textarea class="worksheet-textarea" id="next-adjustments" placeholder="¿Qué cambiarás? ¿Diferentes aceites? ¿Ajustar porcentajes? ¿Agregar/quitar ingredientes..."></textarea>
+        </section>
+
+        <!-- Cost Analysis -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">💰</span>
+                Análisis de Costos
+            </h2>
+            
+            <label class="worksheet-label">Costo Total de Ingredientes para Este Lote:</label>
+            <input type="text" class="worksheet-input" id="batch-cost" placeholder="$">
+
+            <label class="worksheet-label">Costo por Onza/ML:</label>
+            <input type="text" class="worksheet-input" id="unit-cost" placeholder="$">
+
+            <label class="worksheet-label">Comparación con Productos Comerciales:</label>
+            <textarea class="worksheet-textarea" id="cost-comparison" placeholder="Tu costo casero vs. producto comercial de calidad similar..."></textarea>
+
+            <label class="worksheet-label">Evaluación del Valor:</label>
+            <textarea class="worksheet-textarea" id="value-assessment" placeholder="¿Vale la pena hacerlo? ¿Comparación de calidad? ¿Beneficios de la personalización..."></textarea>
+        </section>
+
+        <!-- Long-term Planning -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">📅</span>
+                Planificación a Largo Plazo
+            </h2>
+            
+            <label class="worksheet-label">Frecuencia de Producción:</label>
+            <input type="text" class="worksheet-input" id="batch-frequency" placeholder="¿Con qué frecuencia lo harás? ¿Mensual? ¿Bimestral?">
+
+            <label class="worksheet-label">Plan de Abastecimiento de Ingredientes:</label>
+            <textarea class="worksheet-textarea" id="sourcing-plan" placeholder="¿Dónde comprar al por mayor? ¿Mejores proveedores? ¿Estrategias para ahorrar..."></textarea>
+
+            <label class="worksheet-label">Ajustes Estacionales:</label>
+            <textarea class="worksheet-textarea" id="seasonal-adjustments" placeholder="¿Cómo ajustarías la fórmula para diferentes estaciones/niveles de humedad?"></textarea>
+
+            <label class="worksheet-label">Ideas de Recetas Futuras:</label>
+            <textarea class="worksheet-textarea" id="future-recipes" placeholder="¿Otras variaciones que quieres probar? ¿Mascarilla de acondicionamiento profundo? ¿Versión sin enjuague?"></textarea>
+        </section>
+
+        <!-- Notes & Reflections -->
+        <section class="workbook-section">
+            <h2 class="section-title">
+                <span class="section-icon">📝</span>
+                Notas Finales y Reflexiones
+            </h2>
+            
+            <label class="worksheet-label">¿Qué te Sorprendió Más?</label>
+            <textarea class="worksheet-textarea" id="surprises" placeholder="Descubrimientos inesperados, aprendizajes, resultados..."></textarea>
+
+            <label class="worksheet-label">Mayores Desafíos:</label>
+            <textarea class="worksheet-textarea" id="challenges" placeholder="¿Qué fue lo más difícil? ¿Cómo lo superaste?"></textarea>
+
+            <label class="worksheet-label">Logro del que Estás Más Orgullosa:</label>
+            <textarea class="worksheet-textarea" id="achievements" placeholder="¿De qué estás más orgullosa en este proceso?"></textarea>
+
+            <label class="worksheet-label">Consejos para Otras:</label>
+            <textarea class="worksheet-textarea" id="advice" placeholder="¿Qué le dirías a alguien que apenas comienza su viaje del acondicionador casero?"></textarea>
+
+            <label class="worksheet-label">Calificación General (1-10):</label>
+            <input type="number" class="worksheet-input" id="overall-rating" min="1" max="10" placeholder="10">
+
+            <label class="worksheet-label">¿Volverías a Hacerlo?</label>
+            <select class="worksheet-input" id="make-again">
+                <option value="">Selecciona...</option>
+                <option value="yes-same">Sí, exactamente la misma receta</option>
+                <option value="yes-modified">Sí, con modificaciones</option>
+                <option value="maybe">Tal vez, necesito más pruebas</option>
+                <option value="no">No, probaré un enfoque diferente</option>
+            </select>
+        </section>
+
+        <!-- Final Download Reminder -->
+        <section class="download-notice">
+            <h3>🚨 Recordatorio Final</h3>
+            <p><strong>¡No olvides descargar tu cuaderno completo!</strong> Todo tu trabajo y notas se perderán si cierras esta página sin guardar.</p>
+            <div class="download-buttons">
+                <button class="btn btn-secondary" onclick="downloadFilledPDF()">
+                    💾 Descargar tu Cuaderno Completo
+                </button>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>© 2025 HairQare Lab · hairqare.co</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">Creado con amor para la comunidad de cuidado capilar casero 💜</p>
+        </div>
+    </div>
+
+    <!-- Sticky Save Button -->
+    <button class="sticky-save" onclick="downloadFilledPDF()" title="Descargar cuaderno con tus respuestas">
+        💾 Guardar PDF
+    </button>
+
+    <script>
+        // Auto-save functionality
+        function saveToLocalStorage() {
+            const formData = {};
+            
+            // Save all inputs
+            document.querySelectorAll('input[type="text"], input[type="number"], textarea, select').forEach((element, index) => {
+                if (element.value) {
+                    formData[`field_${index}`] = element.value;
+                }
+            });
+            
+            // Save checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach((element, index) => {
+                formData[`checkbox_${index}`] = element.checked;
+            });
+            
+            localStorage.setItem('diy_conditioner_workbook', JSON.stringify(formData));
+            
+            // Also save to cookies as backup
+            setCookie('diy_conditioner_data', JSON.stringify(formData), 30);
+        }
+
+        function loadFromStorage() {
+            // Try localStorage first
+            let savedData = localStorage.getItem('diy_conditioner_workbook');
+            
+            // Fall back to cookies if no localStorage
+            if (!savedData) {
+                savedData = getCookie('diy_conditioner_data');
+            }
+            
+            if (savedData) {
+                try {
+                    const formData = JSON.parse(savedData);
+                    
+                    // Restore text inputs
+                    document.querySelectorAll('input[type="text"], input[type="number"], textarea, select').forEach((element, index) => {
+                        if (formData[`field_${index}`]) {
+                            element.value = formData[`field_${index}`];
+                        }
+                    });
+                    
+                    // Restore checkboxes
+                    document.querySelectorAll('input[type="checkbox"]').forEach((element, index) => {
+                        if (formData[`checkbox_${index}`] !== undefined) {
+                            element.checked = formData[`checkbox_${index}`];
+                        }
+                    });
+                    
+                    // Update calculations if batch size was loaded
+                    updateCalculations();
+                } catch (e) {
+                    console.error('Error loading saved data:', e);
+                }
+            }
+        }
+
+        // Cookie utilities
+        function setCookie(name, value, days = 7) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const cookies = document.cookie.split(';');
+            for(let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                while (cookie.charAt(0) === ' ') cookie = cookie.substring(1, cookie.length);
+                if (cookie.indexOf(nameEQ) === 0) return decodeURIComponent(cookie.substring(nameEQ.length, cookie.length));
+            }
+            return null;
+        }
+
+        // Recipe calculator
+        function updateCalculations() {
+            const batchSize = parseFloat(document.getElementById('batch-size').value) || 250;
+            
+            // Update all calculated amounts
+            const calculations = [
+                { percentId: 'water-percent', amountId: 'water-amount', unit: 'ml' },
+                { percentId: 'btms-percent', amountId: 'btms-amount', unit: 'g' },
+                { percentId: 'glycerin-percent', amountId: 'glycerin-amount', unit: 'ml' },
+                { percentId: 'oil-percent', amountId: 'oil-amount', unit: 'ml' },
+                { percentId: 'protein-percent', amountId: 'protein-amount', unit: 'ml' },
+                { percentId: 'preservative-percent', amountId: 'preservative-amount', unit: 'ml' },
+                { percentId: 'eo-percent', amountId: 'eo-amount', unit: 'ml' }
+            ];
+            
+            calculations.forEach(calc => {
+                const percent = parseFloat(document.getElementById(calc.percentId).value) || 0;
+                const amount = (batchSize * percent / 100).toFixed(2);
+                document.getElementById(calc.amountId).textContent = `${amount} ${calc.unit}`;
+            });
+            
+            // Check if percentages add up to 100
+            let totalPercent = 0;
+            calculations.forEach(calc => {
+                totalPercent += parseFloat(document.getElementById(calc.percentId).value) || 0;
+            });
+            
+            if (Math.abs(totalPercent - 100) > 0.1) {
+                console.warn(`El porcentaje total es ${totalPercent}%, debería ser 100%`);
+            }
+        }
+
+        // PDF Generation
+        function downloadBlankPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            const primaryColor = [43, 36, 55];
+            const accentColor = [242, 180, 133];
+            
+            let yPos = 20;
+            
+            // Title
+            doc.setFontSize(24);
+            doc.setTextColor(...primaryColor);
+            doc.text('Cuaderno del Acondicionador Casero Definitivo', 105, yPos, { align: 'center' });
+            yPos += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(90, 84, 102);
+            doc.text('Cuaderno en Blanco para Uso Offline', 105, yPos, { align: 'center' });
+            yPos += 25;
+            
+            // Add sections with blank lines
+            const sections = [
+                'Análisis Capilar y Test de Porosidad',
+                'Planificación de Ingredientes',
+                'Desarrollo de Receta Personalizada',
+                'Lista de Equipo',
+                'Notas de Producción',
+                'Pruebas y Resultados',
+                'Análisis de Costos',
+                'Planificación Futura'
+            ];
+            
+            sections.forEach(section => {
+                if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFontSize(16);
+                doc.setTextColor(...primaryColor);
+                doc.text(section, 20, yPos);
+                yPos += 15;
+                
+                // Add lines for notes
+                for (let i = 0; i < 8; i++) {
+                    doc.setDrawColor(233, 230, 245);
+                    doc.line(20, yPos, 190, yPos);
+                    yPos += 7;
+                }
+                yPos += 10;
+            });
+            
+            doc.save('Cuaderno-Acondicionador-Casero-En-Blanco.pdf');
+        }
+
+        function downloadFilledPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            const primaryColor = [43, 36, 55];
+            const accentColor = [242, 180, 133];
+            
+            let yPos = 20;
+            
+            // Title
+            doc.setFontSize(24);
+            doc.setTextColor(...primaryColor);
+            doc.text('Mi Receta de Acondicionador Casero', 105, yPos, { align: 'center' });
+            yPos += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(90, 84, 102);
+            doc.text('Completado el ' + new Date().toLocaleDateString(), 105, yPos, { align: 'center' });
+            yPos += 25;
+            
+            // Collect all form data
+            const sections = document.querySelectorAll('.workbook-section');
+            
+            sections.forEach(section => {
+                const sectionTitle = section.querySelector('.section-title').textContent.trim();
+                
+                if (yPos > 240) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFontSize(18);
+                doc.setTextColor(...primaryColor);
+                doc.text(sectionTitle, 20, yPos);
+                yPos += 15;
+                
+                // Get all inputs in this section
+                const inputs = section.querySelectorAll('input[type="text"], input[type="number"], textarea, select');
+                
+                inputs.forEach(input => {
+                    const label = input.previousElementSibling;
+                    if (label && label.classList.contains('worksheet-label')) {
+                        const labelText = label.textContent;
+                        const value = input.value || '';
+                        
+                        if (value) {
+                            if (yPos > 260) {
+                                doc.addPage();
+                                yPos = 20;
+                            }
+                            
+                            doc.setFontSize(12);
+                            doc.setTextColor(...primaryColor);
+                            doc.text(labelText, 20, yPos);
+                            yPos += 7;
+                            
+                            doc.setFontSize(10);
+                            doc.setTextColor(90, 84, 102);
+                            
+                            const lines = doc.splitTextToSize(value, 170);
+                            lines.forEach(line => {
+                                doc.text(line, 25, yPos);
+                                yPos += 5;
+                            });
+                            yPos += 5;
+                        }
+                    }
+                });
+                
+                // Handle checkboxes
+                const checkboxGroups = section.querySelectorAll('.checkbox-group');
+                checkboxGroups.forEach(group => {
+                    const checkedBoxes = group.querySelectorAll('input[type="checkbox"]:checked');
+                    if (checkedBoxes.length > 0) {
+                        if (yPos > 250) {
+                            doc.addPage();
+                            yPos = 20;
+                        }
+                        
+                        doc.setFontSize(10);
+                        doc.setTextColor(90, 84, 102);
+                        checkedBoxes.forEach(checkbox => {
+                            const label = checkbox.nextElementSibling.textContent;
+                            doc.text('✓ ' + label, 25, yPos);
+                            yPos += 5;
+                        });
+                        yPos += 5;
+                    }
+                });
+                
+                yPos += 10;
+            });
+            
+            // Add recipe table on new page
+            doc.addPage();
+            yPos = 20;
+            
+            doc.setFontSize(18);
+            doc.setTextColor(...primaryColor);
+            doc.text('Receta Final', 20, yPos);
+            yPos += 15;
+            
+            const batchSize = document.getElementById('batch-size').value || '250';
+            doc.setFontSize(12);
+            doc.text(`Tamaño del Lote: ${batchSize} ml`, 20, yPos);
+            yPos += 10;
+            
+            // Recipe table data
+            const recipeData = [
+                ['Agua', document.getElementById('water-percent').value, document.getElementById('water-amount').textContent],
+                ['BTMS-25', document.getElementById('btms-percent').value, document.getElementById('btms-amount').textContent],
+                ['Glicerina', document.getElementById('glycerin-percent').value, document.getElementById('glycerin-amount').textContent],
+                ['Mezcla de Aceites', document.getElementById('oil-percent').value, document.getElementById('oil-amount').textContent],
+                ['Proteína', document.getElementById('protein-percent').value, document.getElementById('protein-amount').textContent],
+                ['Conservador', document.getElementById('preservative-percent').value, document.getElementById('preservative-amount').textContent],
+                ['Aceite Esencial', document.getElementById('eo-percent').value, document.getElementById('eo-amount').textContent]
+            ];
+            
+            // Draw table
+            doc.setFontSize(10);
+            recipeData.forEach(row => {
+                doc.text(row[0], 20, yPos);
+                doc.text(row[1] + '%', 80, yPos);
+                doc.text(row[2], 120, yPos);
+                yPos += 7;
+            });
+            
+            doc.save('Mi-Receta-Acondicionador-Casero-' + new Date().toISOString().split('T')[0] + '.pdf');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved data
+            loadFromStorage();
+            
+            // Auto-save on input
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('input', function() {
+                    saveToLocalStorage();
+                    if (element.id.includes('-percent') || element.id === 'batch-size') {
+                        updateCalculations();
+                    }
+                });
+                
+                element.addEventListener('change', saveToLocalStorage);
+            });
+            
+            // Initial calculation
+            updateCalculations();
+            
+            // Update progress bar based on filled fields
+            function updateProgress() {
+                const allInputs = document.querySelectorAll('input[required], textarea[required], select[required]');
+                const filledInputs = Array.from(allInputs).filter(input => input.value);
+                const progress = (filledInputs.length / allInputs.length) * 100;
+                
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = progress + '%';
+                }
+            }
+            
+            // Smooth scroll for internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+
+        // Periodic auto-save
+        setInterval(saveToLocalStorage, 30000); // Save every 30 seconds
+    </script>
+</body>
+</html>

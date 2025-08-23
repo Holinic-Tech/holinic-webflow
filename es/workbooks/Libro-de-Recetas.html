@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Libro de Recetas Saludables para el Cabello — HairQare</title>
+  <style>
+    :root{
+      --bg:#f8f7fb; --card:#fff; --ink:#2b2437; --muted:#5a5466;
+      --purple:#A8A4CB; --purple-deep:#6F6A92; --line:#e9e6f5; --pill:#efeef8;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:#f7f6fb;color:var(--ink);}
+    body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif;}
+    .container{max-width:1040px;margin:0 auto;padding:clamp(16px,2.4vw,28px)}
+    .header{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.92));box-shadow:0 12px 32px rgba(111,106,146,.10)}
+    .hero{width:100%;aspect-ratio: 16/7;background:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80') center/cover no-repeat;filter:saturate(.95) contrast(1.04)}
+    .brand{position:absolute;top:18px;left:18px;padding:9px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);
+      font-weight:700;letter-spacing:.5px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+    .h1{font-family:ui-serif,Georgia,Times,serif;font-size:clamp(28px,3.6vw,44px);line-height:1.1;margin:16px 0 6px}
+    .sub{color:var(--muted);margin:0 0 18px 0}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--pill);
+      border:1px solid #dedcf0;color:var(--purple-deep);font-weight:700;font-size:12px;letter-spacing:.5px;text-transform:uppercase}
+    .grid{display:grid;gap:22px}
+    @media(min-width:900px){.grid.two{grid-template-columns:1.1fr .9fr} .grid.even{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,2vw,26px);
+      box-shadow:0 10px 26px rgba(111,106,146,.08)}
+    .card h2{font-family:ui-serif,Georgia,Times,serif;margin:0 0 10px 0}
+    .hr{height:1px;background:var(--line);margin:12px 0 18px}
+    .photo{width:100%;border-radius:20px;border:1px solid var(--line);box-shadow:0 10px 22px rgba(111,106,146,.08)}
+    .table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:16px;border:1px solid var(--line);font-size:15px}
+    .table thead th{background:linear-gradient(180deg,#c7c3df,#b2aed1);color:#fff;text-align:left;padding:12px 14px}
+    .table tbody td{padding:12px 14px;border-top:1px solid var(--line);color:var(--muted);vertical-align:top}
+    .callout{border:1px dashed #d9d6eb;background:#f6f4ff;color:#3d3752;padding:14px 16px;border-radius:16px;margin:10px 0}
+    .steps ol{margin:0;padding-left:1.2rem}.steps li{margin:.35rem 0 .6rem;color:var(--muted)}
+    .footer{text-align:center;color:#7a7490;font-size:13px;padding:24px 0 10px}
+    .inputs{display:grid;gap:12px;grid-template-columns:1fr}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#c7c3df,#b2aed1);
+      color:#fff;font-weight:800;letter-spacing:.3px}
+    .recipe-grid{display:grid;gap:20px;margin-top:20px}
+    @media(min-width:768px){.recipe-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1024px){.recipe-grid{grid-template-columns:repeat(3,1fr)}}
+    .recipe-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+      box-shadow:0 8px 20px rgba(111,106,146,.06);transition:transform .2s,box-shadow .2s}
+    .recipe-card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(111,106,146,.12)}
+    .recipe-img{width:100%;height:200px;object-fit:cover}
+    .recipe-content{padding:16px}
+    .recipe-title{font-size:18px;font-weight:700;margin:0 0 8px}
+    .recipe-desc{color:var(--muted);font-size:14px;margin:0 0 12px}
+    .recipe-tag{display:inline-block;padding:4px 10px;border-radius:12px;background:var(--pill);
+      font-size:12px;color:var(--purple-deep);margin-right:6px;margin-bottom:6px}
+    .recipe-detail{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);display:none}
+    .recipe-card.expanded .recipe-detail{display:block}
+    .recipe-toggle{background:var(--purple);color:#fff;border:none;padding:8px 16px;border-radius:8px;
+      font-weight:600;cursor:pointer;width:100%;margin-top:12px;transition:all .2s}
+    .recipe-toggle:hover{background:var(--purple-deep)}
+    .ingredients-list{background:var(--pill);padding:12px;border-radius:12px;margin:12px 0}
+    .ingredients-list h4{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+    .ingredients-list ul{margin:4px 0;padding-left:20px}
+    .ingredients-list li{margin:4px 0;color:var(--muted)}
+    .instructions{background:#f9f8fc;padding:12px;border-radius:12px}
+    .instructions h4{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+    .instructions ol{margin:4px 0;padding-left:20px}
+    .instructions li{margin:8px 0;color:var(--muted);line-height:1.5}
+    .category-header{margin:32px 0 20px;padding:20px;background:linear-gradient(135deg,rgba(168,164,203,.1),rgba(111,106,146,.05));
+      border-radius:16px;border:1px solid var(--line)}
+    .category-header h2{margin:0 0 8px;font-size:28px}
+    .category-desc{color:var(--muted);margin:0}
+    .nav-pills{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0;padding:16px;background:var(--card);
+      border-radius:16px;border:1px solid var(--line)}
+    .nav-pill{padding:8px 16px;border-radius:999px;background:var(--pill);border:1px solid var(--line);
+      text-decoration:none;color:var(--purple-deep);font-weight:600;font-size:14px;transition:all .2s}
+    .nav-pill:hover{background:var(--purple);color:#fff;transform:translateY(-1px)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">HAIRQARE</div>
+      <div class="hero"></div>
+      <div class="container" style="padding-top:16px;padding-bottom:22px">
+        <div class="h1">Libro de Recetas Saludables para el Cabello</div>
+        <div class="sub">32 recetas nutritivas diseñadas para fortalecer y mejorar la salud de tu cabello durante el desafío de 14 días.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- NAVIGATION -->
+    <section class="nav-pills">
+      <a href="#protein" class="nav-pill">Proteínas</a>
+      <a href="#b12" class="nav-pill">Vitamina B12</a>
+      <a href="#biotin" class="nav-pill">Biotina</a>
+      <a href="#b6" class="nav-pill">Vitamina B6</a>
+      <a href="#folate" class="nav-pill">Folato</a>
+      <a href="#iron" class="nav-pill">Hierro</a>
+      <a href="#zinc" class="nav-pill">Zinc</a>
+      <a href="#copper" class="nav-pill">Cobre</a>
+      <a href="#vitaminA" class="nav-pill">Vitamina A</a>
+      <a href="#vitaminC" class="nav-pill">Vitamina C</a>
+      <a href="#vitaminD" class="nav-pill">Vitamina D</a>
+      <a href="#vitaminE" class="nav-pill">Vitamina E</a>
+      <a href="#omega3" class="nav-pill">Omega-3</a>
+    </section>
+
+    <!-- INTRODUCTION -->
+    <section class="card">
+      <span class="pill">Introducción</span>
+      <div class="hr"></div>
+      <p>Este libro de recetas está diseñado específicamente para apoyar la salud del cabello a través de la nutrición. Cada receta está cuidadosamente seleccionada para proporcionar nutrientes esenciales que fortalecen, nutren y mejoran la apariencia de tu cabello desde adentro hacia afuera.</p>
+      <div class="callout">
+        <strong>Consejo:</strong> Para mejores resultados, combina estas recetas con una rutina de cuidado capilar adecuada y mantén una hidratación constante.
+      </div>
+    </section>
+
+    <!-- PROTEIN RECIPES -->
+    <section id="protein" class="category-header">
+      <h2>Recetas Ricas en Proteínas</h2>
+      <p class="category-desc">La proteína es esencial para el crecimiento y fortalecimiento del cabello.</p>
+    </section>
+
+    <div class="recipe-grid">
+      <div class="recipe-card" id="recipe-1">
+        <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&q=80" alt="Pollo salteado" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Pollo Parmesano Salteado con Kale</h3>
+          <p class="recipe-desc">Delicioso pollo rico en proteínas combinado con kale lleno de vitaminas.</p>
+          <div>
+            <span class="recipe-tag">Proteína</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-1')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>2 cucharadas de aceite de oliva</li>
+                <li>1½ libras de pechugas de pollo sin piel ni hueso, cortadas en tiras de ½ pulgada</li>
+                <li>Sal kosher y pimienta negra recién molida</li>
+                <li>1 cebolla amarilla mediana, cortada en cubitos</li>
+                <li>3 dientes de ajo, picados</li>
+                <li>Una pizca de hojuelas de pimiento rojo</li>
+                <li>1 manojo grande de kale de hoja plana (aproximadamente 12 onzas)</li>
+                <li>½ taza de vino blanco seco</li>
+                <li>½ taza de queso parmesano rallado</li>
+                <li>1 cucharada de jugo de limón recién exprimido</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Calienta el aceite en una sartén grande a fuego medio. Agrega el pollo, sazona con sal y pimienta, saltea hasta que esté cocido (5-7 minutos). Transfiere a un plato y cubre.</li>
+                <li>Agrega la cebolla, el ajo y las hojuelas de pimiento a la sartén. Saltea hasta que las cebollas se ablanden (aproximadamente 2 minutos).</li>
+                <li>Incorpora el kale, el vino y una pizca de sal. Cubre y cocina durante 5 minutos, revolviendo ocasionalmente.</li>
+                <li>Regresa el pollo a la sartén. Agrega el parmesano y el jugo de limón, revuelve para combinar. Sazona según sea necesario.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-2">
+        <img src="https://images.unsplash.com/photo-1608797178974-15b35a64ede9?w=600&q=80" alt="Pollo con almendras" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Pollo con Costra de Almendras</h3>
+          <p class="recipe-desc">Pollo crujiente con almendras, rico en proteínas y vitamina E.</p>
+          <div>
+            <span class="recipe-tag">Proteína</span>
+            <span class="recipe-tag">Vitamina E</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-2')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>¾ taza de almendras crudas</li>
+                <li>2 cucharaditas + 1 cucharada de condimento italiano</li>
+                <li>1 cucharadita de paprika</li>
+                <li>½ cucharadita de sal</li>
+                <li>1 huevo, batido</li>
+                <li>4 pechugas de pollo sin piel ni hueso</li>
+                <li>1 pimiento rojo, picado</li>
+                <li>1 taza de coles de Bruselas, cortadas por la mitad</li>
+                <li>1 taza de floretes de coliflor</li>
+                <li>½ taza de cebolla roja, picada</li>
+                <li>1 taza de champiñones cremini, rebanados</li>
+                <li>Aceite de oliva</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Precalienta el horno a 375°F</li>
+                <li>En un procesador de alimentos, combina las almendras, 2 cucharaditas de condimento italiano, paprika y sal. Pulsa hasta que las almendras estén picadas pequeñas.</li>
+                <li>Cubre el pollo con el huevo batido, luego pásalo por la mezcla de almendras. Coloca en una bandeja para hornear.</li>
+                <li>Combina todos los vegetales en un tazón con aceite de oliva y condimento italiano.</li>
+                <li>Coloca los vegetales alrededor del pollo en la bandeja. Hornea durante 25 minutos.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-3">
+        <img src="https://images.unsplash.com/photo-1515516969-d4008cc6241a?w=600&q=80" alt="Curry de garbanzos" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Curry de Garbanzos</h3>
+          <p class="recipe-desc">Curry vegano rico en proteínas vegetales y hierro.</p>
+          <div>
+            <span class="recipe-tag">Proteína vegetal</span>
+            <span class="recipe-tag">Hierro</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-3')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Para la pasta:</h4>
+              <ul>
+                <li>2 cucharadas de aceite</li>
+                <li>1 cebolla, cortada en cubitos</li>
+                <li>1 cucharadita de chile fresco o seco</li>
+                <li>9 dientes de ajo</li>
+                <li>Trozo de jengibre del tamaño del pulgar, pelado</li>
+                <li>1 cucharada de cilantro molido</li>
+                <li>2 cucharadas de comino molido</li>
+                <li>1 cucharada de garam masala</li>
+                <li>2 cucharadas de puré de tomate</li>
+              </ul>
+              <h4>Para el curry:</h4>
+              <ul>
+                <li>2 latas de 400g de garbanzos, escurridos</li>
+                <li>1 lata de 400g de tomates picados</li>
+                <li>100g de coco cremoso</li>
+                <li>½ paquete pequeño de cilantro, picado</li>
+                <li>100g de espinacas</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Haz la pasta friendo la cebolla y el chile en aceite (8 minutos)</li>
+                <li>Licua el ajo, jengibre, aceite restante, especias, puré de tomate, sal y la cebolla frita</li>
+                <li>Cocina la pasta en una cacerola durante 2 minutos</li>
+                <li>Agrega los garbanzos y tomates, cocina a fuego lento 5 minutos</li>
+                <li>Agrega el coco cremoso con agua, cocina 5 minutos más</li>
+                <li>Agrega el cilantro y las espinacas, cocina hasta que se marchiten</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B12 RECIPES -->
+    <section id="b12" class="category-header">
+      <h2>Recetas con Vitamina B12</h2>
+      <p class="category-desc">La vitamina B12 es crucial para la producción de glóbulos rojos que transportan oxígeno a los folículos pilosos.</p>
+    </section>
+
+    <div class="recipe-grid">
+      <div class="recipe-card">
+        <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80" alt="Trucha" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Trucha con Agrodolce y Espárragos</h3>
+          <p class="recipe-desc">Trucha deliciosa rica en B12 y ácidos grasos omega-3.</p>
+          <div>
+            <span class="recipe-tag">B12</span>
+            <span class="recipe-tag">Omega-3</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-5">
+        <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=600&q=80" alt="Salmón" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Ensalada Mediterránea de Sardinas</h3>
+          <p class="recipe-desc">Ensalada nutritiva con sardinas ricas en B12 y omega-3.</p>
+          <div>
+            <span class="recipe-tag">B12</span>
+            <span class="recipe-tag">Omega-3</span>
+            <span class="recipe-tag">6 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-5')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>120g de rúcula/arúgula</li>
+                <li>1 cebolla roja, finamente rebanada</li>
+                <li>1 pepino, rebanado</li>
+                <li>1 pimiento naranja, rebanado</li>
+                <li>18 tomates cherry</li>
+                <li>30 aceitunas negras</li>
+                <li>3 latas de sardinas (270g peso escurrido)</li>
+                <li>90ml de aceite de oliva</li>
+                <li>30ml de vinagre balsámico</li>
+                <li>15ml de mostaza integral</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Mezcla todos los ingredientes de la ensalada incluyendo las sardinas en un tazón grande</li>
+                <li>Revuelve el aceite, vinagre y mostaza en una taza</li>
+                <li>Rocía el aderezo sobre la ensalada y sirve</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIOTIN RECIPES -->
+    <section id="biotin" class="category-header">
+      <h2>Recetas con Biotina (B7)</h2>
+      <p class="category-desc">La biotina fortalece el cabello y previene su caída.</p>
+    </section>
+
+    <div class="recipe-grid">
+      <div class="recipe-card" id="recipe-6">
+        <img src="https://images.unsplash.com/photo-1599599810694-b5b37304c041?w=600&q=80" alt="Nueces mixtas" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Ensalada de Trigo Sarraceno</h3>
+          <p class="recipe-desc">Ensalada nutritiva rica en biotina y minerales esenciales.</p>
+          <div>
+            <span class="recipe-tag">Biotina</span>
+            <span class="recipe-tag">Fibra</span>
+            <span class="recipe-tag">1 porción</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-6')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>½ taza de trigo sarraceno crudo</li>
+                <li>4 tomates cóctel grandes, en cuartos</li>
+                <li>½ pepino libanés, en cubos</li>
+                <li>½ aguacate, pelado</li>
+                <li>¼ cebolla roja pequeña, en rodajas finas</li>
+                <li>1 lata de 185g de atún (opcional)</li>
+                <li>2 cucharadas de hojas de cilantro</li>
+                <li>Algunas hojas frescas de albahaca</li>
+                <li>2 cucharadas de jugo de limón</li>
+                <li>2 cucharadas de aceite de oliva extra virgen</li>
+                <li>Sal marina y pimienta</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Cocina el trigo sarraceno en agua durante 10-12 minutos</li>
+                <li>Escurre y deja enfriar ligeramente</li>
+                <li>Divide entre tazones, cubre con vegetales, atún y hierbas</li>
+                <li>Rocía con jugo de limón y aceite de oliva</li>
+                <li>Sazona con sal y pimienta</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-7">
+        <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80" alt="Semillas" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Bolitas de Energía de Semillas de Girasol</h3>
+          <p class="recipe-desc">Snack energético con semillas de girasol ricas en biotina.</p>
+          <div>
+            <span class="recipe-tag">Biotina</span>
+            <span class="recipe-tag">Proteína</span>
+            <span class="recipe-tag">11 bolitas</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-7')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>2 tazas de almendras</li>
+                <li>1 taza de semillas de girasol</li>
+                <li>1 taza de copos de avena</li>
+                <li>½ taza de azúcar de coco (dividida)</li>
+                <li>½ taza de nibs de cacao</li>
+                <li>1 pizca de sal del Himalaya</li>
+                <li>2 cucharadas de mantequilla de coco</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Licua las almendras y semillas de girasol hasta obtener una textura suave</li>
+                <li>Mezcla todos los ingredientes con ¼ taza de azúcar de coco</li>
+                <li>Forma bolitas con la mezcla</li>
+                <li>Rueda las bolitas en el azúcar de coco restante</li>
+                <li>Refrigera para que se endurezcan</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IRON RECIPES -->
+    <section id="iron" class="category-header">
+      <h2>Recetas Ricas en Hierro</h2>
+      <p class="category-desc">El hierro es esencial para el transporte de oxígeno a los folículos pilosos.</p>
+    </section>
+
+    <div class="recipe-grid">
+      <div class="recipe-card" id="recipe-8">
+        <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&q=80" alt="Espinacas" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Hígado de Res Frito con Tocino</h3>
+          <p class="recipe-desc">Rico en hierro para la oxígenación de los folículos pilosos.</p>
+          <div>
+            <span class="recipe-tag">Hierro</span>
+            <span class="recipe-tag">B12</span>
+            <span class="recipe-tag">8 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-8')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>1 paquete de hígado (1½ libras), rebanado</li>
+                <li>1 taza de harina</li>
+                <li>1½ cucharaditas de sal</li>
+                <li>½ cucharadita de pimienta negra</li>
+                <li>1 paquete de tocino, picado</li>
+                <li>1 cebolla, picada</li>
+                <li>8 onzas de champiñones, rebanados</li>
+                <li>6 hojas frescas de salvia</li>
+                <li>Manojo pequeño de perejil</li>
+                <li>2 cucharadas de mantequilla</li>
+                <li>Manteca o sebo según sea necesario</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Mezcla sal, harina y pimienta</li>
+                <li>Fríe el tocino hasta que esté crujiente</li>
+                <li>Cocina la cebolla en la grasa del tocino</li>
+                <li>Saltea los champiñones en mantequilla</li>
+                <li>Pasa el hígado por la harina, fríe hasta que esté crujiente</li>
+                <li>Agrega todo de vuelta a la sartén con las hierbas</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-9">
+        <img src="https://cdn.pixabay.com/photo/2016/09/17/18/52/lentils-1676642_1280.jpg" alt="Lentejas" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Paté de Hígado de Pollo Keto</h3>
+          <p class="recipe-desc">Paté cremoso rico en hierro y vitaminas B.</p>
+          <div>
+            <span class="recipe-tag">Hierro</span>
+            <span class="recipe-tag">B12</span>
+            <span class="recipe-tag">10 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-9')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Para el paté:</h4>
+              <ul>
+                <li>1 cebolla roja</li>
+                <li>1 diente de ajo</li>
+                <li>8 onzas de mantequilla</li>
+                <li>2 cucharadas de brandy (opcional)</li>
+                <li>1 cucharada de pasta de tomate</li>
+                <li>1 libra de hígados de pollo</li>
+              </ul>
+              <h4>Mantequilla de tomillo:</h4>
+              <ul>
+                <li>4 onzas de mantequilla</li>
+                <li>1 cucharada de tomillo seco</li>
+                <li>1 cucharadita de pimienta negra</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Fríe la cebolla y el ajo en mantequilla</li>
+                <li>Fríe el hígado por todos lados</li>
+                <li>Licua el hígado, cebolla, ajo con mantequilla y pasta de tomate</li>
+                <li>Extiende en un molde para hornear</li>
+                <li>Haz mantequilla clarificada con tomillo</li>
+                <li>Vierte sobre el paté y refrigera</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZINC RECIPES -->
+    <section id="zinc" class="category-header">
+      <h2>Recetas con Zinc</h2>
+      <p class="category-desc">El zinc apoya el crecimiento y reparación del tejido capilar.</p>
+    </section>
+
+    <div class="recipe-grid">
+      <div class="recipe-card" id="recipe-10">
+        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80" alt="Carne de res" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Salteado de Filete y Brócoli</h3>
+          <p class="recipe-desc">Carne magra rica en zinc con semillas de calabaza tostadas.</p>
+          <div>
+            <span class="recipe-tag">Zinc</span>
+            <span class="recipe-tag">Proteína</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-10')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>4 onzas de mantequilla, dividida</li>
+                <li>¾ libra de filetes de ribeye, rebanados</li>
+                <li>Sal y pimienta</li>
+                <li>1 cebolla amarilla, rebanada</li>
+                <li>9 onzas de brócoli, picado</li>
+                <li>1 cucharada de salsa de soya tamari</li>
+                <li>2 cucharadas de semillas de calabaza</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Dora la carne en mantequilla, sazona con sal y pimienta</li>
+                <li>Fríe el brócoli y la cebolla en la misma sartén</li>
+                <li>Agrega la salsa de soya</li>
+                <li>Tuesta las semillas de calabaza en una sartén seca</li>
+                <li>Sirve el salteado cubierto con mantequilla y semillas</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-11">
+        <img src="https://cdn.pixabay.com/photo/2018/09/24/20/12/pumpkin-seeds-3700194_1280.jpg" alt="Semillas de calabaza" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Barras de Semillas de Calabaza con Arándanos</h3>
+          <p class="recipe-desc">Snack saludable rico en zinc y ácidos grasos esenciales.</p>
+          <div>
+            <span class="recipe-tag">Zinc</span>
+            <span class="recipe-tag">Snack</span>
+            <span class="recipe-tag">12 barras</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-11')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>¼ taza de miel</li>
+                <li>½ cucharadita de extracto de vainilla</li>
+                <li>¼ taza de harina de almendras</li>
+                <li>⅛ cucharadita de sal</li>
+                <li>1 cucharadita de especias para pastel de calabaza</li>
+                <li>1 cucharada de mantequilla de almendras</li>
+                <li>⅓ taza de almendras, picadas</li>
+                <li>¼ taza de arándanos secos</li>
+                <li>¾ taza de pepitas (semillas de calabaza)</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Precalienta el horno a 300°F</li>
+                <li>Mezcla miel, vainilla, harina de almendras, sal, especias y mantequilla de almendras</li>
+                <li>Incorpora las nueces y arándanos</li>
+                <li>Presiona en un molde, hornea 20-22 minutos</li>
+                <li>Enfría completamente, luego refrigera 1 hora</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OMEGA-3 RECIPES -->
+    <section id="omega3" class="category-header">
+      <h2>Recetas con Omega-3</h2>
+      <p class="category-desc">Los ácidos grasos omega-3 nutren los folículos pilosos y promueven el brillo del cabello.</p>
+    </section>
+
+    <div class="recipe-grid">
+      <div class="recipe-card" id="recipe-12">
+        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80" alt="Salmón y aguacate" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Salmón Salvaje con Verduras</h3>
+          <p class="recipe-desc">Salmón rico en omega-3 para nutrir los folículos pilosos.</p>
+          <div>
+            <span class="recipe-tag">Omega-3</span>
+            <span class="recipe-tag">Vitamina D</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-12')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>4 filetes de salmón salvaje (6 onzas cada uno)</li>
+                <li>2 cucharadas de aceite de oliva</li>
+                <li>2 dientes de ajo, picados</li>
+                <li>1 limón, en rodajas</li>
+                <li>2 tazas de brócoli</li>
+                <li>1 taza de zanahorias baby</li>
+                <li>1 pimiento rojo, rebanado</li>
+                <li>Sal marina y pimienta negra</li>
+                <li>Hierbas frescas (eneldo o perejil)</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Precalienta el horno a 400°F</li>
+                <li>Coloca el salmón en una bandeja para hornear</li>
+                <li>Rocía con aceite de oliva y ajo</li>
+                <li>Rodea con vegetales y rodajas de limón</li>
+                <li>Sazona todo con sal y pimienta</li>
+                <li>Hornea durante 15-20 minutos</li>
+                <li>Decora con hierbas frescas antes de servir</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-13">
+        <img src="https://cdn.pixabay.com/photo/2017/08/30/12/29/walnuts-2696998_1280.jpg" alt="Nueces" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Ensalada de Nueces y Arándanos</h3>
+          <p class="recipe-desc">Ensalada nutritiva rica en omega-3 y antioxidantes.</p>
+          <div>
+            <span class="recipe-tag">Omega-3</span>
+            <span class="recipe-tag">Antioxidantes</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-13')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>6 tazas de mezcla de hojas verdes</li>
+                <li>1 taza de nueces, picadas gruesas</li>
+                <li>½ taza de arándanos secos</li>
+                <li>½ taza de queso de cabra desmenuzado</li>
+                <li>1 manzana verde, en rodajas finas</li>
+                <li>¼ de cebolla roja, en rodajas finas</li>
+              </ul>
+              <h4>Para el aderezo:</h4>
+              <ul>
+                <li>3 cucharadas de aceite de nuez</li>
+                <li>2 cucharadas de vinagre de manzana</li>
+                <li>1 cucharada de miel</li>
+                <li>1 cucharadita de mostaza Dijon</li>
+                <li>Sal y pimienta al gusto</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>Combina las hojas verdes, nueces, arándanos, queso y manzana en un tazón grande</li>
+                <li>En un frasco pequeño, agita todos los ingredientes del aderezo</li>
+                <li>Vierte el aderezo sobre la ensalada justo antes de servir</li>
+                <li>Mezcla suavemente y sirve de inmediato</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" id="recipe-14">
+        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80" alt="Pudín de chía" class="recipe-img">
+        <div class="recipe-content">
+          <h3 class="recipe-title">Pudín de Chía con Frutas</h3>
+          <p class="recipe-desc">Postre saludable cargado de omega-3 y fibra.</p>
+          <div>
+            <span class="recipe-tag">Omega-3</span>
+            <span class="recipe-tag">Postre</span>
+            <span class="recipe-tag">4 porciones</span>
+          </div>
+          <button class="recipe-toggle" onclick="toggleRecipe('recipe-14')">Ver Receta</button>
+          <div class="recipe-detail">
+            <div class="ingredients-list">
+              <h4>Ingredientes</h4>
+              <ul>
+                <li>½ taza de semillas de chía</li>
+                <li>2 tazas de leche de almendras sin azúcar</li>
+                <li>2 cucharadas de miel o jarabe de arce</li>
+                <li>1 cucharadita de extracto de vainilla</li>
+                <li>½ cucharadita de canela molida</li>
+                <li>Una pizca de sal</li>
+              </ul>
+              <h4>Para servir:</h4>
+              <ul>
+                <li>Fresas frescas rebanadas</li>
+                <li>Arándanos frescos</li>
+                <li>Almendras rebanadas</li>
+                <li>Coco rallado</li>
+              </ul>
+            </div>
+            <div class="instructions">
+              <h4>Instrucciones</h4>
+              <ol>
+                <li>En un tazón, mezcla las semillas de chía, leche de almendras, miel, vainilla, canela y sal</li>
+                <li>Revuelve bien para evitar grumos</li>
+                <li>Cubre y refrigera por al menos 4 horas o toda la noche</li>
+                <li>Revuelve antes de servir</li>
+                <li>Divide en 4 porciones</li>
+                <li>Decora con frutas frescas, almendras y coco</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIPS SECTION -->
+    <section class="card" style="margin-top:32px">
+      <span class="pill">Consejos para el Éxito</span>
+      <div class="hr"></div>
+      <div class="grid even">
+        <div>
+          <h3>Preparación de Comidas</h3>
+          <ul>
+            <li>Planifica tus comidas semanalmente</li>
+            <li>Prepara ingredientes con anticipación</li>
+            <li>Almacena porciones individuales para facilitar el consumo</li>
+            <li>Mantén snacks saludables a mano</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Maximiza la Absorción de Nutrientes</h3>
+          <ul>
+            <li>Combina hierro vegetal con vitamina C</li>
+            <li>Consume grasas saludables con vitaminas liposolubles</li>
+            <li>Evita el té y café con comidas ricas en hierro</li>
+            <li>Mantente hidratado durante todo el día</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">© HairQare Lab 2025 · Libro de Recetas para Cabello Saludable</div>
+  </div>
+
+  <script>
+    function toggleRecipe(recipeId) {
+      const recipeCard = document.getElementById(recipeId);
+      const button = recipeCard.querySelector('.recipe-toggle');
+      
+      recipeCard.classList.toggle('expanded');
+      
+      if (recipeCard.classList.contains('expanded')) {
+        button.textContent = 'Ocultar Receta';
+      } else {
+        button.textContent = 'Ver Receta';
+      }
+    }
+  </script>
+</body>
+</html>
