@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guía de Cuidado Capilar DIY — HairQare</title>
+  <style>
+    :root{
+      --bg:#f8f7fb; --card:#fff; --ink:#2b2437; --muted:#5a5466;
+      --purple:#A8A4CB; --purple-deep:#6F6A92; --line:#e9e6f5; --pill:#efeef8;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:#f7f6fb;color:var(--ink);}
+    body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif;}
+    .container{max-width:1040px;margin:0 auto;padding:clamp(16px,2.4vw,28px)}
+    .header{position:relative;border-radius:28px;overflow:hidden;border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.92));box-shadow:0 12px 32px rgba(111,106,146,.10)}
+    .hero{width:100%;aspect-ratio: 16/7;background:url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1600') center/cover no-repeat;filter:saturate(.95) contrast(1.04)}
+    .brand{position:absolute;top:18px;left:18px;padding:9px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);
+      font-weight:700;letter-spacing:.5px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+    .h1{font-family:ui-serif,Georgia,Times,serif;font-size:clamp(28px,3.6vw,44px);line-height:1.1;margin:16px 0 6px}
+    .sub{color:var(--muted);margin:0 0 18px 0}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--pill);
+      border:1px solid #dedcf0;color:var(--purple-deep);font-weight:700;font-size:12px;letter-spacing:.5px;text-transform:uppercase}
+    .grid{display:grid;gap:22px}
+    @media(min-width:900px){.grid.two{grid-template-columns:1.1fr .9fr} .grid.even{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,2vw,26px);
+      box-shadow:0 10px 26px rgba(111,106,146,.08)}
+    .card h2{font-family:ui-serif,Georgia,Times,serif;margin:0 0 10px 0}
+    .hr{height:1px;background:var(--line);margin:12px 0 18px}
+    .photo{width:100%;border-radius:20px;border:1px solid var(--line);box-shadow:0 10px 22px rgba(111,106,146,.08)}
+    .table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:16px;border:1px solid var(--line);font-size:15px}
+    .table thead th{background:linear-gradient(180deg,#c7c3df,#b2aed1);color:#fff;text-align:left;padding:12px 14px}
+    .table tbody td{padding:12px 14px;border-top:1px solid var(--line);color:var(--muted);vertical-align:top}
+    .callout{border:1px dashed #d9d6eb;background:#f6f4ff;color:#3d3752;padding:14px 16px;border-radius:16px;margin:10px 0}
+    .steps ol{margin:0;padding-left:1.2rem}.steps li{margin:.35rem 0 .6rem;color:var(--muted)}
+    .footer{text-align:center;color:#7a7490;font-size:13px;padding:24px 0 10px}
+    .inputs{display:grid;gap:12px;grid-template-columns:1fr}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(180deg,#c7c3df,#b2aed1);
+      color:#fff;font-weight:800;letter-spacing:.3px;cursor:pointer;border:none;}
+    .ingredients-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .ingredient-card{padding:20px;background:#f9f8fc;border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden}
+    .ingredient-image{position:absolute;top:0;right:0;width:120px;height:120px;opacity:0.1;background-size:cover;background-position:center}
+    .ingredient-card h3{margin:0 0 8px 0;color:var(--purple-deep)}
+    .pillar-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+    .pillar-card{background:linear-gradient(135deg,#f6f5fb,#fff);border:1px solid var(--line);border-radius:18px;padding:24px;position:relative;overflow:hidden}
+    .pillar-card::before{content:'';position:absolute;bottom:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(168,164,203,.1),transparent);border-radius:50%}
+    .pillar-number{position:absolute;top:12px;right:16px;font-size:48px;font-weight:800;color:rgba(168,164,203,.2)}
+    .pillar-card h3{margin:0 0 12px 0;color:var(--purple-deep);font-size:18px}
+    .recipe-card{background:#fafafa;border:1px solid var(--line);border-radius:18px;padding:24px;margin:16px 0}
+    .recipe-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .recipe-title{font-size:24px;font-weight:700;color:var(--purple-deep)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">HAIRQARE</div>
+      <div class="hero"></div>
+      <div class="container" style="padding-top:16px;padding-bottom:22px">
+        <div class="h1">Guía de Cuidado Capilar DIY</div>
+        <div class="sub">Tu guía completa para crear productos capilares naturales en casa. Toma el control total de tu rutina capilar.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- INTRODUCCIÓN -->
+    <section id="intro" class="card">
+      <span class="pill">Introducción</span>
+      <div class="hr"></div>
+      <div class="grid two">
+        <div>
+          <h2>¿Cómo sería tener control total sobre tu rutina capilar?</h2>
+          <p>Si crearas tus propios productos capilares en casa, sabrías exactamente cómo responder a esa pregunta.</p>
+          <p>Crear tu propio cuidado capilar es la práctica definitiva que te permite atender completamente las necesidades únicas de tu cabello mientras evitas ingredientes potencialmente tóxicos.</p>
+          <p>La Guía para Principiantes de Cuidado Capilar Casero es una introducción a un tema increíblemente amplio. Las posibilidades son infinitas una vez que comienzas.</p>
+          <p>No queremos abrumarte, así que hemos diseñado esta guía para ayudarte a familiarizarte con los principios más fundamentales de crear productos capilares en casa.</p>
+        </div>
+        <div>
+          <img class="photo" src="https://images.unsplash.com/photo-1542838309-fbfad201ce6d?auto=format&fit=crop&w=800" alt="Ingredientes naturales para el cuidado del cabello">
+        </div>
+      </div>
+    </section>
+    
+    <div style="margin:32px 0;text-align:center">
+      <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1200" alt="Productos naturales de belleza" style="width:100%;max-width:800px;height:auto;border-radius:20px;box-shadow:0 10px 30px rgba(111,106,146,.15)">
+    </div>
+
+    <!-- LOS 6 PILARES -->
+    <section id="pillars" class="card" style="margin-top:22px">
+      <span class="pill">Los 6 Pilares del Cuidado Capilar DIY</span>
+      <div class="hr"></div>
+      <p>Comenzar con la creación de tu propio cuidado capilar en casa puede ser intimidante. Hay tantas cosas que tener en cuenta y parece mucho más fácil simplemente comprar un producto de la tienda. Es fácil sentirse abrumado cuando comienzas algo nuevo. ¡Pero no te preocupes! Solo hay 6 aspectos clave que necesitas hacer bien para crear productos capilares efectivos en casa.</p>
+      
+      <div class="pillar-grid" style="margin-top:24px">
+        <div class="pillar-card">
+          <div class="pillar-number">01</div>
+          <h3>AMBIENTE DE TRABAJO LIMPIO</h3>
+          <p>Un ambiente de trabajo limpio es uno de los aspectos más importantes para asegurar que tu producto final no se eche a perder. Las bacterias de tus manos, agua o equipo son lo que acorta la vida útil de tus formulaciones.</p>
+          <ul style="font-size:14px;color:var(--muted)">
+            <li>Lava tus manos completamente antes de trabajar</li>
+            <li>Desinfecta todas las herramientas y superficies</li>
+            <li>Lava los contenedores con jabón y hiérvelos antes de usar</li>
+            <li>Asegúrate de que estén completamente secos antes de llenarlos</li>
+          </ul>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-number">02</div>
+          <h3>ALMACENAMIENTO</h3>
+          <p>Ya sea que uses conservantes o lo hagas fresco, la oxidación y las bacterias son los mayores enemigos de tus productos capilares caseros.</p>
+          <p>Para mantener tus productos frescos por más tiempo, siempre debes almacenarlos en un lugar fresco, oscuro y seco. Esto significa que tu baño no es el lugar ideal.</p>
+          <p style="font-size:14px;color:var(--muted)">Si no usas conservantes, despeja espacio en tu refrigerador y solo mueve la cantidad de producto para una aplicación al baño.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-number">03</div>
+          <h3>BALANCE DE pH</h3>
+          <p>El balance del pH es un pilar de cualquier producto capilar, no solo los caseros. Los productos que hagas en casa deben estar dentro de un rango de pH específico para ser efectivos y seguros.</p>
+          <ul style="font-size:14px;color:var(--muted)">
+            <li><strong>Productos para el cuero cabelludo:</strong> pH 4.5-5.5</li>
+            <li><strong>Productos para las hebras:</strong> pH 3.67</li>
+            <li>Siempre ten tiras de pH a mano para verificar</li>
+          </ul>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-number">04</div>
+          <h3>PERFIL CAPILAR</h3>
+          <p>Conocer tu perfil capilar es una consideración crítica al formular productos efectivos en casa. Tu Perfil Capilar es un mapa que te dice exactamente qué ingredientes son buenos para tu cabello y cuáles lo dañarán.</p>
+          <p style="font-size:14px;color:var(--muted)">En esta guía nos enfocamos en formulaciones simples que funcionan para la mayoría de tipos de cabello.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-number">05</div>
+          <h3>PRUEBA Y AJUSTE</h3>
+          <p>Al probar un nuevo producto o formular el nuestro, esencialmente estamos experimentando con nosotros mismos. Con cada nuevo producto aprendemos más sobre si a nuestro cabello le gusta o no.</p>
+          <p style="font-size:14px;color:var(--muted)">No necesitas saber todo el Día 1, solo necesitas seguir probando y ajustando hasta encontrar tu producto DIY perfecto.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-number">06</div>
+          <h3>PRUEBAS DE PARCHE</h3>
+          <p>Cada persona reacciona diferente a los ingredientes individuales. Por esta razón, es sabio conocer tu cuerpo y su tolerancia antes de aplicar algo en tu cuero cabelludo.</p>
+          <div class="callout" style="margin-top:12px">
+            <strong>Pasos para una prueba de parche:</strong><br>
+            1. Lava tu antebrazo con jabón sin fragancia<br>
+            2. Aplica una pequeña cantidad del producto<br>
+            3. Cubre con gasa (opcional) y espera 24 horas<br>
+            4. Si hay enrojecimiento, picazón o hinchazón, descontinúa el uso
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INGREDIENTES CASEROS -->
+    <section id="ingredients" class="card" style="margin-top:22px">
+      <span class="pill">Ingredientes Capilares en tu Cocina</span>
+      <div class="hr"></div>
+      <p>Hay muchos ingredientes en tu casa que a tu cabello le encantaría experimentar. Probablemente ya has visto comerciales diciendo "Con el poder de la miel". La mayoría de productos capilares modernos ya contienen muchos alimentos caseros. La diferencia es que solo incluyen un poco de ingredientes naturales, mientras que tú puedes incluir tanto como quieras.</p>
+      
+      <div style="margin:20px 0">
+        <img class="photo" src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200" alt="Ingredientes naturales en la cocina" style="width:100%;height:auto">
+      </div>
+      
+      <div class="ingredients-grid" style="margin-top:24px">
+        <div class="ingredient-card">
+          <div class="ingredient-image" style="background-image:url('https://images.unsplash.com/photo-1515021591381-7d6e2101f04d?auto=format&fit=crop&w=300')"></div>
+          <h3>Aceite de Oliva</h3>
+          <p>¿Sufres de cabello dañado o áspero? El aceite de oliva podría ser la solución perfecta. Su composición de ácidos grasos le permite absorberse en tu cabello mientras lo humecta, aumenta el volumen y promueve suavidad.</p>
+          <p style="font-size:14px;color:var(--muted)">Además, previene la producción de DHT, el culpable de la calvicie de patrón masculino.</p>
+        </div>
+
+        <div class="ingredient-card">
+          <div class="ingredient-image" style="background-image:url('https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=300')"></div>
+          <h3>Limón</h3>
+          <p>Una de las principales razones del cabello dañado es un nivel de pH desequilibrado. Cuando el pH se desplaza hacia la alcalinidad, tu cabello comienza a secarse y encresparse.</p>
+          <p style="font-size:14px;color:var(--muted)">El ácido cítrico en los limones puede usarse para equilibrar el pH. Usa solo el jugo sin pulpa.</p>
+        </div>
+
+        <div class="ingredient-card">
+          <div class="ingredient-image" style="background-image:url('https://images.unsplash.com/photo-1481349518771-20055b2a7b24?auto=format&fit=crop&w=300')"></div>
+          <h3>Plátano</h3>
+          <p>Rico en potasio, magnesio, vitamina B6 y C, y proteína. Estas propiedades nutritivas hacen del plátano una excelente base para mascarillas capilares.</p>
+          <p style="font-size:14px;color:var(--muted)">Con su alto contenido de sílice y propiedades antioxidantes, puedes usarlo para nutrir profundamente tu cuero cabelludo.</p>
+        </div>
+
+        <div class="ingredient-card">
+          <div class="ingredient-image" style="background-image:url('https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=300')"></div>
+          <h3>Miel</h3>
+          <p>La miel puede funcionar como magia contra un cuero cabelludo seco y dañado gracias a sus propiedades antibacterianas, antifúngicas y antioxidantes.</p>
+          <p style="font-size:14px;color:var(--muted)">Como humectante natural, ayuda a tu cabello a retener más humedad.</p>
+        </div>
+
+        <div class="ingredient-card">
+          <div class="ingredient-image" style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=300')"></div>
+          <h3>Té Verde</h3>
+          <p>Famoso por sus propiedades antioxidantes. El elemento nutricional héroe del té verde es el pantenol, que estimula el cuero cabelludo, suaviza el tallo capilar y fortalece el folículo.</p>
+          <p style="font-size:14px;color:var(--muted)">También es rico en teanina y cafeína que promueven el crecimiento del cabello.</p>
+        </div>
+
+        <div class="ingredient-card">
+          <div class="ingredient-image" style="background-image:url('https://images.unsplash.com/photo-1550223640-23097fc71cb2?auto=format&fit=crop&w=300')"></div>
+          <h3>Yogur</h3>
+          <p>Te ofrece dos cosas: la riqueza de proteína láctea y la bondad del ácido láctico. Las proteínas fortalecen el tallo capilar mientras el ácido láctico hidrata y exfolia.</p>
+          <p style="font-size:14px;color:var(--muted)">Úsalo para hebras más fuertes, menos frizz y más brillo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALOE VERA -->
+    <section id="aloe" class="card" style="margin-top:22px">
+      <span class="pill">El Ingrediente Estrella: Aloe Vera</span>
+      <div class="hr"></div>
+      <div class="grid two">
+        <div>
+          <h2>¡Hablemos del campeón del cuidado capilar: el aloe vera!</h2>
+          <p>El aloe vera presenta tantas propiedades que te ayudan a lograr un mejor cabello. Algunos de los nutrientes beneficiosos incluyen proteína, calcio, magnesio, zinc, vitaminas A, B12, C, E y ácidos grasos esenciales.</p>
+          <p>De hecho, ¡el gel fresco de aloe vera de la planta contiene 18 de 20 aminoácidos!</p>
+          
+          <h3 style="color:var(--purple-deep);margin-top:20px">Beneficios del Aloe Vera:</h3>
+          
+          <h4>Limpieza del Cuero Cabelludo y Ajuste de pH</h4>
+          <p>El aloe vera tiene la capacidad de exfoliar el cuero cabelludo y promover la regeneración de nuevas células. Puedes usarlo en recetas de tratamiento para limpiar profundamente tu cuero cabelludo de la manera más natural y suave.</p>
+          
+          <h4>¡Adiós a la Caspa!</h4>
+          <p>Un hongo llamado Malassezia es el culpable. Las propiedades antifúngicas del aloe vera ayudan a reducir la inflamación y el crecimiento bacteriano, previniendo la caspa.</p>
+          
+          <h4>Control de Grasa</h4>
+          <p>El aloe contiene ácido salicílico, que ayuda a descomponer el sebo y equilibra su producción, reduciendo los folículos obstruidos y previniendo la caída del cabello.</p>
+          
+          <h4>Crecimiento Capilar</h4>
+          <p>El aloe vera aumenta la circulación sanguínea cuando entra en contacto con la piel. Más flujo sanguíneo significa mejor flujo de nutrientes, clave para un crecimiento saludable.</p>
+        </div>
+        <div>
+          <img class="photo" src="https://images.unsplash.com/photo-1567945716310-4745a6b7844b?auto=format&fit=crop&w=800" alt="Planta de aloe vera">
+          
+          <div class="callout" style="margin-top:20px">
+            <h4 style="margin:0 0 8px 0">Mascarilla Exfoliante Suave</h4>
+            <p>Antes del shampoo, aplica el gel directamente en tu cuero cabelludo y masajea suavemente. Déjalo actuar 15-20 minutos. Luego enjuaga con agua y sigue con tu shampoo regular.</p>
+          </div>
+          
+          <div class="callout" style="margin-top:12px">
+            <h4 style="margin:0 0 8px 0">Leave-in Hidratante</h4>
+            <p>Toma una pequeña cantidad de gel puro de aloe vera, frótalo entre tus palmas y pásalo por tu cabello húmedo después de la ducha. Concéntrate en las puntas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GEL DE ALOE VERA DIY -->
+    <section id="aloe-gel" class="card" style="margin-top:22px">
+      <span class="pill">Haz tu Propio Gel de Aloe Vera</span>
+      <div class="hr"></div>
+      <div class="grid even">
+        <div>
+          <p>El gel de aloe vera es más efectivo cuando viene directamente de la planta para asegurar su pH. Los geles comprados contienen conservantes que pueden alterar el balance del pH.</p>
+          
+          <div class="steps">
+            <ol>
+              <li>Corta una de las hojas exteriores desde la base de la planta. Lávala bien.</li>
+              <li>Déjala parada en una taza con agua por 10-15 minutos (la parte cortada en el agua). Esto permite que la resina amarillenta drene.</li>
+              <li>Después de que la resina haya drenado, enjuaga la hoja y pela la piel gruesa con un cuchillo pequeño.</li>
+              <li>Coloca el gel interno en tu licuadora. Asegúrate de quitar toda la piel verde. Licúa hasta que esté espumoso.</li>
+              <li>Cuela tu gel a través de una gasa hacia el contenedor de almacenamiento final.</li>
+            </ol>
+          </div>
+        </div>
+        <img class="photo" src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800" alt="Extracción de gel de aloe vera">
+      </div>
+    </section>
+
+    <!-- EXTRACTO DE MANZANILLA -->
+    <section id="chamomile" class="card" style="margin-top:22px">
+      <span class="pill">Extracto de Manzanilla Casero</span>
+      <div class="hr"></div>
+      <div class="grid even">
+        <div>
+          <p>Si quieres mantener tus productos DIY 100% naturales, puedes optar por hacer tus propios extractos en lugar de comprarlos.</p>
+          <p>La manzanilla es perfecta para tipos de cuero cabelludo sensible. Agregar este extracto potenciará las propiedades calmantes de cualquiera de tus recetas.</p>
+          
+          <h3>Para aproximadamente 350ml de extracto:</h3>
+          <div class="steps">
+            <ol>
+              <li>Agrega 500 ml de agua tibia (alrededor de 50°C) en una olla con 100 g de flores de manzanilla secas.</li>
+              <li>Cubre la olla con una tapa y déjala reposar por 10-12 horas.</li>
+              <li>Separa las flores del líquido usando un colador. Desecha las flores y conserva el líquido.</li>
+              <li>Mide el pH del agua y agrega unas gotas de jugo de limón hasta que el pH esté entre 4.5 y 5.5.</li>
+            </ol>
+          </div>
+        </div>
+        <img class="photo" src="https://images.unsplash.com/photo-1607081759646-05d9c57f82d9?auto=format&fit=crop&w=800" alt="Extracto de manzanilla">
+      </div>
+    </section>
+
+    <!-- FORMULACIONES DIY -->
+    <section id="formulations" class="card" style="margin-top:22px">
+      <span class="pill">Formulaciones DIY</span>
+      <div class="hr"></div>
+      
+      <div style="margin:20px 0">
+        <img class="photo" src="https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=1200" alt="Preparación de productos capilares caseros" style="width:100%;height:auto">
+      </div>
+      
+      <!-- SHAMPOO A -->
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <h2 class="recipe-title">Shampoo A - Limpieza Suave Universal</h2>
+        </div>
+        <p>Esta formulación casera es un shampoo suave y completo compatible con la mayoría de tipos de cabello. Limpia e hidrata tus hebras sin causar daño innecesario.</p>
+        
+        <!-- CALCULADORA SHAMPOO A -->
+        <div class="callout" style="margin-top:20px;background:#f3f1ff">
+          <h3 style="margin:0 0 12px 0;color:var(--purple-deep)">Calculadora de Cantidades</h3>
+          <div class="inputs" style="max-width:400px">
+            <label style="display:grid;gap:6px">
+              <span style="font-weight:700">Cantidad total deseada (ml)</span>
+              <input id="shampooA-batch" type="number" min="50" step="10" value="250"
+                     style="padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#fff">
+            </label>
+            <button onclick="calculateShampooA()" class="btn" style="margin-top:12px">Calcular Ingredientes</button>
+          </div>
+          <div id="shampooA-results" style="display:none;margin-top:16px">
+            <table class="table">
+              <thead><tr><th>Ingrediente</th><th>Cantidad</th><th>Medida Práctica</th></tr></thead>
+              <tbody id="shampooA-tbody"></tbody>
+            </table>
+            <p style="font-size:13px;color:var(--muted);margin-top:10px">
+              <strong>Nota:</strong> Las medidas prácticas son aproximadas. Para mayor precisión, usa una báscula.
+            </p>
+          </div>
+        </div>
+        
+        <div class="grid even" style="margin-top:20px">
+          <div>
+            <h3>Ingredientes (para 250ml):</h3>
+            <ul>
+              <li>200ml agua</li>
+              <li>0.5g o 1/4 cdta goma xantana</li>
+              <li>20g o 1 cda gel de aloe vera</li>
+              <li>5g o 2 cdas hojas de té verde</li>
+              <li>20ml o 1 cda coco-glucósido</li>
+              <li>8ml o 1.5 cdtas aceite de oliva</li>
+              <li>5ml o 1 cdta vinagre de manzana</li>
+              <li>Un chorrito de jugo de limón</li>
+              <li>Aceite esencial de tu elección</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Beneficios de cada ingrediente:</h3>
+            <ul style="font-size:14px;color:var(--muted)">
+              <li><strong>Té Verde:</strong> Antioxidantes y cafeína para el crecimiento</li>
+              <li><strong>Coco-glucósido:</strong> Surfactante suave derivado del coco</li>
+              <li><strong>Aceite de Oliva:</strong> Ácidos grasos para cabello sedoso</li>
+              <li><strong>Aloe Vera:</strong> Propiedades calmantes y antibacterianas</li>
+              <li><strong>Goma Xantana:</strong> Espesante natural</li>
+              <li><strong>Vinagre de Manzana:</strong> Sella las cutículas</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="steps" style="margin-top:20px">
+          <h3>Preparación:</h3>
+          <ol>
+            <li>Coloca las hojas de té verde en una taza y vierte 200ml de agua caliente. Cubre y deja enfriar a temperatura ambiente.</li>
+            <li>Transfiere el té verde a un bowl. Tamiza suavemente la goma xantana. Bate hasta que esté suave.</li>
+            <li>Agrega el gel de aloe vera y revuelve suavemente hasta combinar.</li>
+            <li>Agrega el coco-glucósido y revuelve suavemente. Tu mezcla debe ser viscosa.</li>
+            <li>Agrega el aceite de oliva y el vinagre de manzana, revolviendo bien.</li>
+            <li>Agrega unas gotas de tu aceite esencial favorito.</li>
+            <li>Prueba el pH con una tira reactiva. Si está por encima de 5.5, agrega jugo de limón hasta alcanzar pH 4.5-5.5.</li>
+            <li>Transfiere a una botella hermética y estéril. Sin conservantes, guarda en el refrigerador y usa en una semana.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- SHAMPOO B -->
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <h2 class="recipe-title">Shampoo B - Limpieza Natural Diaria</h2>
+        </div>
+        <p>Completamente natural en todos los sentidos. Perfecto si necesitas lavar tu cabello frecuentemente pero no quieres dañar tu cuero cabelludo con limpieza regular. Ideal para quienes sudan diariamente o necesitan lavar su cabello a diario.</p>
+        
+        <!-- CALCULADORA SHAMPOO B -->
+        <div class="callout" style="margin-top:20px;background:#f3f1ff">
+          <h3 style="margin:0 0 12px 0;color:var(--purple-deep)">Calculadora de Cantidades</h3>
+          <div class="inputs" style="max-width:400px">
+            <label style="display:grid;gap:6px">
+              <span style="font-weight:700">Cantidad total deseada (ml)</span>
+              <input id="shampooB-batch" type="number" min="50" step="10" value="250"
+                     style="padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#fff">
+            </label>
+            <button onclick="calculateShampooB()" class="btn" style="margin-top:12px">Calcular Ingredientes</button>
+          </div>
+          <div id="shampooB-results" style="display:none;margin-top:16px">
+            <table class="table">
+              <thead><tr><th>Ingrediente</th><th>Cantidad</th><th>Medida Práctica</th></tr></thead>
+              <tbody id="shampooB-tbody"></tbody>
+            </table>
+            <p style="font-size:13px;color:var(--muted);margin-top:10px">
+              <strong>Nota:</strong> Las medidas prácticas son aproximadas. Para mayor precisión, usa una báscula.
+            </p>
+          </div>
+        </div>
+        
+        <div class="grid even" style="margin-top:20px">
+          <div>
+            <h3>Ingredientes (para 250ml):</h3>
+            <ul>
+              <li>250ml agua hirviendo</li>
+              <li>15g o 1 cda polvo de reetha o nueces de jabón crudas</li>
+              <li>15ml o 1 cda extracto de flores de manzanilla (sin alcohol)</li>
+              <li>Un chorrito de jugo de naranja fresco, sin pulpa</li>
+              <li>Aceite esencial de tu elección, unas gotas</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Beneficios:</h3>
+            <ul style="font-size:14px;color:var(--muted)">
+              <li><strong>Saponinas (Reetha):</strong> Surfactantes naturales con propiedades limpiadoras</li>
+              <li><strong>Extracto de Manzanilla:</strong> Propiedades relajantes y antiinflamatorias</li>
+              <li><strong>Jugo de Naranja:</strong> Polifenoles y ácido cítrico para limpieza adicional</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="steps" style="margin-top:20px">
+          <h3>Preparación:</h3>
+          <ol>
+            <li>Si tienes nueces de jabón enteras, muélelas hasta obtener un polvo fino usando una licuadora.</li>
+            <li>Vierte agua caliente en un bowl y tamiza lentamente el polvo de reetha mientras revuelves continuamente.</li>
+            <li>Agrega el extracto de manzanilla, jugo de naranja y unas gotas de aceite esencial, mezclando después de cada paso.</li>
+            <li>Prueba el pH con una tira reactiva. Ajusta con jugo de naranja hasta alcanzar pH 4.5-5.5.</li>
+            <li>Cuela la mezcla y almacena en una botella estéril. Sin conservantes, se mantiene en el refrigerador hasta por una semana.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">© HairQare Lab 2025 · hairqare.co</div>
+  </div>
+
+  <script>
+    // Función para formatear números
+    function formatNumber(num) {
+      return Math.round(num * 10) / 10;
+    }
+
+    // Función para convertir ml/g a medidas prácticas
+    function getPracticalMeasure(amount, unit, ingredient) {
+      if (amount < 1) {
+        return `${formatNumber(amount * 4)} cuartos de cdta`;
+      } else if (amount < 5) {
+        return `${formatNumber(amount / 5)} cdta`;
+      } else if (amount < 15) {
+        return `${formatNumber(amount / 5)} cdtas`;
+      } else if (amount < 30) {
+        return `${formatNumber(amount / 15)} cda`;
+      } else {
+        return `${formatNumber(amount / 15)} cdas`;
+      }
+    }
+
+    // Calculadora para Shampoo A
+    function calculateShampooA() {
+      const batchSize = parseFloat(document.getElementById('shampooA-batch').value) || 250;
+      const factor = batchSize / 250; // La receta base es para 250ml
+      
+      // Ingredientes base para 250ml
+      const ingredients = [
+        { name: 'Agua', baseAmount: 200, unit: 'ml' },
+        { name: 'Goma xantana', baseAmount: 0.5, unit: 'g' },
+        { name: 'Gel de aloe vera', baseAmount: 20, unit: 'g' },
+        { name: 'Hojas de té verde', baseAmount: 5, unit: 'g' },
+        { name: 'Coco-glucósido', baseAmount: 20, unit: 'ml' },
+        { name: 'Aceite de oliva', baseAmount: 8, unit: 'ml' },
+        { name: 'Vinagre de manzana', baseAmount: 5, unit: 'ml' },
+        { name: 'Jugo de limón', baseAmount: 2, unit: 'ml' },
+        { name: 'Aceite esencial', baseAmount: 1, unit: 'ml' }
+      ];
+      
+      const tbody = document.getElementById('shampooA-tbody');
+      tbody.innerHTML = '';
+      
+      ingredients.forEach(ing => {
+        const amount = ing.baseAmount * factor;
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${ing.name}</td>
+          <td>${formatNumber(amount)} ${ing.unit}</td>
+          <td>${getPracticalMeasure(amount, ing.unit, ing.name)}</td>
+        `;
+      });
+      
+      document.getElementById('shampooA-results').style.display = 'block';
+    }
+
+    // Calculadora para Shampoo B
+    function calculateShampooB() {
+      const batchSize = parseFloat(document.getElementById('shampooB-batch').value) || 250;
+      const factor = batchSize / 250; // La receta base es para 250ml
+      
+      // Ingredientes base para 250ml
+      const ingredients = [
+        { name: 'Agua hirviendo', baseAmount: 250, unit: 'ml' },
+        { name: 'Polvo de reetha', baseAmount: 15, unit: 'g' },
+        { name: 'Extracto de manzanilla', baseAmount: 15, unit: 'ml' },
+        { name: 'Jugo de naranja', baseAmount: 5, unit: 'ml' },
+        { name: 'Aceite esencial', baseAmount: 1, unit: 'ml' }
+      ];
+      
+      const tbody = document.getElementById('shampooB-tbody');
+      tbody.innerHTML = '';
+      
+      ingredients.forEach(ing => {
+        const amount = ing.baseAmount * factor;
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${ing.name}</td>
+          <td>${formatNumber(amount)} ${ing.unit}</td>
+          <td>${getPracticalMeasure(amount, ing.unit, ing.name)}</td>
+        `;
+      });
+      
+      document.getElementById('shampooB-results').style.display = 'block';
+    }
+
+    // Agregar eventos Enter a los inputs
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('shampooA-batch').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculateShampooA();
+      });
+      
+      document.getElementById('shampooB-batch').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') calculateShampooB();
+      });
+    });
+  </script>
+</body>
+</html>
