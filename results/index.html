@@ -127,7 +127,9 @@
   <script>
     async function loadResult() {
       try {
-        const res = await fetch('./data/result.json'); // Replace with dynamic path if needed
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id"); // ?id=recSnobOlG9F6nqGN
+        const res = await fetch(`./data/${id}.json`);
         const data = await res.json();
         const result = data[0]; // GPT returns array
 
