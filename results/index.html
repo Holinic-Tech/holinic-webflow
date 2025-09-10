@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Hair Recovery Plan</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <!-- Optional libs -->
+  <script defer src="../assets/libs/markdown-it.min.js"></script>
+  <!-- <script defer src="../assets/libs/chart.min.js"></script> -->
+  <style>
+    /* Minimal sensible defaults; adjust in assets/styles.css later */
+    :root { --ink:#2c2c2c; --muted:#6f6f6f; --bg:#fff; --card:#fafafa; --brand:#f2b485; }
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);margin:0;line-height:1.55}
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
+    .hero{padding:16px 0 8px}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--card);color:var(--muted);font-size:12px;margin-bottom:8px}
+    h1{font-size:28px;margin:4px 0 8px}
+    .card{background:#fff;border:1px solid #eee;border-radius:16px;padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+    .label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+    .phase{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--brand);color:#2a2a2a;font-weight:600}
+    .grid{display:grid;gap:16px}
+    @media(min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+    .muted{color:var(--muted)}
+    .small{font-size:13px}
+    .footer-note{margin-top:12px;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="hero">
+    <div class="badge">Hairqare • Personalized Plan</div>
+    <h1 id="title">Your Hair Recovery Plan</h1>
+    <div class="small muted" id="meta"></div>
+  </div>
+
+  <!-- Summary -->
+  <section class="card">
+    <div class="label">Where you are now</div>
+    <div><span id="phaseTag" class="phase">—</span></div>
+    <div id="summaryBlock" style="margin-top:12px"></div>
+  </section>
+
+  <!-- Timeline Thingy -->
+  <section class="card">
+    <div class="label">Timeline</div>
+    <h3 style="margin:6px 0 12px">What to expect next</h3>
+    <div id="timelineText"></div>
+    <div class="footer-note">We’ll keep this realistic and kind — aim for consistency, not perfection. 💛</div>
+  </section>
+
+  <!-- Weekly Plan -->
+  <section class="card">
+    <div class="label">Your 21-Day Plan</div>
+    <div class="grid">
+      <div id="week1" class="card"></div>
+      <div id="week2" class="card"></div>
+    </div>
+    <div class="card" id="week3"></div>
+  </section>
+
+  <section class="small muted">
+    Generated for <span id="forName"></span> • <span id="createdAt"></span>
+  </section>
+</div>
+
+<script>
+(function(){
+  const md = window.markdownit ? window.markdownit({ breaks:true, linkify:true }) : null;
+
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get('id');
+  if(!id){
+    document.getElementById('app').innerHTML =
+      '<div class="wrap"><p class="card">Missing <code>?id=</code> in the URL.</p></div>';
+    return;
+  }
+
+  const DATA_URL = `../data/${encodeURIComponent(id)}.json`;
+
+  fetch(DATA_URL, { cache: 'no-store' })
+    .then(r => {
+      if(!r.ok) throw new Error('Result not found');
+      return r.json();
+    })
+    .then(render)
+    .catch(err => {
+      document.getElementById('app').innerHTML =
+        '<div class="wrap"><p class="card">Sorry, we couldn’t find your result. Double-check your link or contact support.</p></div>';
+      console.error(err);
+    });
+
+  function setHTML(el, content, isMarkdown=false){
+    el.innerHTML = isMarkdown && md ? md.render(String(content || '')) : String(content || '');
+  }
+
+  function render(data){
+    // Title/meta
+    document.getElementById('title').textContent = `${data.name ? data.name + "’s" : "Your"} Hair Recovery Plan`;
+    document.getElementById('meta').textContent = data.email ? `Sent to ${data.email}` : '';
+    document.getElementById('forName').textContent = data.name || '';
+    document.getElementById('createdAt').textContent = data.created_at ? new Date(data.created_at).toLocaleString() : '';
+
+    // Phase
+    const phaseMap = {
+      onset: 'Onset',
+      peak: 'Peak Shedding',
+      stabilization: 'Stabilization',
+      regrowth_start: 'Early Regrowth'
+    };
+    document.getElementById('phaseTag').textContent = phaseMap[data.phase] || '—';
+
+    // Summary (supports either HTML or Markdown)
+    if (data.summary_html){
+      setHTML(document.getElementById('summaryBlock'), data.summary_html, false);
+    } else if (data.summary_markdown){
+      setHTML(document.getElementById('summaryBlock'), data.summary_markdown, true);
+    } else {
+      setHTML(document.getElementById('summaryBlock'), '<p>We couldn’t generate a summary.</p>');
+    }
+
+    // Timeline thingy text (same: prefer HTML, else Markdown)
+    if (data.timeline_text_html){
+      setHTML(document.getElementById('timelineText'), data.timeline_text_html, false);
+    } else if (data.timeline_text_markdown){
+      setHTML(document.getElementById('timelineText'), data.timeline_text_markdown, true);
+    } else if (data.summary_html){
+      // Fallback: reuse summary if no dedicated timeline text
+      setHTML(document.getElementById('timelineText'), data.summary_html, false);
+    } else {
+      setHTML(document.getElementById('timelineText'), '<p>No timeline text available.</p>');
+    }
+
+    // Weeks
+    const wk = data.weeks_html || {};
+    setHTML(document.getElementById('week1'), wk.week1 || '<h3>Week 1</h3><p>No items.</p>', false);
+    setHTML(document.getElementById('week2'), wk.week2 || '<h3>Week 2</h3><p>No items.</p>', false);
+    setHTML(document.getElementById('week3'), wk.week3 || '<h3>Week 3</h3><p>No items.</p>', false);
+  }
+})();
+</script>
+</body>
+</html>
