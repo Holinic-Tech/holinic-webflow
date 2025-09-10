@@ -1,83 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Hair Recovery Report</title>
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      background: #fafafa;
-      color: #222;
+    :root{
+      --ink:#232946; --bg:#fafafa; --panel:#fff; --accent:#eebbc3; --muted:#666;
+      --success:#1a7f37; --warn:#a15c07; --danger:#b42318;
     }
-    header {
-      background: #232946;
-      color: white;
-      padding: 1.5rem;
-      text-align: center;
+    *{box-sizing:border-box}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      margin:0; background:var(--bg); color:#222; line-height:1.6;
     }
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
+    header{ background:var(--ink); color:#fff; padding:1.5rem; text-align:center }
+    header h1{ margin:0; font-size:1.8rem }
+    main{
+      max-width: 820px; margin: 2rem auto; padding: 1rem;
+      background: var(--panel); border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
     }
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    section{ margin-bottom: 2rem }
+    section h2{ color:var(--ink); font-size:1.4rem; margin:.25rem 0 .5rem }
+    .anchors p{ margin:.2rem 0; font-size:.95rem }
+    .phase-badge{
+      display:inline-block; font-size:.8rem; padding:.2rem .5rem; border-radius:999px;
+      background:#eef0f4; color:#334; margin-left:.5rem; vertical-align:middle
     }
-    section {
-      margin-bottom: 2rem;
+    .week{ border-left:4px solid var(--accent); padding-left:1rem; margin:1rem 0 }
+    .week h3{ margin-top:0 }
+    .muted{ color:var(--muted) }
+    .error{
+      background:#fff4f3; border:1px solid #ffd6d2; color:var(--danger);
+      padding:.75rem 1rem; border-radius:8px;
     }
-    section h2 {
-      color: #232946;
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-    }
-    .anchors p {
-      margin: 0.2rem 0;
-      font-size: 0.95rem;
-    }
-    ul {
-      padding-left: 1.2rem;
-    }
-    .week {
-      border-left: 4px solid #eebbc3;
-      padding-left: 1rem;
-      margin: 1rem 0;
-    }
-    .week h3 {
-      margin-top: 0;
-    }
-    footer {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-      margin: 2rem 0;
-    }
+    footer{ text-align:center; font-size:.9rem; color:#555; margin:2rem 0 }
+    code.small{ font-size:.85em; background:#f6f7f9; padding:.1rem .3rem; border-radius:4px }
   </style>
 </head>
 <body>
   <header>
     <h1>✨ Your Hair Recovery Report</h1>
-    <p>Personalized insights from Hairqare</p>
+    <p class="muted">Personalized insights from Hairqare</p>
   </header>
 
   <main>
     <section id="intro">
-      <h2>Where You Are Right Now</h2>
+      <h2>Where You Are Right Now <span id="phase" class="phase-badge" style="display:none"></span></h2>
       <p>This report helps you understand what’s driving your shedding, where you are in the recovery cycle, and what to focus on over the next 3 weeks. 🌱</p>
     </section>
 
     <section id="timeline">
       <h2>Your Recovery Timeline</h2>
-      <div id="timeline-html"><p>Loading analysis…</p></div>
-      <div id="anchors" class="anchors"></div>
+      <div id="timeline-html"><p class="muted">Loading analysis…</p></div>
+
+      <div id="anchors" class="anchors" style="margin-top:.75rem">
+        <!-- filled by script -->
+      </div>
     </section>
 
     <section id="protocol">
@@ -106,7 +86,7 @@
       <div class="week" id="week3">
         <h3>Week 3: Support Regrowth 🌸</h3>
         <ul>
-          <li>Gentle scalp massage 3x per week</li>
+          <li>Gentle scalp massage 3× per week</li>
           <li>Add leafy greens / iron-rich foods daily</li>
           <li>Consistent bedtime routine with screens off 1h before bed</li>
         </ul>
@@ -120,36 +100,70 @@
     </section>
   </main>
 
-  <footer>
-    © 2025 Hairqare by Holiniq
-  </footer>
+  <footer>© 2025 Hairqare by Holiniq</footer>
 
   <script>
-    async function loadResult() {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("id"); // ?id=recSnobOlG9F6nqGN
-        const res = await fetch(`./data/${id}.json`);
-        const data = await res.json();
-        const result = data[0]; // GPT returns array
+  (async () => {
+    // 1) Read id from URL
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id'); // e.g. ?id=recSnobOlG9F6nqGN
 
-        // Insert HTML analysis
-        document.getElementById('timeline-html').innerHTML = result.timeline_html;
+    const timelineEl = document.getElementById('timeline-html');
+    const anchorsEl  = document.getElementById('anchors');
+    const phaseEl    = document.getElementById('phase');
 
-        // Structured anchors
-        const a = result.anchors;
-        document.getElementById('anchors').innerHTML = `
-          <p><strong>Worst month:</strong> ${a.worst_month || '—'}</p>
-          <p><strong>Main trigger:</strong> ${a.main_trigger || '—'}</p>
-          <p><strong>Onset window:</strong> ${a.onset_window || '—'}</p>
-          <p><strong>Stabilization window:</strong> ${a.stabilization_window || '—'}</p>
-          <p><strong>Regrowth start:</strong> ${a.regrowth_start || '—'}</p>
-        `;
-      } catch (e) {
-        console.error("Error loading result:", e);
-      }
+    if (!id) {
+      timelineEl.innerHTML =
+        '<div class="error">Missing <code class="small">?id=…</code> in the URL.</div>';
+      return;
     }
-    loadResult();
+
+    // 2) Build raw GitHub URL (change these if your org/repo ever change)
+    const ORG  = 'Holinic-Tech';
+    const REPO = 'holinic-webflow';
+    const FILE = `https://raw.githubusercontent.com/${ORG}/${REPO}/main/data/${encodeURIComponent(id)}.json?ts=${Date.now()}`;
+
+    try {
+      // 3) Fetch JSON (no-store avoids caching)
+      const res = await fetch(FILE, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();            // <-- your file is a plain object
+      // If you ever switch to an array, you can do: const result = Array.isArray(data) ? data[0] : data;
+      const result = data;
+
+      // 4) Render the analysis HTML
+      if (result.timeline_html) {
+        timelineEl.innerHTML = result.timeline_html;
+      } else {
+        timelineEl.innerHTML = '<div class="error">No analysis available yet for this link.</div>';
+      }
+
+      // 5) Phase badge
+      if (result.phase) {
+        phaseEl.textContent = result.phase;
+        phaseEl.style.display = 'inline-block';
+      }
+
+      // 6) Anchors (all keys supported by your JSON)
+      const a = result.anchors || {};
+      const row = (label, val) =>
+        `<p><strong>${label}:</strong> ${val ?? '—'}</p>`;
+      anchorsEl.innerHTML = [
+        row('Worst month', a.worst_month),
+        row('Main trigger', a.main_trigger),
+        row('Onset window', a.onset_window),
+        row('Stabilization by', a.stabilization_by),
+        row('Stabilization window', a.stabilization_window),
+        row('Regrowth start', a.regrowth_start),
+      ].join('');
+
+    } catch (err) {
+      console.error('Results load error:', err);
+      timelineEl.innerHTML =
+        `<div class="error">We couldn’t load your analysis right now. Please refresh in a minute.</div>`;
+      anchorsEl.innerHTML = '';
+    }
+  })();
   </script>
 </body>
 </html>
