@@ -116,55 +116,28 @@
   <footer>© 2025 Hairqare by Holiniq</footer>
 
   <script>
-    // ---------- Small helpers ----------
-    const $ = (sel) => document.querySelector(sel);
-
-    function safeSetHTML(el, html){
-      if(!el) return;
-      // Very light HTML allow-list for our trusted GPT output
+    const $ = (s) => document.querySelector(s);
+    const safeSetHTML = (el, html) => {
+      if (!el) return;
       el.innerHTML = String(html ?? '')
         .replaceAll('<script', '&lt;script')
         .replaceAll('onerror=', 'data-oe=');
-    }
-
-    async function loadJSON(url){
-      const res = await fetch(url, {cache:'no-store'});
-      if(!res.ok) throw new Error(`Fetch ${url} failed: ${res.status}`);
-      return res.json();
-    }
-
-    function showWarn(msg){
-      const div = document.createElement('div');
-      div.className = 'warn';
-      div.textContent = msg;
-      $('#messages')?.appendChild(div);
-    }
-
-    // ---------- Boot ----------
-    async function boot(){
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id'); // e.g. ?id=recSnobOlG9F6nqGN
-      if(!id){
-        showWarn('Missing result id. Append e.g. ' + window.location.pathname + '?id=YOUR_RECORD_ID');
-        return;
-      }
-
-      // PATHS NOTE:
-      // index.html lives in /results/ ; data lives in /data/  => use ../data/...
-      const timelinePath  = `../data/${id}.json`;
-      const protocolPath  = `../data/protocols/${id}.json`;
-
-      // 1) Timeline / anchors
-      try{
-        const data = await loadJSON(timelinePath);
-
-        // We support either array payload (older) or object payload (newer)
-        const result = Array.isArray(data) ? data[0] : data;
-
-        // HTML analysis
+    };
+    const loadJSON = async (url) => {
+      const r = await fetch(url, { cache: 'no-store' });
+      if (!r.ok) throw new Error(`${url} → ${r.status}`);
+      return r.json();
+    };
+  
+    async function boot() {
+      const id = new URLSearchParams(location.search).get('id');
+      if (!id) { console.warn('Missing ?id='); return; }
+  
+      // 1) Timeline (unchanged)
+      try {
+        const timeline = await loadJSON(`../data/${id}.json`);
+        const result = Array.isArray(timeline) ? timeline[0] : timeline;
         safeSetHTML($('#timeline-html'), result.timeline_html ?? '<p class="muted">No analysis available.</p>');
-
-        // Anchors (optional)
         const a = result.anchors || {};
         $('#anchors').innerHTML =
           `<p><strong>Worst month:</strong> ${a.worst_month ?? '—'}</p>
@@ -173,40 +146,38 @@
            <p><strong>Stabilization by:</strong> ${a.stabilization_by ?? '—'}</p>
            <p><strong>Stabilization window:</strong> ${a.stabilization_window ?? '—'}</p>
            <p><strong>Regrowth start:</strong> ${a.regrowth_start ?? '—'}</p>`;
-      }catch(e){
-        console.error('Timeline load error:', e);
-        showWarn('Could not load your analysis. If this persists, please refresh or try again later.');
+      } catch (e) {
+        console.error('Timeline load error', e);
       }
-
-      // 2) Week 1 protocols
-      try{
-        const prot = await loadJSON(protocolPath);
-        // Expecting:
-        // {
-        //   "week1": {
-        //     "practice1_title": "Practice 1: Consistent Sleep Timing",
-        //     "practice1_html": "<p>…</p>",
-        //     "practice2_title": "Practice 2: Wind-Down Stack",
-        //     "practice2_html": "<p>…</p>",
-        //     "practice3_title": "Practice 3: Alcohol Pause",
-        //     "practice3_html": "<p>…</p>"
-        //   }
-        // }
-
-        if(prot?.week1?.practice1_title) { $('#p1-title').textContent = prot.week1.practice1_title; }
-        if(prot?.week1?.practice1_html)  { safeSetHTML($('#p1-body'), prot.week1.practice1_html); }
-
-        if(prot?.week1?.practice2_title) { $('#p2-title').textContent = prot.week1.practice2_title; }
-        if(prot?.week1?.practice2_html)  { safeSetHTML($('#p2-body'), prot.week1.practice2_html); }
-
-        if(prot?.week1?.practice3_title) { $('#p3-title').textContent = prot.week1.practice3_title; }
-        if(prot?.week1?.practice3_html)  { safeSetHTML($('#p3-body'), prot.week1.practice3_html); }
-
-      }catch(e){
-        console.warn('Protocol load warning (ok for MVP if missing):', e);
+  
+      // 2) Week loaders (new paths)
+      const weekPaths = [
+        { n: 1, url: `../data/protocols/week1/${id}.json`, tSel: '#p1-title', bSel: '#p1-body', t2Sel: '#p2-title', b2Sel: '#p2-body', t3Sel: '#p3-title', b3Sel: '#p3-body' },
+        { n: 2, url: `../data/protocols/week2/${id}.json`, tSel: '#w2-p1-title', bSel: '#w2-p1-body', t2Sel: '#w2-p2-title', b2Sel: '#w2-p2-body', t3Sel: '#w2-p3-title', b3Sel: '#w2-p3-body' },
+        { n: 3, url: `../data/protocols/week3/${id}.json`, tSel: '#w3-p1-title', bSel: '#w3-p1-body', t2Sel: '#w3-p2-title', b2Sel: '#w3-p2-body', t3Sel: '#w3-p3-title', b3Sel: '#w3-p3-body' },
+      ];
+  
+      for (const w of weekPaths) {
+        try {
+          const prot = await loadJSON(w.url);
+          const wk = prot?.[`week${w.n}`];
+          if (!wk) continue;
+  
+          if (wk.practice1_title) $(w.tSel).textContent = wk.practice1_title;
+          if (wk.practice1_html)  safeSetHTML($(w.bSel), wk.practice1_html);
+  
+          if ($(w.t2Sel) && wk.practice2_title) $(w.t2Sel).textContent = wk.practice2_title;
+          if ($(w.b2Sel) && wk.practice2_html)  safeSetHTML($(w.b2Sel), wk.practice2_html);
+  
+          if ($(w.t3Sel) && wk.practice3_title) $(w.t3Sel).textContent = wk.practice3_title;
+          if ($(w.b3Sel) && wk.practice3_html)  safeSetHTML($(w.b3Sel), wk.practice3_html);
+        } catch (e) {
+          // fine for MVP; week may not exist yet
+          console.warn(`Week ${w.n} not loaded`, e);
+        }
       }
     }
-
+  
     boot();
   </script>
 </body>
