@@ -5,96 +5,136 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Hair Recovery Report</title>
   <style>
-    :root{
-      --ink:#232946; --bg:#fafafa; --panel:#fff; --accent:#eebbc3; --muted:#666;
-      --success:#1a7f37; --warn:#a15c07; --danger:#b42318;
+    :root {
+      --ink: #232946;
+      --rose: #eebbc3;
+      --bg: #fafafa;
+      --card: #ffffff;
+      --muted: #6b7280;
     }
-    *{box-sizing:border-box}
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-      margin:0; background:var(--bg); color:#222; line-height:1.6;
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: #222;
+      line-height: 1.6;
     }
-    header{ background:var(--ink); color:#fff; padding:1.5rem; text-align:center }
-    header h1{ margin:0; font-size:1.8rem }
-    main{
-      max-width: 820px; margin: 2rem auto; padding: 1rem;
-      background: var(--panel); border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    header {
+      background: var(--ink);
+      color: #fff;
+      padding: 1.5rem;
+      text-align: center;
     }
-    section{ margin-bottom: 2rem }
-    section h2{ color:var(--ink); font-size:1.4rem; margin:.25rem 0 .5rem }
-    .anchors p{ margin:.2rem 0; font-size:.95rem }
-    .phase-badge{
-      display:inline-block; font-size:.8rem; padding:.2rem .5rem; border-radius:999px;
-      background:#eef0f4; color:#334; margin-left:.5rem; vertical-align:middle
+    header h1 { margin: 0 0 .25rem; font-size: 1.9rem; }
+    header p { margin: 0; opacity: .9; }
+
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 1rem;
     }
-    .week{ border-left:4px solid var(--accent); padding-left:1rem; margin:1rem 0 }
-    .week h3{ margin-top:0 }
-    .muted{ color:var(--muted) }
-    .error{
-      background:#fff4f3; border:1px solid #ffd6d2; color:var(--danger);
-      padding:.75rem 1rem; border-radius:8px;
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      padding: 1.2rem 1.1rem;
+      margin-bottom: 1rem;
     }
-    footer{ text-align:center; font-size:.9rem; color:#555; margin:2rem 0 }
-    code.small{ font-size:.85em; background:#f6f7f9; padding:.1rem .3rem; border-radius:4px }
+    h2 { color: var(--ink); font-size: 1.35rem; margin: 0 0 .6rem; }
+    h3 { margin: .5rem 0; }
+    .anchors p { margin: .25rem 0; color: #111; }
+    .muted { color: var(--muted); }
+
+    /* Week sections */
+    .week {
+      border-left: 4px solid var(--rose);
+      padding-left: 1rem;
+      margin: 1rem 0 1.2rem;
+    }
+    .practice-block { margin: 1rem 0; }
+    .practice-title {
+      font-weight: 600;
+      margin: 0 0 .35rem;
+      color: #111;
+    }
+    .practice-body { background: #fff8fa; border: 1px solid #f6dfe6; border-radius: 10px; padding: .8rem; }
+    .placeholder { color: var(--muted); font-style: italic; }
+
+    footer {
+      text-align: center;
+      font-size: .9rem;
+      color: var(--muted);
+      margin: 2rem 0;
+    }
+    @media (max-width: 720px) {
+      header h1 { font-size: 1.6rem; }
+      main { padding: .5rem; }
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>✨ Your Hair Recovery Report</h1>
-    <p class="muted">Personalized insights from Hairqare</p>
+    <p>Personalized insights from Hairqare</p>
   </header>
 
   <main>
-    <section id="intro">
-      <h2>Where You Are Right Now <span id="phase" class="phase-badge" style="display:none"></span></h2>
+    <!-- Intro -->
+    <section class="card" id="intro">
+      <h2>Where You Are Right Now</h2>
       <p>This report helps you understand what’s driving your shedding, where you are in the recovery cycle, and what to focus on over the next 3 weeks. 🌱</p>
+      <p class="muted" id="phase-pill"></p>
     </section>
 
-    <section id="timeline">
+    <!-- Timeline -->
+    <section class="card" id="timeline">
       <h2>Your Recovery Timeline</h2>
       <div id="timeline-html"><p class="muted">Loading analysis…</p></div>
-
-      <div id="anchors" class="anchors" style="margin-top:.75rem">
-        <!-- filled by script -->
-      </div>
+      <div id="anchors" class="anchors"></div>
     </section>
 
-    <section id="protocol">
+    <!-- Protocols -->
+    <section class="card" id="protocol">
       <h2>Your 21-Day Reset Plan</h2>
 
       <div class="week" id="week1">
         <h3>Week 1: Stabilize Your System 🌱</h3>
-        <ul>
-          <li>Set a fixed wake-up time (7 days/week)</li>
-          <li>Reduce late caffeine (none after 12pm)</li>
-          <li>Start nightly 10-min wind-down ritual</li>
-        </ul>
-        <p><em>This week is about calming your system fast — every night of better sleep builds momentum.</em></p>
+
+        <!-- PRACTICE 1 (wired to Make/GPT) -->
+        <div class="practice-block" id="practice1">
+          <div class="practice-title">Practice 1: <span id="p1-title" class="muted">Loading…</span></div>
+          <div class="practice-body" id="p1-body"><p class="placeholder">Waiting for your personalized instructions…</p></div>
+        </div>
+
+        <!-- PRACTICE 2 (placeholder for now) -->
+        <div class="practice-block" id="practice2">
+          <div class="practice-title">Practice 2: <span id="p2-title" class="muted">Coming soon</span></div>
+          <div class="practice-body" id="p2-body"><p class="placeholder">This practice will appear here once generated.</p></div>
+        </div>
+
+        <!-- PRACTICE 3 (placeholder for now) -->
+        <div class="practice-block" id="practice3">
+          <div class="practice-title">Practice 3: <span id="p3-title" class="muted">Coming soon</span></div>
+          <div class="practice-body" id="p3-body"><p class="placeholder">This practice will appear here once generated.</p></div>
+        </div>
       </div>
 
+      <!-- Week 2 placeholder -->
       <div class="week" id="week2">
         <h3>Week 2: Rebuild Your Foundations 💪</h3>
-        <ul>
-          <li>Add 30g protein at breakfast daily</li>
-          <li>Practice 2 stress-breaks per day (breathing/journaling)</li>
-          <li>Swap alcohol nights for a relaxing tea</li>
-        </ul>
-        <p><em>This week builds stronger fuel for your body and lowers the stress load driving your shedding.</em></p>
+        <p class="placeholder">We’ll unlock your Week 2 practices here.</p>
       </div>
 
+      <!-- Week 3 placeholder -->
       <div class="week" id="week3">
         <h3>Week 3: Support Regrowth 🌸</h3>
-        <ul>
-          <li>Gentle scalp massage 3× per week</li>
-          <li>Add leafy greens / iron-rich foods daily</li>
-          <li>Consistent bedtime routine with screens off 1h before bed</li>
-        </ul>
-        <p><em>This week lays the foundation for new baby hairs to come through — consistency pays off.</em></p>
+        <p class="placeholder">We’ll unlock your Week 3 practices here.</p>
       </div>
     </section>
 
-    <section id="closing">
+    <!-- Closing -->
+    <section class="card" id="closing">
       <h2>You’ve Got This ❤️</h2>
       <p>Hair recovery takes patience, but every small step adds up. Thousands of women have been exactly where you are — and they’ve come through with healthier, stronger hair. Stay consistent, and your future self will thank you. ✨</p>
     </section>
@@ -103,67 +143,80 @@
   <footer>© 2025 Hairqare by Holiniq</footer>
 
   <script>
-  (async () => {
-    // 1) Read id from URL
-    const params = new URLSearchParams(location.search);
-    const id = params.get('id'); // e.g. ?id=recSnobOlG9F6nqGN
-
-    const timelineEl = document.getElementById('timeline-html');
-    const anchorsEl  = document.getElementById('anchors');
-    const phaseEl    = document.getElementById('phase');
-
-    if (!id) {
-      timelineEl.innerHTML =
-        '<div class="error">Missing <code class="small">?id=…</code> in the URL.</div>';
-      return;
+    async function loadJSON(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+      return res.json();
     }
 
-    // 2) Build raw GitHub URL (change these if your org/repo ever change)
-    const ORG  = 'Holinic-Tech';
-    const REPO = 'holinic-webflow';
-    const FILE = `https://raw.githubusercontent.com/${ORG}/${REPO}/main/data/${encodeURIComponent(id)}.json?ts=${Date.now()}`;
-
-    try {
-      // 3) Fetch JSON (no-store avoids caching)
-      const res = await fetch(FILE, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();            // <-- your file is a plain object
-      // If you ever switch to an array, you can do: const result = Array.isArray(data) ? data[0] : data;
-      const result = data;
-
-      // 4) Render the analysis HTML
-      if (result.timeline_html) {
-        timelineEl.innerHTML = result.timeline_html;
-      } else {
-        timelineEl.innerHTML = '<div class="error">No analysis available yet for this link.</div>';
+    function safeSetHTML(el, html) {
+      if (!el) return;
+      if (!html) {
+        el.innerHTML = '<p class="placeholder">No content available yet.</p>';
+        return;
       }
-
-      // 5) Phase badge
-      if (result.phase) {
-        phaseEl.textContent = result.phase;
-        phaseEl.style.display = 'inline-block';
-      }
-
-      // 6) Anchors (all keys supported by your JSON)
-      const a = result.anchors || {};
-      const row = (label, val) =>
-        `<p><strong>${label}:</strong> ${val ?? '—'}</p>`;
-      anchorsEl.innerHTML = [
-        row('Worst month', a.worst_month),
-        row('Main trigger', a.main_trigger),
-        row('Onset window', a.onset_window),
-        row('Stabilization by', a.stabilization_by),
-        row('Stabilization window', a.stabilization_window),
-        row('Regrowth start', a.regrowth_start),
-      ].join('');
-
-    } catch (err) {
-      console.error('Results load error:', err);
-      timelineEl.innerHTML =
-        `<div class="error">We couldn’t load your analysis right now. Please refresh in a minute.</div>`;
-      anchorsEl.innerHTML = '';
+      el.innerHTML = html;
     }
-  })();
+
+    function setText(el, text, fallback='—') {
+      if (!el) return;
+      el.textContent = text || fallback;
+    }
+
+    async function boot() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) {
+        console.error('Missing ?id=');
+        return;
+      }
+
+      // 1) Timeline / anchors (existing flow)
+      try {
+        const timelineData = await loadJSON(`./data/${id}.json`);
+        // Expect either an array with [0] or an object; support both
+        const t = Array.isArray(timelineData) ? timelineData[0] : timelineData;
+
+        // Phase (optional)
+        if (t.phase) {
+          document.getElementById('phase-pill').textContent = `Current phase: ${t.phase}`;
+        }
+
+        // HTML analysis
+        safeSetHTML(document.getElementById('timeline-html'), t.timeline_html);
+
+        // Anchors
+        const a = t.anchors || {};
+        document.getElementById('anchors').innerHTML = `
+          <p><strong>Worst month:</strong> ${a.worst_month ?? '—'}</p>
+          <p><strong>Main trigger:</strong> ${a.main_trigger ?? '—'}</p>
+          <p><strong>Onset window:</strong> ${a.onset_window ?? '—'}</p>
+          <p><strong>Stabilization window:</strong> ${a.stabilization_window ?? '—'}</p>
+          <p><strong>Regrowth start:</strong> ${a.regrowth_start ?? '—'}</p>
+        `;
+      } catch (e) {
+        console.error('Timeline load error:', e);
+      }
+
+      // 2) Protocol JSON (new)
+      try {
+        const prot = await loadJSON(`./data/protocols/${id}.json`);
+        // Week 1 – Practice 1 (title from Make, body is full HTML from GPT)
+        setText(document.getElementById('p1-title'), prot?.week1?.practice1_title, 'Not set');
+        safeSetHTML(document.getElementById('p1-body'), prot?.week1?.practice1_html);
+
+        // (Optional later) You can also populate p2/p3 the same way when ready:
+        if (prot?.week1?.practice2_title) setText(document.getElementById('p2-title'), prot.week1.practice2_title);
+        if (prot?.week1?.practice2_html)  safeSetHTML(document.getElementById('p2-body'), prot.week1.practice2_html);
+
+        if (prot?.week1?.practice3_title) setText(document.getElementById('p3-title'), prot.week1.practice3_title);
+        if (prot?.week1?.practice3_html)  safeSetHTML(document.getElementById('p3-body'), prot.week1.practice3_html);
+      } catch (e) {
+        console.warn('Protocol load warning (ok for MVP if missing):', e);
+      }
+    }
+
+    boot();
   </script>
 </body>
 </html>
