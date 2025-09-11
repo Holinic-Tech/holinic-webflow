@@ -28,7 +28,7 @@
     .week h3{margin:.2rem 0 .4rem}
     .muted{color:var(--muted)}
     footer{text-align:center; color:#555; font-size:.9rem; margin:2rem 0}
-    .warn{padding:.75rem 1rem; border-radius:8px; background:#fff4f6; color:#7a1c2a; border:1px solid #ffd6df}
+    .warn{padding:.75rem 1rem; border-radius:8px; background:#fff4f6; color:#7a1c2a; border:1px solid #ffd6df; margin-top:1rem}
     .ok{padding:.5rem .75rem; border-radius:8px; background:#f6ffef; color:#1f5d22; border:1px solid #d7f5c9}
     .dim{opacity:.85}
     .skeleton{
@@ -61,11 +61,20 @@
       <div id="anchors" class="anchors muted" style="margin-top:.75rem"></div>
     </section>
 
+    <!-- Protocol Summary -->
+    <section id="protocol-summary">
+      <h2>Protocol Summary</h2>
+      <div id="summary-body" class="muted">
+        <div class="skeleton" style="height:18px; width:92%"></div>
+        <div class="skeleton" style="height:18px; width:75%; margin-top:.4rem"></div>
+      </div>
+    </section>
+
     <!-- Protocols -->
     <section id="protocol">
       <h2>Your 21-Day Reset Plan</h2>
 
-      <!-- Week 1 (hardcoded practices; titles filled via Make / JSON; bodies from GPT HTML) -->
+      <!-- Week 1 (fixed practices; titles filled via JSON; bodies from GPT HTML) -->
       <div class="week" id="week1">
         <h3>Week 1: Stabilize Your System 🌱</h3>
 
@@ -91,16 +100,20 @@
         </div>
       </div>
 
-      <!-- Week 2 placeholder -->
+      <!-- Week 2 (optional auto-fill if JSON exists) -->
       <div class="week" id="week2">
         <h3>Week 2: Rebuild Your Foundations 💪</h3>
-        <p class="muted">This section will auto-populate soon. For now, keep momentum with Week 1.</p>
+        <div id="w2-body" class="muted">
+          <p class="muted">This section will auto-populate soon. For now, keep momentum with Week 1.</p>
+        </div>
       </div>
 
-      <!-- Week 3 placeholder -->
+      <!-- Week 3 (optional auto-fill if JSON exists) -->
       <div class="week" id="week3">
         <h3>Week 3: Support Regrowth 🌸</h3>
-        <p class="muted">This section will auto-populate soon. You’re doing great — consistency compounds.</p>
+        <div id="w3-body" class="muted">
+          <p class="muted">This section will auto-populate soon. You’re doing great — consistency compounds.</p>
+        </div>
       </div>
     </section>
 
@@ -116,28 +129,53 @@
   <footer>© 2025 Hairqare by Holiniq</footer>
 
   <script>
-    const $ = (s) => document.querySelector(s);
-    const safeSetHTML = (el, html) => {
-      if (!el) return;
+    // ---------- Small helpers ----------
+    const $ = (sel) => document.querySelector(sel);
+
+    function safeSetHTML(el, html){
+      if(!el) return;
+      // Very light HTML allow-list for our trusted GPT output
       el.innerHTML = String(html ?? '')
         .replaceAll('<script', '&lt;script')
         .replaceAll('onerror=', 'data-oe=');
-    };
-    const loadJSON = async (url) => {
-      const r = await fetch(url, { cache: 'no-store' });
-      if (!r.ok) throw new Error(`${url} → ${r.status}`);
-      return r.json();
-    };
-  
-    async function boot() {
-      const id = new URLSearchParams(location.search).get('id');
-      if (!id) { console.warn('Missing ?id='); return; }
-  
-      // 1) Timeline (unchanged)
-      try {
-        const timeline = await loadJSON(`../data/${id}.json`);
-        const result = Array.isArray(timeline) ? timeline[0] : timeline;
+    }
+
+    async function loadJSON(url){
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error(`Fetch ${url} failed: ${res.status}`);
+      return res.json();
+    }
+
+    function showWarn(msg){
+      const div = document.createElement('div');
+      div.className = 'warn';
+      div.textContent = msg;
+      $('#messages')?.appendChild(div);
+    }
+
+    // ---------- Boot ----------
+    async function boot(){
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id'); // e.g. ?id=recSnobOlG9F6nqGN
+      if(!id){
+        showWarn('Missing result id. Append e.g. ' + window.location.pathname + '?id=YOUR_RECORD_ID');
+        return;
+      }
+
+      // PATHS (index.html is in /results/, so data is ../data/)
+      const timelinePath = `../data/${id}.json`;
+      const summaryPath  = `../data/protocols/summaries/${id}.json`;
+      const week1Path    = `../data/protocols/week1/${id}.json`;
+      const week2Path    = `../data/protocols/week2/${id}.json`;
+      const week3Path    = `../data/protocols/week3/${id}.json`;
+
+      // 1) Timeline / anchors
+      try{
+        const data = await loadJSON(timelinePath);
+        const result = Array.isArray(data) ? data[0] : data;
+
         safeSetHTML($('#timeline-html'), result.timeline_html ?? '<p class="muted">No analysis available.</p>');
+
         const a = result.anchors || {};
         $('#anchors').innerHTML =
           `<p><strong>Worst month:</strong> ${a.worst_month ?? '—'}</p>
@@ -146,38 +184,74 @@
            <p><strong>Stabilization by:</strong> ${a.stabilization_by ?? '—'}</p>
            <p><strong>Stabilization window:</strong> ${a.stabilization_window ?? '—'}</p>
            <p><strong>Regrowth start:</strong> ${a.regrowth_start ?? '—'}</p>`;
-      } catch (e) {
-        console.error('Timeline load error', e);
+      }catch(e){
+        console.error('Timeline load error:', e);
+        showWarn('Could not load your analysis. If this persists, please refresh or try again later.');
       }
-  
-      // 2) Week loaders (new paths)
-      const weekPaths = [
-        { n: 1, url: `../data/protocols/week1/${id}.json`, tSel: '#p1-title', bSel: '#p1-body', t2Sel: '#p2-title', b2Sel: '#p2-body', t3Sel: '#p3-title', b3Sel: '#p3-body' },
-        { n: 2, url: `../data/protocols/week2/${id}.json`, tSel: '#w2-p1-title', bSel: '#w2-p1-body', t2Sel: '#w2-p2-title', b2Sel: '#w2-p2-body', t3Sel: '#w2-p3-title', b3Sel: '#w2-p3-body' },
-        { n: 3, url: `../data/protocols/week3/${id}.json`, tSel: '#w3-p1-title', bSel: '#w3-p1-body', t2Sel: '#w3-p2-title', b2Sel: '#w3-p2-body', t3Sel: '#w3-p3-title', b3Sel: '#w3-p3-body' },
-      ];
-  
-      for (const w of weekPaths) {
-        try {
-          const prot = await loadJSON(w.url);
-          const wk = prot?.[`week${w.n}`];
-          if (!wk) continue;
-  
-          if (wk.practice1_title) $(w.tSel).textContent = wk.practice1_title;
-          if (wk.practice1_html)  safeSetHTML($(w.bSel), wk.practice1_html);
-  
-          if ($(w.t2Sel) && wk.practice2_title) $(w.t2Sel).textContent = wk.practice2_title;
-          if ($(w.b2Sel) && wk.practice2_html)  safeSetHTML($(w.b2Sel), wk.practice2_html);
-  
-          if ($(w.t3Sel) && wk.practice3_title) $(w.t3Sel).textContent = wk.practice3_title;
-          if ($(w.b3Sel) && wk.practice3_html)  safeSetHTML($(w.b3Sel), wk.practice3_html);
-        } catch (e) {
-          // fine for MVP; week may not exist yet
-          console.warn(`Week ${w.n} not loaded`, e);
+
+      // 2) Protocol Summary
+      try{
+        const sum = await loadJSON(summaryPath);
+        const html = sum?.summary_html ?? sum?.summary?.html ?? '<p class="muted">Summary not available yet.</p>';
+        safeSetHTML($('#summary-body'), html);
+      }catch(e){
+        console.warn('Summary not loaded', e);
+        // leave skeletons
+      }
+
+      // 3) Week 1 protocols (expected keys: practice1_title/html, practice2_title/html, practice3_title/html)
+      try{
+        const prot = await loadJSON(week1Path);
+
+        if(prot?.week1?.practice1_title) $('#p1-title').textContent = prot.week1.practice1_title;
+        if(prot?.week1?.practice1_html)  safeSetHTML($('#p1-body'), prot.week1.practice1_html);
+
+        if(prot?.week1?.practice2_title) $('#p2-title').textContent = prot.week1.practice2_title;
+        if(prot?.week1?.practice2_html)  safeSetHTML($('#p2-body'), prot.week1.practice2_html);
+
+        if(prot?.week1?.practice3_title) $('#p3-title').textContent = prot.week1.practice3_title;
+        if(prot?.week1?.practice3_html)  safeSetHTML($('#p3-body'), prot.week1.practice3_html);
+      }catch(e){
+        console.warn('Week 1 protocol not loaded (ok for MVP if missing):', e);
+      }
+
+      // 4) Week 2 (optional). Expected shape mirrors week1: { "week2": { practice1_title/html, ... } }
+      try{
+        const w2 = await loadJSON(week2Path);
+        if(w2?.week2){
+          const blocks = [];
+          for(let i=1;i<=3;i++){
+            const t = w2.week2[`practice${i}_title`];
+            const h = w2.week2[`practice${i}_html`];
+            if(t || h){
+              blocks.push(`<h4>${t ?? `Practice ${i}`}</h4>${h ?? ''}`);
+            }
+          }
+          if(blocks.length) safeSetHTML($('#w2-body'), blocks.join(''));
         }
+      }catch(e){
+        // silent for MVP
+      }
+
+      // 5) Week 3 (optional)
+      try{
+        const w3 = await loadJSON(week3Path);
+        if(w3?.week3){
+          const blocks = [];
+          for(let i=1;i<=3;i++){
+            const t = w3.week3[`practice${i}_title`];
+            const h = w3.week3[`practice${i}_html`];
+            if(t || h){
+              blocks.push(`<h4>${t ?? `Practice ${i}`}</h4>${h ?? ''}`);
+            }
+          }
+          if(blocks.length) safeSetHTML($('#w3-body'), blocks.join(''));
+        }
+      }catch(e){
+        // silent for MVP
       }
     }
-  
+
     boot();
   </script>
 </body>
