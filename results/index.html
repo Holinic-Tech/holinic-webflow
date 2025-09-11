@@ -5,213 +5,204 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Hair Recovery Report</title>
   <style>
-    :root {
-      --ink: #232946;
-      --rose: #eebbc3;
-      --bg: #fafafa;
-      --card: #ffffff;
-      --muted: #6b7280;
+    :root{
+      --ink:#232946;
+      --bg:#fafafa;
+      --card:#fff;
+      --muted:#666;
+      --accent:#eebbc3;
     }
-    * { box-sizing: border-box; }
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-      margin: 0;
-      background: var(--bg);
-      color: #222;
-      line-height: 1.6;
+    *{box-sizing:border-box}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      margin:0; color:#222; background:var(--bg); line-height:1.6;
     }
-    header {
-      background: var(--ink);
-      color: #fff;
-      padding: 1.5rem;
-      text-align: center;
+    header{background:var(--ink); color:#fff; padding:1.5rem; text-align:center}
+    header h1{margin:0; font-size:1.8rem}
+    main{max-width:800px; margin:2rem auto; background:var(--card); padding:1.25rem 1.25rem 2rem; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    section{margin-bottom:2rem}
+    section h2{color:var(--ink); margin:.25rem 0 .75rem; font-size:1.35rem}
+    .anchors p{margin:.2rem 0; font-size:.95rem}
+    ul{padding-left:1.1rem; margin:.5rem 0}
+    .week{border-left:4px solid var(--accent); padding-left:1rem; margin:1rem 0}
+    .week h3{margin:.2rem 0 .4rem}
+    .muted{color:var(--muted)}
+    footer{text-align:center; color:#555; font-size:.9rem; margin:2rem 0}
+    .warn{padding:.75rem 1rem; border-radius:8px; background:#fff4f6; color:#7a1c2a; border:1px solid #ffd6df}
+    .ok{padding:.5rem .75rem; border-radius:8px; background:#f6ffef; color:#1f5d22; border:1px solid #d7f5c9}
+    .dim{opacity:.85}
+    .skeleton{
+      background:linear-gradient(90deg, #eee, #f6f6f6, #eee);
+      background-size:200% 100%;
+      animation:shimmer 1.2s infinite;
+      height:1rem; border-radius:6px; width:100%;
     }
-    header h1 { margin: 0 0 .25rem; font-size: 1.9rem; }
-    header p { margin: 0; opacity: .9; }
-
-    main {
-      max-width: 960px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.06);
-      padding: 1.2rem 1.1rem;
-      margin-bottom: 1rem;
-    }
-    h2 { color: var(--ink); font-size: 1.35rem; margin: 0 0 .6rem; }
-    h3 { margin: .5rem 0; }
-    .anchors p { margin: .25rem 0; color: #111; }
-    .muted { color: var(--muted); }
-
-    /* Week sections */
-    .week {
-      border-left: 4px solid var(--rose);
-      padding-left: 1rem;
-      margin: 1rem 0 1.2rem;
-    }
-    .practice-block { margin: 1rem 0; }
-    .practice-title {
-      font-weight: 600;
-      margin: 0 0 .35rem;
-      color: #111;
-    }
-    .practice-body { background: #fff8fa; border: 1px solid #f6dfe6; border-radius: 10px; padding: .8rem; }
-    .placeholder { color: var(--muted); font-style: italic; }
-
-    footer {
-      text-align: center;
-      font-size: .9rem;
-      color: var(--muted);
-      margin: 2rem 0;
-    }
-    @media (max-width: 720px) {
-      header h1 { font-size: 1.6rem; }
-      main { padding: .5rem; }
-    }
+    @keyframes shimmer {0%{background-position:200% 0}100%{background-position:-200% 0}}
+    code.inline{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; background:#f5f5f5; padding:.1rem .35rem; border-radius:6px}
   </style>
 </head>
 <body>
   <header>
     <h1>✨ Your Hair Recovery Report</h1>
-    <p>Personalized insights from Hairqare</p>
+    <p class="dim">Personalized insights from Hairqare</p>
   </header>
 
   <main>
     <!-- Intro -->
-    <section class="card" id="intro">
+    <section id="intro">
       <h2>Where You Are Right Now</h2>
       <p>This report helps you understand what’s driving your shedding, where you are in the recovery cycle, and what to focus on over the next 3 weeks. 🌱</p>
-      <p class="muted" id="phase-pill"></p>
     </section>
 
-    <!-- Timeline -->
-    <section class="card" id="timeline">
+    <!-- Timeline / Analysis -->
+    <section id="timeline">
       <h2>Your Recovery Timeline</h2>
-      <div id="timeline-html"><p class="muted">Loading analysis…</p></div>
-      <div id="anchors" class="anchors"></div>
+      <div id="timeline-html"><div class="skeleton" style="height:70px"></div></div>
+      <div id="anchors" class="anchors muted" style="margin-top:.75rem"></div>
     </section>
 
     <!-- Protocols -->
-    <section class="card" id="protocol">
+    <section id="protocol">
       <h2>Your 21-Day Reset Plan</h2>
 
+      <!-- Week 1 (hardcoded practices; titles filled via Make / JSON; bodies from GPT HTML) -->
       <div class="week" id="week1">
         <h3>Week 1: Stabilize Your System 🌱</h3>
 
-        <!-- PRACTICE 1 (wired to Make/GPT) -->
-        <div class="practice-block" id="practice1">
-          <div class="practice-title">Practice 1: <span id="p1-title" class="muted">Loading…</span></div>
-          <div class="practice-body" id="p1-body"><p class="placeholder">Waiting for your personalized instructions…</p></div>
+        <!-- Practice 1 -->
+        <h4 id="p1-title">Practice 1: Consistent Sleep Timing</h4>
+        <div id="p1-body" class="muted">
+          <div class="skeleton" style="height:18px; width:90%"></div>
+          <div class="skeleton" style="height:18px; width:85%; margin-top:.4rem"></div>
         </div>
 
-        <!-- PRACTICE 2 (placeholder for now) -->
-        <div class="practice-block" id="practice2">
-          <div class="practice-title">Practice 2: <span id="p2-title" class="muted">Coming soon</span></div>
-          <div class="practice-body" id="p2-body"><p class="placeholder">This practice will appear here once generated.</p></div>
+        <!-- Practice 2 -->
+        <h4 id="p2-title">Practice 2: Wind-Down Stack</h4>
+        <div id="p2-body" class="muted">
+          <div class="skeleton" style="height:18px; width:92%"></div>
+          <div class="skeleton" style="height:18px; width:70%; margin-top:.4rem"></div>
         </div>
 
-        <!-- PRACTICE 3 (placeholder for now) -->
-        <div class="practice-block" id="practice3">
-          <div class="practice-title">Practice 3: <span id="p3-title" class="muted">Coming soon</span></div>
-          <div class="practice-body" id="p3-body"><p class="placeholder">This practice will appear here once generated.</p></div>
+        <!-- Practice 3 (conditional by your Make mapping) -->
+        <h4 id="p3-title">Practice 3: (will be tailored to you)</h4>
+        <div id="p3-body" class="muted">
+          <div class="skeleton" style="height:18px; width:88%"></div>
+          <div class="skeleton" style="height:18px; width:60%; margin-top:.4rem"></div>
         </div>
       </div>
 
       <!-- Week 2 placeholder -->
       <div class="week" id="week2">
         <h3>Week 2: Rebuild Your Foundations 💪</h3>
-        <p class="placeholder">We’ll unlock your Week 2 practices here.</p>
+        <p class="muted">This section will auto-populate soon. For now, keep momentum with Week 1.</p>
       </div>
 
       <!-- Week 3 placeholder -->
       <div class="week" id="week3">
         <h3>Week 3: Support Regrowth 🌸</h3>
-        <p class="placeholder">We’ll unlock your Week 3 practices here.</p>
+        <p class="muted">This section will auto-populate soon. You’re doing great — consistency compounds.</p>
       </div>
     </section>
 
     <!-- Closing -->
-    <section class="card" id="closing">
+    <section id="closing">
       <h2>You’ve Got This ❤️</h2>
       <p>Hair recovery takes patience, but every small step adds up. Thousands of women have been exactly where you are — and they’ve come through with healthier, stronger hair. Stay consistent, and your future self will thank you. ✨</p>
     </section>
+
+    <div id="messages"></div>
   </main>
 
   <footer>© 2025 Hairqare by Holiniq</footer>
 
   <script>
-    async function loadJSON(url) {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+    // ---------- Small helpers ----------
+    const $ = (sel) => document.querySelector(sel);
+
+    function safeSetHTML(el, html){
+      if(!el) return;
+      // Very light HTML allow-list for our trusted GPT output
+      el.innerHTML = String(html ?? '')
+        .replaceAll('<script', '&lt;script')
+        .replaceAll('onerror=', 'data-oe=');
+    }
+
+    async function loadJSON(url){
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error(`Fetch ${url} failed: ${res.status}`);
       return res.json();
     }
 
-    function safeSetHTML(el, html) {
-      if (!el) return;
-      if (!html) {
-        el.innerHTML = '<p class="placeholder">No content available yet.</p>';
-        return;
-      }
-      el.innerHTML = html;
+    function showWarn(msg){
+      const div = document.createElement('div');
+      div.className = 'warn';
+      div.textContent = msg;
+      $('#messages')?.appendChild(div);
     }
 
-    function setText(el, text, fallback='—') {
-      if (!el) return;
-      el.textContent = text || fallback;
-    }
-
-    async function boot() {
+    // ---------- Boot ----------
+    async function boot(){
       const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
-      if (!id) {
-        console.error('Missing ?id=');
+      const id = params.get('id'); // e.g. ?id=recSnobOlG9F6nqGN
+      if(!id){
+        showWarn('Missing result id. Append e.g. ' + window.location.pathname + '?id=YOUR_RECORD_ID');
         return;
       }
 
-      // 1) Timeline / anchors (existing flow)
-      try {
-        const timelineData = await loadJSON(`./data/${id}.json`);
-        // Expect either an array with [0] or an object; support both
-        const t = Array.isArray(timelineData) ? timelineData[0] : timelineData;
+      // PATHS NOTE:
+      // index.html lives in /results/ ; data lives in /data/  => use ../data/...
+      const timelinePath  = `../data/${id}.json`;
+      const protocolPath  = `../data/protocols/${id}.json`;
 
-        // Phase (optional)
-        if (t.phase) {
-          document.getElementById('phase-pill').textContent = `Current phase: ${t.phase}`;
-        }
+      // 1) Timeline / anchors
+      try{
+        const data = await loadJSON(timelinePath);
+
+        // We support either array payload (older) or object payload (newer)
+        const result = Array.isArray(data) ? data[0] : data;
 
         // HTML analysis
-        safeSetHTML(document.getElementById('timeline-html'), t.timeline_html);
+        safeSetHTML($('#timeline-html'), result.timeline_html ?? '<p class="muted">No analysis available.</p>');
 
-        // Anchors
-        const a = t.anchors || {};
-        document.getElementById('anchors').innerHTML = `
-          <p><strong>Worst month:</strong> ${a.worst_month ?? '—'}</p>
-          <p><strong>Main trigger:</strong> ${a.main_trigger ?? '—'}</p>
-          <p><strong>Onset window:</strong> ${a.onset_window ?? '—'}</p>
-          <p><strong>Stabilization window:</strong> ${a.stabilization_window ?? '—'}</p>
-          <p><strong>Regrowth start:</strong> ${a.regrowth_start ?? '—'}</p>
-        `;
-      } catch (e) {
+        // Anchors (optional)
+        const a = result.anchors || {};
+        $('#anchors').innerHTML =
+          `<p><strong>Worst month:</strong> ${a.worst_month ?? '—'}</p>
+           <p><strong>Main trigger:</strong> ${a.main_trigger ?? '—'}</p>
+           <p><strong>Onset window:</strong> ${a.onset_window ?? '—'}</p>
+           <p><strong>Stabilization by:</strong> ${a.stabilization_by ?? '—'}</p>
+           <p><strong>Stabilization window:</strong> ${a.stabilization_window ?? '—'}</p>
+           <p><strong>Regrowth start:</strong> ${a.regrowth_start ?? '—'}</p>`;
+      }catch(e){
         console.error('Timeline load error:', e);
+        showWarn('Could not load your analysis. If this persists, please refresh or try again later.');
       }
 
-      // 2) Protocol JSON (new)
-      try {
-        const prot = await loadJSON(`./data/protocols/${id}.json`);
-        // Week 1 – Practice 1 (title from Make, body is full HTML from GPT)
-        setText(document.getElementById('p1-title'), prot?.week1?.practice1_title, 'Not set');
-        safeSetHTML(document.getElementById('p1-body'), prot?.week1?.practice1_html);
+      // 2) Week 1 protocols
+      try{
+        const prot = await loadJSON(protocolPath);
+        // Expecting:
+        // {
+        //   "week1": {
+        //     "practice1_title": "Practice 1: Consistent Sleep Timing",
+        //     "practice1_html": "<p>…</p>",
+        //     "practice2_title": "Practice 2: Wind-Down Stack",
+        //     "practice2_html": "<p>…</p>",
+        //     "practice3_title": "Practice 3: Alcohol Pause",
+        //     "practice3_html": "<p>…</p>"
+        //   }
+        // }
 
-        // (Optional later) You can also populate p2/p3 the same way when ready:
-        if (prot?.week1?.practice2_title) setText(document.getElementById('p2-title'), prot.week1.practice2_title);
-        if (prot?.week1?.practice2_html)  safeSetHTML(document.getElementById('p2-body'), prot.week1.practice2_html);
+        if(prot?.week1?.practice1_title) { $('#p1-title').textContent = prot.week1.practice1_title; }
+        if(prot?.week1?.practice1_html)  { safeSetHTML($('#p1-body'), prot.week1.practice1_html); }
 
-        if (prot?.week1?.practice3_title) setText(document.getElementById('p3-title'), prot.week1.practice3_title);
-        if (prot?.week1?.practice3_html)  safeSetHTML(document.getElementById('p3-body'), prot.week1.practice3_html);
-      } catch (e) {
+        if(prot?.week1?.practice2_title) { $('#p2-title').textContent = prot.week1.practice2_title; }
+        if(prot?.week1?.practice2_html)  { safeSetHTML($('#p2-body'), prot.week1.practice2_html); }
+
+        if(prot?.week1?.practice3_title) { $('#p3-title').textContent = prot.week1.practice3_title; }
+        if(prot?.week1?.practice3_html)  { safeSetHTML($('#p3-body'), prot.week1.practice3_html); }
+
+      }catch(e){
         console.warn('Protocol load warning (ok for MVP if missing):', e);
       }
     }
