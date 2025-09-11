@@ -69,9 +69,14 @@
     }
     .acc-btn[aria-expanded="true"] .acc-icon{transform:rotate(45deg); background:#f0f4ff}
 
+    /* Animated panel (CSS-only open/close) */
     .acc-panel{
       border-left:2px dashed #e9ecf2; margin:.6rem 0 0 1rem; padding:.8rem 0 0 .9rem;
+      overflow:hidden; display:grid; grid-template-rows:0fr; opacity:0;
+      transition:grid-template-rows .25s ease, opacity .25s ease;
     }
+    .acc-btn[aria-expanded="true"] + .acc-panel{grid-template-rows:1fr; opacity:1}
+    .acc-panel > * { min-height:0 } /* allow collapse */
 
     /* Summary polish */
     #protocol-summary .lede{font-size:1rem}
@@ -83,6 +88,10 @@
       .acc-btn{padding:.8rem .85rem}
       .acc-title{font-size:.98rem}
     }
+
+    /* (Optional) simple chart card visuals */
+    .chart-card{background:#fff;border:1px solid #eef0f5;border-radius:12px;padding:12px}
+    .chart-caption{margin:.5rem 0 0}
   </style>
 </head>
 <body>
@@ -97,10 +106,11 @@
       <h2>Where You Are Right Now</h2>
       <p>This report helps you understand what’s driving your shedding, where you are in the recovery cycle, and what to focus on over the next 3 weeks. 🌱</p>
     </section>
-<!-- Recovery Chart -->
-<section id="recovery-chart">
-    <h2>Your Recovery Curve</h2>
-    <div class="chart-card">
+
+    <!-- (Optional) Recovery Chart slot — keep / modify as you wish -->
+    <section id="recovery-chart">
+      <h2>Your Recovery Curve</h2>
+      <div class="chart-card">
         <svg id="curve-svg" viewBox="0 0 1000 380" role="img" aria-label="Hair loss recovery timeline">
             <defs>
               <linearGradient id="g-curve" x1="0" y1="0" x2="1" y2="0">
@@ -191,9 +201,11 @@
               </g>
             </g>
           </svg>
-      <p class="chart-caption muted">This curve shows a typical shedding → stabilization → regrowth pattern. The dot marks where you are in your journey based on your timeline analysis.</p>
-    </div>
-  </section>
+        <div class="skeleton" style="height:200px"></div>
+        <p class="chart-caption muted">This curve shows a typical shedding → stabilization → regrowth pattern.</p>
+      </div>
+    </section>
+
     <!-- Timeline / Analysis -->
     <section id="timeline">
       <h2>Your Recovery Timeline</h2>
@@ -220,11 +232,11 @@
 
         <!-- Practice 1 -->
         <div class="practice">
-          <button class="acc-btn" aria-expanded="false" aria-controls="p1-body">
+          <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p1-body">
             <span class="acc-title" id="p1-title">Practice 1: Consistent Sleep Timing</span>
             <span class="acc-icon" aria-hidden="true">+</span>
           </button>
-          <div id="p1-body" class="acc-panel" hidden>
+          <div id="p1-body" class="acc-panel">
             <div class="muted">
               <div class="skeleton" style="height:18px; width:90%"></div>
               <div class="skeleton" style="height:18px; width:85%; margin-top:.4rem"></div>
@@ -234,11 +246,11 @@
 
         <!-- Practice 2 -->
         <div class="practice">
-          <button class="acc-btn" aria-expanded="false" aria-controls="p2-body">
+          <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p2-body">
             <span class="acc-title" id="p2-title">Practice 2: Wind-Down Stack</span>
             <span class="acc-icon" aria-hidden="true">+</span>
           </button>
-          <div id="p2-body" class="acc-panel" hidden>
+        <div id="p2-body" class="acc-panel">
             <div class="muted">
               <div class="skeleton" style="height:18px; width:92%"></div>
               <div class="skeleton" style="height:18px; width:70%; margin-top:.4rem"></div>
@@ -248,11 +260,11 @@
 
         <!-- Practice 3 -->
         <div class="practice">
-          <button class="acc-btn" aria-expanded="false" aria-controls="p3-body">
+          <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p3-body">
             <span class="acc-title" id="p3-title">Practice 3: (will be tailored to you)</span>
             <span class="acc-icon" aria-hidden="true">+</span>
           </button>
-          <div id="p3-body" class="acc-panel" hidden>
+          <div id="p3-body" class="acc-panel">
             <div class="muted">
               <div class="skeleton" style="height:18px; width:88%"></div>
               <div class="skeleton" style="height:18px; width:60%; margin-top:.4rem"></div>
@@ -261,7 +273,7 @@
         </div>
       </div>
 
-      <!-- Week 2 (optional auto-fill if JSON exists) -->
+      <!-- Week 2 (optional) -->
       <div class="week week-2" id="week2">
         <h3>Week 2: Rebuild Your Foundations 💪</h3>
         <div id="w2-body" class="muted">
@@ -269,7 +281,7 @@
         </div>
       </div>
 
-      <!-- Week 3 (optional auto-fill if JSON exists) -->
+      <!-- Week 3 (optional) -->
       <div class="week week-3" id="week3">
         <h3>Week 3: Support Regrowth 🌸</h3>
         <div id="w3-body" class="muted">
@@ -313,24 +325,22 @@
       $('#messages')?.appendChild(div);
     }
 
-    // ---------- Accordion wiring ----------
-    function wireAccordions(){
-      document.querySelectorAll('.acc-btn').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const expanded = btn.getAttribute('aria-expanded') === 'true';
-          const panelId = btn.getAttribute('aria-controls');
-          const panel = document.getElementById(panelId);
-          // toggle
-          btn.setAttribute('aria-expanded', String(!expanded));
-          if(panel) panel.hidden = expanded;
-        });
-      });
-    }
+    // ---------- Global accordion (event delegation) ----------
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.acc-btn');
+      if (!btn) return;
+
+      const panelId = btn.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId);
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+
+      btn.setAttribute('aria-expanded', String(!expanded));
+      // CSS handles animation via sibling selector; no hidden toggle needed.
+      // Ensure structure: button + .acc-panel
+    });
 
     // ---------- Boot ----------
     async function boot(){
-      wireAccordions(); // enable accordion interactions
-
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id'); // e.g. ?id=recXXXX
       if(!id){
@@ -403,22 +413,20 @@
             const t = w2.week2[`practice${i}_title`];
             const h = w2.week2[`practice${i}_html`];
             if(t || h){
-              // create a mini-accordion block
               const pid = `w2p${i}-body`;
               blocks.push(`
                 <div class="practice">
-                  <button class="acc-btn" aria-expanded="false" aria-controls="${pid}">
+                  <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
                     <span class="acc-title">${t ?? `Practice ${i}`}</span>
                     <span class="acc-icon" aria-hidden="true">+</span>
                   </button>
-                  <div id="${pid}" class="acc-panel" hidden>${h ?? ''}</div>
+                  <div id="${pid}" class="acc-panel">${h ?? ''}</div>
                 </div>
               `);
             }
           }
           if(blocks.length){
             $('#w2-body').innerHTML = blocks.join('');
-            wireAccordions();
           }
         }
       }catch(e){
@@ -437,18 +445,17 @@
               const pid = `w3p${i}-body`;
               blocks.push(`
                 <div class="practice">
-                  <button class="acc-btn" aria-expanded="false" aria-controls="${pid}">
+                  <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
                     <span class="acc-title">${t ?? `Practice ${i}`}</span>
                     <span class="acc-icon" aria-hidden="true">+</span>
                   </button>
-                  <div id="${pid}" class="acc-panel" hidden>${h ?? ''}</div>
+                  <div id="${pid}" class="acc-panel">${h ?? ''}</div>
                 </div>
               `);
             }
           }
           if(blocks.length){
             $('#w3-body').innerHTML = blocks.join('');
-            wireAccordions();
           }
         }
       }catch(e){
