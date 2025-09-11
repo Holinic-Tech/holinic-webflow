@@ -192,7 +192,11 @@
       // 2) Protocol Summary
       try{
         const sum = await loadJSON(summaryPath);
-        const html = sum?.summary_html ?? sum?.summary?.html ?? '<p class="muted">Summary not available yet.</p>';
+        const html =
+            sum?.summary_html ??
+         sum?.summary?.html ??
+        sum?.html ?? // <-- add this fallback
+  '<p class="muted">Summary not available yet.</p>';
         safeSetHTML($('#summary-body'), html);
       }catch(e){
         console.warn('Summary not loaded', e);
