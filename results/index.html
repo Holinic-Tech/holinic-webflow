@@ -132,7 +132,21 @@
     .week-1{border-left-color:var(--accent1)}
     .week-2{border-left-color:var(--accent2)}
     .week-3{border-left-color:var(--accent3)}
-
+    .weekly-summary{
+  margin:.6rem 0 1rem;
+  padding:1rem 1.1rem;
+  background:linear-gradient(180deg,#fbfcff,#ffffff);
+  border:1px solid #eef0f5;
+  border-radius:12px;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);
+  color:#1f2333;
+}
+.weekly-summary p{margin:.35rem 0}
+.weekly-summary ul{margin:.4rem 0 .2rem 1.1rem}
+.weekly-summary h4{
+  margin:.2rem 0 .35rem;
+  font-size:1.02rem; color:#232946;
+}
     /* Accordion containers */
     .practice{margin:.38rem 0}
     .acc-btn{
@@ -339,6 +353,7 @@
       <!-- Week 1 -->
       <div class="week week-1" id="week1">
         <h3>Week 1: Stabilize Your System 🌱</h3>
+        <div id="weekly-summary-week-1" class="weekly-summary"></div>
 
         <div class="practice">
           <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p1-body">
@@ -352,6 +367,7 @@
             </div>
           </div>
         </div>
+        <div id="weekly-summary-week-2" class="weekly-summary"></div>
 
         <div class="practice">
           <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p2-body">
@@ -365,6 +381,7 @@
             </div>
           </div>
         </div>
+        <div id="weekly-summary-week-3" class="weekly-summary"></div>
 
         <div class="practice">
           <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p3-body">
@@ -519,7 +536,9 @@
       // 3) Week 1 protocols
       try{
         const prot = await loadJSON(week1Path);
-
+        if (prot?.week1?.week_summary_html) {
+    safeSetHTML($('#weekly-summary-week-1'), prot.week1.week_summary_html);
+  }
         if(prot?.week1?.practice1_title) $('#p1-title').textContent = prot.week1.practice1_title;
         if(prot?.week1?.practice1_html)  safeSetHTML($('#p1-body'), prot.week1.practice1_html);
 
@@ -532,59 +551,72 @@
         console.warn('Week 1 protocol not loaded (ok for MVP if missing):', e);
       }
 
-      // 4) Week 2 (optional)
-      try{
-        const w2 = await loadJSON(week2Path);
-        if(w2?.week2){
-          const blocks = [];
-          for(let i=1;i<=3;i++){
-            const t = w2.week2[`practice${i}_title`];
-            const h = w2.week2[`practice${i}_html`];
-            if(t || h){
-              const pid = `w2p${i}-body`;
-              blocks.push(`
-                <div class="practice">
-                  <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
-                    <span class="acc-title">${t ?? `Practice ${i}`}</span>
-                    <span class="acc-icon" aria-hidden="true">+</span>
-                  </button>
-                  <div id="${pid}" class="acc-panel">${h ?? ''}</div>
-                </div>
-              `);
-            }
-          }
-          if(blocks.length){
-            $('#w2-body').innerHTML = blocks.join('');
-          }
-        }
-      }catch(e){}
+  
+// 4) Week 2 (optional)
+try{
+  const w2 = await loadJSON(week2Path);
+  if(w2?.week2){
 
-      // 5) Week 3 (optional)
-      try{
-        const w3 = await loadJSON(week3Path);
-        if(w3?.week3){
-          const blocks = [];
-          for(let i=1;i<=3;i++){
-            const t = w3.week3[`practice${i}_title`];
-            const h = w3.week3[`practice${i}_html`];
-            if(t || h){
-              const pid = `w3p${i}-body`;
-              blocks.push(`
-                <div class="practice">
-                  <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
-                    <span class="acc-title">${t ?? `Practice ${i}`}</span>
-                    <span class="acc-icon" aria-hidden="true">+</span>
-                  </button>
-                  <div id="${pid}" class="acc-panel">${h ?? ''}</div>
-                </div>
-              `);
-            }
-          }
-          if(blocks.length){
-            $('#w3-body').innerHTML = blocks.join('');
-          }
-        }
-      }catch(e){}
+    // Weekly summary (optional)
+    if (w2.week2.week_summary_html) {
+      safeSetHTML($('#weekly-summary-week-2'), w2.week2.week_summary_html);
+    }
+
+    const blocks = [];
+    for(let i=1;i<=3;i++){
+      const t = w2.week2[`practice${i}_title`];
+      const h = w2.week2[`practice${i}_html`];
+      if(t || h){
+        const pid = `w2p${i}-body`;
+        blocks.push(`
+          <div class="practice">
+            <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
+              <span class="acc-title">${t ?? `Practice ${i}`}</span>
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div id="${pid}" class="acc-panel">${h ?? ''}</div>
+          </div>
+        `);
+      }
+    }
+    if(blocks.length){
+      $('#w2-body').innerHTML = blocks.join('');
+    }
+  }
+}catch(e){ /* silent for MVP */ }
+
+  // 5) Week 3 (optional)
+try{
+  const w3 = await loadJSON(week3Path);
+  if(w3?.week3){
+
+    // Weekly summary (optional)
+    if (w3.week3.week_summary_html) {
+      safeSetHTML($('#weekly-summary-week-3'), w3.week3.week_summary_html);
+    }
+
+    const blocks = [];
+    for(let i=1;i<=3;i++){
+      const t = w3.week3[`practice${i}_title`];
+      const h = w3.week3[`practice${i}_html`];
+      if(t || h){
+        const pid = `w3p${i}-body`;
+        blocks.push(`
+          <div class="practice">
+            <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
+              <span class="acc-title">${t ?? `Practice ${i}`}</span>
+              <span class="acc-icon" aria-hidden="true">+</span>
+            </button>
+            <div id="${pid}" class="acc-panel">${h ?? ''}</div>
+          </div>
+        `);
+      }
+    }
+    if(blocks.length){
+      $('#w3-body').innerHTML = blocks.join('');
+    }
+  }
+}catch(e){ /* silent for MVP */ }
     }
 
     boot();
