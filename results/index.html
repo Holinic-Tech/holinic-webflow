@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Hair Recovery Report</title>
   <style>
@@ -16,186 +16,73 @@
       --ring:#23294620;
       --border:#eef0f5;
 
-      /* Premium additions */
+      /* Premium extras */
       --gold:#b08d57;
-      --gold-ink:#8e6b3a;
-      --hero-image:url('https://i.ibb.co.com/RT26YTpv/ingredients-cw.webp'); /* chosen landscape */
+      --hero-image:url('https://i.ibb.co.com/RT26YTpv/ingredients-cw.webp');
       --hero-grad:linear-gradient(180deg, rgba(20,22,30,.35), rgba(20,22,30,.55));
     }
     *{box-sizing:border-box}
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      margin:0; color:#222; background:var(--bg); line-height:1.6;
-    }
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";margin:0;color:#222;background:var(--bg);line-height:1.6}
 
-    /* Default header (kept) */
-    header{background:var(--ink); color:#fff; padding:1.25rem; text-align:center}
+    /* Premium hero header */
+    header.hero{position:relative;isolation:isolate;color:#fff;padding:0;min-height:56vh;display:grid;place-items:end center;overflow:hidden;border-bottom:1px solid #00000014;background:none;text-align:left}
+    .hero-media{position:absolute;inset:0;z-index:-2;background-image:var(--hero-grad),var(--hero-image);background-size:cover;background-position:center;transform:translateZ(0)}
+    .hero-media::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%,transparent 40%,rgba(0,0,0,.25) 80%)}
+    .hero-inner{width:100%;max-width:960px;margin:0 auto;padding:3.2rem 1.2rem 2.2rem}
+    .masthead{font-size:.72rem;letter-spacing:.2em;font-weight:700;opacity:.95;display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;text-transform:uppercase}
+    .masthead .brand-divider{height:1px;flex:1;background:linear-gradient(90deg,#ffffff50,#ffffff20 60%,#ffffff00)}
+    header.hero h1{margin:.1rem 0 .35rem;font-size:clamp(1.8rem,2.6vw + 1rem,3rem);line-height:1.15;letter-spacing:.01em;font-weight:750;text-shadow:0 2px 14px rgba(0,0,0,.22)}
+    header.hero .lede{margin:0;font-size:clamp(.98rem,.7vw + .6rem,1.15rem);opacity:.92}
+    .cover-card{display:inline-block;margin-top:.6rem;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+    .meta-band{display:flex;flex-wrap:wrap;gap:.9rem 1.2rem;margin-top:1rem;padding:.55rem .8rem;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18);border-radius:10px;font-size:.82rem;letter-spacing:.02em}
+    .seal{position:absolute;top:1rem;right:1rem;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#fff;opacity:.85;padding:.45rem .6rem;border-radius:999px;background:linear-gradient(180deg, rgba(176,141,87,.85), rgba(176,141,87,.65));border:1px solid rgba(255,255,255,.4);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+    @media print{header.hero{min-height:auto}.cover-card,.meta-band{backdrop-filter:none}}
 
-    /* Premium hero header (overrides when .hero is used) */
-    header.hero{
-      position:relative; isolation:isolate;
-      color:#fff; padding:0; min-height:56vh;
-      display:grid; place-items:end center; overflow:hidden;
-      border-bottom:1px solid #00000014;
-      background:none; text-align:left;
-    }
-    .hero-media{
-      position:absolute; inset:0; z-index:-2;
-      background-image:var(--hero-grad), var(--hero-image);
-      background-size:cover; background-position:center;
-      transform:translateZ(0);
-    }
-    .hero-media::after{
-      content:""; position:absolute; inset:0;
-      background:radial-gradient(120% 80% at 50% 0%, transparent 40%, rgba(0,0,0,.25) 80%);
-    }
-    .hero-inner{
-      width:100%; max-width:960px; margin:0 auto;
-      padding:3.2rem 1.2rem 2.2rem;
-    }
-    .masthead{
-      font-size:.72rem; letter-spacing:.2em; font-weight:700; opacity:.95;
-      display:flex; align-items:center; gap:.6rem; margin-bottom:.75rem; text-transform:uppercase;
-    }
-    .masthead .brand-kicker{opacity:.9}
-    .masthead .brand-divider{
-      height:1px; flex:1; display:inline-block;
-      background:linear-gradient(90deg, #ffffff50, #ffffff20 60%, #ffffff00);
-    }
-    .masthead .kicker{opacity:.8}
-
-    header.hero h1{
-      margin:.1rem 0 .35rem; font-size:clamp(1.8rem, 2.6vw + 1rem, 3rem);
-      line-height:1.15; letter-spacing:0.01em; font-weight:750;
-      text-shadow:0 2px 14px rgba(0,0,0,.22);
-    }
-    header.hero .lede{
-      margin:0; font-size:clamp(0.98rem, .7vw + .6rem, 1.15rem);
-      opacity:.92;
-    }
-    .cover-card{
-      display:inline-block; margin-top:.6rem;
-      background:rgba(255,255,255,.08); backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,.18); border-radius:14px;
-      padding:1rem 1.1rem;
-      box-shadow:0 8px 24px rgba(0,0,0,.22);
-    }
-    .meta-band{
-      display:flex; flex-wrap:wrap; gap:.9rem 1.2rem;
-      margin-top:1rem; padding:.55rem .8rem;
-      background:rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:10px; font-size:.82rem; letter-spacing:.02em;
-    }
-    .meta-band strong{color:#fff}
-    .seal{
-      position:absolute; top:1rem; right:1rem;
-      font-size:.65rem; letter-spacing:.18em; text-transform:uppercase;
-      color:#fff; opacity:.85;
-      padding:.45rem .6rem; border-radius:999px;
-      background:linear-gradient(180deg, rgba(176,141,87,.85), rgba(176,141,87,.65));
-      border:1px solid rgba(255,255,255,.4);
-      box-shadow:0 6px 18px rgba(0,0,0,.25);
-    }
-    @media print{
-      header.hero{min-height:auto}
-      .hero-media{background-size:cover!important}
-      .cover-card, .meta-band{backdrop-filter:none}
-    }
-
-    main{max-width:860px; margin:1.5rem auto; background:var(--card); padding:1rem 1rem 1.5rem; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    main{max-width:860px;margin:1.5rem auto;background:var(--card);padding:1rem 1rem 1.5rem;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
     section{margin-bottom:1.25rem}
-    section h2{color:var(--ink); margin:.15rem 0 .55rem; font-size:1.25rem}
-    .anchors p{margin:.15rem 0; font-size:.95rem}
-    ul{padding-left:1.1rem; margin:.35rem 0}
+    section h2{color:var(--ink);margin:.15rem 0 .55rem;font-size:1.25rem}
     .muted{color:var(--muted)}
-    footer{text-align:center; color:#555; font-size:.9rem; margin:1.5rem 0}
-    .warn{padding:.6rem .8rem; border-radius:8px; background:#fff4f6; color:#7a1c2a; border:1px solid #ffd6df; margin-top:.75rem}
-    .dim{opacity:.85}
-    .skeleton{
-      background:linear-gradient(90deg, #eee, #f6f6f6, #eee);
-      background-size:200% 100%;
-      animation:shimmer 1.2s infinite;
-      height:0.9rem; border-radius:6px; width:100%;
-    }
-    @keyframes shimmer {0%{background-position:200% 0}100%{background-position:-200% 0}}
-    code.inline{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; background:#f5f5f5; padding:.1rem .35rem; border-radius:6px}
+    .warn{padding:.6rem .8rem;border-radius:8px;background:#fff4f6;color:#7a1c2a;border:1px solid #ffd6df;margin-top:.75rem}
+    .skeleton{background:linear-gradient(90deg,#eee,#f6f6f6,#eee);background-size:200% 100%;animation:shimmer 1.2s infinite;height:.9rem;border-radius:6px;width:100%}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-    /* Weeks (tight) */
-    .week{
-      padding:.6rem .6rem .6rem .9rem;
-      margin:.9rem 0;
-      border-left:4px solid var(--accent1);
-      background:#fff; border-radius:10px; box-shadow:0 1px 5px rgba(0,0,0,.04);
-    }
-    .week h3{margin:.1rem 0 .45rem; font-size:1.05rem}
+    /* Weeks */
+    .week{padding:.6rem .6rem .6rem .9rem;margin:.9rem 0;border-left:4px solid var(--accent1);background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.04)}
+    .week h3{margin:.1rem 0 .45rem;font-size:1.05rem}
     .week-1{border-left-color:var(--accent1)}
     .week-2{border-left-color:var(--accent2)}
     .week-3{border-left-color:var(--accent3)}
-    .weekly-summary{
-  margin:.6rem 0 1rem;
-  padding:1rem 1.1rem;
-  background:linear-gradient(180deg,#fbfcff,#ffffff);
-  border:1px solid #eef0f5;
-  border-radius:12px;
-  box-shadow:0 1px 6px rgba(0,0,0,.05);
-  color:#1f2333;
-}
-.weekly-summary p{margin:.35rem 0}
-.weekly-summary ul{margin:.4rem 0 .2rem 1.1rem}
-.weekly-summary h4{
-  margin:.2rem 0 .35rem;
-  font-size:1.02rem; color:#232946;
-}
-    /* Accordion containers */
+
+    /* Weekly summary cards */
+    .weekly-summary{margin:.6rem 0 1rem;padding:1rem 1.1rem;background:linear-gradient(180deg,#fbfcff,#ffffff);border:1px solid #eef0f5;border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,.05);color:#1f2333}
+    .weekly-summary h4{margin:.2rem 0 .35rem;font-size:1.02rem;color:#232946}
+    .weekly-summary p{margin:.35rem 0}
+    .weekly-summary ul{margin:.4rem 0 .2rem 1.1rem}
+
+    /* Accordion */
     .practice{margin:.38rem 0}
-    .acc-btn{
-      width:100%; text-align:left; background:#f9fafc; border:1px solid var(--border);
-      border-radius:10px; padding:.7rem .85rem; display:flex; align-items:center; gap:.6rem;
-      cursor:pointer; transition:background .15s ease, border-color .15s ease, box-shadow .15s ease;
-    }
-    .acc-btn:hover{background:#f3f5fa; border-color:#e6eaf2}
-    .acc-btn:focus-visible{outline:none; box-shadow:0 0 0 3px var(--ring)}
-    .acc-title{flex:1; font-weight:600; color:#1f2333; font-size:.98rem}
-    .acc-icon{
-      width:26px; height:26px; border-radius:7px; border:1px solid #e4e7ee; display:grid; place-items:center;
-      font-weight:700; font-size:16px; color:#1f2333; user-select:none; transition:transform .2s ease, background .2s ease;
-      background:#fff;
-    }
-    .acc-btn[aria-expanded="true"] .acc-icon{transform:rotate(45deg); background:#f0f4ff}
-
-    /* Panels: zero height when closed (no reserved space) */
-    .acc-panel{
-      max-height:0; overflow:hidden; opacity:0;
-      margin:0 0 0 .8rem; padding:0 0 0 .7rem; border-left:2px dashed #e9ecf2;
-      transition:max-height .25s ease, opacity .2s ease, margin .2s ease, padding .2s ease;
-    }
-    .acc-btn[aria-expanded="true"] + .acc-panel{
-      max-height:2000px; opacity:1;
-      margin:.45rem 0 0 .8rem; padding:.45rem 0 0 .7rem;
-    }
-    /* Trim inner content spacing to avoid phantom space at edges */
-    .acc-panel > *:first-child{margin-top:0}
-    .acc-panel > *:last-child{margin-bottom:0}
-
-    /* Summary polish */
-    #protocol-summary .lede{font-size:1rem}
-    #protocol-summary .cta{margin-top:.3rem}
+    .acc-btn{width:100%;text-align:left;background:#f9fafc;border:1px solid var(--border);border-radius:10px;padding:.7rem .85rem;display:flex;align-items:center;gap:.6rem;cursor:pointer;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+    .acc-btn:hover{background:#f3f5fa;border-color:#e6eaf2}
+    .acc-btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
+    .acc-title{flex:1;font-weight:600;color:#1f2333;font-size:.98rem}
+    .acc-icon{width:26px;height:26px;border-radius:7px;border:1px solid #e4e7ee;display:grid;place-items:center;font-weight:700;font-size:16px;color:#1f2333;user-select:none;transition:transform .2s ease,background .2s ease;background:#fff}
+    .acc-btn[aria-expanded="true"] .acc-icon{transform:rotate(45deg);background:#f0f4ff}
+    .acc-panel{max-height:0;overflow:hidden;opacity:0;margin:0 0 0 .8rem;padding:0 0 0 .7rem;border-left:2px dashed #e9ecf2;transition:max-height .25s ease,opacity .2s ease,margin .2s ease,padding .2s ease}
+    .acc-btn[aria-expanded="true"] + .acc-panel{max-height:2000px;opacity:1;margin:.45rem 0 0 .8rem;padding:.45rem 0 0 .7rem}
+    .acc-panel>*:first-child{margin-top:0}.acc-panel>*:last-child{margin-bottom:0}
 
     /* Chart */
     .chart-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px}
     .chart-caption{margin:.45rem 0 0}
 
-    /* Small screens */
     @media (max-width:600px){
-      main{margin:1rem auto; padding:.9rem}
+      main{margin:1rem auto;padding:.9rem}
       .acc-btn{padding:.6rem .75rem}
       .acc-title{font-size:.95rem}
     }
   </style>
 </head>
 <body>
-
   <!-- Premium Hero Header -->
   <header class="hero">
     <div class="hero-media" aria-hidden="true"></div>
@@ -206,12 +93,10 @@
         <span class="brand-divider"></span>
         <span class="kicker">Holistic Analysis</span>
       </div>
-
       <div class="cover-card">
         <h1>✨ Your Hair Recovery Report</h1>
-        <p class="lede dim">Personalized insights from Hairqare</p>
+        <p class="lede" id="meta-lede">Personalized insights from Hairqare</p>
       </div>
-
       <div class="meta-band" role="contentinfo" aria-label="Report metadata">
         <span>Report&nbsp;ID: <strong id="meta-id">—</strong></span>
         <span>Generated: <strong id="meta-date">—</strong></span>
@@ -222,7 +107,7 @@
   <main>
     <!-- Intro -->
     <section id="intro">
-      <p>Your hair loss isn't your fault, and it's not permanent. The beauty industry wants you to think it's just genetics or getting older, but that's not the whole truth. Hair loss happens for clear reasons, and once you understand them, you can fix them.</p>
+      <p>Your hair loss isn’t your fault — and it isn’t permanent. Once you understand the timing and the trigger, you can take back control. This report shows the “why”, the “when”, and the “what now”.</p>
     </section>
 
     <!-- Recovery Chart -->
@@ -231,7 +116,7 @@
       <div class="chart-card">
         <svg id="curve-svg" viewBox="0 0 1000 380" role="img" aria-label="Hair loss recovery timeline">
           <defs>
-            <linearGradient id="g-curve" x1="0" y1="0" x2="1" y1="0">
+            <linearGradient id="g-curve" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stop-color="#0ea5e9"/>
               <stop offset="60%" stop-color="#22c55e"/>
               <stop offset="100%" stop-color="#84cc16"/>
@@ -293,10 +178,10 @@
                    C780,255 850,200 940,120"
                 fill="none" stroke="url(#g-curve)" stroke-width="4" stroke-linecap="round" filter="url(#shadow)"/>
 
-          <!-- red hair loss trigger marker (on top of curve) -->
-          <g transform="translate(280,238)">
-            <circle r="7" fill="#dc2626"/>
-            <circle r="3" fill="white"/>
+          <!-- red hair loss trigger marker -->
+          <g id="trigger-marker" transform="translate(280,238)">
+            <circle r="7" fill="#dc2626"></circle>
+            <circle r="3" fill="#fff"></circle>
             <g transform="translate(0,-14)">
               <rect x="-60" y="-26" width="120" height="24" rx="6" fill="#dc2626" opacity="0.95"></rect>
               <text x="0" y="-10" fill="#fff" font-size="12" text-anchor="middle">Hair loss trigger</text>
@@ -305,11 +190,11 @@
 
           <!-- green "you are here" marker -->
           <g id="marker" transform="translate(500,280)">
-            <circle r="7" fill="#22c55e" stroke="#111827" stroke-width="2"/>
-            <circle r="3" fill="#fff"/>
+            <circle r="7" fill="#22c55e" stroke="#111827" stroke-width="2"></circle>
+            <circle r="3" fill="#fff"></circle>
             <g transform="translate(0,-16)">
               <rect x="-60" y="-26" width="120" height="24" rx="6" fill="#111827" opacity="0.9"></rect>
-              <text id="marker-label" x="0" y="-10" fill="#ffffff" font-size="12" text-anchor="middle">You are here</text>
+              <text id="marker-label" x="0" y="-10" fill="#fff" font-size="12" text-anchor="middle">You are here</text>
             </g>
           </g>
         </svg>
@@ -320,18 +205,8 @@
     <!-- Timeline / Analysis -->
     <section id="timeline">
       <h2>Your Recovery Timeline</h2>
-      <div id="intro-timeline">
-        <span style="background-color: #e8e0f0; padding: 2px 4px; border-radius: 3px; height:64px;">Hair loss doesn't happen out of nowhere.</span> It's almost always triggered by something—whether that's <em>stress</em>, <em>hormonal changes</em>, <em>nutritional deficiencies</em>, <em>illness</em>, or other internal imbalances.
-
-        <br><br>
-        
-        Once a trigger occurs, your body enters a <strong>delayed response cycle</strong>, and visible shedding typically begins about <span style="background-color: #e8e0f0; padding: 2px 4px; border-radius: 3px;">a few months later</span>. The timing and severity of hair loss can vary based on the type of trigger, but behind every case of hair loss, there's a process unfolding beneath the surface.
-        
-        <br><br>
-        
-        <strong style="color: #5d4e75;">This report helps you understand the causes</strong>, when you might expect the shedding to peak and slow down, when regrowth typically begins, and <strong>what you can do to support and accelerate your recovery journey</strong>.
-
-        <br><br>
+      <div id="intro-timeline" class="muted">
+        Hair loss doesn’t happen out of nowhere — there’s almost always a trigger. This section maps timing so you know what’s driving it, when the worst passes, and when regrowth starts.
       </div>
       <div id="timeline-html"><div class="skeleton" style="height:64px"></div></div>
       <div id="anchors" class="anchors muted" style="margin-top:.55rem"></div>
@@ -341,8 +216,8 @@
     <section id="protocol-summary">
       <h2>Protocol Summary</h2>
       <div id="summary-body" class="muted">
-        <div class="skeleton" style="height:16px; width:92%"></div>
-        <div class="skeleton" style="height:16px; width:75%; margin-top:.35rem"></div>
+        <div class="skeleton" style="height:16px;width:92%"></div>
+        <div class="skeleton" style="height:16px;width:75%;margin-top:.35rem"></div>
       </div>
     </section>
 
@@ -357,64 +232,41 @@
 
         <div class="practice">
           <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p1-body">
-            <span class="acc-title" id="p1-title">Practice 1: Consistent Sleep Timing</span>
+            <span class="acc-title" id="p1-title">Practice 1</span>
             <span class="acc-icon" aria-hidden="true">+</span>
           </button>
-          <div id="p1-body" class="acc-panel">
-            <div class="muted">
-              <div class="skeleton" style="height:16px; width:90%"></div>
-              <div class="skeleton" style="height:16px; width:85%; margin-top:.3rem"></div>
-            </div>
-          </div>
+          <div id="p1-body" class="acc-panel"><div class="muted"><div class="skeleton" style="height:16px;width:90%"></div></div></div>
         </div>
-      
 
         <div class="practice">
           <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p2-body">
-            <span class="acc-title" id="p2-title">Practice 2: Wind Down Protocol</span>
+            <span class="acc-title" id="p2-title">Practice 2</span>
             <span class="acc-icon" aria-hidden="true">+</span>
           </button>
-          <div id="p2-body" class="acc-panel">
-            <div class="muted">
-              <div class="skeleton" style="height:16px; width:92%"></div>
-              <div class="skeleton" style="height:16px; width:70%; margin-top:.3rem"></div>
-            </div>
-          </div>
+          <div id="p2-body" class="acc-panel"><div class="muted"><div class="skeleton" style="height:16px;width:80%"></div></div></div>
         </div>
-     
 
         <div class="practice">
           <button class="acc-btn" type="button" aria-expanded="false" aria-controls="p3-body">
-            <span class="acc-title" id="p3-title">Practice 3: (will be tailored to you)</span>
+            <span class="acc-title" id="p3-title">Practice 3</span>
             <span class="acc-icon" aria-hidden="true">+</span>
           </button>
-          <div id="p3-body" class="acc-panel">
-            <div class="muted">
-              <div class="skeleton" style="height:16px; width:88%"></div>
-              <div class="skeleton" style="height:16px; width:60%; margin-top:.3rem"></div>
-            </div>
-          </div>
+          <div id="p3-body" class="acc-panel"><div class="muted"><div class="skeleton" style="height:16px;width:70%"></div></div></div>
         </div>
       </div>
 
-      <!-- Week 2 (optional) -->
+      <!-- Week 2 -->
       <div class="week week-2" id="week2">
         <h3>Week 2: Rebuild Your Foundations 💪</h3>
         <div id="weekly-summary-week-2" class="weekly-summary"></div>
-
-        <div id="w2-body" class="muted">
-          <p class="muted">This section will auto-populate soon. For now, keep momentum with Week 1.</p>
-        </div>
+        <div id="w2-body" class="muted"><p>This section will auto-populate soon. Keep momentum with Week 1.</p></div>
       </div>
 
-      <!-- Week 3 (optional) -->
+      <!-- Week 3 -->
       <div class="week week-3" id="week3">
         <h3>Week 3: Support Regrowth 🌸</h3>
         <div id="weekly-summary-week-3" class="weekly-summary"></div>
-
-        <div id="w3-body" class="muted">
-          <p class="muted">This section will auto-populate soon. You’re doing great — consistency compounds.</p>
-        </div>
+        <div id="w3-body" class="muted"><p>This section will auto-populate soon. You’re doing great — consistency compounds.</p></div>
       </div>
     </section>
 
@@ -427,21 +279,21 @@
     <div id="messages"></div>
   </main>
 
-  <footer>© 2025 Hairqare by Holiniq</footer>
+  <footer style="text-align:center;color:#555;font-size:.9rem;margin:1.5rem 0">© 2025 Hairqare by Holiniq</footer>
 
   <script>
-    // ---------- Small helpers ----------
+    // ---------- tiny helpers ----------
     const $ = (sel) => document.querySelector(sel);
 
     function safeSetHTML(el, html){
       if(!el) return;
       el.innerHTML = String(html ?? '')
         .replaceAll('<script', '&lt;script')
-        .replaceAll('onerror=', 'data-oe=');
+        .replaceAll(' on', ' data-on-'); // dumb but effective inline-handler neuter
     }
 
     async function loadJSON(url){
-      const res = await fetch(url, {cache:'no-store'});
+      const res = await fetch(url, { cache:'no-store' });
       if(!res.ok) throw new Error(`Fetch ${url} failed: ${res.status}`);
       return res.json();
     }
@@ -453,65 +305,80 @@
       $('#messages')?.appendChild(div);
     }
 
-    // --- Premium header meta fill ---
+    // Date helpers (MVP)
+    function parseYYYYMM(s){
+      if(!s || !/^\d{4}-\d{2}$/.test(s)) return null;
+      const [y,m] = s.split('-').map(Number);
+      return new Date(Date.UTC(y, m-1, 1));
+    }
+    function parseYYYYMMDD(s){
+      if(!s || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
+      const [y,m,d] = s.split('-').map(Number);
+      return new Date(Date.UTC(y, m-1, d));
+    }
+    function monthsBetween(d1, d2){
+      // whole months diff (approx), allow negative
+      return (d2.getUTCFullYear() - d1.getUTCFullYear())*12 + (d2.getUTCMonth() - d1.getUTCMonth());
+    }
+    // Chart mapping: SVG x-scale (month -3..9 => x 60..940)
+    const X0 = 60, X9 = 940, MONTH_SPAN = 12; // -3..9
+    function xForMonthsSinceTrigger(m){
+      const clamped = Math.max(-3, Math.min(9, m));
+      const t = (clamped + 3) / MONTH_SPAN; // map -3..9 to 0..1
+      return X0 + t * (X9 - X0);
+    }
+
+    // Phase → Y positions on curve (rough MVP)
+    const phaseY = { onset:240, peak:300, stabilization:220, regrowth_start:180 };
+
+    // ---------- header meta ----------
     (function(){
-      const params = new URLSearchParams(window.location.search);
+      const params = new URLSearchParams(location.search);
       const id = params.get('id') || '—';
-      const date = new Date().toLocaleDateString(undefined, {year:'numeric', month:'short', day:'2-digit'});
-      const idEl = document.getElementById('meta-id');
-      const dateEl = document.getElementById('meta-date');
-      if(idEl) idEl.textContent = id;
-      if(dateEl) dateEl.textContent = date;
+      const date = new Date().toLocaleDateString(undefined,{year:'numeric',month:'short',day:'2-digit'});
+      $('#meta-id').textContent = id;
+      $('#meta-date').textContent = date;
     })();
 
-    // ---------- Global accordion (event delegation) ----------
+    // ---------- accordion ----------
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.acc-btn');
-      if (!btn) return;
-      const panelId = btn.getAttribute('aria-controls');
-      const panel = document.getElementById(panelId);
+      if(!btn) return;
+      const panel = document.getElementById(btn.getAttribute('aria-controls'));
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!expanded));
-      // If DOM structure differs (not immediate sibling), still open/close
-      if (panel && panel.previousElementSibling !== btn) {
-        if (!expanded) {
-          panel.style.maxHeight = '2000px';
-          panel.style.opacity = '1';
-          panel.style.marginTop = '.45rem';
-          panel.style.paddingTop = '.45rem';
-        } else {
-          panel.style.maxHeight = '0';
-          panel.style.opacity = '0';
-          panel.style.marginTop = '0';
-          panel.style.paddingTop = '0';
+      if(panel && panel.previousElementSibling !== btn){
+        if(!expanded){
+          panel.style.maxHeight='2000px'; panel.style.opacity='1'; panel.style.marginTop='.45rem'; panel.style.paddingTop='.45rem';
+        }else{
+          panel.style.maxHeight='0'; panel.style.opacity='0'; panel.style.marginTop='0'; panel.style.paddingTop='0';
         }
       }
     });
 
-    // ---------- Boot ----------
+    // ---------- boot ----------
     async function boot(){
-      const params = new URLSearchParams(window.location.search);
+      const params = new URLSearchParams(location.search);
       const id = params.get('id');
-      if(!id){
-        showWarn('Missing result id. Append e.g. ' + window.location.pathname + '?id=YOUR_RECORD_ID');
-        return;
-      }
+      if(!id){ showWarn('Missing result id. Append ?id=YOUR_RECORD_ID'); return; }
 
-      // PATHS (index.html is in /results/, so data is ../data/)
       const timelinePath = `../data/${id}.json`;
       const summaryPath  = `../data/protocols/summaries/${id}.json`;
       const week1Path    = `../data/protocols/week1/${id}.json`;
       const week2Path    = `../data/protocols/week2/${id}.json`;
       const week3Path    = `../data/protocols/week3/${id}.json`;
 
-      // 1) Timeline / anchors
+      // Keep result accessible
+      let timelineResult = null;
+
+      // 1) Timeline + anchors + chart markers
       try{
         const data = await loadJSON(timelinePath);
-        const result = Array.isArray(data) ? data[0] : data;
+        timelineResult = Array.isArray(data) ? data[0] : data;
 
-        safeSetHTML($('#timeline-html'), result.timeline_html ?? '<p class="muted">No analysis available.</p>');
+        safeSetHTML($('#timeline-html'), timelineResult.timeline_html ?? '<p class="muted">No analysis available.</p>');
 
-        const a = result.anchors || {};
+        const a = timelineResult.anchors || {};
         $('#anchors').innerHTML =
           `<p><strong>Worst month:</strong> ${a.worst_month ?? '—'}</p>
            <p><strong>Main trigger:</strong> ${a.main_trigger ?? '—'}</p>
@@ -519,106 +386,114 @@
            <p><strong>Stabilization by:</strong> ${a.stabilization_by ?? '—'}</p>
            <p><strong>Stabilization window:</strong> ${a.stabilization_window ?? '—'}</p>
            <p><strong>Regrowth start:</strong> ${a.regrowth_start ?? '—'}</p>`;
+
+        // Chart markers (MVP)
+        try{
+          const chart = timelineResult.chart || {};
+          const triggerMonthStr = chart.trigger_month;   // "YYYY-MM"
+          const assessDateStr   = chart.assessment_date; // "YYYY-MM-DD"
+          const triggerDate = parseYYYYMM(triggerMonthStr);
+          const assessDate  = parseYYYYMMDD(assessDateStr);
+
+          if(triggerDate && assessDate){
+            const monthsSince = monthsBetween(triggerDate, assessDate);
+            const xHere = xForMonthsSinceTrigger(monthsSince);
+            const yHere = phaseY[timelineResult.phase] ?? 240;
+
+            const xTrigger = xForMonthsSinceTrigger(0);
+
+            const redMarker   = document.getElementById('trigger-marker');
+            const greenMarker = document.getElementById('marker');
+            const greenLabel  = document.getElementById('marker-label');
+
+            if(redMarker)   redMarker.setAttribute('transform', `translate(${xTrigger},238)`);
+            if(greenMarker) greenMarker.setAttribute('transform', `translate(${xHere},${yHere})`);
+            if(greenLabel)  greenLabel.textContent = 'You are here';
+          }
+        }catch(e){ console.warn('Chart markers skipped:', e); }
+
       }catch(e){
         console.error('Timeline load error:', e);
-        showWarn('Could not load your analysis. If this persists, please refresh or try again later.');
+        showWarn('Could not load your analysis. If this persists, please refresh later.');
       }
 
       // 2) Protocol Summary
       try{
         const sum = await loadJSON(summaryPath);
-        const html =
-          sum?.summary_html ??
-          sum?.summary?.html ??
-          sum?.html ??
-          '<p class="muted">Summary not available yet.</p>';
+        const html = sum?.summary_html ?? sum?.summary?.html ?? sum?.html ?? '<p class="muted">Summary not available yet.</p>';
         safeSetHTML($('#summary-body'), html);
-      }catch(e){
-        console.warn('Summary not loaded', e);
-      }
+      }catch(e){ console.warn('Summary not loaded', e); }
 
-// 3) Week 1 protocols
-try{
-  const prot = await loadJSON(week1Path);
+      // 3) Week 1
+      try{
+        const w1 = await loadJSON(week1Path);
+        if(w1?.week1){
+          if(w1.week1.week_summary_html) safeSetHTML($('#weekly-summary-week-1'), w1.week1.week_summary_html);
 
-  // Accept both shapes:
-  const w1 = prot?.week1 ?? prot;
+          if(w1.week1.practice1_title) $('#p1-title').textContent = w1.week1.practice1_title;
+          if(w1.week1.practice1_html)  safeSetHTML($('#p1-body'), w1.week1.practice1_html);
 
-  // Weekly summary (supports both "week1.week_summary_html" and top-level "week_summary_html")
-  const w1SummaryHTML = w1?.week_summary_html ?? prot?.week_summary_html;
-  if (w1SummaryHTML) {
-    safeSetHTML($('#weekly-summary-week-1'), w1SummaryHTML);
-  }
+          if(w1.week1.practice2_title) $('#p2-title').textContent = w1.week1.practice2_title;
+          if(w1.week1.practice2_html)  safeSetHTML($('#p2-body'), w1.week1.practice2_html);
 
-  if (w1?.practice1_title) $('#p1-title').textContent = w1.practice1_title;
-  if (w1?.practice1_html)  safeSetHTML($('#p1-body'), w1.practice1_html);
+          if(w1.week1.practice3_title) $('#p3-title').textContent = w1.week1.practice3_title;
+          if(w1.week1.practice3_html)  safeSetHTML($('#p3-body'), w1.week1.practice3_html);
+        }
+      }catch(e){ console.warn('Week 1 protocol not loaded:', e); }
 
-  if (w1?.practice2_title) $('#p2-title').textContent = w1.practice2_title;
-  if (w1?.practice2_html)  safeSetHTML($('#p2-body'), w1.practice2_html);
+      // 4) Week 2
+      try{
+        const w2 = await loadJSON(week2Path);
+        if(w2?.week2){
+          if(w2.week2.week_summary_html) safeSetHTML($('#weekly-summary-week-2'), w2.week2.week_summary_html);
 
-  if (w1?.practice3_title) $('#p3-title').textContent = w1.practice3_title;
-  if (w1?.practice3_html)  safeSetHTML($('#p3-body'), w1.practice3_html);
-}catch(e){
-  console.warn('Week 1 protocol not loaded (ok for MVP if missing):', e);
-}
-  
-// Week 2
-try{
-  const w2 = await loadJSON(week2Path);
-  const w2Obj = w2?.week2 ?? w2;
+          const blocks = [];
+          for(let i=1;i<=3;i++){
+            const t = w2.week2[`practice${i}_title`];
+            const h = w2.week2[`practice${i}_html`];
+            if(t || h){
+              const pid = `w2p${i}-body`;
+              blocks.push(`
+                <div class="practice">
+                  <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
+                    <span class="acc-title">${t ?? `Practice ${i}`}</span>
+                    <span class="acc-icon" aria-hidden="true">+</span>
+                  </button>
+                  <div id="${pid}" class="acc-panel">${h ?? ''}</div>
+                </div>
+              `);
+            }
+          }
+          if(blocks.length) $('#w2-body').innerHTML = blocks.join('');
+        }
+      }catch(e){ /* optional */ }
 
-  if (w2Obj?.week_summary_html) {
-    safeSetHTML($('#weekly-summary-week-2'), w2Obj.week_summary_html);
-  }
+      // 5) Week 3
+      try{
+        const w3 = await loadJSON(week3Path);
+        if(w3?.week3){
+          if(w3.week3.week_summary_html) safeSetHTML($('#weekly-summary-week-3'), w3.week3.week_summary_html);
 
-  const blocks = [];
-  for (let i=1;i<=3;i++){
-    const t = w2Obj[`practice${i}_title`];
-    const h = w2Obj[`practice${i}_html`];
-    if (t || h){
-      const pid = `w2p${i}-body`;
-      blocks.push(`
-        <div class="practice">
-          <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
-            <span class="acc-title">${t ?? `Practice ${i}`}</span>
-            <span class="acc-icon" aria-hidden="true">+</span>
-          </button>
-          <div id="${pid}" class="acc-panel">${h ?? ''}</div>
-        </div>
-      `);
-    }
-  }
-  if (blocks.length) $('#w2-body').innerHTML = blocks.join('');
-}catch(e){/* silent for MVP */}
-
-// Week 3
-try{
-  const w3 = await loadJSON(week3Path);
-  const w3Obj = w3?.week3 ?? w3;
-
-  if (w3Obj?.week_summary_html) {
-    safeSetHTML($('#weekly-summary-week-3'), w3Obj.week_summary_html);
-  }
-
-  const blocks = [];
-  for (let i=1;i<=3;i++){
-    const t = w3Obj[`practice${i}_title`];
-    const h = w3Obj[`practice${i}_html`];
-    if (t || h){
-      const pid = `w3p${i}-body`;
-      blocks.push(`
-        <div class="practice">
-          <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
-            <span class="acc-title">${t ?? `Practice ${i}`}</span>
-            <span class="acc-icon" aria-hidden="true">+</span>
-          </button>
-          <div id="${pid}" class="acc-panel">${h ?? ''}</div>
-        </div>
-      `);
-    }
-  }
-  if (blocks.length) $('#w3-body').innerHTML = blocks.join('');
-}catch(e){/* silent for MVP */}
+          const blocks = [];
+          for(let i=1;i<=3;i++){
+            const t = w3.week3[`practice${i}_title`];
+            const h = w3.week3[`practice${i}_html`];
+            if(t || h){
+              const pid = `w3p${i}-body`;
+              blocks.push(`
+                <div class="practice">
+                  <button class="acc-btn" type="button" aria-expanded="false" aria-controls="${pid}">
+                    <span class="acc-title">${t ?? `Practice ${i}`}</span>
+                    <span class="acc-icon" aria-hidden="true">+</span>
+                  </button>
+                  <div id="${pid}" class="acc-panel">${h ?? ''}</div>
+                </div>
+              `);
+            }
+          }
+          if(blocks.length) $('#w3-body').innerHTML = blocks.join('');
+        }
+      }catch(e){ /* optional */ }
     }
 
     boot();
