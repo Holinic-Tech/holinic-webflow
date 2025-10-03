@@ -330,8 +330,68 @@
   </script>
 
   <!-- ============================================ -->
-  <!-- INSTRUMENTED CVG LOADING -->
+  <!-- FIXED CVG INITIALIZATION -->
   <!-- ============================================ -->
+  
+  <!-- Step 1: Initialize CVG stub FIRST with proper queue -->
+  <script>
+    // Initialize CVG function with queue system - MUST happen before any cvg() calls
+    window.cvg = window.cvg || function() {
+      window.cvg.queue = window.cvg.queue || [];
+      window.cvg.queue.push(arguments);
+    };
+    window.cvg.queue = window.cvg.queue || [];
+    
+    console.log('[CVG] Stub initialized, queue ready');
+    window.logToWebhook('cvg_stub_initialized', {
+      queueExists: !!window.cvg.queue,
+      queueLength: window.cvg.queue.length
+    });
+  </script>
+
+  <!-- Step 2: Configure proxy (this will be safely queued) -->
+  <script>
+    try {
+      console.log('[CVG] Configuring proxy...');
+      cvg({
+        method: "proxy", 
+        tracking: "https://hairqare.co/cvg", 
+        static: "https://hairqare.co/cvg/static"
+      });
+      console.log('[CVG] Proxy configuration queued');
+      window.logToWebhook('cvg_proxy_configured', {
+        queueLength: window.cvg.queue.length
+      });
+    } catch (error) {
+      console.error('[CVG] Error configuring proxy:', error);
+      window.logToWebhook('cvg_proxy_error', {
+        error: error.message,
+        stack: error.stack
+      });
+      
+      // Send to Sentry
+      if (typeof Sentry !== 'undefined') {
+        Sentry.captureException(error, {
+          tags: { component: 'cvg_proxy' }
+        });
+      }
+    }
+  </script>
+
+  <!-- Step 3: Track page load (also queued) -->
+  <script>
+    try {
+      cvg({method:"track", eventName:"$page_load"});
+      console.log('[CVG] Page load event queued');
+    } catch (error) {
+      console.error('[CVG] Error tracking page load:', error);
+      window.logToWebhook('cvg_pageload_error', {
+        error: error.message
+      });
+    }
+  </script>
+
+  <!-- Step 4: Load actual CVG script (will process the queue) -->
   <script>
     window.cvgLoaded = false;
     window.cvgError = null;
@@ -343,8 +403,10 @@
     cvgScript.onload = function() {
       window.cvgLoaded = true;
       console.log('[CVG] Script loaded successfully');
+      console.log('[CVG] Queue should now be processed. Queue length:', window.cvg.queue ? window.cvg.queue.length : 'N/A');
       window.logToWebhook('cvg_script_loaded', {
-        success: true
+        success: true,
+        queueLength: window.cvg.queue ? window.cvg.queue.length : 0
       });
     };
     
@@ -364,44 +426,60 @@
     };
     
     document.head.appendChild(cvgScript);
+    console.log('[CVG] Script loading started');
   </script>
 
+  <!-- Step 5: Wrap CVG for enhanced tracking (optional but recommended) -->
   <script>
-    window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
-    
-    // Wrap CVG to track all calls
-    const originalCvg = window.cvg;
-    window.cvg = function() {
-      console.log('[CVG] Called with:', arguments);
-      try {
-        const result = originalCvg.apply(this, arguments);
-        return result;
-      } catch (error) {
-        console.error('[CVG] Error during call:', error);
-        window.logToWebhook('cvg_call_error', {
-          args: Array.from(arguments).map(arg => 
-            typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
-          ),
-          error: error.message,
-          stack: error.stack
-        });
-        
-        // Send to Sentry
-        if (typeof Sentry !== 'undefined') {
-          Sentry.captureException(error, {
-            tags: { component: 'cvg' },
-            extra: { args: Array.from(arguments) }
-          });
-        }
-        
-        throw error;
+    // Wait for CVG to be fully loaded, then wrap it for tracking
+    function wrapCvgForTracking() {
+      if (!window.cvg || !window.cvg.process) {
+        // Not ready yet, check again soon
+        setTimeout(wrapCvgForTracking, 100);
+        return;
       }
-    };
+      
+      console.log('[CVG] CVG is ready, wrapping for enhanced tracking');
+      
+      const originalCvg = window.cvg;
+      window.cvg = function() {
+        console.log('[CVG] Called with:', arguments);
+        try {
+          const result = originalCvg.apply(this, arguments);
+          return result;
+        } catch (error) {
+          console.error('[CVG] Error during call:', error);
+          window.logToWebhook('cvg_call_error', {
+            args: Array.from(arguments).map(arg => 
+              typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+            ),
+            error: error.message,
+            stack: error.stack
+          });
+          
+          // Send to Sentry
+          if (typeof Sentry !== 'undefined') {
+            Sentry.captureException(error, {
+              tags: { component: 'cvg_call' },
+              extra: { args: Array.from(arguments) }
+            });
+          }
+          
+          throw error; // Re-throw so calling code knows it failed
+        }
+      };
+      
+      // Preserve the queue and process method
+      window.cvg.queue = originalCvg.queue;
+      window.cvg.process = originalCvg.process;
+      
+      window.logToWebhook('cvg_wrapped', {
+        success: true
+      });
+    }
     
-    cvg({method: "proxy", tracking: "https://hairqare.co/cvg", static: "https://hairqare.co/cvg/static"});
-    cvg({method:"track",eventName:"$page_load"});
-    
-    console.log('[CVG] Initialized');
+    // Start checking if CVG is ready
+    wrapCvgForTracking();
   </script>
 
   <!-- Google Tag Manager -->
