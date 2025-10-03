@@ -29,22 +29,38 @@
         integrations: [
           Sentry.browserTracingIntegration(),
           Sentry.replayIntegration({
+            // TRIAL PERIOD: Full visibility for debugging (no masking)
             maskAllText: false,
+            maskAllInputs: false,
             blockAllMedia: false,
+            
+            // Privacy settings (currently disabled for debugging)
+            // After trial, consider enabling:
+            // maskAllText: true,
+            // maskAllInputs: true,
+            
+            // Network details
+            networkDetailAllowUrls: [window.location.origin],
+            networkCaptureBodies: true,
+            networkRequestHeaders: ['X-Custom-Header'],
+            networkResponseHeaders: ['X-Custom-Header'],
           }),
         ],
         
-        // Capture 100% of transactions for performance monitoring
+        // Performance Monitoring: 100% of transactions
         tracesSampleRate: 1.0,
         
-        // Session Replay: capture 10% of all sessions
-        replaysSessionSampleRate: 0.1,
+        // Session Replay: 15% of normal sessions (optimized for 10K users/month)
+        // This will record ~1,500 sessions/month = ~450 replay hours
+        // Well within Business plan limit of 500 hours
+        replaysSessionSampleRate: 0.15,
         
-        // Session Replay: capture 100% of sessions with errors
+        // Session Replay: 100% of sessions with ANY error
+        // Critical for catching the quiz reset bug!
         replaysOnErrorSampleRate: 1.0,
         
         // Release tracking
-        release: 'hairqare-quiz@1.0.0',
+        release: 'hairqare-quiz@1.0.1',
         
         // Environment detection
         environment: window.location.hostname === 'localhost' ? 'development' : 'production',
@@ -61,6 +77,9 @@
           if (error && error.message && error.message.includes('adsbygoogle')) {
             return null;
           }
+          
+          // Log to console that error is being sent to Sentry
+          console.log('[SENTRY] Capturing error:', error?.message || event.message);
           
           return event;
         },
@@ -130,19 +149,109 @@
   </script>
 
   <!-- ============================================ -->
+  <!-- ENVIRONMENT & LOGGING MODE DETECTION -->
+  <!-- ============================================ -->
+  <script>
+    // Detect environment - Test vs Production
+    window.isTestEnvironment = window.location.href.includes('quizlogtest') 
+      || window.location.hostname === 'localhost';
+    
+    // Determine logging mode for cost optimization
+    window.loggingMode = (function() {
+      // Test environment: Always log everything for debugging
+      if (window.isTestEnvironment) {
+        console.log('[LOGGING] Mode: FULL (test environment)');
+        return 'full';
+      }
+      
+      // Production: Sample users for detailed logging
+      // Use session ID to deterministically assign logging mode
+      const sessionId = window.sessionId;
+      const hash = sessionId.split('').reduce((acc, char) => {
+        return acc + char.charCodeAt(0);
+      }, 0);
+      
+      // 10% of users get full logging (helps with debugging in production)
+      if (hash % 10 === 0) {
+        console.log('[LOGGING] Mode: FULL (sampled user)', sessionId);
+        return 'full';
+      } else {
+        console.log('[LOGGING] Mode: CRITICAL (production - cost optimized)');
+        return 'critical';
+      }
+    })();
+    
+    // Define critical events (always logged, even in production)
+    // These are essential for business logic and debugging
+    window.CRITICAL_EVENTS = [
+      'session_start',
+      'session_end',
+      'cvg_stub_initialized',
+      'cvg_proxy_configured',
+      'cvg_wrapped',
+      'cvg_script_loaded',
+      'javascript_error',
+      'promise_rejection',
+      'cvg_call_error',
+      'cvg_script_error',
+      'cvg_proxy_error',
+      'trackEvent_error',
+      'trackEvent_no_cvg',
+      'navigation', // Will be filtered by isUnexpectedReset
+      'webhook_complete',
+      'flutter_init_error',
+      'sentry_user_not_set'
+    ];
+    
+    console.log('[LOGGING] Environment:', window.isTestEnvironment ? 'TEST' : 'PRODUCTION');
+    console.log('[LOGGING] Mode:', window.loggingMode);
+    console.log('[LOGGING] Critical events defined:', window.CRITICAL_EVENTS.length);
+  </script>
+
+  <!-- ============================================ -->
   <!-- CUSTOM LOGGING TO MAKE.COM -->
   <!-- ============================================ -->
   <script>
     const LOGGING_WEBHOOK = 'https://hook.us1.make.com/12ojmstexumn6knualpsn9hkex9qy8b3';
     
-    // Centralized logging function
+    // Centralized logging function with cost optimization
     window.logToWebhook = function(eventType, data) {
+      // Check if we should log this event (cost optimization)
+      const shouldLog = (function() {
+        // Full logging mode: log everything (test environment or sampled users)
+        if (window.loggingMode === 'full') {
+          return true;
+        }
+        
+        // Critical mode (90% of production users): only log critical events
+        if (window.CRITICAL_EVENTS.includes(eventType)) {
+          return true;
+        }
+        
+        // Special case: navigation events - only log if unexpected reset
+        if (eventType === 'navigation' && data && data.isUnexpectedReset === true) {
+          return true;
+        }
+        
+        // Skip all other events in critical mode
+        console.log('[LOGGING] Skipped (non-critical):', eventType);
+        return false;
+      })();
+      
+      // Don't send webhook if event should be skipped
+      if (!shouldLog) {
+        return;
+      }
+      
+      // Build payload
       const payload = {
         type: eventType,
         data: data,
         timestamp: new Date().toISOString(),
         sessionId: window.sessionId,
         sessionDuration: Date.now() - window.sessionStartTime,
+        loggingMode: window.loggingMode, // Track which mode this session is in
+        environment: window.isTestEnvironment ? 'test' : 'production',
         url: window.location.href,
         userAgent: navigator.userAgent,
         platform: navigator.platform,
@@ -153,7 +262,7 @@
         windowHeight: window.innerHeight
       };
       
-      console.log('[LOGGING]', eventType, data);
+      console.log('[LOGGING]', eventType, data, '(mode:', window.loggingMode + ')');
       
       // Send to Make.com
       fetch(LOGGING_WEBHOOK, {
