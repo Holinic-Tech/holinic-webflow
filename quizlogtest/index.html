@@ -71,7 +71,13 @@
         Sentry.setUser({
           email: email,
           username: name,
+          sessionId: window.sessionId
         });
+        
+        // Also set as tag for easier filtering in Sentry
+        Sentry.setTag('session_id', window.sessionId);
+        
+        console.log('[SENTRY] User context set with session ID:', window.sessionId);
       };
       
       // Custom function to capture events
@@ -94,6 +100,36 @@
   </script>
 
   <!-- ============================================ -->
+  <!-- SESSION ID GENERATION -->
+  <!-- ============================================ -->
+  <script>
+    // Generate or retrieve session ID
+    function getSessionId() {
+      let sessionId = sessionStorage.getItem('quiz_session_id');
+      
+      if (!sessionId) {
+        // Generate new session ID: timestamp + random string
+        sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        sessionStorage.setItem('quiz_session_id', sessionId);
+        sessionStorage.setItem('session_start_time', Date.now().toString());
+        console.log('[SESSION] New session ID created:', sessionId);
+      } else {
+        console.log('[SESSION] Existing session ID retrieved:', sessionId);
+      }
+      
+      return sessionId;
+    }
+    
+    // Initialize session ID immediately
+    window.sessionId = getSessionId();
+    window.sessionStartTime = parseInt(sessionStorage.getItem('session_start_time')) || Date.now();
+    
+    // Log session start
+    console.log('[SESSION] Session ID:', window.sessionId);
+    console.log('[SESSION] Session started at:', new Date(window.sessionStartTime).toISOString());
+  </script>
+
+  <!-- ============================================ -->
   <!-- CUSTOM LOGGING TO MAKE.COM -->
   <!-- ============================================ -->
   <script>
@@ -105,6 +141,8 @@
         type: eventType,
         data: data,
         timestamp: new Date().toISOString(),
+        sessionId: window.sessionId,
+        sessionDuration: Date.now() - window.sessionStartTime,
         url: window.location.href,
         userAgent: navigator.userAgent,
         platform: navigator.platform,
@@ -133,11 +171,24 @@
       }
     };
 
-    // Track page load
+    // Track session start and page load
     window.addEventListener('DOMContentLoaded', function() {
+      // Log session start if this is a new session
+      const isNewSession = !sessionStorage.getItem('quiz_session_logged');
+      if (isNewSession) {
+        window.logToWebhook('session_start', {
+          sessionId: window.sessionId,
+          isNewSession: true,
+          timestamp: new Date(window.sessionStartTime).toISOString()
+        });
+        sessionStorage.setItem('quiz_session_logged', 'true');
+      }
+      
+      // Log page load
       window.logToWebhook('page_load', {
         page: 'quiz_app',
-        referrer: document.referrer
+        referrer: document.referrer,
+        isNewSession: isNewSession
       });
     });
 
@@ -221,10 +272,14 @@
       });
     });
 
-    // Track before unload
+    // Track before unload / session end
     window.addEventListener('beforeunload', function() {
-      window.logToWebhook('before_unload', {
-        url: window.location.href
+      const sessionDuration = Date.now() - window.sessionStartTime;
+      window.logToWebhook('session_end', {
+        url: window.location.href,
+        sessionId: window.sessionId,
+        sessionDuration: sessionDuration,
+        sessionDurationMinutes: Math.round(sessionDuration / 60000 * 10) / 10
       });
     });
 
