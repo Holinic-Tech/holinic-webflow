@@ -68,21 +68,26 @@
         // Send default PII (IP address, etc)
         sendDefaultPii: true,
         
-        // Error filtering
-        beforeSend(event, hint) {
-          // Filter out errors you don't want to track
-          const error = hint.originalException;
-          
-          // Ignore ad blocker errors
-          if (error && error.message && error.message.includes('adsbygoogle')) {
-            return null;
-          }
-          
-          // Log to console that error is being sent to Sentry
-          console.log('[SENTRY] Capturing error:', error?.message || event.message);
-          
-          return event;
-        },
+// Error filtering
+beforeSend(event, hint) {
+  // Filter out errors you don't want to track
+  const error = hint.originalException;
+  
+  // Ignore Instagram autofill errors
+  if (event.message && event.message.includes('_AutofillCallbackHandler')) {
+    return null;
+  }
+  
+  // Ignore ad blocker errors
+  if (error && error.message && error.message.includes('adsbygoogle')) {
+    return null;
+  }
+  
+  // Log to console that error is being sent to Sentry
+  console.log('[SENTRY] Capturing error:', error?.message || event.message);
+  
+  return event;
+},
       });
       
       // Set user context (call this after user submits contact form)
