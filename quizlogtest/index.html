@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="./">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Hairqare Quiz">
+
+  <!-- ============================================ -->
+  <!-- SENTRY ERROR TRACKING -->
+  <!-- ============================================ -->
+  <script
+    src="https://js.sentry-cdn.com/e17e44a28079f2c433239964afb42d88.min.js"
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    // Initialize Sentry
+    Sentry.onLoad(function() {
+      Sentry.init({
+        dsn: 'https://e17e44a28079f2c433239964afb42d88@o4510124012601344.ingest.us.sentry.io/4510124087705600',
+        
+        // Performance Monitoring
+        integrations: [
+          Sentry.browserTracingIntegration(),
+          Sentry.replayIntegration({
+            maskAllText: false,
+            blockAllMedia: false,
+          }),
+        ],
+        
+        // Capture 100% of transactions for performance monitoring
+        tracesSampleRate: 1.0,
+        
+        // Session Replay: capture 10% of all sessions
+        replaysSessionSampleRate: 0.1,
+        
+        // Session Replay: capture 100% of sessions with errors
+        replaysOnErrorSampleRate: 1.0,
+        
+        // Release tracking
+        release: 'hairqare-quiz@1.0.0',
+        
+        // Environment detection
+        environment: window.location.hostname === 'localhost' ? 'development' : 'production',
+        
+        // Send default PII (IP address, etc)
+        sendDefaultPii: true,
+        
+        // Error filtering
+        beforeSend(event, hint) {
+          // Filter out errors you don't want to track
+          const error = hint.originalException;
+          
+          // Ignore ad blocker errors
+          if (error && error.message && error.message.includes('adsbygoogle')) {
+            return null;
+          }
+          
+          return event;
+        },
+      });
+      
+      // Set user context (call this after user submits contact form)
+      window.setSentryUser = function(email, name) {
+        Sentry.setUser({
+          email: email,
+          username: name,
+        });
+      };
+      
+      // Custom function to capture events
+      window.sentryCaptureEvent = function(eventName, data) {
+        Sentry.captureMessage(eventName, {
+          level: 'info',
+          extra: data,
+        });
+      };
+      
+      // Custom function to capture errors
+      window.sentryCaptureError = function(error, context) {
+        Sentry.captureException(new Error(error), {
+          extra: context,
+        });
+      };
+      
+      console.log('[SENTRY] Initialized');
+    });
+  </script>
+
+  <!-- ============================================ -->
+  <!-- CUSTOM LOGGING TO MAKE.COM -->
+  <!-- ============================================ -->
+  <script>
+    const LOGGING_WEBHOOK = 'https://hook.us1.make.com/12ojmstexumn6knualpsn9hkex9qy8b3';
+    
+    // Centralized logging function
+    window.logToWebhook = function(eventType, data) {
+      const payload = {
+        type: eventType,
+        data: data,
+        timestamp: new Date().toISOString(),
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight
+      };
+      
+      console.log('[LOGGING]', eventType, data);
+      
+      // Send to Make.com
+      fetch(LOGGING_WEBHOOK, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(err => console.error('Logging failed:', err));
+      
+      // Also send critical events to Sentry for cross-reference
+      if (eventType.includes('error') || eventType.includes('unexpected')) {
+        if (typeof window.sentryCaptureEvent === 'function') {
+          window.sentryCaptureEvent(eventType, data);
+        }
+      }
+    };
+
+    // Track page load
+    window.addEventListener('DOMContentLoaded', function() {
+      window.logToWebhook('page_load', {
+        page: 'quiz_app',
+        referrer: document.referrer
+      });
+    });
+
+    // Global error handler
+    window.addEventListener('error', function(e) {
+      console.error('Global JS error:', e.error);
+      window.logToWebhook('javascript_error', {
+        message: e.error?.message || e.message,
+        stack: e.error?.stack,
+        filename: e.filename,
+        lineno: e.lineno,
+        colno: e.colno,
+        type: e.type
+      });
+    });
+
+    // Unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Unhandled promise rejection:', e.reason);
+      window.logToWebhook('promise_rejection', {
+        reason: e.reason?.toString(),
+        stack: e.reason?.stack,
+        promise: e.promise?.toString()
+      });
+    });
+
+    // Track navigation changes
+    let lastUrl = location.href;
+    let lastTimestamp = Date.now();
+    let navigationCount = 0;
+
+    const checkNavigation = function() {
+      const url = location.href;
+      if (url !== lastUrl) {
+        navigationCount++;
+        const timeSinceLastNav = Date.now() - lastTimestamp;
+        
+        const isUnexpectedReset = (
+          (url === window.location.origin + '/' || 
+           url === window.location.origin ||
+           url.split('/').length <= 4) &&
+          (lastUrl.includes('result') || 
+           lastUrl.includes('contact') ||
+           lastUrl.split('/').length > 4)
+        );
+        
+        window.logToWebhook('navigation', {
+          from: lastUrl,
+          to: url,
+          timeOnPreviousPage: timeSinceLastNav,
+          navigationCount: navigationCount,
+          isUnexpectedReset: isUnexpectedReset,
+          wasOnResultsPage: lastUrl.includes('result') || lastUrl.includes('results')
+        });
+        
+        // Send unexpected navigation to Sentry too
+        if (isUnexpectedReset && typeof window.sentryCaptureError === 'function') {
+          window.sentryCaptureError('Unexpected Quiz Reset', {
+            from: lastUrl,
+            to: url,
+            timeOnPage: timeSinceLastNav,
+          });
+        }
+        
+        lastUrl = url;
+        lastTimestamp = Date.now();
+      }
+    };
+
+    // Multiple ways to detect navigation
+    new MutationObserver(checkNavigation).observe(document, {subtree: true, childList: true});
+    window.addEventListener('popstate', checkNavigation);
+    window.addEventListener('hashchange', checkNavigation);
+    setInterval(checkNavigation, 500);
+
+    // Track page visibility changes
+    document.addEventListener('visibilitychange', function() {
+      window.logToWebhook('visibility_change', {
+        hidden: document.hidden,
+        visibilityState: document.visibilityState
+      });
+    });
+
+    // Track before unload
+    window.addEventListener('beforeunload', function() {
+      window.logToWebhook('before_unload', {
+        url: window.location.href
+      });
+    });
+
+    console.log('[INIT] Error logging initialized');
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-15HXMXW4HW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-15HXMXW4HW');
+  </script>
+
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <script type="application/javascript" src=" https://cdn.jsdelivr.net/gh/mohalmah/hq-quiz_preloader@main/preloader4.js" defer></script> 
+
+  <!-- ============================================ -->
+  <!-- INSTRUMENTED trackEvent FUNCTION -->
+  <!-- ============================================ -->
+  <script type="text/javascript">
+    function trackEvent(eventName, properties, eventId, profileProperties, aliases) {
+      console.log('[trackEvent] Called with:', {
+        eventName: eventName,
+        properties: properties,
+        eventId: eventId,
+        profileProperties: profileProperties,
+        aliases: aliases,
+      });
+      
+      window.logToWebhook('trackEvent_called', {
+        eventName: eventName,
+        hasProperties: !!properties,
+        hasCVG: typeof window.cvg !== 'undefined',
+        cvgLoaded: window.cvgLoaded || false
+      });
+
+      try {
+        if (typeof window !== "undefined" && window["cvg"]) {
+          console.log('[trackEvent] CVG available, calling...');
+          window["cvg"]({
+            method: "event",
+            event: eventName,
+            properties: properties,
+            eventId: eventId,
+            profileProperties: profileProperties,
+            aliases: aliases,
+          });
+          
+          window.logToWebhook('trackEvent_success', {
+            eventName: eventName
+          });
+          
+          console.log('[trackEvent] CVG call completed');
+        } else {
+          console.warn('[trackEvent] CVG not available!');
+          window.logToWebhook('trackEvent_no_cvg', {
+            eventName: eventName,
+            windowDefined: typeof window !== "undefined",
+            cvgExists: !!window.cvg
+          });
+          
+          // Send to Sentry
+          if (typeof window.sentryCaptureError === 'function') {
+            window.sentryCaptureError('CVG Not Available', {
+              eventName: eventName,
+              cvgLoaded: window.cvgLoaded
+            });
+          }
+        }
+      } catch (error) {
+        console.error('[trackEvent] Error:', error);
+        window.logToWebhook('trackEvent_error', {
+          eventName: eventName,
+          error: error.message,
+          stack: error.stack
+        });
+        
+        // Send to Sentry
+        if (typeof Sentry !== 'undefined') {
+          Sentry.captureException(error, {
+            tags: { component: 'trackEvent' },
+            extra: { eventName: eventName }
+          });
+        }
+      }
+    }
+  </script>
+
+  <script type="text/javascript"> 
+    function getCookieValue(cookieName) {
+      var name = cookieName + "=";
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
+        }
+      }
+      return "";
+    } 
+  </script>
+
+  <!-- ============================================ -->
+  <!-- INSTRUMENTED CVG LOADING -->
+  <!-- ============================================ -->
+  <script>
+    window.cvgLoaded = false;
+    window.cvgError = null;
+    
+    const cvgScript = document.createElement('script');
+    cvgScript.src = 'https://hairqare.co/cvg/static/pixels/PmzQC4.js';
+    cvgScript.async = true;
+    
+    cvgScript.onload = function() {
+      window.cvgLoaded = true;
+      console.log('[CVG] Script loaded successfully');
+      window.logToWebhook('cvg_script_loaded', {
+        success: true
+      });
+    };
+    
+    cvgScript.onerror = function(error) {
+      window.cvgError = error;
+      console.error('[CVG] Script failed to load:', error);
+      window.logToWebhook('cvg_script_error', {
+        error: error.toString()
+      });
+      
+      // Send to Sentry
+      if (typeof window.sentryCaptureError === 'function') {
+        window.sentryCaptureError('CVG Script Load Failed', {
+          src: cvgScript.src
+        });
+      }
+    };
+    
+    document.head.appendChild(cvgScript);
+  </script>
+
+  <script>
+    window.cvg||(cvg=function(){cvg.process?cvg.process.apply(cvg,arguments):cvg.queue.push(arguments)},cvg.queue=[]);
+    
+    // Wrap CVG to track all calls
+    const originalCvg = window.cvg;
+    window.cvg = function() {
+      console.log('[CVG] Called with:', arguments);
+      try {
+        const result = originalCvg.apply(this, arguments);
+        return result;
+      } catch (error) {
+        console.error('[CVG] Error during call:', error);
+        window.logToWebhook('cvg_call_error', {
+          args: Array.from(arguments).map(arg => 
+            typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+          ),
+          error: error.message,
+          stack: error.stack
+        });
+        
+        // Send to Sentry
+        if (typeof Sentry !== 'undefined') {
+          Sentry.captureException(error, {
+            tags: { component: 'cvg' },
+            extra: { args: Array.from(arguments) }
+          });
+        }
+        
+        throw error;
+      }
+    };
+    
+    cvg({method: "proxy", tracking: "https://hairqare.co/cvg", static: "https://hairqare.co/cvg/static"});
+    cvg({method:"track",eventName:"$page_load"});
+    
+    console.log('[CVG] Initialized');
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-TT5MJDF');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta name="robots" content="noindex" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="clover-Plum.svg" sizes="any"/>
+
+  <!-- Open Graph & SEO tags -->
+  <meta property="og:title" content="Hairqare Challenge Quiz" />
+  <meta property="og:description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+  <meta property="og:image" content="/assets/assets/images/Result_Page-_Days_Images_copy_4.png" /> 
+  <meta name="twitter:title" content="Hairqare Challenge Quiz" />
+  <meta name="twitter:description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+  <meta name="twitter:image" content="/assets/assets/images/Result_Page-_Days_Images_copy_4.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <title> Hairqare Challenge Quiz </title>
+  <meta name="description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+
+  <!-- Status Bar color in Safari browser (iOS) and PWA -->
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f4f8">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#f1f4f8">
+
+  <link rel="manifest" href="manifest.json">
+  
+</head>
+<body>
+  
+  <script>
+    (()=>{var L=()=>navigator.vendor==="Google Inc."||navigator.agent==="Edg/",E=()=>typeof ImageDecoder>"u"?!1:L(),P=()=>typeof Intl.v8BreakIterator<"u"&&typeof Intl.Segmenter<"u",W=()=>{let a=[0,97,115,109,1,0,0,0,1,5,1,95,1,120,0];return WebAssembly.validate(new Uint8Array(a))},w={hasImageCodecs:E(),hasChromiumBreakIterators:P(),supportsWasmGC:W(),crossOriginIsolated:window.crossOriginIsolated};function d(...a){return new URL(_(...a),document.baseURI).toString()}function _(...a){return a.filter(t=>!!t).map((t,i)=>i===0?S(t):j(S(t))).filter(t=>t.length).join("/")}function j(a){let t=0;for(;t<a.length&&a.charAt(t)==="/";)t++;return a.substring(t)}function S(a){let t=a.length;for(;t>0&&a.charAt(t-1)==="/";)t--;return a.substring(0,t)}function T(a,t){return a.canvasKitBaseUrl?a.canvasKitBaseUrl:t.engineRevision&&!t.useLocalCanvasKit?_("https://www.gstatic.com/flutter-canvaskit",t.engineRevision):"canvaskit"}var v=class{constructor(){this._scriptLoaded=!1}setTrustedTypesPolicy(t){this._ttPolicy=t}async loadEntrypoint(t){let{entrypointUrl:i=d("main.dart.js"),onEntrypointLoaded:r,nonce:e}=t||{};return this._loadJSEntrypoint(i,r,e)}async load(t,i,r,e,n){n??=o=>{o.initializeEngine(r).then(l=>l.runApp())};let{entryPointBaseUrl:s}=r;if(t.compileTarget==="dart2wasm")return this._loadWasmEntrypoint(t,i,s,n);{let o=t.mainJsPath??"main.dart.js",l=d(s,o);return this._loadJSEntrypoint(l,n,e)}}didCreateEngineInitializer(t){typeof this._didCreateEngineInitializerResolve=="function"&&(this._didCreateEngineInitializerResolve(t),this._didCreateEngineInitializerResolve=null,delete _flutter.loader.didCreateEngineInitializer),typeof this._onEntrypointLoaded=="function"&&this._onEntrypointLoaded(t)}_loadJSEntrypoint(t,i,r){let e=typeof i=="function";if(!this._scriptLoaded){this._scriptLoaded=!0;let n=this._createScriptTag(t,r);if(e)console.debug("Injecting <script> tag. Using callback."),this._onEntrypointLoaded=i,document.head.append(n);else return new Promise((s,o)=>{console.debug("Injecting <script> tag. Using Promises. Use the callback approach instead!"),this._didCreateEngineInitializerResolve=s,n.addEventListener("error",o),document.head.append(n)})}}async _loadWasmEntrypoint(t,i,r,e){if(!this._scriptLoaded){this._scriptLoaded=!0,this._onEntrypointLoaded=e;let{mainWasmPath:n,jsSupportRuntimePath:s}=t,o=d(r,n),l=d(r,s);this._ttPolicy!=null&&(l=this._ttPolicy.createScriptURL(l));let c=(await import(l)).compileStreaming(fetch(o)),f;t.renderer==="skwasm"?f=(async()=>{let m=await i.skwasm;return window._flutter_skwasmInstance=m,{skwasm:m.wasmExports,skwasmWrapper:m,ffi:{memory:m.wasmMemory}}})():f=Promise.resolve({}),await(await(await c).instantiate(await f)).invokeMain()}}_createScriptTag(t,i){let r=document.createElement("script");r.type="application/javascript",i&&(r.nonce=i);let e=t;return this._ttPolicy!=null&&(e=this._ttPolicy.createScriptURL(t)),r.src=e,r}};async function b(a,t,i){if(t<0)return a;let r,e=new Promise((n,s)=>{r=setTimeout(()=>{s(new Error(`${i} took more than ${t}ms to resolve. Moving on.`,{cause:b}))},t)});return Promise.race([a,e]).finally(()=>{clearTimeout(r)})}var y=class{setTrustedTypesPolicy(t){this._ttPolicy=t}loadServiceWorker(t){if(!t)return console.debug("Null serviceWorker configuration. Skipping."),Promise.resolve();if(!("serviceWorker"in navigator)){let o="Service Worker API unavailable.";return window.isSecureContext||(o+=`
+The current context is NOT secure.`,o+=`
+Read more: https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts`),Promise.reject(new Error(o))}let{serviceWorkerVersion:i,serviceWorkerUrl:r=d(`flutter_service_worker.js?v=${i}`),timeoutMillis:e=4e3}=t,n=r;this._ttPolicy!=null&&(n=this._ttPolicy.createScriptURL(n));let s=navigator.serviceWorker.register(n).then(o=>this._getNewServiceWorker(o,i)).then(this._waitForServiceWorkerActivation);return b(s,e,"prepareServiceWorker")}async _getNewServiceWorker(t,i){if(!t.active&&(t.installing||t.waiting))return console.debug("Installing/Activating first service worker."),t.installing||t.waiting;if(t.active.scriptURL.endsWith(i))return console.debug("Loading from existing service worker."),t.active;{let r=await t.update();return console.debug("Updating service worker."),r.installing||r.waiting||r.active}}async _waitForServiceWorkerActivation(t){if(!t||t.state==="activated")if(t){console.debug("Service worker already active.");return}else throw new Error("Cannot activate a null service worker!");return new Promise((i,r)=>{t.addEventListener("statechange",()=>{t.state==="activated"&&(console.debug("Activated new service worker."),i())})})}};var g=class{constructor(t,i="flutter-js"){let r=t||[/\.js$/,/\.mjs$/];window.trustedTypes&&(this.policy=trustedTypes.createPolicy(i,{createScriptURL:function(e){if(e.startsWith("blob:"))return e;let n=new URL(e,window.location),s=n.pathname.split("/").pop();if(r.some(l=>l.test(s)))return n.toString();console.error("URL rejected by TrustedTypes policy",i,":",e,"(download prevented)")}}))}};var k=a=>{let t=WebAssembly.compileStreaming(fetch(a));return(i,r)=>((async()=>{let e=await t,n=await WebAssembly.instantiate(e,i);r(n,e)})(),{})};var I=(a,t,i,r)=>(window.flutterCanvasKitLoaded=(async()=>{if(window.flutterCanvasKit)return window.flutterCanvasKit;let e=i.hasChromiumBreakIterators&&i.hasImageCodecs;if(!e&&t.canvasKitVariant=="chromium")throw"Chromium CanvasKit variant specifically requested, but unsupported in this browser";let n=e&&t.canvasKitVariant!=="full",s=r;n&&(s=d(s,"chromium"));let o=d(s,"canvaskit.js");a.flutterTT.policy&&(o=a.flutterTT.policy.createScriptURL(o));let l=k(d(s,"canvaskit.wasm")),p=await import(o);return window.flutterCanvasKit=await p.default({instantiateWasm:l}),window.flutterCanvasKit})(),window.flutterCanvasKitLoaded);var U=async(a,t,i,r)=>{let e=d(r,"skwasm.js"),n=e;a.flutterTT.policy&&(n=a.flutterTT.policy.createScriptURL(n));let s=k(d(r,"skwasm.wasm"));return await(await import(n)).default({instantiateWasm:s,locateFile:(l,p)=>{let c=p+l;return c.endsWith(".worker.js")?URL.createObjectURL(new Blob([`importScripts('${c}');`],{type:"application/javascript"})):c},mainScriptUrlOrBlob:e})};var C=class{async loadEntrypoint(t){let{serviceWorker:i,...r}=t||{},e=new g,n=new y;n.setTrustedTypesPolicy(e.policy),await n.loadServiceWorker(i).catch(o=>{console.warn("Exception while loading service worker:",o)});let s=new v;return s.setTrustedTypesPolicy(e.policy),this.didCreateEngineInitializer=s.didCreateEngineInitializer.bind(s),s.loadEntrypoint(r)}async load({serviceWorkerSettings:t,onEntrypointLoaded:i,nonce:r,config:e}={}){e??={};let n=_flutter.buildConfig;if(!n)throw"FlutterLoader.load requires _flutter.buildConfig to be set";let s=u=>{switch(u){case"skwasm":return w.crossOriginIsolated&&w.hasChromiumBreakIterators&&w.hasImageCodecs&&w.supportsWasmGC;default:return!0}},o=(u,m)=>{switch(u.renderer){case"auto":return m=="canvaskit"||m=="html";default:return u.renderer==m}},l=u=>u.compileTarget==="dart2wasm"&&!w.supportsWasmGC||e.renderer&&!o(u,e.renderer)?!1:s(u.renderer),p=n.builds.find(l);if(!p)throw"FlutterLoader could not find a build compatible with configuration and environment.";let c={};c.flutterTT=new g,t&&(c.serviceWorkerLoader=new y,c.serviceWorkerLoader.setTrustedTypesPolicy(c.flutterTT.policy),await c.serviceWorkerLoader.loadServiceWorker(t).catch(u=>{console.warn("Exception while loading service worker:",u)}));let f=T(e,n);p.renderer==="canvaskit"?c.canvasKit=I(c,e,w,f):p.renderer==="skwasm"&&(c.skwasm=U(c,e,w,f));let h=new v;return h.setTrustedTypesPolicy(c.flutterTT.policy),this.didCreateEngineInitializer=h.didCreateEngineInitializer.bind(h),h.load(p,c,e,r,i)}};window._flutter||(window._flutter={});window._flutter.loader||(window._flutter.loader=new C);})();
+
+    if (!window._flutter) {
+      window._flutter = {};
+    }
+    _flutter.buildConfig = {"engineRevision":"e672b006cb34c921db85b8e2f482ed3144a4574b","builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"}]};
+
+    // ============================================
+    // INSTRUMENTED FLUTTER LOAD
+    // ============================================
+    _flutter.loader.load({
+      onEntrypointLoaded: async function(engineInitializer) {
+        console.log('[FLUTTER] Entrypoint loaded');
+        window.logToWebhook('flutter_entrypoint_loaded', {});
+        
+        try {
+          console.log('[FLUTTER] Initializing engine...');
+          let appRunner = await engineInitializer.initializeEngine({useColorEmoji: true});
+          
+          console.log('[FLUTTER] Engine initialized');
+          window.logToWebhook('flutter_engine_initialized', {});
+          
+          console.log('[FLUTTER] Running app...');
+          await appRunner.runApp();
+          
+          console.log('[FLUTTER] App running');
+          window.logToWebhook('flutter_app_running', {});
+        } catch (error) {
+          console.error('[FLUTTER] Error during initialization:', error);
+          window.logToWebhook('flutter_init_error', {
+            error: error.message,
+            stack: error.stack
+          });
+          
+          // Send to Sentry
+          if (typeof Sentry !== 'undefined') {
+            Sentry.captureException(error, {
+              tags: { component: 'flutter_init' }
+            });
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
