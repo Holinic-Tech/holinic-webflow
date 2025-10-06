@@ -202,7 +202,14 @@ beforeSend(event, hint) {
       'cvg_proxy_error',
       'trackEvent_error',
       'trackEvent_no_cvg',
-      'navigation', // Will be filtered by isUnexpectedReset
+      'navigation',
+      'navigation_pushstate',
+      'navigation_replacestate',
+      'navigation_location_href',
+      'navigation_location_replace',
+      'navigation_location_assign',
+      'navigation_popstate',
+      'before_unload',
       'webhook_complete',
       'flutter_init_error',
       'sentry_user_not_set'
@@ -284,6 +291,101 @@ beforeSend(event, hint) {
         }
       }
     };
+
+    // ============================================
+    // NAVIGATION DEBUGGING - COMPLETE VERSION
+    // ============================================
+    (function() {
+      console.log('[NAV-DEBUG] Navigation interceptors initialized');
+
+      // Intercept history.pushState
+      const originalPushState = history.pushState;
+      history.pushState = function() {
+        console.error('[NAVIGATE] pushState called');
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_pushstate', {
+          args: Array.from(arguments).map(arg => String(arg)),
+          stack: new Error().stack
+        });
+        return originalPushState.apply(this, arguments);
+      };
+
+      // Intercept history.replaceState
+      const originalReplaceState = history.replaceState;
+      history.replaceState = function() {
+        console.error('[NAVIGATE] replaceState called');
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_replacestate', {
+          args: Array.from(arguments).map(arg => String(arg)),
+          stack: new Error().stack
+        });
+        return originalReplaceState.apply(this, arguments);
+      };
+
+      // Intercept location.href setter
+      const originalHrefDescriptor = Object.getOwnPropertyDescriptor(Location.prototype, 'href');
+      if (originalHrefDescriptor && originalHrefDescriptor.set) {
+        Object.defineProperty(Location.prototype, 'href', {
+          set: function(value) {
+            console.error('[NAVIGATE] location.href set to:', value);
+            console.error('[NAVIGATE] Stack:', new Error().stack);
+            window.logToWebhook('navigation_location_href', {
+              newUrl: value,
+              oldUrl: window.location.href,
+              stack: new Error().stack
+            });
+            originalHrefDescriptor.set.call(this, value);
+          },
+          get: originalHrefDescriptor.get
+        });
+      }
+
+      // Intercept location.replace
+      const originalReplace = Location.prototype.replace;
+      Location.prototype.replace = function(url) {
+        console.error('[NAVIGATE] location.replace called with:', url);
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_location_replace', {
+          newUrl: url,
+          oldUrl: window.location.href,
+          stack: new Error().stack
+        });
+        return originalReplace.call(this, url);
+      };
+
+      // Intercept location.assign
+      const originalAssign = Location.prototype.assign;
+      Location.prototype.assign = function(url) {
+        console.error('[NAVIGATE] location.assign called with:', url);
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_location_assign', {
+          newUrl: url,
+          oldUrl: window.location.href,
+          stack: new Error().stack
+        });
+        return originalAssign.call(this, url);
+      };
+
+      // Catch beforeunload (page navigation/reload)
+      window.addEventListener('beforeunload', function(e) {
+        console.error('[NAVIGATE] beforeunload triggered');
+        window.logToWebhook('before_unload', {
+          currentUrl: window.location.href,
+          stack: new Error().stack
+        });
+      });
+
+      // Catch popstate (back/forward button)
+      window.addEventListener('popstate', function(e) {
+        console.error('[NAVIGATE] popstate triggered');
+        window.logToWebhook('navigation_popstate', {
+          state: e.state,
+          currentUrl: window.location.href
+        });
+      });
+
+      console.log('[NAV-DEBUG] All navigation methods intercepted');
+    })();
 
     // Track session start and page load
     window.addEventListener('DOMContentLoaded', function() {
@@ -702,7 +804,7 @@ Read more: https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts
       window._flutter = {};
     }
     _flutter.buildConfig = {
-  "engineRevision":"8cd19e509d6bece8ccd74aef027c4ca947363095",  // Use the ORIGINAL version
+  "engineRevision":"8cd19e509d6bece8ccd74aef027c4ca947363095",
   "builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"}]
 };
     // ============================================
