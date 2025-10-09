@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/test/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Follicle Dysfunction Quiz">
+
+  <!-- ============================================ -->
+  <!-- SENTRY ERROR TRACKING -->
+  <!-- ============================================ -->
+  <script
+    src="https://js.sentry-cdn.com/e17e44a28079f2c433239964afb42d88.min.js"
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    // Initialize Sentry
+    Sentry.onLoad(function() {
+      Sentry.init({
+        dsn: 'https://e17e44a28079f2c433239964afb42d88@o4510124012601344.ingest.us.sentry.io/4510124087705600',
+        
+        // Performance Monitoring
+        integrations: [
+          Sentry.browserTracingIntegration(),
+          Sentry.replayIntegration({
+            maskAllText: false,
+            maskAllInputs: false,
+            blockAllMedia: false,
+            networkDetailAllowUrls: [window.location.origin],
+            networkCaptureBodies: true,
+            networkRequestHeaders: ['X-Custom-Header'],
+            networkResponseHeaders: ['X-Custom-Header'],
+          }),
+        ],
+        
+        tracesSampleRate: 1.0,
+        replaysSessionSampleRate: 0.15,
+        replaysOnErrorSampleRate: 1.0,
+        release: 'hairqare-quiz@1.0.1',
+        environment: window.location.hostname === 'localhost' ? 'development' : 'production',
+        sendDefaultPii: true,
+        
+        beforeSend(event, hint) {
+          const error = hint.originalException;
+          if (event.message && event.message.includes('_AutofillCallbackHandler')) {
+            return null;
+          }
+          if (error && error.message && error.message.includes('adsbygoogle')) {
+            return null;
+          }
+          console.log('[SENTRY] Capturing error:', error?.message || event.message);
+          return event;
+        },
+      });
+      
+      window.setSentryUser = function(email, name) {
+        Sentry.setUser({
+          email: email,
+          username: name,
+          sessionId: window.sessionId
+        });
+        Sentry.setTag('session_id', window.sessionId);
+        console.log('[SENTRY] User context set with session ID:', window.sessionId);
+      };
+      
+      window.sentryCaptureEvent = function(eventName, data) {
+        Sentry.captureMessage(eventName, {
+          level: 'info',
+          extra: data,
+        });
+      };
+      
+      window.sentryCaptureError = function(error, context) {
+        Sentry.captureException(new Error(error), {
+          extra: context,
+        });
+      };
+      
+      console.log('[SENTRY] Initialized');
+    });
+  </script>
+
+  <!-- ============================================ -->
+  <!-- SESSION ID GENERATION -->
+  <!-- ============================================ -->
+  <script>
+    function getSessionId() {
+      let sessionId = sessionStorage.getItem('quiz_session_id');
+      
+      if (!sessionId) {
+        sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        sessionStorage.setItem('quiz_session_id', sessionId);
+        sessionStorage.setItem('session_start_time', Date.now().toString());
+        console.log('[SESSION] New session ID created:', sessionId);
+      } else {
+        console.log('[SESSION] Existing session ID retrieved:', sessionId);
+      }
+      
+      return sessionId;
+    }
+    
+    window.sessionId = getSessionId();
+    window.sessionStartTime = parseInt(sessionStorage.getItem('session_start_time')) || Date.now();
+    
+    console.log('[SESSION] Session ID:', window.sessionId);
+    console.log('[SESSION] Session started at:', new Date(window.sessionStartTime).toISOString());
+  </script>
+
+  <!-- ============================================ -->
+  <!-- ENVIRONMENT & LOGGING MODE DETECTION -->
+  <!-- ============================================ -->
+  <script>
+    window.isTestEnvironment = window.location.href.includes('quizlogtest') 
+      || window.location.hostname === 'localhost';
+    
+    window.loggingMode = (function() {
+      if (window.isTestEnvironment) {
+        console.log('[LOGGING] Mode: FULL (test environment)');
+        return 'full';
+      }
+      
+      const sessionId = window.sessionId;
+      const hash = sessionId.split('').reduce((acc, char) => {
+        return acc + char.charCodeAt(0);
+      }, 0);
+      
+      if (hash % 10 === 0) {
+        console.log('[LOGGING] Mode: FULL (sampled user)', sessionId);
+        return 'full';
+      } else {
+        console.log('[LOGGING] Mode: CRITICAL (production - cost optimized)');
+        return 'critical';
+      }
+    })();
+    
+    window.CRITICAL_EVENTS = [
+      'session_start',
+      'session_end',
+      'cvg_stub_initialized',
+      'cvg_proxy_configured',
+      'cvg_wrapped',
+      'cvg_script_loaded',
+      'javascript_error',
+      'promise_rejection',
+      'cvg_call_error',
+      'cvg_script_error',
+      'cvg_proxy_error',
+      'trackEvent_error',
+      'trackEvent_no_cvg',
+      'navigation',
+      'navigation_pushstate',
+      'navigation_replacestate',
+      'navigation_location_href',
+      'navigation_location_replace',
+      'navigation_location_assign',
+      'navigation_popstate',
+      'before_unload',
+      'webhook_complete',
+      'flutter_init_error',
+      'sentry_user_not_set'
+    ];
+    
+    console.log('[LOGGING] Environment:', window.isTestEnvironment ? 'TEST' : 'PRODUCTION');
+    console.log('[LOGGING] Mode:', window.loggingMode);
+    console.log('[LOGGING] Critical events defined:', window.CRITICAL_EVENTS.length);
+  </script>
+
+  <!-- ============================================ -->
+  <!-- CUSTOM LOGGING TO MAKE.COM -->
+  <!-- ============================================ -->
+  <script>
+    const LOGGING_WEBHOOK = 'https://hook.us1.make.com/12ojmstexumn6knualpsn9hkex9qy8b3';
+    
+    window.logToWebhook = function(eventType, data) {
+      const shouldLog = (function() {
+        if (window.loggingMode === 'full') {
+          return true;
+        }
+        if (window.CRITICAL_EVENTS.includes(eventType)) {
+          return true;
+        }
+        if (eventType === 'navigation' && data && data.isUnexpectedReset === true) {
+          return true;
+        }
+        console.log('[LOGGING] Skipped (non-critical):', eventType);
+        return false;
+      })();
+      
+      if (!shouldLog) {
+        return;
+      }
+      
+      const payload = {
+        type: eventType,
+        data: data,
+        timestamp: new Date().toISOString(),
+        sessionId: window.sessionId,
+        sessionDuration: Date.now() - window.sessionStartTime,
+        loggingMode: window.loggingMode,
+        environment: window.isTestEnvironment ? 'test' : 'production',
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight
+      };
+      
+      console.log('[LOGGING]', eventType, data, '(mode:', window.loggingMode + ')');
+      
+      fetch(LOGGING_WEBHOOK, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(err => console.error('Logging failed:', err));
+      
+      if (eventType.includes('error') || eventType.includes('unexpected')) {
+        if (typeof window.sentryCaptureEvent === 'function') {
+          window.sentryCaptureEvent(eventType, data);
+        }
+      }
+    };
+
+    // ============================================
+    // NAVIGATION DEBUGGING
+    // ============================================
+    (function() {
+      console.log('[NAV-DEBUG] Navigation interceptors initialized');
+
+      const originalPushState = history.pushState;
+      history.pushState = function() {
+        console.error('[NAVIGATE] pushState called');
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_pushstate', {
+          args: Array.from(arguments).map(arg => String(arg)),
+          stack: new Error().stack
+        });
+        return originalPushState.apply(this, arguments);
+      };
+
+      const originalReplaceState = history.replaceState;
+      history.replaceState = function() {
+        console.error('[NAVIGATE] replaceState called');
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_replacestate', {
+          args: Array.from(arguments).map(arg => String(arg)),
+          stack: new Error().stack
+        });
+        return originalReplaceState.apply(this, arguments);
+      };
+
+      const originalHrefDescriptor = Object.getOwnPropertyDescriptor(Location.prototype, 'href');
+      if (originalHrefDescriptor && originalHrefDescriptor.set) {
+        Object.defineProperty(Location.prototype, 'href', {
+          set: function(value) {
+            console.error('[NAVIGATE] location.href set to:', value);
+            console.error('[NAVIGATE] Stack:', new Error().stack);
+            window.logToWebhook('navigation_location_href', {
+              newUrl: value,
+              oldUrl: window.location.href,
+              stack: new Error().stack
+            });
+            originalHrefDescriptor.set.call(this, value);
+          },
+          get: originalHrefDescriptor.get
+        });
+      }
+
+      const originalReplace = Location.prototype.replace;
+      Location.prototype.replace = function(url) {
+        console.error('[NAVIGATE] location.replace called with:', url);
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_location_replace', {
+          newUrl: url,
+          oldUrl: window.location.href,
+          stack: new Error().stack
+        });
+        return originalReplace.call(this, url);
+      };
+
+      const originalAssign = Location.prototype.assign;
+      Location.prototype.assign = function(url) {
+        console.error('[NAVIGATE] location.assign called with:', url);
+        console.error('[NAVIGATE] Stack:', new Error().stack);
+        window.logToWebhook('navigation_location_assign', {
+          newUrl: url,
+          oldUrl: window.location.href,
+          stack: new Error().stack
+        });
+        return originalAssign.call(this, url);
+      };
+
+      window.addEventListener('beforeunload', function(e) {
+        console.error('[NAVIGATE] beforeunload triggered');
+        window.logToWebhook('before_unload', {
+          currentUrl: window.location.href,
+          stack: new Error().stack
+        });
+      });
+
+      window.addEventListener('popstate', function(e) {
+        console.error('[NAVIGATE] popstate triggered');
+        window.logToWebhook('navigation_popstate', {
+          state: e.state,
+          currentUrl: window.location.href
+        });
+      });
+
+      console.log('[NAV-DEBUG] All navigation methods intercepted');
+    })();
+
+    window.addEventListener('DOMContentLoaded', function() {
+      const isNewSession = !sessionStorage.getItem('quiz_session_logged');
+      if (isNewSession) {
+        window.logToWebhook('session_start', {
+          sessionId: window.sessionId,
+          isNewSession: true,
+          timestamp: new Date(window.sessionStartTime).toISOString()
+        });
+        sessionStorage.setItem('quiz_session_logged', 'true');
+      }
+      
+      window.logToWebhook('page_load', {
+        page: 'quiz_app',
+        referrer: document.referrer,
+        isNewSession: isNewSession
+      });
+    });
+
+    window.addEventListener('error', function(e) {
+      console.error('Global JS error:', e.error);
+      window.logToWebhook('javascript_error', {
+        message: e.error?.message || e.message,
+        stack: e.error?.stack,
+        filename: e.filename,
+        lineno: e.lineno,
+        colno: e.colno,
+        type: e.type
+      });
+    });
+
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Unhandled promise rejection:', e.reason);
+      window.logToWebhook('promise_rejection', {
+        reason: e.reason?.toString(),
+        stack: e.reason?.stack,
+        promise: e.promise?.toString()
+      });
+    });
+
+    let lastUrl = location.href;
+    let lastTimestamp = Date.now();
+    let navigationCount = 0;
+
+    const checkNavigation = function() {
+      const url = location.href;
+      if (url !== lastUrl) {
+        navigationCount++;
+        const timeSinceLastNav = Date.now() - lastTimestamp;
+        
+        const isUnexpectedReset = (
+          (url === window.location.origin + '/' || 
+           url === window.location.origin ||
+           url.split('/').length <= 4) &&
+          (lastUrl.includes('result') || 
+           lastUrl.includes('contact') ||
+           lastUrl.split('/').length > 4)
+        );
+        
+        window.logToWebhook('navigation', {
+          from: lastUrl,
+          to: url,
+          timeOnPreviousPage: timeSinceLastNav,
+          navigationCount: navigationCount,
+          isUnexpectedReset: isUnexpectedReset,
+          wasOnResultsPage: lastUrl.includes('result') || lastUrl.includes('results')
+        });
+        
+        if (isUnexpectedReset && typeof window.sentryCaptureError === 'function') {
+          window.sentryCaptureError('Unexpected Quiz Reset', {
+            from: lastUrl,
+            to: url,
+            timeOnPage: timeSinceLastNav,
+          });
+        }
+        
+        lastUrl = url;
+        lastTimestamp = Date.now();
+      }
+    };
+
+    new MutationObserver(checkNavigation).observe(document, {subtree: true, childList: true});
+    window.addEventListener('popstate', checkNavigation);
+    window.addEventListener('hashchange', checkNavigation);
+    setInterval(checkNavigation, 500);
+
+    document.addEventListener('visibilitychange', function() {
+      window.logToWebhook('visibility_change', {
+        hidden: document.hidden,
+        visibilityState: document.visibilityState
+      });
+    });
+
+    window.addEventListener('beforeunload', function() {
+      const sessionDuration = Date.now() - window.sessionStartTime;
+      window.logToWebhook('session_end', {
+        url: window.location.href,
+        sessionId: window.sessionId,
+        sessionDuration: sessionDuration,
+        sessionDurationMinutes: Math.round(sessionDuration / 60000 * 10) / 10
+      });
+    });
+
+    console.log('[INIT] Error logging initialized');
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-15HXMXW4HW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-15HXMXW4HW');
+  </script>
+
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <script type="application/javascript" src=" https://cdn.jsdelivr.net/gh/mohalmah/hq-quiz_preloader@main/preloader4.js" defer></script>
+
+  <!-- ============================================ -->
+  <!-- INSTRUMENTED trackEvent FUNCTION -->
+  <!-- ============================================ -->
+  <script type="text/javascript">
+    function trackEvent(eventName, properties, eventId, profileProperties, aliases) {
+      console.log('[trackEvent] Called with:', {
+        eventName: eventName,
+        properties: properties,
+        eventId: eventId,
+        profileProperties: profileProperties,
+        aliases: aliases,
+      });
+      
+      window.logToWebhook('trackEvent_called', {
+        eventName: eventName,
+        hasProperties: !!properties,
+        hasCVG: typeof window.cvg !== 'undefined',
+        cvgLoaded: window.cvgLoaded || false
+      });
+
+      try {
+        if (typeof window !== "undefined" && window["cvg"]) {
+          console.log('[trackEvent] CVG available, calling...');
+          window["cvg"]({
+            method: "event",
+            event: eventName,
+            properties: properties,
+            eventId: eventId,
+            profileProperties: profileProperties,
+            aliases: aliases,
+          });
+          
+          window.logToWebhook('trackEvent_success', {
+            eventName: eventName
+          });
+          
+          console.log('[trackEvent] CVG call completed');
+        } else {
+          console.warn('[trackEvent] CVG not available!');
+          window.logToWebhook('trackEvent_no_cvg', {
+            eventName: eventName,
+            windowDefined: typeof window !== "undefined",
+            cvgExists: !!window.cvg
+          });
+          
+          if (typeof window.sentryCaptureError === 'function') {
+            window.sentryCaptureError('CVG Not Available', {
+              eventName: eventName,
+              cvgLoaded: window.cvgLoaded
+            });
+          }
+        }
+      } catch (error) {
+        console.error('[trackEvent] Error:', error);
+        window.logToWebhook('trackEvent_error', {
+          eventName: eventName,
+          error: error.message,
+          stack: error.stack
+        });
+        
+        if (typeof Sentry !== 'undefined') {
+          Sentry.captureException(error, {
+            tags: { component: 'trackEvent' },
+            extra: { eventName: eventName }
+          });
+        }
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function getCookieValue(cookieName) {
+      var name = cookieName + "=";
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
+        }
+      }
+      return "";
+    }
+  </script>
+
+  <!-- ============================================ -->
+  <!-- FIXED CVG INITIALIZATION -->
+  <!-- ============================================ -->
+  <script>
+    window.cvg = window.cvg || function() {
+      window.cvg.queue = window.cvg.queue || [];
+      window.cvg.queue.push(arguments);
+    };
+    window.cvg.queue = window.cvg.queue || [];
+    
+    console.log('[CVG] Stub initialized, queue ready');
+    window.logToWebhook('cvg_stub_initialized', {
+      queueExists: !!window.cvg.queue,
+      queueLength: window.cvg.queue.length
+    });
+  </script>
+
+  <script>
+    try {
+      console.log('[CVG] Configuring proxy...');
+      cvg({
+        method: "proxy", 
+        tracking: "https://hairqare.co/cvg", 
+        static: "https://hairqare.co/cvg/static"
+      });
+      console.log('[CVG] Proxy configuration queued');
+      window.logToWebhook('cvg_proxy_configured', {
+        queueLength: window.cvg.queue.length
+      });
+    } catch (error) {
+      console.error('[CVG] Error configuring proxy:', error);
+      window.logToWebhook('cvg_proxy_error', {
+        error: error.message,
+        stack: error.stack
+      });
+      
+      if (typeof Sentry !== 'undefined') {
+        Sentry.captureException(error, {
+          tags: { component: 'cvg_proxy' }
+        });
+      }
+    }
+  </script>
+
+  <script>
+    try {
+      cvg({method:"track", eventName:"$page_load"});
+      console.log('[CVG] Page load event queued');
+    } catch (error) {
+      console.error('[CVG] Error tracking page load:', error);
+      window.logToWebhook('cvg_pageload_error', {
+        error: error.message
+      });
+    }
+  </script>
+
+  <script>
+    window.cvgLoaded = false;
+    window.cvgError = null;
+    
+    const cvgScript = document.createElement('script');
+    cvgScript.src = 'https://hairqare.co/cvg/static/pixels/PmzQC4.js';
+    cvgScript.async = true;
+    
+    cvgScript.onload = function() {
+      window.cvgLoaded = true;
+      console.log('[CVG] Script loaded successfully');
+      console.log('[CVG] Queue should now be processed. Queue length:', window.cvg.queue ? window.cvg.queue.length : 'N/A');
+      window.logToWebhook('cvg_script_loaded', {
+        success: true,
+        queueLength: window.cvg.queue ? window.cvg.queue.length : 0
+      });
+    };
+    
+    cvgScript.onerror = function(error) {
+      window.cvgError = error;
+      console.error('[CVG] Script failed to load:', error);
+      window.logToWebhook('cvg_script_error', {
+        error: error.toString()
+      });
+      
+      if (typeof window.sentryCaptureError === 'function') {
+        window.sentryCaptureError('CVG Script Load Failed', {
+          src: cvgScript.src
+        });
+      }
+    };
+    
+    document.head.appendChild(cvgScript);
+    console.log('[CVG] Script loading started');
+  </script>
+
+  <script>
+    function wrapCvgForTracking() {
+      if (!window.cvg || !window.cvg.process) {
+        setTimeout(wrapCvgForTracking, 100);
+        return;
+      }
+      
+      console.log('[CVG] CVG is ready, wrapping for enhanced tracking');
+      
+      const originalCvg = window.cvg;
+      window.cvg = function() {
+        console.log('[CVG] Called with:', arguments);
+        try {
+          const result = originalCvg.apply(this, arguments);
+          return result;
+        } catch (error) {
+          console.error('[CVG] Error during call:', error);
+          window.logToWebhook('cvg_call_error', {
+            args: Array.from(arguments).map(arg => 
+              typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+            ),
+            error: error.message,
+            stack: error.stack
+          });
+          
+          if (typeof Sentry !== 'undefined') {
+            Sentry.captureException(error, {
+              tags: { component: 'cvg_call' },
+              extra: { args: Array.from(arguments) }
+            });
+          }
+          
+          throw error;
+        }
+      };
+      
+      window.cvg.queue = originalCvg.queue;
+      window.cvg.process = originalCvg.process;
+      
+      window.logToWebhook('cvg_wrapped', {
+        success: true
+      });
+    }
+    
+    wrapCvgForTracking();
+  </script>
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-TT5MJDF');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta name="robots" content="noindex" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="clover-Plum.svg" sizes="any"/>
+
+  <!-- Open Graph & SEO tags -->
+  <meta property="og:title" content="Hairqare Challenge Quiz" />
+  <meta property="og:description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+  <meta property="og:image" content="/assets/assets/images/Result_Page-_Days_Images_copy_4.png" /> 
+  <meta name="twitter:title" content="Hairqare Challenge Quiz" />
+  <meta name="twitter:description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+  <meta name="twitter:image" content="/assets/assets/images/Result_Page-_Days_Images_copy_4.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <title> Hairqare Challenge Quiz </title>
+  <meta name="description" content="Find out if the Haircare Challenge is right for you✨
+Take our quiz and secure your seat in the next group of participants." />
+
+  <!-- Status Bar color in Safari browser (iOS) and PWA -->
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f4f8">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#f1f4f8">
+
+  <link rel="manifest" href="manifest.json">
+  
+</head>
+<body>
+
+  <script>
+    (()=>{var U=()=>navigator.vendor==="Google Inc."||navigator.agent==="Edg/",E=()=>typeof ImageDecoder>"u"?!1:U(),W=()=>typeof Intl.v8BreakIterator<"u"&&typeof Intl.Segmenter<"u",P=()=>{let s=[0,97,115,109,1,0,0,0,1,5,1,95,1,120,0];return WebAssembly.validate(new Uint8Array(s))},p={hasImageCodecs:E(),hasChromiumBreakIterators:W(),supportsWasmGC:P(),crossOriginIsolated:window.crossOriginIsolated};function l(...s){return new URL(_(...s),document.baseURI).toString()}function _(...s){return s.filter(e=>!!e).map((e,i)=>i===0?C(e):j(C(e))).filter(e=>e.length).join("/")}function j(s){let e=0;for(;e<s.length&&s.charAt(e)==="/";)e++;return s.substring(e)}function C(s){let e=s.length;for(;e>0&&s.charAt(e-1)==="/";)e--;return s.substring(0,e)}function L(s,e){return s.canvasKitBaseUrl?s.canvasKitBaseUrl:e.engineRevision&&!e.useLocalCanvasKit?_("https://www.gstatic.com/flutter-canvaskit",e.engineRevision):"canvaskit"}var h=class{constructor(){this._scriptLoaded=!1}setTrustedTypesPolicy(e){this._ttPolicy=e}async loadEntrypoint(e){let{entrypointUrl:i=l("main.dart.js"),onEntrypointLoaded:r,nonce:t}=e||{};return this._loadJSEntrypoint(i,r,t)}async load(e,i,r,t,n){n??=o=>{o.initializeEngine(r).then(c=>c.runApp())};let{entryPointBaseUrl:a}=r;if(e.compileTarget==="dart2wasm")return this._loadWasmEntrypoint(e,i,a,n);{let o=e.mainJsPath??"main.dart.js",c=l(a,o);return this._loadJSEntrypoint(c,n,t)}}didCreateEngineInitializer(e){typeof this._didCreateEngineInitializerResolve=="function"&&(this._didCreateEngineInitializerResolve(e),this._didCreateEngineInitializerResolve=null,delete _flutter.loader.didCreateEngineInitializer),typeof this._onEntrypointLoaded=="function"&&this._onEntrypointLoaded(e)}_loadJSEntrypoint(e,i,r){let t=typeof i=="function";if(!this._scriptLoaded){this._scriptLoaded=!0;let n=this._createScriptTag(e,r);if(t)console.debug("Injecting <script> tag. Using callback."),this._onEntrypointLoaded=i,document.head.append(n);else return new Promise((a,o)=>{console.debug("Injecting <script> tag. Using Promises. Use the callback approach instead!"),this._didCreateEngineInitializerResolve=a,n.addEventListener("error",o),document.head.append(n)})}}async _loadWasmEntrypoint(e,i,r,t){if(!this._scriptLoaded){this._scriptLoaded=!0,this._onEntrypointLoaded=t;let{mainWasmPath:n,jsSupportRuntimePath:a}=e,o=l(r,n),c=l(r,a);this._ttPolicy!=null&&(c=this._ttPolicy.createScriptURL(c));let d=(await import(c)).compileStreaming(fetch(o)),w;e.renderer==="skwasm"?w=(async()=>{let f=await i.skwasm;return window._flutter_skwasmInstance=f,{skwasm:f.wasmExports,skwasmWrapper:f,ffi:{memory:f.wasmMemory}}})():w=Promise.resolve({}),await(await(await d).instantiate(await w)).invokeMain()}}_createScriptTag(e,i){let r=document.createElement("script");r.type="application/javascript",i&&(r.nonce=i);let t=e;return this._ttPolicy!=null&&(t=this._ttPolicy.createScriptURL(e)),r.src=t,r}};async function T(s,e,i){if(e<0)return s;let r,t=new Promise((n,a)=>{r=setTimeout(()=>{a(new Error(`${i} took more than ${e}ms to resolve. Moving on.`,{cause:T}))},e)});return Promise.race([s,t]).finally(()=>{clearTimeout(r)})}var g=class{setTrustedTypesPolicy(e){this._ttPolicy=e}loadServiceWorker(e){if(!e)return console.debug("Null serviceWorker configuration. Skipping."),Promise.resolve();if(!("serviceWorker"in navigator)){let o="Service Worker API unavailable.";return window.isSecureContext||(o+=`
+The current context is NOT secure.`,o+=`
+Read more: https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts`),Promise.reject(new Error(o))}let{serviceWorkerVersion:i,serviceWorkerUrl:r=l(`flutter_service_worker.js?v=${i}`),timeoutMillis:t=4e3}=e,n=r;this._ttPolicy!=null&&(n=this._ttPolicy.createScriptURL(n));let a=navigator.serviceWorker.register(n).then(o=>this._getNewServiceWorker(o,i)).then(this._waitForServiceWorkerActivation);return T(a,t,"prepareServiceWorker")}async _getNewServiceWorker(e,i){if(!e.active&&(e.installing||e.waiting))return console.debug("Installing/Activating first service worker."),e.installing||e.waiting;if(e.active.scriptURL.endsWith(i))return console.debug("Loading from existing service worker."),e.active;{let r=await e.update();return console.debug("Updating service worker."),r.installing||r.waiting||r.active}}async _waitForServiceWorkerActivation(e){if(!e||e.state==="activated")if(e){console.debug("Service worker already active.");return}else throw new Error("Cannot activate a null service worker!");return new Promise((i,r)=>{e.addEventListener("statechange",()=>{e.state==="activated"&&(console.debug("Activated new service worker."),i())})})}};var y=class{constructor(e,i="flutter-js"){let r=e||[/\.js$/,/\.mjs$/];window.trustedTypes&&(this.policy=trustedTypes.createPolicy(i,{createScriptURL:function(t){if(t.startsWith("blob:"))return t;let n=new URL(t,window.location),a=n.pathname.split("/").pop();if(r.some(c=>c.test(a)))return n.toString();console.error("URL rejected by TrustedTypes policy",i,":",t,"(download prevented)")}}))}};var k=s=>{let e=WebAssembly.compileStreaming(fetch(s));return(i,r)=>((async()=>{let t=await e,n=await WebAssembly.instantiate(t,i);r(n,t)})(),{})};var I=(s,e,i,r)=>(window.flutterCanvasKitLoaded=(async()=>{if(window.flutterCanvasKit)return window.flutterCanvasKit;let t=i.hasChromiumBreakIterators&&i.hasImageCodecs;if(!t&&e.canvasKitVariant=="chromium")throw"Chromium CanvasKit variant specifically requested, but unsupported in this browser";let n=t&&e.canvasKitVariant!=="full",a=r;n&&(a=l(a,"chromium"));let o=l(a,"canvaskit.js");s.flutterTT.policy&&(o=s.flutterTT.policy.createScriptURL(o));let c=k(l(a,"canvaskit.wasm")),u=await import(o);return window.flutterCanvasKit=await u.default({instantiateWasm:c}),window.flutterCanvasKit})(),window.flutterCanvasKitLoaded);var b=async(s,e,i,r)=>{let t=l(r,"skwasm.js"),n=t;s.flutterTT.policy&&(n=s.flutterTT.policy.createScriptURL(n));let a=k(l(r,"skwasm.wasm"));return await(await import(n)).default({skwasmSingleThreaded:!i.crossOriginIsolated||e.forceSingleThreadedSkwasm,instantiateWasm:a,locateFile:(c,u)=>{if(c.endsWith(".ww.js")){let d=l(r,c);return URL.createObjectURL(new Blob([`
+"use strict";
+
+let eventListener;
+eventListener = (message) => {
+    const pendingMessages = [];
+    const data = message.data;
+    data["instantiateWasm"] = (info,receiveInstance) => {
+        const instance = new WebAssembly.Instance(data["wasm"], info);
+        return receiveInstance(instance, data["wasm"])
+    };
+    import(data.js).then(async (skwasm) => {
+        await skwasm.default(data);
+
+        removeEventListener("message", eventListener);
+        for (const message of pendingMessages) {
+            dispatchEvent(message);
+        }
+    });
+    removeEventListener("message", eventListener);
+    eventListener = (message) => {
+
+        pendingMessages.push(message);
+    };
+
+    addEventListener("message", eventListener);
+};
+addEventListener("message", eventListener);
+`],{type:"application/javascript"}))}return url},mainScriptUrlOrBlob:t})};var S=class{async loadEntrypoint(e){let{serviceWorker:i,...r}=e||{},t=new y,n=new g;n.setTrustedTypesPolicy(t.policy),await n.loadServiceWorker(i).catch(o=>{console.warn("Exception while loading service worker:",o)});let a=new h;return a.setTrustedTypesPolicy(t.policy),this.didCreateEngineInitializer=a.didCreateEngineInitializer.bind(a),a.loadEntrypoint(r)}async load({serviceWorkerSettings:e,onEntrypointLoaded:i,nonce:r,config:t}={}){t??={};let n=_flutter.buildConfig;if(!n)throw"FlutterLoader.load requires _flutter.buildConfig to be set";let a=m=>{switch(m){case"skwasm":return p.hasChromiumBreakIterators&&p.hasImageCodecs&&p.supportsWasmGC;default:return!0}},o=(m,f)=>m.renderer==f,c=m=>m.compileTarget==="dart2wasm"&&!p.supportsWasmGC||t.renderer&&!o(m,t.renderer)?!1:a(m.renderer),u=n.builds.find(c);if(!u)throw"FlutterLoader could not find a build compatible with configuration and environment.";let d={};d.flutterTT=new y,e&&(d.serviceWorkerLoader=new g,d.serviceWorkerLoader.setTrustedTypesPolicy(d.flutterTT.policy),await d.serviceWorkerLoader.loadServiceWorker(e).catch(m=>{console.warn("Exception while loading service worker:",m)}));let w=L(t,n);u.renderer==="canvaskit"?d.canvasKit=I(d,t,p,w):u.renderer==="skwasm"&&(d.skwasm=b(d,t,p,w));let v=new h;return v.setTrustedTypesPolicy(d.flutterTT.policy),this.didCreateEngineInitializer=v.didCreateEngineInitializer.bind(v),v.load(u,d,t,r,i)}};window._flutter||(window._flutter={});window._flutter.loader||(window._flutter.loader=new S);})();
+
+    if (!window._flutter) {
+      window._flutter = {};
+    }
+    _flutter.buildConfig = {"engineRevision":"8cd19e509d6bece8ccd74aef027c4ca947363095","builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"}]};
+
+    // ============================================
+    // INSTRUMENTED FLUTTER LOAD
+    // ============================================
+    _flutter.loader.load({
+      onEntrypointLoaded: async function(engineInitializer) {
+        console.log('[FLUTTER] Entrypoint loaded');
+        window.logToWebhook('flutter_entrypoint_loaded', {});
+        
+        try {
+          console.log('[FLUTTER] Initializing engine...');
+          let appRunner = await engineInitializer.initializeEngine({useColorEmoji: true});
+          
+          console.log('[FLUTTER] Engine initialized');
+          window.logToWebhook('flutter_engine_initialized', {});
+          
+          console.log('[FLUTTER] Running app...');
+          await appRunner.runApp();
+          
+          console.log('[FLUTTER] App running');
+          window.logToWebhook('flutter_app_running', {});
+        } catch (error) {
+          console.error('[FLUTTER] Error during initialization:', error);
+          window.logToWebhook('flutter_init_error', {
+            error: error.message,
+            stack: error.stack
+          });
+          
+          if (typeof Sentry !== 'undefined') {
+            Sentry.captureException(error, {
+              tags: { component: 'flutter_init' }
+            });
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
