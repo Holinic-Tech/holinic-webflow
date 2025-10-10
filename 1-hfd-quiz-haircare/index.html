@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    Alternatively, build your application passing the --base-href parameter
+    specifying the new root path of your web app.
+
+    Fore more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  -->
   <base href="/1-hfd-quiz-haircare/">
 
   <meta charset="UTF-8">
@@ -11,7 +24,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Follicle Dysfunction Quiz">
 
-  <!-- ============================================ -->
+   <!-- ============================================ -->
   <!-- SENTRY ERROR TRACKING -->
   <!-- ============================================ -->
   <script
@@ -29,9 +42,17 @@
         integrations: [
           Sentry.browserTracingIntegration(),
           Sentry.replayIntegration({
+            // TRIAL PERIOD: Full visibility for debugging (no masking)
             maskAllText: false,
             maskAllInputs: false,
             blockAllMedia: false,
+            
+            // Privacy settings (currently disabled for debugging)
+            // After trial, consider enabling:
+            // maskAllText: true,
+            // maskAllInputs: true,
+            
+            // Network details
             networkDetailAllowUrls: [window.location.origin],
             networkCaptureBodies: true,
             networkRequestHeaders: ['X-Custom-Header'],
@@ -39,36 +60,64 @@
           }),
         ],
         
+        // Performance Monitoring: 100% of transactions
         tracesSampleRate: 1.0,
+        
+        // Session Replay: 15% of normal sessions (optimized for 10K users/month)
+        // This will record ~1,500 sessions/month = ~450 replay hours
+        // Well within Business plan limit of 500 hours
         replaysSessionSampleRate: 0.15,
+        
+        // Session Replay: 100% of sessions with ANY error
+        // Critical for catching the quiz reset bug!
         replaysOnErrorSampleRate: 1.0,
+        
+        // Release tracking
         release: 'hairqare-quiz@1.0.1',
+        
+        // Environment detection
         environment: window.location.hostname === 'localhost' ? 'development' : 'production',
+        
+        // Send default PII (IP address, etc)
         sendDefaultPii: true,
         
-        beforeSend(event, hint) {
-          const error = hint.originalException;
-          if (event.message && event.message.includes('_AutofillCallbackHandler')) {
-            return null;
-          }
-          if (error && error.message && error.message.includes('adsbygoogle')) {
-            return null;
-          }
-          console.log('[SENTRY] Capturing error:', error?.message || event.message);
-          return event;
-        },
+// Error filtering
+beforeSend(event, hint) {
+  // Filter out errors you don't want to track
+  const error = hint.originalException;
+  
+  // Ignore Instagram autofill errors
+  if (event.message && event.message.includes('_AutofillCallbackHandler')) {
+    return null;
+  }
+  
+  // Ignore ad blocker errors
+  if (error && error.message && error.message.includes('adsbygoogle')) {
+    return null;
+  }
+  
+  // Log to console that error is being sent to Sentry
+  console.log('[SENTRY] Capturing error:', error?.message || event.message);
+  
+  return event;
+},
       });
       
+      // Set user context (call this after user submits contact form)
       window.setSentryUser = function(email, name) {
         Sentry.setUser({
           email: email,
           username: name,
           sessionId: window.sessionId
         });
+        
+        // Also set as tag for easier filtering in Sentry
         Sentry.setTag('session_id', window.sessionId);
+        
         console.log('[SENTRY] User context set with session ID:', window.sessionId);
       };
       
+      // Custom function to capture events
       window.sentryCaptureEvent = function(eventName, data) {
         Sentry.captureMessage(eventName, {
           level: 'info',
@@ -76,6 +125,7 @@
         });
       };
       
+      // Custom function to capture errors
       window.sentryCaptureError = function(error, context) {
         Sentry.captureException(new Error(error), {
           extra: context,
@@ -90,10 +140,12 @@
   <!-- SESSION ID GENERATION -->
   <!-- ============================================ -->
   <script>
+    // Generate or retrieve session ID
     function getSessionId() {
       let sessionId = sessionStorage.getItem('quiz_session_id');
       
       if (!sessionId) {
+        // Generate new session ID: timestamp + random string
         sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
         sessionStorage.setItem('quiz_session_id', sessionId);
         sessionStorage.setItem('session_start_time', Date.now().toString());
@@ -105,9 +157,11 @@
       return sessionId;
     }
     
+    // Initialize session ID immediately
     window.sessionId = getSessionId();
     window.sessionStartTime = parseInt(sessionStorage.getItem('session_start_time')) || Date.now();
     
+    // Log session start
     console.log('[SESSION] Session ID:', window.sessionId);
     console.log('[SESSION] Session started at:', new Date(window.sessionStartTime).toISOString());
   </script>
@@ -116,20 +170,26 @@
   <!-- ENVIRONMENT & LOGGING MODE DETECTION -->
   <!-- ============================================ -->
   <script>
+    // Detect environment - Test vs Production
     window.isTestEnvironment = window.location.href.includes('quizlogtest') 
       || window.location.hostname === 'localhost';
     
+    // Determine logging mode for cost optimization
     window.loggingMode = (function() {
+      // Test environment: Always log everything for debugging
       if (window.isTestEnvironment) {
         console.log('[LOGGING] Mode: FULL (test environment)');
         return 'full';
       }
       
+      // Production: Sample users for detailed logging
+      // Use session ID to deterministically assign logging mode
       const sessionId = window.sessionId;
       const hash = sessionId.split('').reduce((acc, char) => {
         return acc + char.charCodeAt(0);
       }, 0);
       
+      // 10% of users get full logging (helps with debugging in production)
       if (hash % 10 === 0) {
         console.log('[LOGGING] Mode: FULL (sampled user)', sessionId);
         return 'full';
@@ -139,6 +199,8 @@
       }
     })();
     
+    // Define critical events (always logged, even in production)
+    // These are essential for business logic and debugging
     window.CRITICAL_EVENTS = [
       'session_start',
       'session_end',
@@ -177,32 +239,43 @@
   <script>
     const LOGGING_WEBHOOK = 'https://hook.us1.make.com/12ojmstexumn6knualpsn9hkex9qy8b3';
     
+    // Centralized logging function with cost optimization
     window.logToWebhook = function(eventType, data) {
+      // Check if we should log this event (cost optimization)
       const shouldLog = (function() {
+        // Full logging mode: log everything (test environment or sampled users)
         if (window.loggingMode === 'full') {
           return true;
         }
+        
+        // Critical mode (90% of production users): only log critical events
         if (window.CRITICAL_EVENTS.includes(eventType)) {
           return true;
         }
+        
+        // Special case: navigation events - only log if unexpected reset
         if (eventType === 'navigation' && data && data.isUnexpectedReset === true) {
           return true;
         }
+        
+        // Skip all other events in critical mode
         console.log('[LOGGING] Skipped (non-critical):', eventType);
         return false;
       })();
       
+      // Don't send webhook if event should be skipped
       if (!shouldLog) {
         return;
       }
       
+      // Build payload
       const payload = {
         type: eventType,
         data: data,
         timestamp: new Date().toISOString(),
         sessionId: window.sessionId,
         sessionDuration: Date.now() - window.sessionStartTime,
-        loggingMode: window.loggingMode,
+        loggingMode: window.loggingMode, // Track which mode this session is in
         environment: window.isTestEnvironment ? 'test' : 'production',
         url: window.location.href,
         userAgent: navigator.userAgent,
@@ -216,6 +289,7 @@
       
       console.log('[LOGGING]', eventType, data, '(mode:', window.loggingMode + ')');
       
+      // Send to Make.com
       fetch(LOGGING_WEBHOOK, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -223,6 +297,7 @@
         keepalive: true
       }).catch(err => console.error('Logging failed:', err));
       
+      // Also send critical events to Sentry for cross-reference
       if (eventType.includes('error') || eventType.includes('unexpected')) {
         if (typeof window.sentryCaptureEvent === 'function') {
           window.sentryCaptureEvent(eventType, data);
@@ -231,11 +306,12 @@
     };
 
     // ============================================
-    // NAVIGATION DEBUGGING
+    // NAVIGATION DEBUGGING - COMPLETE VERSION
     // ============================================
     (function() {
       console.log('[NAV-DEBUG] Navigation interceptors initialized');
 
+      // Intercept history.pushState
       const originalPushState = history.pushState;
       history.pushState = function() {
         console.error('[NAVIGATE] pushState called');
@@ -247,6 +323,7 @@
         return originalPushState.apply(this, arguments);
       };
 
+      // Intercept history.replaceState
       const originalReplaceState = history.replaceState;
       history.replaceState = function() {
         console.error('[NAVIGATE] replaceState called');
@@ -258,6 +335,7 @@
         return originalReplaceState.apply(this, arguments);
       };
 
+      // Intercept location.href setter
       const originalHrefDescriptor = Object.getOwnPropertyDescriptor(Location.prototype, 'href');
       if (originalHrefDescriptor && originalHrefDescriptor.set) {
         Object.defineProperty(Location.prototype, 'href', {
@@ -275,6 +353,7 @@
         });
       }
 
+      // Intercept location.replace
       const originalReplace = Location.prototype.replace;
       Location.prototype.replace = function(url) {
         console.error('[NAVIGATE] location.replace called with:', url);
@@ -287,6 +366,7 @@
         return originalReplace.call(this, url);
       };
 
+      // Intercept location.assign
       const originalAssign = Location.prototype.assign;
       Location.prototype.assign = function(url) {
         console.error('[NAVIGATE] location.assign called with:', url);
@@ -299,6 +379,7 @@
         return originalAssign.call(this, url);
       };
 
+      // Catch beforeunload (page navigation/reload)
       window.addEventListener('beforeunload', function(e) {
         console.error('[NAVIGATE] beforeunload triggered');
         window.logToWebhook('before_unload', {
@@ -307,6 +388,7 @@
         });
       });
 
+      // Catch popstate (back/forward button)
       window.addEventListener('popstate', function(e) {
         console.error('[NAVIGATE] popstate triggered');
         window.logToWebhook('navigation_popstate', {
@@ -318,7 +400,9 @@
       console.log('[NAV-DEBUG] All navigation methods intercepted');
     })();
 
+    // Track session start and page load
     window.addEventListener('DOMContentLoaded', function() {
+      // Log session start if this is a new session
       const isNewSession = !sessionStorage.getItem('quiz_session_logged');
       if (isNewSession) {
         window.logToWebhook('session_start', {
@@ -329,6 +413,7 @@
         sessionStorage.setItem('quiz_session_logged', 'true');
       }
       
+      // Log page load
       window.logToWebhook('page_load', {
         page: 'quiz_app',
         referrer: document.referrer,
@@ -336,6 +421,7 @@
       });
     });
 
+    // Global error handler
     window.addEventListener('error', function(e) {
       console.error('Global JS error:', e.error);
       window.logToWebhook('javascript_error', {
@@ -348,6 +434,7 @@
       });
     });
 
+    // Unhandled promise rejections
     window.addEventListener('unhandledrejection', function(e) {
       console.error('Unhandled promise rejection:', e.reason);
       window.logToWebhook('promise_rejection', {
@@ -357,6 +444,7 @@
       });
     });
 
+    // Track navigation changes
     let lastUrl = location.href;
     let lastTimestamp = Date.now();
     let navigationCount = 0;
@@ -385,6 +473,7 @@
           wasOnResultsPage: lastUrl.includes('result') || lastUrl.includes('results')
         });
         
+        // Send unexpected navigation to Sentry too
         if (isUnexpectedReset && typeof window.sentryCaptureError === 'function') {
           window.sentryCaptureError('Unexpected Quiz Reset', {
             from: lastUrl,
@@ -398,11 +487,13 @@
       }
     };
 
+    // Multiple ways to detect navigation
     new MutationObserver(checkNavigation).observe(document, {subtree: true, childList: true});
     window.addEventListener('popstate', checkNavigation);
     window.addEventListener('hashchange', checkNavigation);
     setInterval(checkNavigation, 500);
 
+    // Track page visibility changes
     document.addEventListener('visibilitychange', function() {
       window.logToWebhook('visibility_change', {
         hidden: document.hidden,
@@ -410,6 +501,7 @@
       });
     });
 
+    // Track before unload / session end
     window.addEventListener('beforeunload', function() {
       const sessionDuration = Date.now() - window.sessionStartTime;
       window.logToWebhook('session_end', {
@@ -433,7 +525,7 @@
   </script>
 
   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-  <script type="application/javascript" src=" https://cdn.jsdelivr.net/gh/mohalmah/hq-quiz_preloader@main/preloader4.js" defer></script>
+  <script type="application/javascript" src=" https://cdn.jsdelivr.net/gh/mohalmah/hq-quiz_preloader@main/preloader4.js" defer></script> 
 
   <!-- ============================================ -->
   <!-- INSTRUMENTED trackEvent FUNCTION -->
@@ -480,6 +572,7 @@
             cvgExists: !!window.cvg
           });
           
+          // Send to Sentry
           if (typeof window.sentryCaptureError === 'function') {
             window.sentryCaptureError('CVG Not Available', {
               eventName: eventName,
@@ -495,6 +588,7 @@
           stack: error.stack
         });
         
+        // Send to Sentry
         if (typeof Sentry !== 'undefined') {
           Sentry.captureException(error, {
             tags: { component: 'trackEvent' },
@@ -505,7 +599,7 @@
     }
   </script>
 
-  <script type="text/javascript">
+  <script type="text/javascript"> 
     function getCookieValue(cookieName) {
       var name = cookieName + "=";
       var cookies = document.cookie.split(';');
@@ -516,13 +610,16 @@
         }
       }
       return "";
-    }
+    } 
   </script>
 
   <!-- ============================================ -->
   <!-- FIXED CVG INITIALIZATION -->
   <!-- ============================================ -->
+  
+  <!-- Step 1: Initialize CVG stub FIRST with proper queue -->
   <script>
+    // Initialize CVG function with queue system - MUST happen before any cvg() calls
     window.cvg = window.cvg || function() {
       window.cvg.queue = window.cvg.queue || [];
       window.cvg.queue.push(arguments);
@@ -536,6 +633,7 @@
     });
   </script>
 
+  <!-- Step 2: Configure proxy (this will be safely queued) -->
   <script>
     try {
       console.log('[CVG] Configuring proxy...');
@@ -555,6 +653,7 @@
         stack: error.stack
       });
       
+      // Send to Sentry
       if (typeof Sentry !== 'undefined') {
         Sentry.captureException(error, {
           tags: { component: 'cvg_proxy' }
@@ -563,6 +662,7 @@
     }
   </script>
 
+  <!-- Step 3: Track page load (also queued) -->
   <script>
     try {
       cvg({method:"track", eventName:"$page_load"});
@@ -575,6 +675,7 @@
     }
   </script>
 
+  <!-- Step 4: Load actual CVG script (will process the queue) -->
   <script>
     window.cvgLoaded = false;
     window.cvgError = null;
@@ -600,6 +701,7 @@
         error: error.toString()
       });
       
+      // Send to Sentry
       if (typeof window.sentryCaptureError === 'function') {
         window.sentryCaptureError('CVG Script Load Failed', {
           src: cvgScript.src
@@ -611,9 +713,12 @@
     console.log('[CVG] Script loading started');
   </script>
 
+  <!-- Step 5: Wrap CVG for enhanced tracking (optional but recommended) -->
   <script>
+    // Wait for CVG to be fully loaded, then wrap it for tracking
     function wrapCvgForTracking() {
       if (!window.cvg || !window.cvg.process) {
+        // Not ready yet, check again soon
         setTimeout(wrapCvgForTracking, 100);
         return;
       }
@@ -636,6 +741,7 @@
             stack: error.stack
           });
           
+          // Send to Sentry
           if (typeof Sentry !== 'undefined') {
             Sentry.captureException(error, {
               tags: { component: 'cvg_call' },
@@ -643,10 +749,11 @@
             });
           }
           
-          throw error;
+          throw error; // Re-throw so calling code knows it failed
         }
       };
       
+      // Preserve the queue and process method
       window.cvg.queue = originalCvg.queue;
       window.cvg.process = originalCvg.process;
       
@@ -655,6 +762,7 @@
       });
     }
     
+    // Start checking if CVG is ready
     wrapCvgForTracking();
   </script>
 
@@ -666,10 +774,12 @@
       })(window,document,'script','dataLayer','GTM-TT5MJDF');</script>
   <!-- End Google Tag Manager -->
 
+
   <meta name="robots" content="noindex" />
 
   <!-- Favicon -->
   <link rel="icon" href="clover-Plum.svg" sizes="any"/>
+  
 
   <!-- Open Graph & SEO tags -->
   <meta property="og:title" content="Hairqare Challenge Quiz" />
@@ -685,6 +795,7 @@ Take our quiz and secure your seat in the next group of participants." />
   <title> Hairqare Challenge Quiz </title>
   <meta name="description" content="Find out if the Haircare Challenge is right for you✨
 Take our quiz and secure your seat in the next group of participants." />
+    
 
   <!-- Status Bar color in Safari browser (iOS) and PWA -->
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f4f8">
