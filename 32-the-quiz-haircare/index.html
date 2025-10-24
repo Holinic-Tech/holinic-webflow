@@ -12,694 +12,312 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Hairqare Quiz">
 
+  <!-- ============================================ -->
+  <!-- VISIBLE ON-SCREEN DEBUG CONSOLE -->
+  <!-- Shows viewport info you can see without DevTools -->
+  <!-- ============================================ -->
   <style>
-    /* Preloader styles - inline for instant display */
-    #hq-preloader {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #f0f0f0;
-        z-index: 9999;
-        opacity: 1;
-        transition: opacity 0.5s ease-out;
+    #debug-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+      z-index: 999999;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      max-height: 40vh;
+      overflow-y: auto;
     }
     
-    #hq-preloader.fade-out {
-        opacity: 0;
-        pointer-events: none;
+    #debug-overlay h3 {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 4px;
     }
     
-    .hq-container {
-        text-align: center;
-        width: 90%;
-        max-width: 300px;
+    #debug-overlay .debug-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 3px 0;
+      padding: 2px 0;
     }
     
-    .hq-title {
-        font-size: 18px;
-        margin-bottom: 20px;
-        color: #333;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    #debug-overlay .debug-label {
+      font-weight: 600;
+      opacity: 0.9;
     }
     
-    .hq-block {
-        background-color: white;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 10px 0;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.5s, transform 0.5s;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        font-size: 16px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    #debug-overlay .debug-value {
+      font-family: 'Courier New', monospace;
+      background: rgba(255,255,255,0.2);
+      padding: 2px 6px;
+      border-radius: 3px;
     }
     
-    .hq-block.show {
-        opacity: 1;
-        transform: translateY(0);
+    #debug-overlay .warning {
+      background: #ff6b6b;
+      color: white;
+      padding: 6px;
+      border-radius: 4px;
+      margin: 6px 0;
+      font-weight: 600;
     }
     
-    .hq-loader-container {
-        margin-top: 20px;
+    #debug-overlay .info {
+      background: rgba(255,255,255,0.15);
+      padding: 6px;
+      border-radius: 4px;
+      margin: 6px 0;
     }
     
-    .hq-loader-text {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 5px;
-        text-align: left;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    #debug-overlay button {
+      background: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      width: 100%;
     }
     
-    .hq-loader {
-        width: 100%;
-        height: 15px;
-        background-color: #e0e0f0;
-        position: relative;
-        overflow: hidden;
-        border-radius: 7.5px;
+    #debug-overlay button:active {
+      background: rgba(255,255,255,0.4);
     }
     
-    .hq-loader-bar {
-        width: 0;
-        height: 100%;
-        background-color: #5e5ce6;
-        transition: width 0.5s ease-out;
-        border-radius: 7.5px;
+    #debug-log {
+      background: rgba(0,0,0,0.3);
+      padding: 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      max-height: 120px;
+      overflow-y: auto;
     }
     
-    @media (max-width: 600px) {
-        .hq-container {
-            width: 85%;
-        }
-        .hq-block {
-            font-size: 14px;
-        }
+    #debug-log .log-entry {
+      margin: 2px 0;
+      padding: 2px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .hidden {
+      display: none !important;
     }
   </style>
 
-  <!-- ============================================ -->
-  <!-- PRELOADER HTML - INLINE FOR INSTANT DISPLAY -->
-  <!-- ============================================ -->
   <script>
-    // Execute immediately - no waiting for DOMContentLoaded
+    // VISIBLE DEBUG LOGGER - Creates on-screen debug console
     (function() {
-      // Create preloader HTML
-      const preloaderHTML = `
-        <div id="hq-preloader">
-          <div class="hq-container">
-            <h1 class="hq-title">Find out if the Haircare Challenge is right for you ✨</h1>
-            <div class="hq-block" data-block="0">🚫 No more hidden harmful ingredients.</div>
-            <div class="hq-block" data-block="1">🌱 Reduced hair loss and new baby hair growth.</div>
-            <div class="hq-block" data-block="2">🔬 Split ends that don't come back.</div>
-            <div class="hq-block" data-block="3">💛 The best of science, made easy at home.</div>
-            <div class="hq-loader-container">
-              <div class="hq-loader-text">Personal space loading</div>
-              <div class="hq-loader">
-                <div class="hq-loader-bar" id="hq-loader-bar"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      // Insert preloader as soon as this script executes
-      document.addEventListener('DOMContentLoaded', function() {
-        document.body.insertAdjacentHTML('afterbegin', preloaderHTML);
-        
-        // Start animation immediately
-        startPreloaderAnimation();
-      });
-      
-      // Animation function
-      function startPreloaderAnimation() {
-        const blocks = document.querySelectorAll('.hq-block');
-        const loaderBar = document.getElementById('hq-loader-bar');
-        const totalBlocks = blocks.length;
-        let currentBlock = 0;
-        
-        // Animate blocks sequentially
-        function animateNextBlock() {
-          if (currentBlock < totalBlocks) {
-            blocks[currentBlock].classList.add('show');
-            const progress = ((currentBlock + 1) / totalBlocks) * 100;
-            loaderBar.style.width = `${progress}%`;
-            currentBlock++;
-            
-            // Continue animation every 1.25 seconds
-            setTimeout(animateNextBlock, 1250);
-          }
-        }
-        
-        // Start animation
-        animateNextBlock();
-      }
-      
-      // Global function to hide preloader when Flutter is ready
-      window.hidePreloader = function() {
-        const preloader = document.getElementById('hq-preloader');
-        if (preloader) {
-          console.log('[PRELOADER] Hiding - Flutter is ready');
-          
-          // Ensure progress bar is at 100% before hiding
-          const loaderBar = document.getElementById('hq-loader-bar');
-          if (loaderBar) {
-            loaderBar.style.width = '100%';
-          }
-          
-          // Fade out after brief delay
-          setTimeout(function() {
-            preloader.classList.add('fade-out');
-            
-            // Remove from DOM after fade completes
-            setTimeout(function() {
-              preloader.remove();
-              console.log('[PRELOADER] Removed from DOM');
-            }, 500);
-          }, 300);
-        }
-      };
-      
-      // Fallback: Hide after 10 seconds if Flutter hasn't loaded
-      // (Prevents infinite loading screen)
-      setTimeout(function() {
-        const preloader = document.getElementById('hq-preloader');
-        if (preloader && window.getComputedStyle(preloader).opacity !== '0') {
-          console.warn('[PRELOADER] Fallback timeout - hiding after 10s');
-          
-          // Log to Sentry if available
-          if (typeof Sentry !== 'undefined') {
-            Sentry.captureMessage('Preloader fallback timeout triggered', {
-              level: 'warning',
-              extra: {
-                message: 'Flutter took longer than 10 seconds to initialize'
-              }
-            });
-          }
-          
-          window.hidePreloader();
-        }
-      }, 10000);
-      
-    })();
-  </script>
-
-   <!-- ============================================ -->
-  <!-- SENTRY ERROR TRACKING -->
-  <!-- ============================================ -->
-  <script
-    src="https://js.sentry-cdn.com/e17e44a28079f2c433239964afb42d88.min.js"
-    crossorigin="anonymous"
-  ></script>
-
-  <script>
-    // Initialize Sentry
-    Sentry.onLoad(function() {
-      Sentry.init({
-        dsn: 'https://e17e44a28079f2c433239964afb42d88@o4510124012601344.ingest.us.sentry.io/4510124087705600',
-        
-        // Performance Monitoring
-        integrations: [
-          Sentry.browserTracingIntegration(),
-          Sentry.replayIntegration({
-            // TRIAL PERIOD: Full visibility for debugging (no masking)
-            maskAllText: false,
-            maskAllInputs: false,
-            blockAllMedia: false,
-            
-            // Privacy settings (currently disabled for debugging)
-            // After trial, consider enabling:
-            // maskAllText: true,
-            // maskAllInputs: true,
-            
-            // Network details
-            networkDetailAllowUrls: [window.location.origin],
-            networkCaptureBodies: true,
-            networkRequestHeaders: ['X-Custom-Header'],
-            networkResponseHeaders: ['X-Custom-Header'],
-          }),
-        ],
-        
-        // Performance Monitoring: 100% of transactions
-        tracesSampleRate: 1.0,
-        
-        // Session Replay: 15% of normal sessions (optimized for 10K users/month)
-        // This will record ~1,500 sessions/month = ~450 replay hours
-        // Well within Business plan limit of 500 hours
-        replaysSessionSampleRate: 0.15,
-        
-        // Session Replay: 100% of sessions with ANY error
-        // Critical for catching the quiz reset bug!
-        replaysOnErrorSampleRate: 1.0,
-        
-        // Release tracking
-        release: 'hairqare-quiz@1.0.1',
-        
-        // Environment detection
-        environment: window.location.hostname === 'localhost' ? 'development' : 'production',
-        
-        // Send default PII (IP address, etc)
-        sendDefaultPii: true,
-        
-// Error filtering
-beforeSend(event, hint) {
-  // Filter out errors you don't want to track
-  const error = hint.originalException;
-  
-  // Ignore Instagram autofill errors
-  if (event.message && event.message.includes('_AutofillCallbackHandler')) {
-    return null;
-  }
-  
-  // Ignore ad blocker errors
-  if (error && error.message && error.message.includes('adsbygoogle')) {
-    return null;
-  }
-  
-  // Log to console that error is being sent to Sentry
-  console.log('[SENTRY] Capturing error:', error?.message || event.message);
-  
-  return event;
-},
-      });
-      
-      // Set user context (call this after user submits contact form)
-      window.setSentryUser = function(email, name) {
-        Sentry.setUser({
-          email: email,
-          username: name,
-          sessionId: window.sessionId
-        });
-        
-        // Also set as tag for easier filtering in Sentry
-        Sentry.setTag('session_id', window.sessionId);
-        
-        console.log('[SENTRY] User context set with session ID:', window.sessionId);
-      };
-      
-      // Custom function to capture events
-      window.sentryCaptureEvent = function(eventName, data) {
-        Sentry.captureMessage(eventName, {
-          level: 'info',
-          extra: data,
-        });
-      };
-      
-      // Custom function to capture errors
-      window.sentryCaptureError = function(error, context) {
-        Sentry.captureException(new Error(error), {
-          extra: context,
-        });
-      };
-      
-      console.log('[SENTRY] Initialized');
-    });
-  </script>
-
-  <!-- ============================================ -->
-  <!-- SESSION ID GENERATION -->
-  <!-- ============================================ -->
-  <script>
-    // Generate or retrieve session ID
-    function getSessionId() {
-      let sessionId = sessionStorage.getItem('quiz_session_id');
-      
-      if (!sessionId) {
-        // Generate new session ID: timestamp + random string
-        sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
-        sessionStorage.setItem('quiz_session_id', sessionId);
-        sessionStorage.setItem('session_start_time', Date.now().toString());
-        console.log('[SESSION] New session ID created:', sessionId);
-      } else {
-        console.log('[SESSION] Existing session ID retrieved:', sessionId);
-      }
-      
-      return sessionId;
-    }
-    
-    // Initialize session ID immediately
-    window.sessionId = getSessionId();
-    window.sessionStartTime = parseInt(sessionStorage.getItem('session_start_time')) || Date.now();
-    
-    // Log session start
-    console.log('[SESSION] Session ID:', window.sessionId);
-    console.log('[SESSION] Session started at:', new Date(window.sessionStartTime).toISOString());
-  </script>
-
-  <!-- ============================================ -->
-  <!-- ENVIRONMENT & LOGGING MODE DETECTION -->
-  <!-- ============================================ -->
-  <script>
-    // Detect environment - Test vs Production
-    window.isTestEnvironment = window.location.href.includes('quizlogtest') 
-      || window.location.hostname === 'localhost';
-    
-    // Determine logging mode for cost optimization
-    window.loggingMode = (function() {
-      // Test environment: Always log everything for debugging
-      if (window.isTestEnvironment) {
-        console.log('[LOGGING] Mode: FULL (test environment)');
-        return 'full';
-      }
-      
-      // Production: Sample users for detailed logging
-      // Use session ID to deterministically assign logging mode
-      const sessionId = window.sessionId;
-      const hash = sessionId.split('').reduce((acc, char) => {
-        return acc + char.charCodeAt(0);
-      }, 0);
-      
-      // 10% of users get full logging (helps with debugging in production)
-      if (hash % 10 === 0) {
-        console.log('[LOGGING] Mode: FULL (sampled user)', sessionId);
-        return 'full';
-      } else {
-        console.log('[LOGGING] Mode: CRITICAL (production - cost optimized)');
-        return 'critical';
-      }
-    })();
-    
-    // Define critical events (always logged, even in production)
-    // These are essential for business logic and debugging
-    window.CRITICAL_EVENTS = [
-      'session_start',
-      'session_end',
-      'cvg_stub_initialized',
-      'cvg_proxy_configured',
-      'cvg_wrapped',
-      'cvg_script_loaded',
-      'javascript_error',
-      'promise_rejection',
-      'cvg_call_error',
-      'cvg_script_error',
-      'cvg_proxy_error',
-      'trackEvent_error',
-      'trackEvent_no_cvg',
-      'navigation',
-      'navigation_pushstate',
-      'navigation_replacestate',
-      'navigation_location_href',
-      'navigation_location_replace',
-      'navigation_location_assign',
-      'navigation_popstate',
-      'before_unload',
-      'webhook_complete',
-      'flutter_init_error',
-      'sentry_user_not_set'
-    ];
-    
-    console.log('[LOGGING] Environment:', window.isTestEnvironment ? 'TEST' : 'PRODUCTION');
-    console.log('[LOGGING] Mode:', window.loggingMode);
-    console.log('[LOGGING] Critical events defined:', window.CRITICAL_EVENTS.length);
-  </script>
-
-  <!-- ============================================ -->
-  <!-- CUSTOM LOGGING TO MAKE.COM -->
-  <!-- ============================================ -->
-  <script>
-    const LOGGING_WEBHOOK = 'https://hook.us1.make.com/12ojmstexumn6knualpsn9hkex9qy8b3';
-    
-    // Centralized logging function with cost optimization
-    window.logToWebhook = function(eventType, data) {
-      // Check if we should log this event (cost optimization)
-      const shouldLog = (function() {
-        // Full logging mode: log everything (test environment or sampled users)
-        if (window.loggingMode === 'full') {
-          return true;
-        }
-        
-        // Critical mode (90% of production users): only log critical events
-        if (window.CRITICAL_EVENTS.includes(eventType)) {
-          return true;
-        }
-        
-        // Special case: navigation events - only log if unexpected reset
-        if (eventType === 'navigation' && data && data.isUnexpectedReset === true) {
-          return true;
-        }
-        
-        // Skip all other events in critical mode
-        console.log('[LOGGING] Skipped (non-critical):', eventType);
-        return false;
-      })();
-      
-      // Don't send webhook if event should be skipped
-      if (!shouldLog) {
-        return;
-      }
-      
-      // Build payload
-      const payload = {
-        type: eventType,
-        data: data,
-        timestamp: new Date().toISOString(),
-        sessionId: window.sessionId,
-        sessionDuration: Date.now() - window.sessionStartTime,
-        loggingMode: window.loggingMode, // Track which mode this session is in
-        environment: window.isTestEnvironment ? 'test' : 'production',
-        url: window.location.href,
+      // Collect viewport and device info
+      const debugData = {
+        // Device Info
         userAgent: navigator.userAgent,
         platform: navigator.platform,
-        language: navigator.language,
+        
+        // Browser Detection
+        isInstagram: /Instagram/i.test(navigator.userAgent),
+        isFacebook: /FB_IAB|FBAN|FBAV/i.test(navigator.userAgent),
+        isSafari: /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent),
+        isChrome: /Chrome/i.test(navigator.userAgent),
+        
+        // Screen Dimensions
         screenWidth: window.screen.width,
         screenHeight: window.screen.height,
-        windowWidth: window.innerWidth,
-        windowHeight: window.innerHeight
+        screenAvailHeight: window.screen.availHeight,
+        pixelRatio: window.devicePixelRatio,
+        
+        // Window Dimensions
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        outerWidth: window.outerWidth,
+        outerHeight: window.outerHeight,
+        
+        // Visual Viewport (if supported)
+        visualViewportWidth: window.visualViewport ? window.visualViewport.width : 'N/A',
+        visualViewportHeight: window.visualViewport ? window.visualViewport.height : 'N/A',
+        visualViewportOffsetTop: window.visualViewport ? window.visualViewport.offsetTop : 'N/A',
+        visualViewportOffsetLeft: window.visualViewport ? window.visualViewport.offsetLeft : 'N/A',
+        
+        // Document Dimensions
+        documentWidth: document.documentElement.clientWidth,
+        documentHeight: document.documentElement.clientHeight,
+        
+        // Orientation
+        orientation: window.orientation !== undefined ? window.orientation : 'N/A',
+        matchMediaOrientation: window.matchMedia('(orientation: portrait)').matches ? 'portrait' : 'landscape',
+        
+        // Safe Area Insets (iOS)
+        safeAreaTop: getComputedStyle(document.documentElement).getPropertyValue('--sat') || getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)') || '0px',
+        safeAreaBottom: getComputedStyle(document.documentElement).getPropertyValue('--sab') || getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-bottom)') || '0px',
       };
       
-      console.log('[LOGGING]', eventType, data, '(mode:', window.loggingMode + ')');
+      // Store globally
+      window.debugData = debugData;
       
-      // Send to Make.com
-      fetch(LOGGING_WEBHOOK, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload),
-        keepalive: true
-      }).catch(err => console.error('Logging failed:', err));
+      // Log array for events
+      window.debugLogs = [];
       
-      // Also send critical events to Sentry for cross-reference
-      if (eventType.includes('error') || eventType.includes('unexpected')) {
-        if (typeof window.sentryCaptureEvent === 'function') {
-          window.sentryCaptureEvent(eventType, data);
+      // Function to add log entries
+      window.addDebugLog = function(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        window.debugLogs.push(`[${timestamp}] ${message}`);
+        
+        // Update UI if it exists
+        const logContainer = document.getElementById('debug-log');
+        if (logContainer) {
+          const entry = document.createElement('div');
+          entry.className = 'log-entry';
+          entry.textContent = `[${timestamp}] ${message}`;
+          logContainer.appendChild(entry);
+          logContainer.scrollTop = logContainer.scrollHeight;
         }
-      }
-    };
-
-    // ============================================
-    // NAVIGATION DEBUGGING - COMPLETE VERSION
-    // ============================================
-    (function() {
-      console.log('[NAV-DEBUG] Navigation interceptors initialized');
-
-      // Intercept history.pushState
-      const originalPushState = history.pushState;
-      history.pushState = function() {
-        console.error('[NAVIGATE] pushState called');
-        console.error('[NAVIGATE] Stack:', new Error().stack);
-        window.logToWebhook('navigation_pushstate', {
-          args: Array.from(arguments).map(arg => String(arg)),
-          stack: new Error().stack
-        });
-        return originalPushState.apply(this, arguments);
+        
+        console.log('[DEBUG]', message);
       };
-
-      // Intercept history.replaceState
-      const originalReplaceState = history.replaceState;
-      history.replaceState = function() {
-        console.error('[NAVIGATE] replaceState called');
-        console.error('[NAVIGATE] Stack:', new Error().stack);
-        window.logToWebhook('navigation_replacestate', {
-          args: Array.from(arguments).map(arg => String(arg)),
-          stack: new Error().stack
-        });
-        return originalReplaceState.apply(this, arguments);
-      };
-
-      // Intercept location.href setter
-      const originalHrefDescriptor = Object.getOwnPropertyDescriptor(Location.prototype, 'href');
-      if (originalHrefDescriptor && originalHrefDescriptor.set) {
-        Object.defineProperty(Location.prototype, 'href', {
-          set: function(value) {
-            console.error('[NAVIGATE] location.href set to:', value);
-            console.error('[NAVIGATE] Stack:', new Error().stack);
-            window.logToWebhook('navigation_location_href', {
-              newUrl: value,
-              oldUrl: window.location.href,
-              stack: new Error().stack
-            });
-            originalHrefDescriptor.set.call(this, value);
-          },
-          get: originalHrefDescriptor.get
-        });
-      }
-
-      // Intercept location.replace
-      const originalReplace = Location.prototype.replace;
-      Location.prototype.replace = function(url) {
-        console.error('[NAVIGATE] location.replace called with:', url);
-        console.error('[NAVIGATE] Stack:', new Error().stack);
-        window.logToWebhook('navigation_location_replace', {
-          newUrl: url,
-          oldUrl: window.location.href,
-          stack: new Error().stack
-        });
-        return originalReplace.call(this, url);
-      };
-
-      // Intercept location.assign
-      const originalAssign = Location.prototype.assign;
-      Location.prototype.assign = function(url) {
-        console.error('[NAVIGATE] location.assign called with:', url);
-        console.error('[NAVIGATE] Stack:', new Error().stack);
-        window.logToWebhook('navigation_location_assign', {
-          newUrl: url,
-          oldUrl: window.location.href,
-          stack: new Error().stack
-        });
-        return originalAssign.call(this, url);
-      };
-
-      // Catch beforeunload (page navigation/reload)
-      window.addEventListener('beforeunload', function(e) {
-        console.error('[NAVIGATE] beforeunload triggered');
-        window.logToWebhook('before_unload', {
-          currentUrl: window.location.href,
-          stack: new Error().stack
-        });
-      });
-
-      // Catch popstate (back/forward button)
-      window.addEventListener('popstate', function(e) {
-        console.error('[NAVIGATE] popstate triggered');
-        window.logToWebhook('navigation_popstate', {
-          state: e.state,
-          currentUrl: window.location.href
-        });
-      });
-
-      console.log('[NAV-DEBUG] All navigation methods intercepted');
-    })();
-
-    // Track session start and page load
-    window.addEventListener('DOMContentLoaded', function() {
-      // Log session start if this is a new session
-      const isNewSession = !sessionStorage.getItem('quiz_session_logged');
-      if (isNewSession) {
-        window.logToWebhook('session_start', {
-          sessionId: window.sessionId,
-          isNewSession: true,
-          timestamp: new Date(window.sessionStartTime).toISOString()
-        });
-        sessionStorage.setItem('quiz_session_logged', 'true');
-      }
       
-      // Log page load
-      window.logToWebhook('page_load', {
-        page: 'quiz_app',
-        referrer: document.referrer,
-        isNewSession: isNewSession
-      });
-    });
-
-    // Global error handler
-    window.addEventListener('error', function(e) {
-      console.error('Global JS error:', e.error);
-      window.logToWebhook('javascript_error', {
-        message: e.error?.message || e.message,
-        stack: e.error?.stack,
-        filename: e.filename,
-        lineno: e.lineno,
-        colno: e.colno,
-        type: e.type
-      });
-    });
-
-    // Unhandled promise rejections
-    window.addEventListener('unhandledrejection', function(e) {
-      console.error('Unhandled promise rejection:', e.reason);
-      window.logToWebhook('promise_rejection', {
-        reason: e.reason?.toString(),
-        stack: e.reason?.stack,
-        promise: e.promise?.toString()
-      });
-    });
-
-    // Track navigation changes
-    let lastUrl = location.href;
-    let lastTimestamp = Date.now();
-    let navigationCount = 0;
-
-    const checkNavigation = function() {
-      const url = location.href;
-      if (url !== lastUrl) {
-        navigationCount++;
-        const timeSinceLastNav = Date.now() - lastTimestamp;
+      // Create debug overlay on DOM ready
+      document.addEventListener('DOMContentLoaded', function() {
+        window.addDebugLog('DOMContentLoaded fired');
         
-        const isUnexpectedReset = (
-          (url === window.location.origin + '/' || 
-           url === window.location.origin ||
-           url.split('/').length <= 4) &&
-          (lastUrl.includes('result') || 
-           lastUrl.includes('contact') ||
-           lastUrl.split('/').length > 4)
-        );
+        // Detect device model (approximate)
+        let deviceModel = 'Unknown';
+        if (debugData.screenHeight === 2796 && debugData.screenWidth === 1290) {
+          deviceModel = 'iPhone 14 Pro Max / 15 Pro Max';
+        } else if (debugData.screenHeight === 2556 && debugData.screenWidth === 1179) {
+          deviceModel = 'iPhone 14 Pro / 15 Pro';
+        } else if (debugData.screenHeight === 1792 && debugData.screenWidth === 828) {
+          deviceModel = 'iPhone 11 / XR';
+        }
         
-        window.logToWebhook('navigation', {
-          from: lastUrl,
-          to: url,
-          timeOnPreviousPage: timeSinceLastNav,
-          navigationCount: navigationCount,
-          isUnexpectedReset: isUnexpectedReset,
-          wasOnResultsPage: lastUrl.includes('result') || lastUrl.includes('results')
-        });
+        // Calculate differences
+        const heightDiff = debugData.screenHeight - debugData.innerHeight;
+        const visualHeightDiff = debugData.visualViewportHeight !== 'N/A' 
+          ? debugData.innerHeight - debugData.visualViewportHeight 
+          : 'N/A';
         
-        // Send unexpected navigation to Sentry too
-        if (isUnexpectedReset && typeof window.sentryCaptureError === 'function') {
-          window.sentryCaptureError('Unexpected Quiz Reset', {
-            from: lastUrl,
-            to: url,
-            timeOnPage: timeSinceLastNav,
+        // Create overlay HTML
+        const overlay = document.createElement('div');
+        overlay.id = 'debug-overlay';
+        overlay.innerHTML = `
+          <h3>🔍 Viewport Debug Info</h3>
+          
+          <div class="debug-row">
+            <span class="debug-label">Device:</span>
+            <span class="debug-value">${deviceModel}</span>
+          </div>
+          
+          <div class="debug-row">
+            <span class="debug-label">Browser:</span>
+            <span class="debug-value">${
+              debugData.isInstagram ? 'Instagram' :
+              debugData.isFacebook ? 'Facebook' :
+              debugData.isSafari ? 'Safari' :
+              debugData.isChrome ? 'Chrome' : 'Other'
+            }</span>
+          </div>
+          
+          <div class="info">
+            <strong>Screen Size:</strong> ${debugData.screenWidth}×${debugData.screenHeight}px<br>
+            <strong>Window Inner:</strong> ${debugData.innerWidth}×${debugData.innerHeight}px<br>
+            <strong>Visual Viewport:</strong> ${debugData.visualViewportWidth}×${debugData.visualViewportHeight}px<br>
+            <strong>Height Lost:</strong> ${heightDiff}px (screen - inner)
+            ${visualHeightDiff !== 'N/A' ? `<br><strong>Visual Loss:</strong> ${visualHeightDiff}px (inner - visual)` : ''}
+          </div>
+          
+          ${heightDiff > 200 ? `
+            <div class="warning">
+              ⚠️ ${heightDiff}px vertical space missing!<br>
+              This is likely causing button obstruction.
+            </div>
+          ` : ''}
+          
+          ${debugData.isInstagram ? `
+            <div class="warning">
+              📱 Instagram In-App Browser Detected<br>
+              Known issues with bottom nav bar overlay
+            </div>
+          ` : ''}
+          
+          <div class="debug-row">
+            <span class="debug-label">Pixel Ratio:</span>
+            <span class="debug-value">${debugData.pixelRatio}x</span>
+          </div>
+          
+          <div class="debug-row">
+            <span class="debug-label">Orientation:</span>
+            <span class="debug-value">${debugData.matchMediaOrientation}</span>
+          </div>
+          
+          <div class="debug-row">
+            <span class="debug-label">Safe Area Top:</span>
+            <span class="debug-value">${debugData.safeAreaTop}</span>
+          </div>
+          
+          <div class="debug-row">
+            <span class="debug-label">Safe Area Bottom:</span>
+            <span class="debug-value">${debugData.safeAreaBottom}</span>
+          </div>
+          
+          <div id="debug-log"></div>
+          
+          <button onclick="document.getElementById('debug-overlay').classList.add('hidden')">
+            Hide Debug (Tap to show quiz)
+          </button>
+        `;
+        
+        document.body.insertBefore(overlay, document.body.firstChild);
+        window.addDebugLog('Debug overlay created');
+        
+        // Check for input fields
+        setTimeout(function() {
+          const inputs = document.querySelectorAll('input, textarea, [contenteditable]');
+          window.addDebugLog(`Found ${inputs.length} input elements`);
+          
+          inputs.forEach((input, i) => {
+            window.addDebugLog(`Input ${i}: ${input.tagName} type=${input.type || 'N/A'} focused=${document.activeElement === input}`);
           });
-        }
-        
-        lastUrl = url;
-        lastTimestamp = Date.now();
+          
+          if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+            window.addDebugLog('⚠️ Input is auto-focused! This triggers keyboard.');
+          }
+        }, 1000);
+      });
+      
+      // Monitor viewport changes
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', function() {
+          window.addDebugLog(`Viewport resized: ${window.visualViewport.width}×${window.visualViewport.height}`);
+        });
       }
-    };
-
-    // Multiple ways to detect navigation
-    new MutationObserver(checkNavigation).observe(document, {subtree: true, childList: true});
-    window.addEventListener('popstate', checkNavigation);
-    window.addEventListener('hashchange', checkNavigation);
-    setInterval(checkNavigation, 500);
-
-    // Track page visibility changes
-    document.addEventListener('visibilitychange', function() {
-      window.logToWebhook('visibility_change', {
-        hidden: document.hidden,
-        visibilityState: document.visibilityState
+      
+      window.addEventListener('resize', function() {
+        window.addDebugLog(`Window resized: ${window.innerWidth}×${window.innerHeight}`);
       });
-    });
-
-    // Track before unload / session end
-    window.addEventListener('beforeunload', function() {
-      const sessionDuration = Date.now() - window.sessionStartTime;
-      window.logToWebhook('session_end', {
-        url: window.location.href,
-        sessionId: window.sessionId,
-        sessionDuration: sessionDuration,
-        sessionDurationMinutes: Math.round(sessionDuration / 60000 * 10) / 10
-      });
-    });
-
-    console.log('[INIT] Error logging initialized');
+      
+      // Monitor focus events
+      document.addEventListener('focus', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+          window.addDebugLog(`⌨️ Keyboard triggered by: ${e.target.tagName}`);
+        }
+      }, true);
+      
+      console.log('[DEBUG] Viewport debugging initialized');
+      console.log('[DEBUG] Data:', debugData);
+    })();
   </script>
+
+  <script type="application/javascript" src="https://cdn.jsdelivr.net/gh/mohalmah/hq-quiz_preloader@main/preloader4.js" defer></script> 
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-15HXMXW4HW"></script>
@@ -710,19 +328,9 @@ beforeSend(event, hint) {
     gtag('config', 'G-15HXMXW4HW');
   </script>
 
-
-<!-- CVG Initialization - Fixed Version -->
+  <!-- CVG Initialization -->
   <script type="text/javascript">
-    // Keep your instrumented trackEvent as-is
     function trackEvent(eventName, properties, eventId, profileProperties, aliases) {
-      console.log('[trackEvent] Called with:', {
-        eventName: eventName,
-        properties: properties,
-        eventId: eventId,
-        profileProperties: profileProperties,
-        aliases: aliases,
-      });
-      
       if (typeof window !== "undefined" && window["cvg"]) {
         window["cvg"]({
           method: "event",
@@ -735,7 +343,6 @@ beforeSend(event, hint) {
       }
     }
     
-    // Cookie helper
     function getCookieValue(cookieName) {
       var name = cookieName + "=";
       var cookies = document.cookie.split(';');
@@ -752,33 +359,27 @@ beforeSend(event, hint) {
   <!-- Load CVG Script -->
   <script src="https://hairqare.co/cvg/static/pixels/PmzQC4.js" async></script>
   
-  <!-- Initialize CVG with CORRECT stub that checks for process -->
+  <!-- Initialize CVG -->
   <script>
-    // This is the critical fix - the stub must check for cvg.process
     window.cvg || (cvg = function() {
       cvg.process ? cvg.process.apply(cvg, arguments) : cvg.queue.push(arguments)
     }, cvg.queue = []);
     
-    // Configure proxy
     cvg({method: "proxy", tracking: "https://hairqare.co/cvg", static: "https://hairqare.co/cvg/static"});
-    
-    // Track page load
     cvg({method: "track", eventName: "$page_load"});
-    
-    console.log('[CVG] Initialization complete');
   </script>
+
+  <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-TT5MJDF');</script>
-  <!-- End Google Tag Manager -->
 
   <meta name="robots" content="noindex" />
 
   <!-- Favicon -->
   <link rel="icon" href="clover-Plum.svg" sizes="any"/>
-  
 
   <!-- Open Graph & SEO tags -->
   <meta property="og:title" content="Hairqare Challenge Quiz" />
@@ -791,10 +392,9 @@ Take our quiz and secure your seat in the next group of participants." />
   <meta name="twitter:image" content="/assets/assets/images/Result_Page-_Days_Images_copy_4.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title> Hairqare Challenge Quiz </title>
+  <title>Hairqare Challenge Quiz</title>
   <meta name="description" content="Find out if the Haircare Challenge is right for you✨
 Take our quiz and secure your seat in the next group of participants." />
-    
 
   <!-- Status Bar color in Safari browser (iOS) and PWA -->
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1f4f8">
@@ -804,7 +404,6 @@ Take our quiz and secure your seat in the next group of participants." />
   
 </head>
 <body>
-  
   
   
   
@@ -848,64 +447,39 @@ if (!window._flutter) {
 }
 _flutter.buildConfig = {"engineRevision":"8cd19e509d6bece8ccd74aef027c4ca947363095","builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"}]};
 
-// ============================================
-// INSTRUMENTED FLUTTER LOAD WITH SENTRY
-// ============================================
+if (!window._flutter) {
+  window._flutter = {};
+}
+_flutter.buildConfig = {"engineRevision":"8cd19e509d6bece8ccd74aef027c4ca947363095","builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"}]};
+
 _flutter.loader.load({
   onEntrypointLoaded: async function(engineInitializer) {
     console.log('[FLUTTER] Entrypoint loaded');
-    
-    // Call webhook logging if function exists
-    if (typeof window.logToWebhook === 'function') {
-      window.logToWebhook('flutter_entrypoint_loaded', {});
-    }
+    if (window.addDebugLog) window.addDebugLog('Flutter entrypoint loaded');
     
     try {
       console.log('[FLUTTER] Initializing engine...');
+      if (window.addDebugLog) window.addDebugLog('Initializing Flutter engine...');
+      
       let appRunner = await engineInitializer.initializeEngine({useColorEmoji: true});
       
       console.log('[FLUTTER] Engine initialized');
-      if (typeof window.logToWebhook === 'function') {
-        window.logToWebhook('flutter_engine_initialized', {});
-      }
+      if (window.addDebugLog) window.addDebugLog('Flutter engine initialized ✓');
       
       console.log('[FLUTTER] Running app...');
       await appRunner.runApp();
       
       console.log('[FLUTTER] App running');
-      if (typeof window.logToWebhook === 'function') {
-        window.logToWebhook('flutter_app_running', {});
-      }
-      
-      // ✅ CRITICAL FIX: Hide preloader now that Flutter is ready
-      if (typeof window.hidePreloader === 'function') {
-        window.hidePreloader();
-      } else {
-        console.error('[FLUTTER] hidePreloader function not found!');
-      }
+      if (window.addDebugLog) window.addDebugLog('Flutter app running ✓');
       
     } catch (error) {
-      console.error('[FLUTTER] Error during initialization:', error);
-      
-      if (typeof window.logToWebhook === 'function') {
-        window.logToWebhook('flutter_init_error', {
-          error: error.message,
-          stack: error.stack
-        });
-      }
-      
-      // Send to Sentry if available
-      if (typeof Sentry !== 'undefined' && Sentry.captureException) {
-        Sentry.captureException(error, {
-          tags: { component: 'flutter_init' }
-        });
-      }
-      
-      // Re-throw to maintain error propagation
+      console.error('[FLUTTER] Error:', error);
+      if (window.addDebugLog) window.addDebugLog('❌ Flutter error: ' + error.message);
       throw error;
     }
   }
 });
+
   </script>
 </body>
 </html>
