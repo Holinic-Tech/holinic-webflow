@@ -135,7 +135,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
         ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
         <br><br>
-        ✅ This Haircare Challenge has already <b>helped over 73,000+ women</b> regain better hair.
+        ✅ This Haircare Challenge has already <b>helped over 200,000+ women</b> regain better hair.
         <br><br>
 
         Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
@@ -162,7 +162,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
         <br><br>
-        ✅ This Haircare Challenge has already helped over 73,000+ women regain better hair.
+        ✅ This Haircare Challenge has already helped over 200,000+ women regain better hair.
         <br><br>
 
         Join now to get a life with dense, long and silky hair and feel confident every day.<br><br> You deserve this ${first_name}
@@ -185,7 +185,7 @@ function proocessResultLogic(content, first_name) {
         <br/><br/>
         ✅ Invest in your hair now and <b>save hundreds on products and salon treatments</b> that you won’t need.
         <br><br>
-        ✅ This Haircare Challenge has already helped over 73,000+ women regain better hair.
+        ✅ This Haircare Challenge has already helped over 200,000+ women regain better hair.
         <br><br>
 
         Join now to get a life with vibrant, smooth and shiny hair styles that will make feel fabulous and unique every day.<br><br> You deserve this ${first_name}
@@ -211,7 +211,7 @@ function proocessResultLogic(content, first_name) {
          ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
         <br><br>
 
-        ✅ This Haircare Challenge has already <b>helped over 73,000+ women</b> regain better hair.
+        ✅ This Haircare Challenge has already <b>helped over 200,000+ women</b> regain better hair.
         <br><br>
 
         Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
@@ -236,7 +236,7 @@ function proocessResultLogic(content, first_name) {
          ✅ 💰 Invest in your hair NOW and <b>save hundreds</b> on products and salon treatments that you won’t need.
         <br><br>
 
-        ✅ This Haircare Challenge has already <b>helped over 73,000+ women</b> regain better hair.
+        ✅ This Haircare Challenge has already <b>helped over 200,000+ women</b> regain better hair.
         <br><br>
 
         Join now to get a life with dense, long, beautiful hair and feel confident every day. You deserve this ${first_name}
