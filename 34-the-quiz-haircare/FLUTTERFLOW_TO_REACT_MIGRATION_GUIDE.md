@@ -707,19 +707,56 @@ quizData: {
 
 **Solution**: Single-select questions should show NO indicator (just background color change). Only multi-select shows checkboxes.
 
-### Issue 6: Build Fails Due to index.html References
+### Issue 6: Build Fails Due to index.html References (CRITICAL)
 
-**Problem**: GitHub Actions build fails with "file doesn't exist at build time".
+**Problem**: GitHub Actions build fails with error like:
+```
+/34-the-quiz-haircare/assets/index-ABC123.js doesn't exist at build time
+Rollup failed to resolve import
+```
 
-**Cause**: `index.html` references pre-built assets from `dist/` folder.
+**Cause**: The GitHub Pages deployment workflow modifies `index.html` to reference pre-built assets in `dist/`. If this modified version gets committed back to the repo (either manually or through an automated process), future builds will fail because those hashed asset files don't exist at build time.
 
-**Solution**: Keep `index.html` referencing source files:
+**How It Happens**:
+1. You run `npm run build` locally or deploy to GitHub Pages
+2. Vite outputs built files to `dist/` with hashed names: `index-ABC123.js`
+3. The deployment process updates `dist/index.html` to reference these
+4. Someone accidentally commits the `dist/index.html` content back to the source `index.html`
+5. Future CI builds fail because `index-ABC123.js` doesn't exist yet
+
+**Solution**:
+
+1. **Source `index.html` MUST reference the source file:**
 ```html
-<!-- CORRECT - references source -->
-<script type="module" src="/src/main.tsx"></script>
+<!-- CORRECT - in source index.html -->
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
 
-<!-- WRONG - references build output -->
-<script type="module" src="/assets/index-ABC123.js"></script>
+<!-- WRONG - these are build outputs, NOT source -->
+<script type="module" crossorigin src="/34-the-quiz-haircare/assets/index-ABC123.js"></script>
+<link rel="stylesheet" crossorigin href="/34-the-quiz-haircare/assets/index-XYZ789.css">
+```
+
+2. **Prevention**:
+   - Add `dist/` to `.gitignore` (already should be)
+   - Never copy contents from `dist/index.html` back to source
+   - Review PRs for accidental asset reference changes in `index.html`
+
+3. **If you see this error**:
+   - Check `index.html` in the repo for hardcoded asset references
+   - Replace with `/src/main.tsx` reference
+   - Remove any `<link rel="stylesheet" href="/assets/...">` lines (Vite adds these at build time)
+
+**Git command to fix**:
+```bash
+# View what changed in index.html
+git diff index.html
+
+# If it shows hardcoded assets, restore the source version
+git checkout HEAD~1 -- index.html
+# Or manually edit to use /src/main.tsx
 ```
 
 ### Issue 7: CVG Events Not Firing
