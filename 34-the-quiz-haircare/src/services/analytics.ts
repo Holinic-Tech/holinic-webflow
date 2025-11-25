@@ -1,5 +1,8 @@
 // Analytics service for GA, GTM, and CVG tracking
-// Event names and properties match Flutter implementation exactly
+// Event names and properties match Flutter track_g_a_event.dart EXACTLY
+//
+// CRITICAL: Flutter uses dataLayer.push() as PRIMARY with gtag() as FALLBACK
+// CRITICAL: Flutter uses q_name and q_email (not name/email) to avoid GA conflicts
 
 declare global {
   interface Window {
@@ -11,41 +14,118 @@ declare global {
 
 interface CVGConfig {
   method: 'event' | 'track';
-  event: string;
+  event?: string;
+  eventName?: string;
   properties?: Record<string, unknown>;
   eventId?: string;
   profileProperties?: Record<string, unknown>;
   aliases?: string[];
 }
 
-// Google Analytics tracking
-export function trackGA(eventName: string, properties: Record<string, unknown> = {}) {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', eventName, properties);
-    console.log('[GA]', eventName, properties);
-  }
+// Store reference to get quiz position - will be set by useQuiz hook
+let getQuizPositionFn: (() => number) | null = null;
+
+export function setQuizPositionGetter(fn: () => number) {
+  getQuizPositionFn = fn;
 }
 
-// Google Tag Manager dataLayer push
-export function trackGTM(eventName: string, properties: Record<string, unknown> = {}) {
+function getCurrentQuizPosition(): number {
+  return getQuizPositionFn ? getQuizPositionFn() : 0;
+}
+
+/**
+ * Core GA tracking function - matches Flutter track_g_a_event.dart EXACTLY
+ *
+ * Flutter implementation:
+ * 1. Creates params with event, event_category, position
+ * 2. Adds optional question_id, question, selected_answer
+ * 3. Uses q_name/q_email (NOT name/email) to avoid GA conflicts
+ * 4. Uses dataLayer.push() as PRIMARY, gtag() as FALLBACK
+ */
+export function trackGAEvent(
+  eventName: string,
+  questionId?: string,
+  question?: string,
+  selectedAnswer?: string[],
+  name?: string,
+  email?: string,
+  positionOverride?: number
+) {
+  // Get position from override or store
+  const position = positionOverride ?? getCurrentQuizPosition();
+
+  // Build params exactly like Flutter does
+  const params: Record<string, unknown> = {
+    event: eventName,
+    event_category: 'Quiz',
+    position: position,
+  };
+
+  // Add optional parameters if they exist (matches Flutter null checks)
+  if (questionId) params.question_id = questionId;
+  if (question) params.question = question;
+
+  // selected_answer is always an array (even if empty)
+  params.selected_answer = selectedAnswer ?? [];
+
+  // CRITICAL: Use q_name and q_email to avoid conflicts with GA reserved fields
+  // Flutter comment: "Use q_name and q_email field names to avoid conflicts"
+  if (name && name.trim()) params.q_name = name;
+  if (email && email.trim()) params.q_email = email;
+
+  // PRIMARY: dataLayer.push (Flutter does this first)
   if (typeof window !== 'undefined' && window.dataLayer) {
-    window.dataLayer.push({
-      event: eventName,
-      ...properties,
-    });
-    console.log('[GTM]', eventName, properties);
+    window.dataLayer.push(params);
+    console.log('[dataLayer.push]', eventName, params);
+  } else if (typeof window !== 'undefined' && window.gtag) {
+    // FALLBACK: gtag only if dataLayer unavailable
+    window.gtag('event', eventName, params);
+    console.log('[gtag fallback]', eventName, params);
   }
 }
 
-// CVG (Customer Value Generation) tracking
+// CVG (Customer Value Generation) tracking - separate from GA
 export function trackCVG(config: CVGConfig) {
   if (typeof window !== 'undefined' && window.cvg) {
     window.cvg(config);
-    console.log('[CVG]', config.event, config.properties);
+    console.log('[CVG]', config.event || config.eventName, config.properties);
   }
 }
 
-// Track question answered - matches Flutter event structure exactly
+// ============================================================================
+// EVENT TRACKING FUNCTIONS - Match Flutter's 16 events exactly
+// ============================================================================
+
+/**
+ * Quiz Viewed - fires on hero screen load
+ * Flutter: image_background_ques_body_v3_widget.dart:95
+ */
+export function trackQuizViewed(position: number = 0) {
+  trackGAEvent('Quiz Viewed', undefined, undefined, [], undefined, undefined, position);
+}
+
+/**
+ * Quiz Started - fires when user clicks start button
+ * Flutter: image_background_ques_body_widget.dart:405
+ */
+export function trackQuizStarted(position: number = 0) {
+  trackGAEvent('Quiz Started', undefined, undefined, [], undefined, undefined, position);
+
+  // Also track CVG event
+  trackCVG({
+    method: 'event',
+    event: 'Quiz Started',
+    properties: {
+      event_category: 'Quiz',
+      position: position,
+    },
+  });
+}
+
+/**
+ * Question Answered - fires when user selects an answer
+ * Flutter: home_page_widget.dart:647
+ */
 export function trackQuestionAnswered(
   questionId: string,
   questionText: string,
@@ -54,165 +134,161 @@ export function trackQuestionAnswered(
 ) {
   // Always convert to array to match Flutter structure
   const answerArray = Array.isArray(selectedAnswer) ? selectedAnswer : [selectedAnswer];
-
-  const properties = {
-    event_category: 'Quiz',
-    position: position,
-    question_id: questionId,
-    question: questionText,
-    selected_answer: answerArray,
-  };
-
-  // Title Case event name to match Flutter
-  trackGA('Question Answered', properties);
-  trackGTM('Question Answered', properties);
+  trackGAEvent('Question Answered', questionId, questionText, answerArray, undefined, undefined, position);
 }
 
-// Track quiz started - matches Flutter event structure
-export function trackQuizStarted() {
-  const properties = {
-    event_category: 'Quiz',
-    position: 0,
-    question_id: '',
-    question: '',
-    selected_answer: [] as string[],
-  };
-
-  trackGA('Quiz Started', properties);
-  trackGTM('Quiz Started', properties);
-  trackCVG({
-    method: 'event',
-    event: 'Quiz Started',
-    properties,
-  });
-}
-
-// Track quiz completed - matches Flutter event structure exactly
-export function trackQuizCompleted(
-  answers: Record<string, unknown>,
-  userInfo: { email: string; name: string; firstName: string; lastName: string }
-) {
-  const properties = {
-    event_category: 'Quiz',
-    answers,
-    ...userInfo,
-  };
-
-  trackGA('Quiz Completed', properties);
-  trackGTM('Completed Quiz', properties);
-  // CVG event matches Flutter webhookCallcvg exactly
-  trackCVG({
-    method: 'event',
-    event: 'Completed Quiz',
-    properties: {
-      answers,
-      name: userInfo.name,
-      firstName: userInfo.firstName,
-      lastName: userInfo.lastName,
-      email: userInfo.email,
-    },
-    profileProperties: { $email: userInfo.email },
-    aliases: [`urn:email:${userInfo.email}`],
-  });
-}
-
-// Track skip dialog opened - matches Flutter event structure
-export function trackSkipDialogOpened(position: number) {
-  const properties = {
-    event_category: 'Quiz',
-    position: position,
-    question_id: '',
-    question: '',
-    selected_answer: [] as string[],
-  };
-
-  trackGA('Opened Skip Dialog', properties);
-  trackGTM('Opened Skip Dialog', properties);
-}
-
-// Track skip dialog closed - matches Flutter event structure
-export function trackSkipDialogClosed(position: number) {
-  const properties = {
-    event_category: 'Quiz',
-    position: position,
-    question_id: '',
-    question: '',
-    selected_answer: [] as string[],
-  };
-
-  trackGA('Closed Skip Dialog', properties);
-  trackGTM('Closed Skip Dialog', properties);
-}
-
-// Track quiz skipped - matches Flutter SkipQuiz event
-export function trackSkipQuiz(position: number) {
-  const properties = {
-    event_category: 'Quiz',
-    position: position,
-    question_id: '',
-    question: '',
-    selected_answer: [] as string[],
-  };
-
-  trackGA('SkipQuiz', properties);
-  trackGTM('SkipQuiz', properties);
-}
-
-// Track quiz back navigation - matches Flutter Quiz Back event
+/**
+ * Quiz Back - fires when user clicks back button
+ * Flutter: header_with_progress_bar_widget.dart:119
+ */
 export function trackQuizBack(position: number) {
-  const properties = {
-    event_category: 'Quiz',
-    position: position,
-    question_id: '',
-    question: '',
-    selected_answer: [] as string[],
-  };
-
-  trackGA('Quiz Back', properties);
-  trackGTM('Quiz Back', properties);
+  trackGAEvent('Quiz Back', undefined, undefined, [], undefined, undefined, position);
 }
 
-// Track CTA clicked
-export function trackCTAClicked(destination: string) {
-  const properties = {
-    event_category: 'Quiz',
-    destination,
-  };
-
-  trackGA('Go to checkout', properties);
-  trackGTM('Go to checkout', properties);
+/**
+ * Opened Skip Dialog - fires when skip button is clicked
+ * Flutter: home_page_widget.dart:168
+ */
+export function trackSkipDialogOpened(position: number) {
+  trackGAEvent('Opened Skip Dialog', undefined, undefined, [], undefined, undefined, position);
 }
 
-// Track continued from pitch screen - matches Flutter event structure
-// pitchType maps to question field: 'simple' -> 'Simple Pitch', 'detailed' -> 'Detailed Pitch', 'dynamic' -> 'Dynamic Pitch'
+/**
+ * Closed Skip Dialog - fires when dialog is dismissed
+ * Flutter: skip_dialog_widget.dart:40
+ */
+export function trackSkipDialogClosed(position: number) {
+  trackGAEvent('Closed Skip Dialog', undefined, undefined, [], undefined, undefined, position);
+}
+
+/**
+ * SkipQuiz - fires when user confirms skip
+ * Flutter: skip_dialog_widget.dart:263
+ */
+export function trackSkipQuiz(position: number) {
+  trackGAEvent('SkipQuiz', undefined, undefined, [], undefined, undefined, position);
+}
+
+/**
+ * Continued From Pitch - fires when user clicks continue on pitch screen
+ * Flutter: home_page_widget.dart:488
+ */
 export function trackContinuedFromPitch(pitchType: string, position: number) {
-  // Map pitch type to human-readable name
+  // Map pitch type to human-readable name (matches Flutter)
   const pitchNameMap: Record<string, string> = {
     simple: 'Simple Pitch',
     detailed: 'Detailed Pitch',
     dynamic: 'Dynamic Pitch',
   };
-
   const pitchName = pitchNameMap[pitchType] || pitchType;
 
-  const properties = {
-    event_category: 'Quiz',
-    position: position,
-    question_id: '',
-    question: pitchName,
-    selected_answer: [] as string[],
-  };
-
-  trackGA('Continued From Pitch', properties);
-  trackGTM('Continued From Pitch', properties);
+  trackGAEvent('Continued From Pitch', undefined, pitchName, [], undefined, undefined, position);
 }
 
-// Track result page view - matches Flutter event structure
-export function trackResultPageView() {
-  const properties = {
-    event_category: 'Quiz',
-  };
+/**
+ * Quiz Completed - fires before email submit
+ * Flutter: login_component_widget.dart:52
+ */
+export function trackQuizCompleted(
+  position: number,
+  name?: string,
+  email?: string
+) {
+  trackGAEvent('Quiz Completed', undefined, undefined, [], name, email, position);
 
-  trackGA('Viewed Results Page', properties);
-  trackGTM('Viewed Results Page', properties);
+  // Also track CVG event with user info
+  if (email) {
+    trackCVG({
+      method: 'event',
+      event: 'Quiz Completed',
+      properties: {
+        event_category: 'Quiz',
+        position: position,
+      },
+      profileProperties: email ? { $email: email } : undefined,
+      aliases: email ? [`urn:email:${email}`] : undefined,
+    });
+  }
+}
+
+/**
+ * Quiz Submitted - fires after successful email submission
+ * Flutter: login_component_widget.dart:623
+ */
+export function trackQuizSubmitted(
+  position: number,
+  name: string,
+  email: string
+) {
+  trackGAEvent('Quiz Submitted', undefined, undefined, [], name, email, position);
+
+  // Also track CVG event
+  trackCVG({
+    method: 'event',
+    event: 'Completed Quiz',
+    properties: {
+      event_category: 'Quiz',
+      position: position,
+      q_name: name,
+      q_email: email,
+    },
+    profileProperties: { $email: email },
+    aliases: [`urn:email:${email}`],
+  });
+}
+
+/**
+ * Viewed Results Page - fires on results page load
+ * Flutter: dashboard_widget.dart:68
+ */
+export function trackResultPageView(position: number) {
+  trackGAEvent('Viewed Results Page', undefined, undefined, [], undefined, undefined, position);
+}
+
+/**
+ * Opened Plan Details - fires when plan card is opened
+ * Flutter: final_pitch_widget.dart:1887
+ */
+export function trackOpenedPlanDetails(position: number) {
+  trackGAEvent('Opened Plan Details', undefined, undefined, [], undefined, undefined, position);
+}
+
+/**
+ * Closed Plan Details - fires when plan card is closed
+ * Flutter: pitch_plan_dialog_widget.dart:50
+ */
+export function trackClosedPlanDetails(position: number) {
+  trackGAEvent('Closed Plan Details', undefined, undefined, [], undefined, undefined, position);
+}
+
+/**
+ * Go to checkout - fires when checkout button is clicked
+ * Flutter: pitch_plan_dialog_widget.dart:686
+ */
+export function trackGoToCheckout(position: number) {
+  trackGAEvent('Go to checkout', undefined, undefined, [], undefined, undefined, position);
+}
+
+/**
+ * Go to next checkout step - secondary checkout variant
+ * Flutter: pitch_plan_dialog_copy_widget.dart:737
+ */
+export function trackGoToNextCheckoutStep(position: number) {
+  trackGAEvent('Go to next checkout step', undefined, undefined, [], undefined, undefined, position);
+}
+
+// ============================================================================
+// LEGACY FUNCTION - Keep for backwards compatibility but redirect to new function
+// ============================================================================
+
+/**
+ * @deprecated Use trackGoToCheckout instead
+ */
+export function trackCTAClicked(destination: string, position: number = 0) {
+  // Map old destination-based call to new checkout tracking
+  if (destination.includes('checkout')) {
+    trackGoToCheckout(position);
+  } else {
+    trackGoToNextCheckoutStep(position);
+  }
 }

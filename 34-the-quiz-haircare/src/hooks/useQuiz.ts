@@ -9,7 +9,7 @@ import {
   shouldShowProgressBar,
 } from '../data/screenFlow';
 import { questions } from '../data/questions';
-import { trackQuestionAnswered, trackQuizStarted, trackQuizBack } from '../services';
+import { trackQuestionAnswered, trackQuizStarted, trackQuizBack, trackQuizViewed, setQuizPositionGetter } from '../services';
 import { redirectToCheckout } from '../utils';
 import type { QuestionId } from '../types';
 
@@ -205,11 +205,17 @@ export function useQuiz() {
 
   // Initialize quiz
   const initializeQuiz = useCallback(() => {
+    // Set up position getter for analytics service (allows analytics to get current position)
+    setQuizPositionGetter(() => currentScreenIndex);
+
     if (!startedAt) {
       startQuiz();
-      trackQuizStarted();
+      // Track Quiz Viewed on initial page load (matches Flutter image_background_ques_body_v3_widget.dart:95)
+      trackQuizViewed(0);
+      // Track Quiz Started when user initiates quiz (matches Flutter image_background_ques_body_widget.dart:405)
+      trackQuizStarted(0);
     }
-  }, [startedAt, startQuiz]);
+  }, [startedAt, startQuiz, currentScreenIndex]);
 
   return {
     // Screen state

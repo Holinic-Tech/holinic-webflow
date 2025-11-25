@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useQuizStore, useUserStore } from '../../store';
 import { getCouponCode } from '../../data';
-import { trackQuizCompleted, trackCTAClicked, trackResultPageView } from '../../services';
+import { trackQuizCompleted, trackGoToCheckout, trackResultPageView, trackQuizSubmitted } from '../../services';
 import { submitToWebhook } from '../../services';
 import { FloatingTimerBar } from './FloatingTimerBar';
 import {
@@ -72,23 +72,23 @@ export function ResultPage() {
   // Random matching score (89-96%), set once on page load
   const [matchingScore] = useState(() => Math.floor(Math.random() * 8) + 89);
 
+  // Position for tracking (results page is typically at the end of quiz flow)
+  const RESULTS_POSITION = 19;
+
   useEffect(() => {
     const initializeResults = async () => {
       setIsLoading(true);
 
-      // Track result page view
-      trackResultPageView();
+      // Track result page view - matches Flutter dashboard_widget.dart:68
+      trackResultPageView(RESULTS_POSITION);
 
       // Track quiz completion and submit to webhook
       if (userInfo.email) {
-        trackQuizCompleted(answers, {
-          email: userInfo.email,
-          name: userInfo.name,
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-        });
+        // Track Quiz Completed - fires before email submit (Flutter: login_component_widget.dart:52)
+        trackQuizCompleted(RESULTS_POSITION, userInfo.name, userInfo.email);
 
-        await submitToWebhook(
+        // Submit to webhook
+        const webhookSuccess = await submitToWebhook(
           answers,
           {
             name: userInfo.name,
@@ -97,6 +97,11 @@ export function ResultPage() {
             email: userInfo.email,
           }
         );
+
+        // Track Quiz Submitted - fires after successful email submission (Flutter: login_component_widget.dart:623)
+        if (webhookSuccess) {
+          trackQuizSubmitted(RESULTS_POSITION, userInfo.name, userInfo.email);
+        }
       }
 
       setIsLoading(false);
@@ -115,7 +120,8 @@ export function ResultPage() {
       couponCode
     );
 
-    trackCTAClicked(checkoutUrl);
+    // Track Go to checkout - matches Flutter pitch_plan_dialog_widget.dart:686
+    trackGoToCheckout(RESULTS_POSITION);
     window.location.href = checkoutUrl;
   };
 
