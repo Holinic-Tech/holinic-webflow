@@ -47,14 +47,14 @@ export function ResultPage() {
   // Get values from answers
   const hairConcern = (answers.hairConcern as string) || 'concern_mixed';
   const hairGoal = (answers.hairGoal as string) || 'goal_both';
-  const age = (answers.age as string) || 'age_30_39';
+  const age = (answers.age as string) || 'age_30to39';
   const diet = answers.diet as string;
 
   // Calculate coupon code
   const couponCode = getCouponCode(hairConcern, diet);
 
   // Get personalized content
-  const ageAvatar = ageAvatars[age] || ageAvatars.age_30_39;
+  const ageAvatar = ageAvatars[age] || ageAvatars.age_30to39;
   const ageSummary = ageSummaryText[age] || 'Summary';
   const contextImage = contextImages[hairConcern] || contextImages.concern_mixed;
   const timelineImage = timelineImages[hairConcern] || timelineImages.concern_mixed;
@@ -332,18 +332,18 @@ export function ResultPage() {
         <div className="mb-5">
           <div
             ref={carouselRef}
-            className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+            className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {testimonials.map((image, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 snap-center"
+                className="flex-shrink-0 snap-center w-[85vw] max-w-[500px] flex items-center justify-center"
               >
                 <img
                   src={image}
                   alt={`Testimonial ${index + 1}`}
-                  className="h-[350px] w-auto rounded-lg"
+                  className="max-w-full max-h-[400px] w-auto h-auto rounded-lg object-contain"
                   loading="lazy"
                 />
               </div>

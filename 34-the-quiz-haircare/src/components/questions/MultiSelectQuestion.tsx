@@ -33,23 +33,23 @@ export function MultiSelectQuestion({
   };
 
   return (
-    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px]">
-      {/* Question text - Flutter: font 27px, centered, horizontal padding 15px */}
-      <div className="px-[15px]">
-        <h2 className="text-[20px] md:text-[27px] font-medium text-[#3A2D32] text-center font-inter">
+    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px] h-[calc(100dvh-170px)] flex flex-col overflow-hidden">
+      {/* Question text - smaller on mobile when many options */}
+      <div className="px-[10px] flex-shrink-0">
+        <h2 className="text-[17px] md:text-[20px] font-medium text-[#3A2D32] text-center font-inter">
           {questionText}
         </h2>
       </div>
 
       {/* Subtitle - Flutter: font 12px, margin-top 20px */}
       {subtitle && (
-        <p className="text-[#3A2D32] text-xs mt-5 text-center font-inter font-normal">
+        <p className="text-[#3A2D32] text-xs mt-1 text-center font-inter font-normal flex-shrink-0">
           {subtitle}
         </p>
       )}
 
-      {/* Options list - Flutter: ListView with 15px separator, margin-top 32px */}
-      <div className="mt-8 space-y-[15px]" role="group" aria-label={questionText}>
+      {/* Options list - flex container to distribute space */}
+      <div className="mt-3 flex flex-col gap-[6px] flex-1 min-h-0" role="group" aria-label={questionText}>
         {regularOptions.map((option, index) => {
           const isSelected = selectedAnswers.includes(option.id);
           const hasImage = 'image' in option && option.image;
@@ -60,7 +60,7 @@ export function MultiSelectQuestion({
               <button
                 key={option.id}
                 onClick={() => onToggle(option.id)}
-                className="w-full relative flex items-center rounded-[11px] overflow-hidden transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] min-h-[70px]"
+                className="w-full relative flex items-center rounded-[10px] overflow-hidden transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] flex-1 min-h-0"
                 style={{
                   backgroundColor: isSelected ? '#E8EBFC' : '#FFFFFF',
                   boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
@@ -70,8 +70,8 @@ export function MultiSelectQuestion({
                 aria-checked={isSelected}
                 data-option-index={index}
               >
-                {/* Image on left */}
-                <div className="w-[70px] h-[70px] flex-shrink-0 bg-gray-100 overflow-hidden">
+                {/* Image on left - square aspect ratio */}
+                <div className="h-full aspect-square flex-shrink-0 bg-gray-100 overflow-hidden">
                   <img
                     src={(option as CheckboxAnswer & { image: string }).image}
                     alt={option.title}
@@ -80,21 +80,21 @@ export function MultiSelectQuestion({
                   />
                 </div>
 
-                {/* Title in center - increased text size for readability */}
-                <span className="flex-1 px-3 py-2 text-[15px] font-medium text-[#3A2D32] text-left font-inter leading-snug">
+                {/* Title in center */}
+                <span className="flex-1 px-2 text-[13px] font-medium text-[#3A2D32] text-left font-inter leading-tight">
                   {option.title}
                 </span>
 
-                {/* Checkbox on right - Flutter: rounded 3px, 18px icon */}
+                {/* Checkbox on right */}
                 <div
-                  className="mr-4 w-6 h-6 rounded-[3px] flex items-center justify-center flex-shrink-0 transition-colors"
+                  className="mr-3 w-5 h-5 rounded-[3px] flex items-center justify-center flex-shrink-0 transition-colors"
                   style={{
                     backgroundColor: isSelected ? '#7375A6' : '#FFFFFF',
                     border: isSelected ? '1.5px solid transparent' : '1.5px solid #7375A6',
                   }}
                 >
                   <svg
-                    className="w-[18px] h-[18px]"
+                    className="w-[14px] h-[14px]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="white"
@@ -106,12 +106,12 @@ export function MultiSelectQuestion({
             );
           }
 
-          // Text-only multi-select - Flutter: padding 20,17,20,17, row layout
+          // Text-only multi-select
           return (
             <button
               key={option.id}
               onClick={() => onToggle(option.id)}
-              className="w-full flex items-center justify-between px-5 py-4 rounded-[11px] transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] min-h-[56px]"
+              className="w-full flex items-center justify-between px-4 py-2 rounded-[10px] transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] flex-1 min-h-0"
               style={{
                 backgroundColor: isSelected ? '#E8EBFC' : '#FFFFFF',
                 boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
@@ -121,21 +121,21 @@ export function MultiSelectQuestion({
               aria-checked={isSelected}
               data-option-index={index}
             >
-              {/* Title on left - increased for readability */}
-              <span className="text-[15px] font-medium text-[#3A2D32] text-left font-inter leading-snug pr-3">
+              {/* Title on left */}
+              <span className="text-[13px] font-medium text-[#3A2D32] text-left font-inter leading-tight pr-2">
                 {option.title}
               </span>
 
-              {/* Checkbox on right - Flutter: rounded 3px, border 1.5px */}
+              {/* Checkbox on right */}
               <div
-                className="w-6 h-6 rounded-[3px] flex items-center justify-center flex-shrink-0 transition-colors"
+                className="w-5 h-5 rounded-[3px] flex items-center justify-center flex-shrink-0 transition-colors"
                 style={{
                   backgroundColor: isSelected ? '#7375A6' : '#FFFFFF',
                   border: isSelected ? '1.5px solid transparent' : '1.5px solid #7375A6',
                 }}
               >
                 <svg
-                  className="w-[18px] h-[18px]"
+                  className="w-[14px] h-[14px]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="white"
@@ -146,26 +146,26 @@ export function MultiSelectQuestion({
             </button>
           );
         })}
-
-        {/* "None of the above" button - centered, acts as skip */}
-        {noneOption && (
-          <div className="flex justify-center pt-2">
-            <button
-              onClick={handleNoneClick}
-              className="px-8 py-[17px] rounded-[11px] transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"
-              style={{
-                backgroundColor: '#FFFFFF',
-                boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
-                border: '1px solid transparent',
-              }}
-            >
-              <span className="text-sm font-medium text-[#3A2D32] font-inter">
-                {noneOption.title}
-              </span>
-            </button>
-          </div>
-        )}
       </div>
+
+      {/* "None of the above" button - centered, acts as skip */}
+      {noneOption && (
+        <div className="flex justify-center pt-2 pb-3 flex-shrink-0">
+          <button
+            onClick={handleNoneClick}
+            className="px-6 py-2 rounded-[10px] transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"
+            style={{
+              backgroundColor: '#FFFFFF',
+              boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
+              border: '1px solid transparent',
+            }}
+          >
+            <span className="text-[13px] font-medium text-[#3A2D32] font-inter">
+              {noneOption.title}
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

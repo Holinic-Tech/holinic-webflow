@@ -10,6 +10,7 @@ interface NavigationButtonsProps {
 }
 
 // Matches Flutter FooterButtonWidget - orange Continue button
+// Fixed to bottom of screen so it's always visible
 export function NavigationButtons({
   onBack,
   onNext,
@@ -20,51 +21,54 @@ export function NavigationButtons({
   showBackButton = true,
 }: NavigationButtonsProps) {
   return (
-    <div className="max-w-[500px] mx-auto w-full px-5 pb-5 mt-6">
-      {/* Main navigation row */}
-      <div className="flex gap-3">
-        {/* Back button - only show if can go back and showBackButton is true */}
-        {showBackButton && canGoBack && onBack && (
-          <button
-            onClick={onBack}
-            className="py-3 px-6 rounded-[10px] font-medium transition-all duration-200 bg-white text-[#3A2D32] border border-gray-200 hover:bg-gray-50 active:scale-[0.98] font-inter"
-            style={{
-              boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
-            }}
-          >
-            Back
-          </button>
-        )}
+    // Fixed bottom navigation - spacer handled by parent component
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40">
+        <div className="max-w-[500px] mx-auto w-full px-5 py-4">
+          {/* Main navigation row */}
+          <div className="flex gap-3">
+            {/* Back button - only show if can go back and showBackButton is true */}
+            {showBackButton && canGoBack && onBack && (
+              <button
+                onClick={onBack}
+                className="py-3 px-6 rounded-[10px] font-medium transition-all duration-200 bg-white text-[#3A2D32] border border-gray-200 hover:bg-gray-50 active:scale-[0.98] font-inter"
+                style={{
+                  boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
+                }}
+              >
+                Back
+              </button>
+            )}
 
-        {/* Continue button - Flutter: orange #FE6903, radius 10, full width */}
-        <button
-          onClick={onNext}
-          disabled={!canGoNext}
-          className={`
-            flex-1 py-4 px-6 rounded-[10px] font-medium transition-all duration-200 font-inter text-white
-            ${canGoNext
-              ? 'hover:brightness-110 active:scale-[0.98] shadow-md hover:shadow-lg'
-              : 'opacity-50 cursor-not-allowed'
-            }
-          `}
-          style={{
-            backgroundColor: '#FE6903',
-          }}
-          aria-disabled={!canGoNext}
-        >
-          {isLastQuestion ? 'See Results' : 'Continue'}
-        </button>
-      </div>
+            {/* Continue button - Flutter: orange #FE6903, radius 10, full width */}
+            <button
+              onClick={onNext}
+              disabled={!canGoNext}
+              className={`
+                flex-1 py-4 px-6 rounded-[10px] font-medium transition-all duration-200 font-inter text-white
+                ${canGoNext
+                  ? 'hover:brightness-110 active:scale-[0.98] shadow-md hover:shadow-lg'
+                  : 'opacity-50 cursor-not-allowed'
+                }
+              `}
+              style={{
+                backgroundColor: '#FE6903',
+              }}
+              aria-disabled={!canGoNext}
+            >
+              {isLastQuestion ? 'See Results' : 'Continue'}
+            </button>
+          </div>
 
-      {/* Skip button - hidden by default in Flutter footer */}
-      {showSkipButton && (
-        <button
-          onClick={() => {}}
-          className="w-full text-[#696969] text-sm hover:text-[#3A2D32] transition-colors py-3 mt-2 font-inter underline"
-        >
-          Skip the quiz
-        </button>
-      )}
+          {/* Skip button - hidden by default in Flutter footer */}
+          {showSkipButton && (
+            <button
+              onClick={() => {}}
+              className="w-full text-[#696969] text-sm hover:text-[#3A2D32] transition-colors py-2 mt-1 font-inter underline"
+            >
+              Skip the quiz
+            </button>
+          )}
+        </div>
     </div>
   );
 }

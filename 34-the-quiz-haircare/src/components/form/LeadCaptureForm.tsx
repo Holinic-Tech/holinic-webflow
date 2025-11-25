@@ -65,27 +65,27 @@ export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
   };
 
   return (
-    <div className="min-h-[calc(100vh-60px)] flex flex-col bg-white">
-      <div className="flex-1 max-w-[500px] mx-auto w-full px-[37px] py-6">
+    <div className="h-[calc(100dvh-60px)] flex flex-col bg-white overflow-hidden">
+      <div className="flex-1 max-w-[500px] mx-auto w-full px-[30px] py-4 overflow-hidden flex flex-col">
         {/* Header - "Your results are ready!" */}
-        <h2 className="text-[28px] font-medium text-[#3A2D32] text-center font-inter">
+        <h2 className="text-[24px] font-medium text-[#3A2D32] text-center font-inter flex-shrink-0">
           Your results are ready!
         </h2>
 
         {/* Subheading */}
-        <p className="text-base font-medium text-[#3A2D32] text-center mt-[9px] font-inter">
+        <p className="text-sm font-medium text-[#3A2D32] text-center mt-1 font-inter flex-shrink-0">
           On the next screen, you'll see...
         </p>
 
         {/* Personalized probability statement */}
-        <p className="text-xs text-[#3A2D32] text-center mt-[35px] font-inter">
+        <p className="text-xs text-[#3A2D32] text-center mt-4 font-inter flex-shrink-0">
           Probability to fix your {concernText} in 14 days 🔒
         </p>
 
         {/* Progress Bar - 80% filled */}
-        <div className="w-full max-w-[470px] mx-auto mt-[10px]">
+        <div className="w-full max-w-[470px] mx-auto mt-2 flex-shrink-0">
           <div
-            className="w-full h-[22px] rounded-[20px] overflow-hidden"
+            className="w-full h-[20px] rounded-[20px] overflow-hidden"
             style={{ backgroundColor: '#D9D9D9' }}
           >
             <div
@@ -100,15 +100,15 @@ export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
 
         {/* Form Card - Gradient background */}
         <div
-          className="mt-[30px] rounded-[6px] px-[11px] py-[30px]"
+          className="mt-4 rounded-[6px] px-[10px] py-4 flex-shrink-0"
           style={{
             background: 'linear-gradient(135deg, rgba(115, 117, 166, 0.25) 0%, rgba(177, 186, 227, 0.6) 50%, rgba(242, 218, 198, 0.62) 100%)',
             border: '1px solid #7375A6',
           }}
         >
-          <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-3">
             {/* Name field */}
-            <div className="px-[10px]">
+            <div className="px-[8px]">
               <label
                 htmlFor="name"
                 className="block text-sm font-normal text-[#3A2D32] mb-1 font-inter"
@@ -120,7 +120,7 @@ export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
                 type="text"
                 placeholder="Enter your name"
                 className={`
-                  w-full px-4 py-3 rounded-[6px] text-base font-inter
+                  w-full px-3 py-2.5 rounded-[6px] text-base font-inter
                   transition-colors duration-200
                   focus:outline-none
                   ${errors.name
@@ -142,7 +142,7 @@ export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
             </div>
 
             {/* Email field */}
-            <div className="px-[10px] pt-[15px]">
+            <div className="px-[8px] pt-2">
               <label
                 htmlFor="email"
                 className="block text-sm font-normal text-[#3A2D32] mb-1 font-inter"
@@ -154,7 +154,7 @@ export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
                 type="email"
                 placeholder="Enter your email"
                 className={`
-                  w-full px-4 py-3 rounded-[6px] text-base font-inter
+                  w-full px-3 py-2.5 rounded-[6px] text-base font-inter
                   transition-colors duration-200
                   focus:outline-none
                   ${errors.email
@@ -180,12 +180,12 @@ export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
             </div>
 
             {/* Submit button - Orange #FF6E00, fully rounded */}
-            <div className="px-[10px] pt-[20px]">
+            <div className="px-[8px] pt-3">
               <button
                 type="submit"
                 disabled={!isValid || isSubmitting}
                 className={`
-                  w-full h-[50px] rounded-full font-medium text-base font-inter text-white
+                  w-full h-[44px] rounded-full font-medium text-base font-inter text-white
                   transition-all duration-200
                   ${isValid && !isSubmitting
                     ? 'hover:brightness-110 active:scale-[0.98]'
@@ -222,8 +222,8 @@ export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
           </form>
         </div>
 
-        {/* Security notice */}
-        <p className="text-xs text-center mt-[35px] px-[5px] font-inter" style={{ color: '#C5C5C5' }}>
+        {/* Security notice - at bottom */}
+        <p className="text-xs text-center mt-4 px-[5px] font-inter flex-shrink-0 pb-2" style={{ color: '#C5C5C5' }}>
           Your info is 100% secure and never shared
         </p>
       </div>

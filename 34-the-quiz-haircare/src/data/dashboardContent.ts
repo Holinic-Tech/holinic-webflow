@@ -1,19 +1,19 @@
 // Dashboard content data - personalized based on quiz answers
 
-// Age avatar images
+// Age avatar images - keys must match question answer IDs in questions.ts
 export const ageAvatars: Record<string, string> = {
-  age_18_29: 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b37050731caef7208325c3_Under%2018.svg',
-  age_30_39: 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b3705002a6a9516930e533_25-34.svg',
-  age_40_49: 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b3705003f42517011b493e_35-44.svg',
-  age_50_plus: 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b370508968423fab443088_45%2B.svg',
+  age_18to29: 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b37050731caef7208325c3_Under%2018.svg',
+  age_30to39: 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b3705002a6a9516930e533_25-34.svg',
+  age_40to49: 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b3705003f42517011b493e_35-44.svg',
+  'age_50+': 'https://uploads-ssl.webflow.com/62cbaa353a301eb715aa33d0/66b370508968423fab443088_45%2B.svg',
 };
 
-// Age summary text
+// Age summary text - keys must match question answer IDs in questions.ts
 export const ageSummaryText: Record<string, string> = {
-  age_18_29: 'In my 20s',
-  age_30_39: 'In my 30s',
-  age_40_49: 'In my 40s',
-  age_50_plus: 'Age 50+',
+  age_18to29: 'In my 20s',
+  age_30to39: 'In my 30s',
+  age_40to49: 'In my 40s',
+  'age_50+': 'Age 50+',
 };
 
 // Context images shown above the timeline (condition-specific illustration)

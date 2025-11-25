@@ -72,15 +72,15 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   }, [progress, onComplete]);
 
   return (
-    <div className="min-h-[calc(100vh-60px)] flex flex-col bg-white">
-      <div className="flex-1 max-w-[500px] mx-auto w-full px-4 py-6">
+    <div className="h-[calc(100dvh-60px)] flex flex-col bg-white overflow-hidden">
+      <div className="flex-1 max-w-[500px] mx-auto w-full px-4 py-4 overflow-hidden flex flex-col">
         {/* Title - Flutter: 28px, Inter, weight 500 */}
-        <h2 className="text-[28px] font-medium text-[#3A2D32] text-center font-inter mb-6">
+        <h2 className="text-[22px] md:text-[28px] font-medium text-[#3A2D32] text-center font-inter mb-3 flex-shrink-0">
           Creating your personalized haircare program
         </h2>
 
-        {/* Image Carousel - Flutter: 250px mobile, 317px desktop */}
-        <div className="relative w-full h-[250px] md:h-[317px] overflow-hidden my-5 md:my-10">
+        {/* Image Carousel - flex to fill available space */}
+        <div className="relative w-full flex-1 min-h-0 overflow-hidden my-2">
           <div
             className="flex transition-transform duration-[800ms] ease-in-out h-full"
             style={{
@@ -103,9 +103,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         </div>
 
         {/* Progress Bar - Flutter: 30px height, 20px radius */}
-        <div className="w-full max-w-[470px] mx-auto my-5">
+        <div className="w-full max-w-[470px] mx-auto my-3 flex-shrink-0">
           <div
-            className="w-full h-[30px] rounded-[20px] overflow-hidden"
+            className="w-full h-[24px] rounded-[20px] overflow-hidden"
             style={{ backgroundColor: '#D9D9D9' }}
           >
             <div
@@ -119,12 +119,12 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         </div>
 
         {/* Checkpoint List - Flutter: staggered slide-in animation */}
-        <div className="mt-5 space-y-3">
+        <div className="mt-2 space-y-2 flex-shrink-0 pb-2">
           {checkpoints.map((checkpoint, index) => (
             <div
               key={index}
               className={`
-                flex items-center gap-3 px-4 py-2
+                flex items-center gap-3 px-4 py-1
                 transition-all duration-[610ms] ease-out
                 ${visibleCheckpoints.includes(index)
                   ? 'opacity-100 translate-x-0'
@@ -133,9 +133,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
               `}
             >
               {/* Checkmark icon - green rounded square */}
-              <div className="w-[22px] h-[22px] rounded-[4px] bg-green-500 flex items-center justify-center flex-shrink-0">
+              <div className="w-[20px] h-[20px] rounded-[4px] bg-green-500 flex items-center justify-center flex-shrink-0">
                 <svg
-                  className="w-4 h-4 text-white"
+                  className="w-3.5 h-3.5 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -150,7 +150,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
               </div>
 
               {/* Checkpoint text */}
-              <span className="text-[#3A2D32] font-inter font-medium">
+              <span className="text-[14px] text-[#3A2D32] font-inter font-medium">
                 {checkpoint}
               </span>
             </div>

@@ -17,7 +17,6 @@ export function ImageCardQuestion({
   options,
   selectedAnswers,
   onSelect,
-  variant = 'large',
   questionId,
 }: ImageCardQuestionProps) {
   // Check if this is a question with a special "last item centered" layout
@@ -31,44 +30,34 @@ export function ImageCardQuestion({
 
   // Flutter: 3 cols if > 6 options, else 2 cols
   const gridCols = gridOptions.length > 6 ? 'grid-cols-3' : 'grid-cols-2';
-  // Flutter: 85px height if >6 options, 150px otherwise (mobile)
-  const imageHeight = variant === 'large'
-    ? (gridOptions.length > 6 ? 'h-[85px]' : 'h-[150px]')
-    : 'h-[80px]';
 
   const renderOption = (option: ImageAnswer, index: number, isCentered = false) => {
     const isSelected = selectedAnswers.includes(option.id);
     const hasImage = option.image && option.image !== '';
-
-    // Reduce font size for long text (25+ characters like "Custom nutrition protocol")
-    const isLongText = option.answer.length >= 20;
-    const textSizeClass = isLongText ? 'text-xs' : 'text-sm';
 
     return (
       <button
         key={option.id}
         onClick={() => onSelect(option.id)}
         className={`
-          relative flex flex-col overflow-hidden
+          relative flex flex-col overflow-hidden h-full
           transition-all duration-200 ease-out
           hover:scale-[1.02] active:scale-[0.98]
-          ${hasImage ? 'rounded-[20px]' : 'rounded-[10px]'}
-          ${isCentered ? 'w-[48%]' : ''}
+          ${hasImage ? 'rounded-[15px]' : 'rounded-[10px]'}
+          ${isCentered ? 'w-[48%] h-auto' : ''}
         `}
         style={{
-          // Flutter: boxShadow blur 14, color #DAE1FE at 0.7 opacity, offset 0,3
           boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
-          // Flutter: selected = secondaryViolet, else white
           backgroundColor: isSelected ? '#E8EBFC' : '#FFFFFF',
         }}
         role="radio"
         aria-checked={isSelected}
         data-option-index={index}
       >
-        {/* Image section - Flutter: rounded top corners 10px */}
+        {/* Image section - flexes to fill available space */}
         {hasImage && (
           <div
-            className={`w-full ${imageHeight} bg-white rounded-t-[10px] overflow-hidden`}
+            className="w-full flex-1 min-h-0 bg-white rounded-t-[10px] overflow-hidden"
             style={{
               backgroundImage: `url(${option.image})`,
               backgroundSize: 'cover',
@@ -77,17 +66,15 @@ export function ImageCardQuestion({
           />
         )}
 
-        {/* Answer text section - taller height for long text to allow wrapping */}
-        {/* Flutter: selected = accent2 (#DAE1FE lighter), else secondary (#7375A6 plum) */}
+        {/* Answer text section - fixed height label for uniform appearance */}
         <div
-          className={`w-full ${isLongText ? 'min-h-[38px] py-1' : 'h-[30px] md:h-[40px]'} flex items-center justify-center px-[5px] rounded-b-[10px]`}
+          className="w-full h-[36px] px-1 flex items-center justify-center rounded-b-[10px] flex-shrink-0"
           style={{
             backgroundColor: isSelected ? '#B1BAE3' : '#7375A6',
           }}
         >
-          {/* Flutter: selected = primaryText (#3A2D32), else primary (white) */}
           <span
-            className={`${textSizeClass} font-medium text-center leading-tight font-inter`}
+            className="text-[11px] font-medium text-center leading-tight font-inter"
             style={{
               color: isSelected ? '#3A2D32' : '#FFFFFF',
             }}
@@ -100,31 +87,32 @@ export function ImageCardQuestion({
   };
 
   return (
-    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px]">
+    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px] h-[calc(100dvh-90px)] flex flex-col overflow-hidden">
       {/* Question text - Flutter: font 20px mobile, 24px tablet, 27px desktop */}
-      <h2 className="text-xl md:text-2xl font-medium text-[#3A2D32] text-center font-inter">
+      <h2 className="text-lg md:text-xl font-medium text-[#3A2D32] text-center font-inter flex-shrink-0">
         {questionText}
       </h2>
 
       {/* Subtitle - Flutter: font 16px, margin-top 10px */}
       {subtitle && (
-        <p className="text-[#3A2D32] text-base mt-[10px] text-center font-inter font-normal">
+        <p className="text-[#3A2D32] text-sm mt-1 text-center font-inter font-normal flex-shrink-0">
           {subtitle}
         </p>
       )}
 
       {/* Options grid - Flutter: MasonryGridView, gap 10px, margin-top 32px */}
       <div
-        className={`grid ${gridCols} gap-[10px] mt-8`}
+        className={`grid ${gridCols} gap-[8px] mt-4 flex-1 min-h-0 auto-rows-fr`}
         role="radiogroup"
         aria-label={questionText}
+        style={{ gridAutoRows: '1fr' }}
       >
         {gridOptions.map((option, index) => renderOption(option, index))}
       </div>
 
       {/* Centered last option for special questions */}
       {lastOption && (
-        <div className="flex justify-center mt-[10px]">
+        <div className="flex justify-center mt-[8px] flex-shrink-0">
           {renderOption(lastOption, gridOptions.length, true)}
         </div>
       )}

@@ -18,21 +18,25 @@ export function TextOptionQuestion({
   onSelect,
   showImages = false,
 }: TextOptionQuestionProps) {
+  // Adaptive sizing: reduce spacing and padding when there are many options
+  const isCompact = options.length >= 6;
+  const isVeryCompact = options.length >= 8;
+
   return (
-    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px]">
-      {/* Question text - Flutter: font 20px mobile, 24px tablet, 27px desktop */}
-      <h2 className="text-xl md:text-2xl font-medium text-[#3A2D32] text-center font-inter">
+    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px] pb-6">
+      {/* Question text - smaller on mobile when many options */}
+      <h2 className={`${isCompact ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'} font-medium text-[#3A2D32] text-center font-inter`}>
         {questionText}
       </h2>
       {subtitle && (
-        <p className="text-[#3A2D32] text-base mt-[10px] text-center font-inter font-normal">
+        <p className={`text-[#3A2D32] ${isCompact ? 'text-sm' : 'text-base'} ${isCompact ? 'mt-2' : 'mt-[10px]'} text-center font-inter font-normal`}>
           {subtitle}
         </p>
       )}
 
-      {/* Options list - Flutter: ListView with 15px separator, margin-top 32px */}
+      {/* Options list - reduced spacing when many options */}
       <div
-        className="flex flex-col gap-[15px] mt-8"
+        className={`flex flex-col ${isVeryCompact ? 'gap-[8px]' : isCompact ? 'gap-[10px]' : 'gap-[15px]'} ${isCompact ? 'mt-5' : 'mt-8'}`}
         role="radiogroup"
         aria-label={questionText}
       >
@@ -44,12 +48,12 @@ export function TextOptionQuestion({
             <button
               key={option.id}
               onClick={() => onSelect(option.id)}
-              className="relative flex items-center gap-3 rounded-[11px] text-left transition-all duration-200 ease-out hover:scale-[1.01] active:scale-[0.99] overflow-hidden min-h-[60px]"
+              className={`relative flex items-center gap-3 rounded-[11px] text-left transition-all duration-200 ease-out hover:scale-[1.01] active:scale-[0.99] overflow-hidden ${isVeryCompact ? 'min-h-[48px]' : isCompact ? 'min-h-[52px]' : 'min-h-[60px]'}`}
               style={{
                 backgroundColor: isSelected ? '#E8EBFC' : '#FFFFFF',
                 boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
                 border: isSelected ? '1px solid #7375A6' : '1px solid transparent',
-                padding: hasImage ? '0' : '16px 16px',
+                padding: hasImage ? '0' : isVeryCompact ? '10px 16px' : isCompact ? '12px 16px' : '16px 16px',
               }}
               role="radio"
               aria-checked={isSelected}
@@ -73,7 +77,7 @@ export function TextOptionQuestion({
               )}
 
               {/* Text content */}
-              <div className={`flex-1 min-w-0 ${hasImage ? 'py-3 pr-3' : ''}`}>
+              <div className={`flex-1 min-w-0 ${hasImage ? 'py-3 pr-4' : ''}`}>
                 <span className="font-medium text-[#3A2D32] block font-inter text-[15px] leading-snug">
                   {option.title}
                 </span>
@@ -82,24 +86,6 @@ export function TextOptionQuestion({
                     {option.description}
                   </span>
                 )}
-              </div>
-
-              {/* Selection indicator - Flutter: rounded 3px checkbox */}
-              <div
-                className={`w-6 h-6 rounded-[3px] flex-shrink-0 flex items-center justify-center transition-colors ${hasImage ? 'mr-4' : ''}`}
-                style={{
-                  backgroundColor: isSelected ? '#7375A6' : '#FFFFFF',
-                  border: isSelected ? '1.5px solid transparent' : '1.5px solid #7375A6',
-                }}
-              >
-                <svg
-                  className="w-[18px] h-[18px]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="white"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
               </div>
             </button>
           );

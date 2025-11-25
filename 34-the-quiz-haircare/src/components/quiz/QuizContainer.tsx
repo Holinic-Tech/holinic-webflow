@@ -49,7 +49,7 @@ export function QuizContainer() {
   // Show result page if quiz is complete
   if (isComplete) {
     return (
-      <div className="container-quiz">
+      <div className="container-quiz-scrollable">
         <ResultPage />
       </div>
     );
@@ -76,7 +76,7 @@ export function QuizContainer() {
   // Dashboard screen (index 19)
   if (isDashboardScreen) {
     return (
-      <div className="container-quiz">
+      <div className="container-quiz-scrollable">
         <ResultPage />
       </div>
     );
@@ -85,7 +85,7 @@ export function QuizContainer() {
   // Final pitch screen (index 20)
   if (isFinalPitchScreen) {
     return (
-      <div className="container-quiz">
+      <div className="container-quiz-scrollable">
         <ResultPage />
       </div>
     );
@@ -181,13 +181,17 @@ export function QuizContainer() {
 
         {/* Navigation - only for multi-select when at least one answer is selected */}
         {showMultiSelectNav && (
-          <NavigationButtons
-            onNext={handleNext}
-            onSkip={openSkipDialog}
-            canGoNext={canGoNext}
-            isLastQuestion={false}
-            showBackButton={false}
-          />
+          <>
+            {/* Spacer to prevent content from being hidden behind fixed button */}
+            <div className="h-[80px]" />
+            <NavigationButtons
+              onNext={handleNext}
+              onSkip={openSkipDialog}
+              canGoNext={canGoNext}
+              isLastQuestion={false}
+              showBackButton={false}
+            />
+          </>
         )}
 
         {/* Skip dialog */}

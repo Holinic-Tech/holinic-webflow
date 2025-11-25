@@ -116,11 +116,26 @@ body {
   max-width: 640px;
   margin: 0 auto;
   padding: 16px;
-  min-height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollable container for result/dashboard pages */
+.container-quiz-scrollable {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  min-height: 100dvh;
+  overflow-y: auto;
 }
 
 @media (min-width: 768px) {
   .container-quiz {
+    padding: 24px;
+  }
+  .container-quiz-scrollable {
     padding: 24px;
   }
 }
