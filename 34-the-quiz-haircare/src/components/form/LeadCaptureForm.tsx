@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useUserStore, useQuizStore } from '../../store';
+import { trackQuizCompleted } from '../../services';
+
+// Module-level flag to prevent double-firing in React Strict Mode
+let quizCompletedFired = false;
 
 interface FormData {
   name: string;
@@ -29,11 +33,22 @@ function toTitleCase(str: string): string {
     .join(' ');
 }
 
+// Position for tracking (email capture is position 18)
+const EMAIL_CAPTURE_POSITION = 18;
+
 // Matches Flutter LoginComponentWidget exactly
 export function LeadCaptureForm({ onSubmit }: LeadCaptureFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setFullName, setUserInfo } = useUserStore();
   const { answers } = useQuizStore();
+
+  // Track Quiz Completed on mount (before form submit) - Flutter: login_component_widget.dart:52
+  useEffect(() => {
+    if (!quizCompletedFired) {
+      quizCompletedFired = true;
+      trackQuizCompleted(EMAIL_CAPTURE_POSITION);
+    }
+  }, []);
 
   // Get concern text for personalization
   const hairConcern = answers.hairConcern as string;

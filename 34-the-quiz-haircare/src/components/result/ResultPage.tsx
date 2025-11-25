@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { useQuizStore, useUserStore } from '../../store';
 import { getCouponCode } from '../../data';
-import { trackQuizCompleted, trackGoToCheckout, trackResultPageView, trackQuizSubmitted } from '../../services';
+import { trackGoToCheckout, trackResultPageView, trackQuizSubmitted } from '../../services';
+
+// Module-level flag to prevent double-firing in React Strict Mode
+let resultPageInitialized = false;
 import { submitToWebhook } from '../../services';
 import { FloatingTimerBar } from './FloatingTimerBar';
 import {
@@ -75,19 +78,16 @@ export function ResultPage() {
   // Position for tracking (results page is typically at the end of quiz flow)
   const RESULTS_POSITION = 19;
 
+  // Track events and submit webhook - use module-level flag to prevent double-firing
   useEffect(() => {
+    if (resultPageInitialized) return;
+    resultPageInitialized = true;
+
     const initializeResults = async () => {
       setIsLoading(true);
 
-      // Track result page view - matches Flutter dashboard_widget.dart:68
-      trackResultPageView(RESULTS_POSITION);
-
-      // Track quiz completion and submit to webhook
+      // Submit to webhook and track Quiz Submitted
       if (userInfo.email) {
-        // Track Quiz Completed - fires before email submit (Flutter: login_component_widget.dart:52)
-        trackQuizCompleted(RESULTS_POSITION, userInfo.name, userInfo.email);
-
-        // Submit to webhook
         const webhookSuccess = await submitToWebhook(
           answers,
           {
@@ -104,11 +104,14 @@ export function ResultPage() {
         }
       }
 
+      // Track Viewed Results Page - fires AFTER Quiz Submitted (Flutter: dashboard_widget.dart:68)
+      trackResultPageView(RESULTS_POSITION);
+
       setIsLoading(false);
     };
 
     initializeResults();
-  }, []);
+  }, [answers, userInfo]);
 
   const handleCTAClick = () => {
     const checkoutUrl = buildCheckoutUrl(

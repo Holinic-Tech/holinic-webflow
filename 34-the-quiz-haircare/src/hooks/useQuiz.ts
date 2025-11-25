@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useQuizStore } from '../store';
 import {
   TOTAL_SCREENS,
@@ -9,11 +9,14 @@ import {
   shouldShowProgressBar,
 } from '../data/screenFlow';
 import { questions } from '../data/questions';
-import { trackQuestionAnswered, trackQuizStarted, trackQuizBack, trackQuizViewed, setQuizPositionGetter } from '../services';
+import { trackQuestionAnswered, trackQuizStarted, trackQuizBack, setQuizPositionGetter } from '../services';
 import { redirectToCheckout } from '../utils';
 import type { QuestionId } from '../types';
 
 export function useQuiz() {
+  // Track if Quiz Started has already been fired (prevents double-firing in React strict mode)
+  const quizStartedFired = useRef(false);
+
   const {
     currentScreenIndex,
     answers,
@@ -86,6 +89,13 @@ export function useQuiz() {
   const handleSelectAnswer = useCallback(
     (answerId: string) => {
       if (!currentQuestionId || !currentQuestion) return;
+
+      // Fire "Quiz Started" when user makes their first selection (hero screen = index 0)
+      // This matches Flutter: image_background_ques_body_widget.dart:405
+      if (currentScreenIndex === 0 && !quizStartedFired.current) {
+        quizStartedFired.current = true;
+        trackQuizStarted(0);
+      }
 
       setAnswer(currentQuestionId, answerId);
       // Pass question text and wrap answer in array to match Flutter structure
@@ -203,18 +213,15 @@ export function useQuiz() {
     redirectToCheckout(); // Goes to checkout with CVG cookies attached
   }, [setShowSkipDialog]);
 
-  // Initialize quiz
+  // Initialize quiz - only fires Quiz Viewed (on page load)
   const initializeQuiz = useCallback(() => {
     // Set up position getter for analytics service (allows analytics to get current position)
     setQuizPositionGetter(() => currentScreenIndex);
 
     if (!startedAt) {
       startQuiz();
-      // Track Quiz Viewed on initial page load (matches Flutter image_background_ques_body_v3_widget.dart:95)
-      trackQuizViewed(0);
-      // Track Quiz Started when user initiates quiz (matches Flutter image_background_ques_body_widget.dart:405)
-      trackQuizStarted(0);
     }
+
   }, [startedAt, startQuiz, currentScreenIndex]);
 
   return {

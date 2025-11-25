@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useQuiz } from '../../hooks';
+import { trackQuizViewed } from '../../services';
 import { ProgressBar } from './ProgressBar';
 import { QuestionRenderer } from './QuestionRenderer';
 import { NavigationButtons } from './NavigationButtons';
@@ -41,8 +42,13 @@ export function QuizContainer() {
     initializeQuiz,
   } = useQuiz();
 
-  // Initialize quiz on mount
+  // Track Quiz Viewed on mount (once)
+  const quizViewedFired = useRef(false);
   useEffect(() => {
+    if (!quizViewedFired.current) {
+      quizViewedFired.current = true;
+      trackQuizViewed(0);
+    }
     initializeQuiz();
   }, [initializeQuiz]);
 
