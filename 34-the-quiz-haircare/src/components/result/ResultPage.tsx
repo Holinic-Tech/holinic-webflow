@@ -20,7 +20,13 @@ import {
   CHECKOUT_BASE_URL,
 } from '../../data/dashboardContent';
 
-// Build checkout URL with parameters
+// Get CVG cookie value by name
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+
+// Build checkout URL with parameters including CVG cookies
 function buildCheckoutUrl(
   baseUrl: string,
   user: { firstName: string; lastName: string; email: string },
@@ -32,6 +38,18 @@ function buildCheckoutUrl(
     billing_last_name: user.lastName,
     'aero-coupons': couponTag,
   });
+
+  // Add CVG cookies for cross-domain tracking
+  const cvgCuid = getCookie('__cvg_cuid');
+  const cvgSid = getCookie('__cvg_sid');
+
+  if (cvgCuid) {
+    params.append('__cvg_cuid', cvgCuid);
+  }
+  if (cvgSid) {
+    params.append('__cvg_sid', cvgSid);
+  }
+
   return `${baseUrl}?${params.toString()}`;
 }
 

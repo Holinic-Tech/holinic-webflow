@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Built assets are committed separately for GitHub Pages
+# (workflow copies dist/* to root during deployment)
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

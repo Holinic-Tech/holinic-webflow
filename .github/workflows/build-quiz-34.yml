@@ -1,0 +1,54 @@
+name: Build Quiz 34
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm deployment'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'deploy'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 34-the-quiz-haircare/package-lock.json
+
+      - name: Install dependencies
+        working-directory: 34-the-quiz-haircare
+        run: npm ci
+
+      - name: Build
+        working-directory: 34-the-quiz-haircare
+        run: npm run build
+
+      - name: Deploy build to quiz folder root
+        working-directory: 34-the-quiz-haircare
+        run: |
+          # Backup source index.html for local development
+          mv index.html index.dev.html
+          # Copy built files to folder root for GitHub Pages
+          cp dist/index.html index.html
+          rm -rf assets/
+          cp -r dist/assets/ assets/
+          rm -rf dist/
+          echo "Deployed build. Contents:"
+          ls -la
+
+      - name: Commit and push to main
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add 34-the-quiz-haircare/
+          git diff --staged --quiet || git commit -m "Deploy quiz 34: $(date +'%Y-%m-%d %H:%M:%S')"
+          git push
