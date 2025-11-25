@@ -28,6 +28,14 @@ jobs:
         working-directory: 34-the-quiz-haircare
         run: npm ci
 
+      - name: Restore dev index.html for build
+        working-directory: 34-the-quiz-haircare
+        run: |
+          # The repo contains production index.html (with built asset refs)
+          # Restore the dev version (with /src/main.tsx) for Vite to build
+          cp index.dev.html index.html
+          echo "Restored dev index.html for build"
+
       - name: Build
         working-directory: 34-the-quiz-haircare
         run: npm run build
@@ -35,8 +43,6 @@ jobs:
       - name: Deploy build to quiz folder root
         working-directory: 34-the-quiz-haircare
         run: |
-          # Backup source index.html for local development
-          mv index.html index.dev.html
           # Copy built files to folder root for GitHub Pages
           cp dist/index.html index.html
           rm -rf assets/
