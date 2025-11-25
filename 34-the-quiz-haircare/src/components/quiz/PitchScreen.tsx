@@ -11,6 +11,7 @@ interface PitchScreenProps {
   pitchType: PitchType;
   answers: Record<string, string | string[] | number>;
   onContinue: () => void;
+  screenIndex: number;
 }
 
 // Checkmark icon component
@@ -161,7 +162,7 @@ function SimplePitchContent({
       </div>
 
       {/* Footer button - not fixed, part of flex layout */}
-      <div className="flex-shrink-0 bg-white px-4 pt-4 pb-6 border-t border-gray-100">
+      <div className="flex-shrink-0 bg-white px-4 pt-4 pb-6 md:pb-10 border-t border-gray-100">
         <div className="max-w-[500px] mx-auto">
           <button
             onClick={onContinue}
@@ -217,7 +218,7 @@ function DetailedPitchContent({ onContinue }: { onContinue: () => void }) {
       </div>
 
       {/* Footer button - not fixed, part of flex layout */}
-      <div className="flex-shrink-0 bg-white px-4 pt-3 pb-6 border-t border-gray-100">
+      <div className="flex-shrink-0 bg-white px-4 pt-3 pb-6 md:pb-10 border-t border-gray-100">
         <div className="max-w-[500px] mx-auto">
           <button
             onClick={onContinue}
@@ -278,7 +279,7 @@ function DynamicPitchContent({
       </div>
 
       {/* Footer button - not fixed, part of flex layout */}
-      <div className="flex-shrink-0 bg-white px-4 pt-3 pb-6 border-t border-gray-100">
+      <div className="flex-shrink-0 bg-white px-4 pt-3 pb-6 md:pb-10 border-t border-gray-100">
         <div className="max-w-[500px] mx-auto">
           <button
             onClick={onContinue}
@@ -294,9 +295,9 @@ function DynamicPitchContent({
 }
 
 // Main PitchScreen component
-export function PitchScreen({ pitchType, answers, onContinue }: PitchScreenProps) {
+export function PitchScreen({ pitchType, answers, onContinue, screenIndex }: PitchScreenProps) {
   const handleContinue = () => {
-    trackContinuedFromPitch(pitchType);
+    trackContinuedFromPitch(pitchType, screenIndex);
     onContinue();
   };
 

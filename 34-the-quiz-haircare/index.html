@@ -92,7 +92,16 @@
     </script>
     <script async src="https://hairqare.co/cvg/static/pixels/PmzQC4.js"></script>
     <script>
-      window.cvgSettings={proxy:"https://hairqare.co/cvg"};
+      // CVG initialization stub (critical for queuing events before script loads)
+      window.cvg || (cvg = function() {
+        cvg.process ? cvg.process.apply(cvg, arguments) : cvg.queue.push(arguments)
+      }, cvg.queue = []);
+
+      // Configure CVG proxy
+      cvg({method: "proxy", tracking: "https://hairqare.co/cvg", static: "https://hairqare.co/cvg/static"});
+
+      // Track page load
+      cvg({method: "track", eventName: "$page_load"});
     </script>
   </head>
 

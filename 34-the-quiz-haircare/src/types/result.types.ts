@@ -44,17 +44,23 @@ export interface ResultConfig {
   checkoutUrl: string;
 }
 
-// Webhook payload structure (for Make.com)
+// Question-Answer pair for webhook rawAnswers (matches Flutter structure)
+export interface QuestionAnswerPair {
+  questionId: string;
+  answerIds: string[];
+}
+
+// Webhook payload structure (for Make.com) - matches Flutter structure exactly
 export interface WebhookPayload {
   name: string;
   firstName: string;
   lastName: string;
   email: string;
   quizData: {
-    rawAnswers: Record<string, string | string[] | number>;
+    rawAnswers: QuestionAnswerPair[];
   };
-  segment: CouponCode;
-  timestamp: string;
+  activeCampaign: Record<string, string>;
+  mixpanel: Record<string, unknown>;
 }
 
 // Analytics event types

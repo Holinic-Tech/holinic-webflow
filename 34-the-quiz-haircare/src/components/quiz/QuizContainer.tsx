@@ -106,6 +106,7 @@ export function QuizContainer() {
           pitchType={currentScreen.pitchType as PitchType}
           answers={answers}
           onContinue={handleNext}
+          screenIndex={currentScreenIndex}
         />
       </div>
     );
@@ -147,6 +148,7 @@ export function QuizContainer() {
             isOpen={showSkipDialog}
             onClose={closeSkipDialog}
             onSkip={handleSkipQuiz}
+            screenIndex={currentScreenIndex}
           />
         </div>
       );
@@ -199,6 +201,7 @@ export function QuizContainer() {
           isOpen={showSkipDialog}
           onClose={closeSkipDialog}
           onSkip={handleSkipQuiz}
+          screenIndex={currentScreenIndex}
         />
       </div>
     );

@@ -1,25 +1,26 @@
 import { useEffect, useRef } from 'react';
-import { trackSkipDialogOpened, trackSkipDialogClosed } from '../../services';
+import { trackSkipDialogOpened, trackSkipDialogClosed, trackSkipQuiz } from '../../services';
 
 interface SkipDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onSkip: () => void;
+  screenIndex: number;
 }
 
-export function SkipDialog({ isOpen, onClose, onSkip }: SkipDialogProps) {
+export function SkipDialog({ isOpen, onClose, onSkip, screenIndex }: SkipDialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
   // Track dialog open/close
   useEffect(() => {
     if (isOpen) {
-      trackSkipDialogOpened();
+      trackSkipDialogOpened(screenIndex);
       previousFocusRef.current = document.activeElement as HTMLElement;
       // Focus the dialog
       setTimeout(() => dialogRef.current?.focus(), 0);
     }
-  }, [isOpen]);
+  }, [isOpen, screenIndex]);
 
   // Handle escape key
   useEffect(() => {
@@ -36,13 +37,14 @@ export function SkipDialog({ isOpen, onClose, onSkip }: SkipDialogProps) {
   }, [isOpen]);
 
   const handleClose = () => {
-    trackSkipDialogClosed();
+    trackSkipDialogClosed(screenIndex);
     onClose();
     // Return focus
     previousFocusRef.current?.focus();
   };
 
   const handleSkip = () => {
+    trackSkipQuiz(screenIndex);
     onSkip();
     previousFocusRef.current?.focus();
   };

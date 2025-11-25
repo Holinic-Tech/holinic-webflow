@@ -1,24 +1,67 @@
 // Make.com webhook integration
+// Payload structure matches Flutter implementation exactly
 
 import type { WebhookPayload, CouponCode } from '../types';
+import { questions } from '../data/questions';
 
 const MAKE_WEBHOOK_URL = 'https://hook.us1.make.com/3d6vksxwtqukhrx465bjymy4y6sfdkr6';
 
 export async function submitToWebhook(
   answers: Record<string, string | string[] | number>,
-  userInfo: { name: string; firstName: string; lastName: string; email: string },
-  segment: CouponCode
+  userInfo: { name: string; firstName: string; lastName: string; email: string }
 ): Promise<boolean> {
+  // Build rawAnswers array format (matches Flutter quizProfile.qaPairs structure)
+  const rawAnswers = Object.entries(answers).map(([questionId, answer]) => ({
+    questionId,
+    answerIds: Array.isArray(answer) ? answer : [String(answer)],
+  }));
+
+  // Build ActiveCampaign field mappings (field_X format)
+  const activeCampaign: Record<string, string> = {};
+
+  // Build Mixpanel field mappings
+  const mixpanel: Record<string, unknown> = {
+    $name: userInfo.name,
+    $email: userInfo.email,
+  };
+
+  for (const [questionId, answer] of Object.entries(answers)) {
+    const question = questions[questionId as keyof typeof questions];
+    if (!question) continue;
+
+    // For ActiveCampaign: convert arrays to comma-separated strings
+    const acValue = Array.isArray(answer)
+      ? answer.join(', ')
+      : String(answer);
+
+    // ActiveCampaign mapping (field_X format)
+    if (question.acField) {
+      activeCampaign[`field_${question.acField}`] = acValue;
+    }
+
+    // Mixpanel mapping
+    if (question.mpField) {
+      // Mixpanel: arrays stay as arrays, numbers stay as numbers
+      if (Array.isArray(answer)) {
+        mixpanel[question.mpField] = answer;
+      } else if (typeof answer === 'number') {
+        mixpanel[question.mpField] = answer;
+      } else {
+        mixpanel[question.mpField] = answer;
+      }
+    }
+  }
+
   const payload: WebhookPayload = {
     name: userInfo.name,
     firstName: userInfo.firstName,
     lastName: userInfo.lastName,
     email: userInfo.email,
     quizData: {
-      rawAnswers: answers,
+      rawAnswers,
     },
-    segment,
-    timestamp: new Date().toISOString(),
+    activeCampaign,
+    mixpanel,
   };
 
   try {
@@ -35,7 +78,7 @@ export async function submitToWebhook(
       return false;
     }
 
-    console.log('[Webhook] Success');
+    console.log('[Webhook] Success', payload);
     return true;
   } catch (error) {
     console.error('[Webhook] Error:', error);

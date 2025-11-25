@@ -9,7 +9,7 @@ import {
   shouldShowProgressBar,
 } from '../data/screenFlow';
 import { questions } from '../data/questions';
-import { trackQuestionAnswered, trackQuizStarted } from '../services';
+import { trackQuestionAnswered, trackQuizStarted, trackQuizBack } from '../services';
 import { redirectToCheckout } from '../utils';
 import type { QuestionId } from '../types';
 
@@ -85,13 +85,19 @@ export function useQuiz() {
   // Handle single answer selection with auto-advance
   const handleSelectAnswer = useCallback(
     (answerId: string) => {
-      if (!currentQuestionId) return;
+      if (!currentQuestionId || !currentQuestion) return;
 
       setAnswer(currentQuestionId, answerId);
-      trackQuestionAnswered(currentQuestionId, answerId, currentScreenIndex);
+      // Pass question text and wrap answer in array to match Flutter structure
+      trackQuestionAnswered(
+        currentQuestionId,
+        currentQuestion.questionText,
+        [answerId],
+        currentScreenIndex
+      );
 
       // Auto-advance for single-select questions (not multi-select, not slider, not feedback)
-      if (currentQuestion && currentQuestion.format !== 'multiSelect' && currentQuestion.format !== 'slider' && currentQuestion.format !== 'feedbackCard') {
+      if (currentQuestion.format !== 'multiSelect' && currentQuestion.format !== 'slider' && currentQuestion.format !== 'feedbackCard') {
         // Small delay for visual feedback before advancing
         setTimeout(() => {
           nextScreen();
@@ -104,7 +110,7 @@ export function useQuiz() {
   // Handle multi-select toggle
   const handleToggleAnswer = useCallback(
     (answerId: string) => {
-      if (!currentQuestionId) return;
+      if (!currentQuestionId || !currentQuestion) return;
 
       toggleMultiAnswer(currentQuestionId, answerId);
 
@@ -114,41 +120,59 @@ export function useQuiz() {
         ? currentAnswers.filter((id) => id !== answerId)
         : [...currentAnswers, answerId];
 
-      trackQuestionAnswered(currentQuestionId, newAnswers, currentScreenIndex);
+      // Pass question text and selected answers array
+      trackQuestionAnswered(
+        currentQuestionId,
+        currentQuestion.questionText,
+        newAnswers,
+        currentScreenIndex
+      );
     },
-    [currentQuestionId, currentScreenIndex, toggleMultiAnswer, answers]
+    [currentQuestionId, currentScreenIndex, currentQuestion, toggleMultiAnswer, answers]
   );
 
   // Handle slider value change with auto-advance (same pattern as single-select)
   const handleSliderChange = useCallback(
     (value: number) => {
-      if (!currentQuestionId) return;
+      if (!currentQuestionId || !currentQuestion) return;
       setAnswer(currentQuestionId, value);
-      trackQuestionAnswered(currentQuestionId, String(value), currentScreenIndex);
+      // Pass question text and value as string in array to match Flutter structure
+      trackQuestionAnswered(
+        currentQuestionId,
+        currentQuestion.questionText,
+        [String(value)],
+        currentScreenIndex
+      );
 
       // Auto-advance after selection (same as single-select)
       setTimeout(() => {
         nextScreen();
       }, 300);
     },
-    [currentQuestionId, currentScreenIndex, setAnswer, nextScreen]
+    [currentQuestionId, currentScreenIndex, currentQuestion, setAnswer, nextScreen]
   );
 
   // Handle "none of the above" selection for multi-select questions
   const handleNoneOfAbove = useCallback(
     (noneOptionId: string) => {
-      if (!currentQuestionId) return;
+      if (!currentQuestionId || !currentQuestion) return;
 
       // Store the "none" answer
       setAnswer(currentQuestionId, [noneOptionId]);
-      trackQuestionAnswered(currentQuestionId, noneOptionId, currentScreenIndex);
+      // Pass question text and answer in array
+      trackQuestionAnswered(
+        currentQuestionId,
+        currentQuestion.questionText,
+        [noneOptionId],
+        currentScreenIndex
+      );
 
       // Advance to next screen
       setTimeout(() => {
         nextScreen();
       }, 100);
     },
-    [currentQuestionId, currentScreenIndex, setAnswer, nextScreen]
+    [currentQuestionId, currentScreenIndex, currentQuestion, setAnswer, nextScreen]
   );
 
   // Handle next/continue button click
@@ -160,8 +184,9 @@ export function useQuiz() {
   // Handle back button click
   const handleBack = useCallback(() => {
     if (!canGoBack) return;
+    trackQuizBack(currentScreenIndex);
     previousScreen();
-  }, [canGoBack, previousScreen]);
+  }, [canGoBack, currentScreenIndex, previousScreen]);
 
   // Handle skip dialog
   const openSkipDialog = useCallback(() => {
