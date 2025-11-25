@@ -141,12 +141,12 @@ function SimplePitchContent({
     <div className="h-[calc(100dvh-60px)] flex flex-col">
       {/* Content area - fixed height, no scroll */}
       <div className="flex-1 px-4 overflow-hidden min-h-0">
-        {/* Image - left aligned, responsive sizing */}
+        {/* Image - left aligned, responsive sizing (30% larger) */}
         <div className="pt-6 pb-4">
           <img
             src={image}
             alt=""
-            className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] object-cover rounded-lg"
+            className="w-[195px] h-[195px] md:w-[260px] md:h-[260px] object-cover rounded-lg"
           />
         </div>
 

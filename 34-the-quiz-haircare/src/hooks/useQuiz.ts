@@ -117,28 +117,15 @@ export function useQuiz() {
     [currentQuestionId, currentScreenIndex, currentQuestion, setAnswer, nextScreen]
   );
 
-  // Handle multi-select toggle
+  // Handle multi-select toggle (no tracking here - track on Continue click)
   const handleToggleAnswer = useCallback(
     (answerId: string) => {
       if (!currentQuestionId || !currentQuestion) return;
 
       toggleMultiAnswer(currentQuestionId, answerId);
-
-      // Get updated answers for tracking
-      const currentAnswers = (answers[currentQuestionId] as string[]) || [];
-      const newAnswers = currentAnswers.includes(answerId)
-        ? currentAnswers.filter((id) => id !== answerId)
-        : [...currentAnswers, answerId];
-
-      // Pass question text and selected answers array
-      trackQuestionAnswered(
-        currentQuestionId,
-        currentQuestion.questionText,
-        newAnswers,
-        currentScreenIndex
-      );
+      // Note: Question Answered is tracked in handleNext when user clicks Continue
     },
-    [currentQuestionId, currentScreenIndex, currentQuestion, toggleMultiAnswer, answers]
+    [currentQuestionId, currentQuestion, toggleMultiAnswer]
   );
 
   // Handle slider value change with auto-advance (same pattern as single-select)
@@ -188,8 +175,20 @@ export function useQuiz() {
   // Handle next/continue button click
   const handleNext = useCallback(() => {
     if (!canGoNext) return;
+
+    // For multi-select questions, track Question Answered when Continue is clicked
+    if (currentQuestion?.format === 'multiSelect' && currentQuestionId) {
+      const selectedAnswerIds = (answers[currentQuestionId] as string[]) || [];
+      trackQuestionAnswered(
+        currentQuestionId,
+        currentQuestion.questionText,
+        selectedAnswerIds,
+        currentScreenIndex
+      );
+    }
+
     nextScreen();
-  }, [canGoNext, nextScreen]);
+  }, [canGoNext, nextScreen, currentQuestion, currentQuestionId, answers, currentScreenIndex]);
 
   // Handle back button click
   const handleBack = useCallback(() => {

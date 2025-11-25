@@ -40,11 +40,11 @@ export function ImageCardQuestion({
         key={option.id}
         onClick={() => onSelect(option.id)}
         className={`
-          relative flex flex-col overflow-hidden h-full
+          relative flex flex-col overflow-hidden
           transition-all duration-200 ease-out
           hover:scale-[1.02] active:scale-[0.98]
           ${hasImage ? 'rounded-[15px]' : 'rounded-[10px]'}
-          ${isCentered ? 'w-[48%] h-auto' : ''}
+          ${isCentered ? 'w-[48%]' : ''}
         `}
         style={{
           boxShadow: '0 3px 14px rgba(218, 225, 254, 0.7)',
@@ -54,10 +54,10 @@ export function ImageCardQuestion({
         aria-checked={isSelected}
         data-option-index={index}
       >
-        {/* Image section - flexes to fill available space */}
+        {/* Image section - square aspect ratio */}
         {hasImage && (
           <div
-            className="w-full flex-1 min-h-0 bg-white rounded-t-[10px] overflow-hidden"
+            className="w-full aspect-square bg-white rounded-t-[10px] overflow-hidden"
             style={{
               backgroundImage: `url(${option.image})`,
               backgroundSize: 'cover',
@@ -87,7 +87,7 @@ export function ImageCardQuestion({
   };
 
   return (
-    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px] h-[calc(100dvh-90px)] flex flex-col overflow-hidden">
+    <div className="max-w-[500px] mx-auto bg-white px-5 pt-[10px] h-[calc(100dvh-90px)] flex flex-col overflow-y-auto">
       {/* Question text - Flutter: font 20px mobile, 24px tablet, 27px desktop */}
       <h2 className="text-lg md:text-xl font-medium text-[#3A2D32] text-center font-inter flex-shrink-0">
         {questionText}
@@ -101,18 +101,18 @@ export function ImageCardQuestion({
       )}
 
       {/* Options grid - Flutter: MasonryGridView, gap 10px, margin-top 32px */}
+      {/* Cards are square (aspect-square), grid doesn't stretch them */}
       <div
-        className={`grid ${gridCols} gap-[8px] mt-4 flex-1 min-h-0 auto-rows-fr`}
+        className={`grid ${gridCols} gap-[8px] mt-4 content-start pb-4`}
         role="radiogroup"
         aria-label={questionText}
-        style={{ gridAutoRows: '1fr' }}
       >
         {gridOptions.map((option, index) => renderOption(option, index))}
       </div>
 
       {/* Centered last option for special questions */}
       {lastOption && (
-        <div className="flex justify-center mt-[8px] flex-shrink-0">
+        <div className="flex justify-center mt-[8px] pb-4 flex-shrink-0">
           {renderOption(lastOption, gridOptions.length, true)}
         </div>
       )}
