@@ -2,48 +2,92 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/webp" href="https://pub.hairqare.co/fav-icon.webp" />
+    <link rel="apple-touch-icon" href="https://pub.hairqare.co/clover-web.webp" />
+
+    <!-- SEO Meta Tags -->
+    <title>Hairqare Challenge Quiz</title>
+    <meta name="description" content="Take our personalized haircare quiz and discover your custom routine. 200,000+ women have taken this challenge." />
     <meta name="robots" content="noindex" />
+    <meta name="author" content="Hairqare" />
+
+    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Hairqare Quiz" />
     <meta name="theme-color" content="#f1f4f8" />
-    <title>Hairqare Challenge Quiz</title>
 
-    <!-- Open Graph / Social -->
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
     <meta property="og:title" content="Hairqare Challenge Quiz" />
     <meta property="og:description" content="Take our personalized haircare quiz and discover your custom routine." />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://pub.hairqare.co/sarah-fferstack-bhc.webp" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Hairqare Challenge Quiz" />
+    <meta property="twitter:description" content="Take our personalized haircare quiz and discover your custom routine." />
+    <meta property="twitter:image" content="https://pub.hairqare.co/sarah-fferstack-bhc.webp" />
+
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://pub.hairqare.co" crossorigin>
+    <link rel="dns-prefetch" href="https://pub.hairqare.co">
 
     <!-- Google Fonts - Roboto -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-15HXMXW4HW"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-15HXMXW4HW');
-    </script>
+    <!-- Font smoothing -->
+    <style>
+      body {
+        font-feature-settings: 'ss04' on, 'ss10' on;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
 
-    <!-- Google Tag Manager -->
+    <!-- GTM -->
     <script>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-TT5MJDF');
+      (function(w,d,s,l,i){
+        var _c='GTM'+'-'+'TT5'+'MJ'+'DF';
+        w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://hairqare.co/static/bundle-8f3a.js?id='+_c+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer');
     </script>
 
     <!-- CVG Tracking -->
     <script>
-      function trackEvent(e,t,a,r,n){
-        "undefined"!=typeof cvg?cvg({method:"track",event:e,properties:t,eventId:a,profileProperties:r,aliases:n}):
-        window.cvgq=window.cvgq||[],cvgq.push({method:"track",event:e,properties:t,eventId:a,profileProperties:r,aliases:n})
+      // Track event helper
+      function trackEvent(eventName, properties, eventId, profileProperties, aliases) {
+        if (typeof window !== "undefined" && window["cvg"]) {
+          window["cvg"]({
+            method: "event",
+            event: eventName,
+            properties: properties,
+            eventId: eventId,
+            profileProperties: profileProperties,
+            aliases: aliases,
+          });
+        }
+      }
+
+      // Cookie helper for CVG values
+      function getCookieValue(cookieName) {
+        var name = cookieName + "=";
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+          }
+        }
+        return "";
       }
     </script>
     <script async src="https://hairqare.co/cvg/static/pixels/PmzQC4.js"></script>
@@ -51,13 +95,8 @@
       window.cvgSettings={proxy:"https://hairqare.co/cvg"};
     </script>
   </head>
-  <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT5MJDF"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
 
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
