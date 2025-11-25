@@ -110,10 +110,26 @@ export function ImageCardQuestion({
         {gridOptions.map((option, index) => renderOption(option, index))}
       </div>
 
-      {/* Centered last option for special questions */}
+      {/* Centered last option for special questions - purple button style */}
       {lastOption && (
         <div className="flex justify-center mt-[8px] pb-4 flex-shrink-0">
-          {renderOption(lastOption, gridOptions.length, true)}
+          <button
+            onClick={() => onSelect(lastOption.id)}
+            className={`
+              px-6 py-3 rounded-[10px]
+              transition-all duration-200 ease-out
+              hover:scale-[1.02] active:scale-[0.98]
+              font-inter font-medium text-sm
+            `}
+            style={{
+              backgroundColor: selectedAnswers.includes(lastOption.id) ? '#B1BAE3' : '#7375A6',
+              color: selectedAnswers.includes(lastOption.id) ? '#3A2D32' : '#FFFFFF',
+            }}
+            role="radio"
+            aria-checked={selectedAnswers.includes(lastOption.id)}
+          >
+            {lastOption.answer}
+          </button>
         </div>
       )}
     </div>

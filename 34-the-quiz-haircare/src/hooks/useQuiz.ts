@@ -98,13 +98,17 @@ export function useQuiz() {
       }
 
       setAnswer(currentQuestionId, answerId);
-      // Pass question text and wrap answer in array to match Flutter structure
-      trackQuestionAnswered(
-        currentQuestionId,
-        currentQuestion.questionText,
-        [answerId],
-        currentScreenIndex
-      );
+
+      // Track Question Answered immediately for single-select questions
+      // (feedbackCard tracks on Continue click, like multiSelect)
+      if (currentQuestion.format !== 'feedbackCard') {
+        trackQuestionAnswered(
+          currentQuestionId,
+          currentQuestion.questionText,
+          [answerId],
+          currentScreenIndex
+        );
+      }
 
       // Auto-advance for single-select questions (not multi-select, not slider, not feedback)
       if (currentQuestion.format !== 'multiSelect' && currentQuestion.format !== 'slider' && currentQuestion.format !== 'feedbackCard') {
@@ -176,9 +180,10 @@ export function useQuiz() {
   const handleNext = useCallback(() => {
     if (!canGoNext) return;
 
-    // For multi-select questions, track Question Answered when Continue is clicked
-    if (currentQuestion?.format === 'multiSelect' && currentQuestionId) {
-      const selectedAnswerIds = (answers[currentQuestionId] as string[]) || [];
+    // For multi-select and feedbackCard questions, track Question Answered when Continue is clicked
+    if ((currentQuestion?.format === 'multiSelect' || currentQuestion?.format === 'feedbackCard') && currentQuestionId) {
+      const answer = answers[currentQuestionId];
+      const selectedAnswerIds = Array.isArray(answer) ? answer : [answer as string];
       trackQuestionAnswered(
         currentQuestionId,
         currentQuestion.questionText,
