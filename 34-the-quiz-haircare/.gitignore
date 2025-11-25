@@ -25,3 +25,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Documentation files that break Jekyll (contain {{ }} syntax)
+FLUTTERFLOW_TO_REACT_MIGRATION_GUIDE.md
+DEPLOYMENT.md
