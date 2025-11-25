@@ -11,7 +11,6 @@ interface HeroQuestionProps {
 
 // First screen with full background image - matches Flutter ImageBackgroundQuesBodyWidget exactly
 export function HeroQuestion({
-  questionText,
   options,
   selectedAnswers,
   onSelect,
@@ -41,9 +40,9 @@ export function HeroQuestion({
             className="w-20 h-[18px] md:w-[100px] md:h-5 object-contain"
           />
 
-          {/* Main question text - Flutter: margin-top 45px, font 27px, min 21px */}
-          <h2 className="mt-[45px] text-[21px] md:text-[27px] font-medium text-white text-center leading-tight font-inter">
-            {questionText}
+          {/* Main headline - larger text */}
+          <h2 className="mt-[45px] text-[24px] md:text-[32px] font-medium text-white text-center leading-tight font-inter">
+            See if the Challenge is a fit for you and your hair profile
           </h2>
         </div>
 

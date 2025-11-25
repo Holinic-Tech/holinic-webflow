@@ -10,6 +10,7 @@ import {
 } from '../data/screenFlow';
 import { questions } from '../data/questions';
 import { trackQuestionAnswered, trackQuizStarted } from '../services';
+import { redirectToCheckout } from '../utils';
 import type { QuestionId } from '../types';
 
 export function useQuiz() {
@@ -23,7 +24,6 @@ export function useQuiz() {
     toggleMultiAnswer,
     nextScreen,
     previousScreen,
-    goToScreen,
     completeQuiz,
     resetQuiz,
     setShowSkipDialog,
@@ -172,11 +172,11 @@ export function useQuiz() {
     setShowSkipDialog(false);
   }, [setShowSkipDialog]);
 
-  // Handle skip quiz - go to email capture (screen 18)
+  // Handle skip quiz - redirect directly to checkout
   const handleSkipQuiz = useCallback(() => {
-    goToScreen(18); // Email capture screen
     setShowSkipDialog(false);
-  }, [goToScreen, setShowSkipDialog]);
+    redirectToCheckout(); // Goes to checkout with CVG cookies attached
+  }, [setShowSkipDialog]);
 
   // Initialize quiz
   const initializeQuiz = useCallback(() => {

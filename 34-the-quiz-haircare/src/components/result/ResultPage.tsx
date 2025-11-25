@@ -17,41 +17,8 @@ import {
   ratingsBackgroundImage,
   challengeBenefits,
   benefitsCardContent,
-  CHECKOUT_BASE_URL,
 } from '../../data/dashboardContent';
-
-// Get CVG cookie value by name
-function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? match[2] : null;
-}
-
-// Build checkout URL with parameters including CVG cookies
-function buildCheckoutUrl(
-  baseUrl: string,
-  user: { firstName: string; lastName: string; email: string },
-  couponTag: string
-): string {
-  const params = new URLSearchParams({
-    billing_email: user.email,
-    billing_first_name: user.firstName,
-    billing_last_name: user.lastName,
-    'aero-coupons': couponTag,
-  });
-
-  // Add CVG cookies for cross-domain tracking
-  const cvgCuid = getCookie('__cvg_cuid');
-  const cvgSid = getCookie('__cvg_sid');
-
-  if (cvgCuid) {
-    params.append('__cvg_cuid', cvgCuid);
-  }
-  if (cvgSid) {
-    params.append('__cvg_sid', cvgSid);
-  }
-
-  return `${baseUrl}?${params.toString()}`;
-}
+import { buildCheckoutUrl } from '../../utils';
 
 // Matches Flutter Dashboard widget - Complete implementation
 export function ResultPage() {
@@ -140,10 +107,7 @@ export function ResultPage() {
   }, []);
 
   const handleCTAClick = () => {
-    trackCTAClicked(CHECKOUT_BASE_URL);
-
     const checkoutUrl = buildCheckoutUrl(
-      CHECKOUT_BASE_URL,
       {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
@@ -152,6 +116,7 @@ export function ResultPage() {
       couponCode
     );
 
+    trackCTAClicked(checkoutUrl);
     window.location.href = checkoutUrl;
   };
 
