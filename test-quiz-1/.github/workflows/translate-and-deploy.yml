@@ -1,0 +1,185 @@
+name: Translate and Deploy All Versions
+
+on:
+  workflow_dispatch:
+    inputs:
+      languages:
+        description: 'Languages to build (comma-separated: de,es or "all")'
+        required: true
+        default: 'all'
+        type: string
+  push:
+    branches:
+      - flutterflow
+    paths:
+      - 'lib/**'
+      - 'pubspec.yaml'
+      - 'assets/**'
+      - '.github/workflows/translate-and-deploy.yml'
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            languages="${{ github.event.inputs.languages }}"
+          else
+            languages="all"
+          fi
+          
+          if [ "$languages" = "all" ]; then
+            matrix='{"include":[{"lang":"de","lang_code":"de-DE","checkout_url":"https://checkout.hairqare.co/de/buy/hairqare-challenge-save-90-25-de/"},{"lang":"es","lang_code":"es-ES","checkout_url":"https://checkout.hairqare.co/es/buy/hairqare-challenge-save-90-25-es/"}]}'
+          else
+            matrix='{"include":[]}'
+            if [[ "$languages" == *"de"* ]]; then
+              matrix=$(echo $matrix | jq '.include += [{"lang":"de","lang_code":"de-DE","checkout_url":"https://checkout.hairqare.co/de/buy/hairqare-challenge-save-90-25-de/"}]')
+            fi
+            if [[ "$languages" == *"es"* ]]; then
+              matrix=$(echo $matrix | jq '.include += [{"lang":"es","lang_code":"es-ES","checkout_url":"https://checkout.hairqare.co/es/buy/hairqare-challenge-save-90-25-es/"}]')
+            fi
+          fi
+          
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "Building for languages: $languages"
+          echo "Matrix: $matrix"
+
+  translate-and-deploy:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+    
+    steps:
+    - name: Checkout flutterflow branch
+      uses: actions/checkout@v3
+      with:
+        ref: flutterflow
+        fetch-depth: 0
+    
+    - name: Set up Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+    
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.27.3'
+    
+    - name: Fix Flutter Flow Util File
+      run: |
+        echo "Checking if flutter_flow_util.dart exists..."
+        if [ -f lib/flutter_flow/flutter_flow_util.dart ]; then
+          echo "Fixing Color.withValues method error..."
+          sed -i 's|Color applyAlpha(double val) => withValues(alpha: val);|Color applyAlpha(double val) => withOpacity(val);|g' lib/flutter_flow/flutter_flow_util.dart
+          echo "Fixed flutter_flow_util.dart file"
+        fi
+    
+    - name: Create translation for ${{ matrix.lang }}
+      run: |
+        echo "Creating ${{ matrix.lang }} version..."
+        
+        # Create a Python script to handle URL replacement and language setting
+        cat > update_for_language.py << 'EOF'
+import os
+import re
+import sys
+
+lang = sys.argv[1]
+checkout_url = sys.argv[2]
+
+def update_file_for_language(filepath, lang, checkout_url):
+    with open(filepath, 'r') as f:
+        content = f.read()
+    
+    modified = False
+    
+    # Replace checkout URLs
+    new_content = re.sub(
+        r'https://checkout\.hairqare\.co/buy/hairqare-challenge-save-85-5/?',
+        checkout_url,
+        content
+    )
+    if new_content != content:
+        modified = True
+        content = new_content
+    
+    # Update the default language setting in HomePage
+    if 'home_page.dart' in filepath:
+        # Replace setAppLanguage call to use the target language
+        new_content = re.sub(
+            r"setAppLanguage\(context, 'en'\)",
+            f"setAppLanguage(context, '{lang}')",
+            content
+        )
+        if new_content != content:
+            modified = True
+            content = new_content
+            print(f"  Updated default language to '{lang}' in HomePage")
+    
+    if modified:
+        with open(filepath, 'w') as f:
+            f.write(content)
+        return True
+    return False
+
+# Process all Dart files
+total_updated = 0
+for root, dirs, files in os.walk('lib'):
+    for file in files:
+        if file.endswith('.dart'):
+            filepath = os.path.join(root, file)
+            if update_file_for_language(filepath, lang, checkout_url):
+                total_updated += 1
+                print(f"Updated: {filepath}")
+
+print(f"\nTotal files updated: {total_updated}")
+print(f"Language set to: {lang}")
+print(f"Checkout URL: {checkout_url}")
+EOF
+        
+        # Run the Python script
+        python3 update_for_language.py "${{ matrix.lang }}" "${{ matrix.checkout_url }}"
+        
+        # Update app name for this language
+        sed -i "s/name: my_project/name: my_project_${{ matrix.lang }}/g" pubspec.yaml
+    
+    - name: Commit to translation branch
+      run: |
+        # Check if translation branch exists
+        if git show-ref --verify --quiet refs/remotes/origin/translation-${{ matrix.lang_code }}; then
+          git checkout translation-${{ matrix.lang_code }}
+          git merge flutterflow --no-edit --strategy-option=theirs || true
+        else
+          git checkout -b translation-${{ matrix.lang_code }}
+        fi
+        
+        # Add and commit changes
+        git add -A
+        git diff --staged --quiet || git commit -m "Update ${{ matrix.lang }} translation from flutterflow"
+        
+        # Push to translation branch
+        git push origin translation-${{ matrix.lang_code }} --force
+    
+    - name: Build ${{ matrix.lang }} version
+      run: |
+        # Install dependencies
+        flutter pub get
+        
+        # Build web version
+        flutter build web --web-renderer html --no-pub --no-version-check --no-tree-shake-icons
+        
+        # Modify base href for subdirectory deployment
+        sed -i 's|<base href="/"|<base href="/${{ matrix.lang }}/"|g' build/web/index.html
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/web
+        destination_dir: ${{ matrix.lang }}
+        keep_files: true

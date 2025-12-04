@@ -1,0 +1,82 @@
+name: Deploy FlutterFlow Web to GitHub Pages
+on:
+  push:
+    branches:
+      - flutterflow  # Replace with your target branch
+jobs:
+  deploy-web:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.27.3'
+        
+    - name: Check Flutter version
+      run: flutter --version
+      
+    - name: List project files
+      run: find . -type f -name "*.dart" | head -n 10
+      
+    - name: Fix Flutter Flow Util File
+      run: |
+        echo "Checking if flutter_flow_util.dart exists..."
+        if [ -f lib/flutter_flow/flutter_flow_util.dart ]; then
+          echo "Fixing Color.withValues method error..."
+          sed -i 's|Color applyAlpha(double val) => withValues(alpha: val);|Color applyAlpha(double val) => withOpacity(val);|g' lib/flutter_flow/flutter_flow_util.dart
+          echo "Fixed flutter_flow_util.dart file"
+          grep "applyAlpha" lib/flutter_flow/flutter_flow_util.dart
+        else
+          echo "flutter_flow_util.dart not found! Checking directory structure..."
+          find . -name "flutter_flow_util.dart" -type f
+        fi
+        
+    - name: Install Dependencies
+      run: flutter pub get
+      
+    - name: Show pubspec.lock
+      run: cat pubspec.lock | grep -A 5 "  flutter:"
+      
+    - name: Build FlutterFlow Web
+      run: flutter build web --web-renderer html --no-pub --no-version-check --no-tree-shake-icons --verbose
+      
+    - name: Check build directory
+      run: |
+        echo "Checking build output..."
+        ls -la build/
+        echo "Checking web output..."
+        ls -la build/web/
+        echo "Checking JS files..."
+        find build/web -name "*.js" | wc -l
+        echo "Checking file sizes..."
+        du -h build/web/main.dart.js
+        
+    - name: Add Delay
+      run: sleep 10
+      
+    - name: Modify index.html Base HREF
+      run: |
+        if [ -f build/web/index.html ]; then
+          echo "Original index.html base href:"
+          grep "<base" build/web/index.html
+          sed -i 's|<base href="/"|<base href="./"|g' build/web/index.html
+          echo "Modified index.html base href:"
+          grep "<base" build/web/index.html
+        else
+          echo "index.html not found!"
+          exit 1
+        fi
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/web
+        
+    - name: Deployment Status
+      run: |
+        echo "Deployment complete. Check GitHub Pages settings to verify deployment."
+        echo "If the deployment fails, check that the GITHUB_TOKEN has proper permissions."
