@@ -1,0 +1,15 @@
+{
+  "name": "Hairqare Challenge Quiz",
+  "short_name": "Hairqare Quiz",
+  "start_url": "/the-quiz-haircare/",
+  "display": "standalone",
+  "background_color": "#f1f4f8",
+  "theme_color": "#f1f4f8",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
