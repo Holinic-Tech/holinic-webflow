@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hairqare Quiz</title>
+    <!--
+      Phase 4 Task 8 — load-speed resource hints. preconnect (with dns-prefetch
+      fallback for browsers that ignore preconnect) to the checkout host and the
+      result-page image CDNs (assets.hairqare.co / pub.hairqare.co / the avatar
+      host), mirroring the Flutter app's preconnects. These warm the TLS handshake
+      so the checkout redirect + below-the-fold dashboard images load faster.
+    -->
+    <link rel="preconnect" href="https://checkout.hairqare.co" crossorigin />
+    <link rel="dns-prefetch" href="https://checkout.hairqare.co" />
+    <link rel="preconnect" href="https://assets.hairqare.co" crossorigin />
+    <link rel="dns-prefetch" href="https://assets.hairqare.co" />
+    <link rel="preconnect" href="https://pub.hairqare.co" crossorigin />
+    <link rel="dns-prefetch" href="https://pub.hairqare.co" />
+    <link rel="preconnect" href="https://uploads-ssl.webflow.com" crossorigin />
+    <link rel="dns-prefetch" href="https://uploads-ssl.webflow.com" />
+    <script type="module" crossorigin src="/39-the-quiz-haircare/assets/index-C1-Cu9rj.js"></script>
+    <link rel="stylesheet" crossorigin href="/39-the-quiz-haircare/assets/index-VEQFck3K.css">
+  </head>
+  <body><div id="root"></div></body>
+</html>
