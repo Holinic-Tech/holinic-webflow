@@ -25,10 +25,14 @@
     <link rel="dns-prefetch" href="https://uploads-ssl.webflow.com" />
 
     <!--
-      Analytics bootstrap — GA (gtag) + Converge (cvg) + GTM, mirroring the FlutterFlow
-      quiz's <head> verbatim. The React app PUSHES GA events to window.dataLayer and Converge
-      events to window.trackEvent; this bootstrap creates those globals. GTM (GTM-TT5MJDF)
-      relays the GA dataLayer events to Mixpanel + Converge — so NO GTM changes are needed.
+      Analytics bootstrap — Converge (cvg) + GTM, mirroring the FlutterFlow quiz's <head>.
+      The React app PUSHES GA-style events to window.dataLayer and Converge events to
+      window.trackEvent; this bootstrap creates those globals. GTM (GTM-TT5MJDF) relays the
+      dataLayer events to Mixpanel + Converge — so NO GTM changes are needed.
+      NO standalone gtag.js here: loading gtag.js AND GTM on the SAME dataLayer made both
+      libraries process every object-style push, so GTM fired its tags twice per quiz event
+      (double Mixpanel events on /40 + /41, found 2026-07-03). GA4 G-15HXMXW4HW is unused
+      (only a purchase-tag override in GTM), so it was removed rather than isolated.
       Guarded to the LIVE host only: it never runs on localhost/127.0.0.1, so `npm run dev`,
       the Studio, and the e2e (which shim window.dataLayer themselves) stay clean.
     -->
@@ -37,16 +41,7 @@
         var h = location.hostname;
         if (!h || h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0') return;
 
-        // --- Google Analytics (gtag.js, G-15HXMXW4HW) ---
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        window.gtag = gtag;
-        var g = document.createElement('script');
-        g.async = true;
-        g.src = 'https://www.googletagmanager.com/gtag/js?id=G-15HXMXW4HW';
-        document.head.appendChild(g);
-        gtag('js', new Date());
-        gtag('config', 'G-15HXMXW4HW');
 
         // --- Converge (cvg) — the wrapper the app calls via window.trackEvent ---
         window.trackEvent = function (eventName, properties, eventId, profileProperties, aliases) {
