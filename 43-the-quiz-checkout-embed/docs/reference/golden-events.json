@@ -1,0 +1,69 @@
+{
+  "walkthrough": "canonical-happy-path",
+  "quizId": "43-the-quiz-checkout-embed",
+  "_description": "Expected ordered client-observable event sequence for one happy-path run of quiz /41 (hairquizSpec, 18 screens idx 0-17). The intro cover (idx 0, s_goal) is now a dream-question screen — tapping a card records hairDream, fires Quiz Started + Question Answered at position 0, and auto-advances. s_hair_dream (old idx 3) has been removed; all subsequent screen positions shift down by 1 vs the /40 (long-hair-v1) baseline.",
+  "_trackingRules": "CORRECTED 2026-06 against the FlutterFlow source (track_g_a_event.dart + every call site). Three rules every quiz follows — see docs/reference/tracking-contract.md §'Event property rules':\n  1. POSITION = the RAW 0-based screen index (the screen's index in spec.screens, == FlutterFlow's PageView page index). NOT a question-only count. So EVERY screen — questions, pitches, loading, email, result — has its OWN distinct position. (The old build used questionPosition (a question count), which made a pitch reuse the prior question's number.)\n  2. PER-EVENT PROPS ARE ALWAYS RESET. trackGAEvent always sets question_id ('' when N/A), question ('' when N/A) and selected_answer (the array, else null). GTM's Data Layer Variables persist across pushes, so an OMITTED key keeps its prior value — that is why the old build's 'Continued From Pitch' / 'Viewed Results Page' showed the LAST question's id+answer. selected_answer uses null (not []) because GTM merges arrays by index, so [] would leave a stale array in place; null overwrites/clears.\n  3. 'Quiz Viewed' fires EXACTLY ONCE, on the first screen (idx 0, the start cover), before any interaction — the 'landing on the quiz' event. (FlutterFlow fired it on every screen's mount; that double-counted and is intentionally not reproduced.)",
+  "_41flow": "Quiz /41 DIFFERS from /40 (long-hair-v1): idx 0 s_goal is now a DREAM-QUESTION COVER — tapping a card calls answer() which fires Quiz Started (position 0, question_id 'hairDream') immediately before Question Answered (position 0, selected_answer ['dream_length']). There is NO separate s_hair_dream question screen. All subsequent screen positions shift down by 1 vs /40.",
+  "_capture": "Hand-authored from the corrected tracking rules + the definitive index->screen map (npx tsx). The e2e (e2e/golden.spec.ts) walks the REAL quiz and asserts the captured dataLayer sequence equals this fixture (event-name sequence strict-equal; each payload toMatchObject). Answer-bearing + completion + checkout events ALSO carry ADDITIVE FB-targeting enrichment keys (spec.eventEnrichment: hairConcern/age, keyed by questionId); those are NOT part of the byte-for-byte contract and are OMITTED here — the gate asserts the golden keys as a SUBSET, so additive keys are allowed but not required.",
+  "_orderingAssumptions": [
+    "Only client-observable events are listed in expectedEvents, in fire order. 'position' is the RAW 0-based screen index (spec.screens index); each screen has its own.",
+    "channel:'cvg' entries ($page_load, Completed Quiz) are NOT pushed to window.dataLayer and are NOT captured by the e2e harness (which no-ops window.trackEvent and stubs the webhook). They are listed for contract completeness only.",
+    "React StrictMode double-invokes mount effects in dev, firing 'Quiz Viewed'/'Quiz Completed'/'Viewed Results Page' twice on a screen's mount; the gate dedupes CONSECUTIVE identical (event+position) events, so each view appears once — matching this list.",
+    "The s_goal cover fires Quiz Viewed (once, position 0) then on the dream-card tap: Quiz Started (position 0, question_id 'hairDream') immediately followed by Question Answered (position 0, selected_answer ['dream_length']). The happy-path picks hairDream=dream_length, hairConcern=concern_hairloss (load-bearing for the c_hl coupon + CDP map); other questions take any valid answer.",
+    "The final 'Go to  checkout' (TWO spaces) fires on the dashboard CTA tap AFTER 'Viewed Results Page', so the captured in-walk sequence excludes it; the gate asserts it separately.",
+    "Converge 'Completed Quiz' (converge.ts) and the Worker webhook POST both fire on the same submit tap; submitWebhook() is awaited first, then trackConvergeCompletedQuiz().",
+    "downstreamServerEvents fire asynchronously on the Worker after the 202 response; they are NOT client-observable and are listed separately."
+  ],
+  "answers": {
+    "hairDream": ["dream_length"],
+    "hairConcern": ["concern_hairloss"]
+  },
+  "expectedEvents": [
+    { "channel": "cvg", "event": "$page_load", "_note": "auto on page load; NOT captured in dataLayer; via publishing header / GTM relay" },
+    { "channel": "ga", "event": "Quiz Viewed", "_note": "fires ONCE, on the first-screen view, before any interaction", "event_category": "Quiz", "position": 0, "question_id": "", "selected_answer": null, "quizId": "43-the-quiz-checkout-embed" },
+    { "channel": "ga", "event": "Quiz Started", "_note": "fires on dream-card tap (first user interaction); question_id is hairDream (the cover IS a question in /41). No selected_answer — fires immediately BEFORE the paired Question Answered.", "event_category": "Quiz", "position": 0, "question_id": "hairDream", "question": "What's your hair dream?", "selected_answer": null },
+    { "channel": "ga", "event": "Question Answered", "_note": "hairDream recorded at the cover screen (idx 0); this is the NEW event that /40 did not have.", "event_category": "Quiz", "position": 0, "selected_answer": ["dream_length"], "question_id": "hairDream", "question": "What's your hair dream?" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 1, "selected_answer": ["hairType_straight"], "question_id": "hairType", "question": "Which hair type do you have?" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 2, "selected_answer": ["age_18to29"], "question_id": "age", "question": "How old are you?" },
+    { "channel": "ga", "event": "Question Answered", "_note": "s_concern is now idx 3 (was idx 4 in /40); the prompt is a hairDream-keyed conditional resolving to the dream_length case.", "event_category": "Quiz", "position": 3, "selected_answer": ["concern_hairloss"], "question_id": "hairConcern", "question": "Is there anything that might be getting in the way of your dream to have longer hair?" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 4, "selected_answer": ["routine_basic"], "question_id": "currentRoutine", "question": "What best describes your current haircare routine?" },
+    { "channel": "ga", "event": "Continued From Pitch", "_note": "Damage Pitch is now idx 5 (was idx 6 in /40). question_id '' + selected_answer null = clean.", "event_category": "Quiz", "position": 5, "question_id": "", "selected_answer": null, "question": "Damage Pitch" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 6, "selected_answer": ["hairqare_unknown"], "question_id": "hairqare", "question": "How familiar are you with HairQare and our approach to holistic haircare?" },
+    { "channel": "ga", "event": "Continued From Pitch", "event_category": "Quiz", "position": 7, "question_id": "", "selected_answer": null, "question": "Holistic Pitch" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 8, "selected_answer": ["spend_under10"], "question_id": "shampooSpending", "question": "How much do you spend on a bottle of shampoo?" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 9, "selected_answer": ["myth_rosemary"], "question_id": "hairMyth", "question": "Which of these hair care myths do you believe?" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 10, "selected_answer": ["damageAction_heat"], "question_id": "hairDamageActivity", "question": "Select the damaging practices that you regularly do" },
+    { "channel": "ga", "event": "Continued From Pitch", "event_category": "Quiz", "position": 11, "question_id": "", "selected_answer": null, "question": "Damage Practices Pitch" },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 12, "selected_answer": ["3"], "question_id": "confidence", "question": "My reflection in the mirror affects my mood and self-esteem." },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 13, "selected_answer": ["3"], "question_id": "comparison", "question": "I tend to compare my hair to others' and it makes me frustrated." },
+    { "channel": "ga", "event": "Question Answered", "event_category": "Quiz", "position": 14, "selected_answer": ["professional_no"], "question_id": "professionalReferral", "question": "Did a professional refer you to us?" },
+    { "channel": "ga", "event": "Quiz Completed", "_note": "GA-only lifecycle (NOT the Converge 'Completed Quiz') — fires on the email/contact-details screen VIEW (idx 16 in /41). question_id '' + selected_answer null = clean.", "event_category": "Quiz", "position": 16, "question_id": "", "selected_answer": null, "question": "Contact Details Form" },
+    { "channel": "ga", "event": "Quiz Submitted", "event_category": "Quiz", "position": 16, "question_id": "", "selected_answer": null, "q_name": "Test Tester", "q_email": "test@example.com" },
+    { "channel": "cvg", "event": "Completed Quiz", "_note": "client Converge event via converge.ts on submit; NOT captured in dataLayer (trackEvent no-op in e2e)" },
+    { "channel": "ga", "event": "Viewed Results Page", "_note": "result is now idx 17 in /41. question 'Result Page' overwrites the email view's stale 'Contact Details Form'; question_id '' + selected_answer null = clean.", "event_category": "Quiz", "position": 17, "question_id": "", "selected_answer": null, "question": "Result Page" },
+    { "channel": "ga", "event": "Go to  checkout", "_note": "TWO spaces between 'to' and 'checkout' — exact string; fires on dashboard CTA tap AFTER results render, so it is asserted separately from the in-walk captured sequence", "event_category": "Quiz", "position": 17, "question_id": "", "selected_answer": null }
+  ],
+  "expectedWebhook": {
+    "url": "https://quiz-submissions-worker.dndgroup.workers.dev/api/v1/quiz/submit",
+    "method": "POST",
+    "headerKeys": ["Content-Type", "X-Webhook-Secret"],
+    "bodyKeys": ["name", "firstName", "lastName", "email", "quizData", "activeCampaign", "mixpanel"],
+    "_bodyDetail": {
+      "quizData": { "rawAnswers": [ { "questionId": "hairDream", "answerIds": ["dream_length"] }, { "questionId": "hairConcern", "answerIds": ["concern_hairloss"] } ] },
+      "activeCampaign": { "field_8": "concern_hairloss" },
+      "mixpanel": { "Hair Concern Type": "concern_hairloss", "Hair_Dream": "dream_length", "$name": "<full name>", "$email": "<email>" }
+    }
+  },
+  "expectedCheckout": {
+    "base": "https://checkout.hairqare.co/buy/hairqare-challenge-save-85-5/",
+    "params": ["billing_email", "billing_first_name", "billing_last_name", "aero-coupons=c_hl", "__cvg_uid", "__cvg_sid"],
+    "coupon": "c_hl",
+    "_couponReason": "hairConcern contains concern_hairloss => c_hl",
+    "_paramNote": "__cvg_uid / __cvg_sid appended only if found in cookie or URL fallback"
+  },
+  "downstreamServerEvents": [
+    { "event": "Mixpanel profile upsert", "origin": "worker", "order": 1 },
+    { "event": "ActiveCampaign contact upsert + LEAD_V2 tag", "origin": "worker", "order": 2 },
+    { "event": "Signed Up", "origin": "worker", "order": 3 }
+  ]
+}

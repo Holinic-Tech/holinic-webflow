@@ -1,0 +1,11 @@
+node_modules
+dist
+*.local
+.DS_Store
+/test-results
+/playwright-report
+/e2e/.cache
+# Human-review side-by-side captures: regenerated every `test:e2e` run for eyeballing
+# the React screens against docs/reference/golden/*.png — not a committed artifact.
+/e2e/review
+*.tsbuildinfo

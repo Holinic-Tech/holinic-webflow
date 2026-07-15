@@ -1,0 +1,79 @@
+/* Body font — Inter (self-hosted via @fontsource so it ships with the bundle).
+   Latin subset only — the quiz is English; avoids shipping cyrillic/greek/vn. */
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/inter/latin-700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    font-family: theme('fontFamily.sans');
+    color: theme('colors.rich-black');
+    /* Calm, bright brand backdrop: a very soft periwinkle→white wash that
+       never dominates (white stays dominant). */
+    background-color: theme('colors.white');
+    background-image: linear-gradient(180deg, #f2f3fb 0%, #ffffff 42%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Reckless Neue headlines degrade gracefully to a tasteful serif stack
+     (no Reckless Neue font files available in figma-holiniq-brand/). */
+  h1,
+  h2,
+  h3 {
+    font-family: theme('fontFamily.display');
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* Primary CTA — bright-orange (#FE6903) fill, matching the live quiz CONTINUE
+     color. Used on every primary CTA BUTTON (dashboard JOIN/START, plan dialog,
+     result CTA, skip-modal "back to quiz"). Disabled = muted/translucent orange. */
+  .btn-primary {
+    @apply w-full rounded-2xl bg-cta-orange px-5 py-4 text-center text-sm font-semibold uppercase tracking-[0.7px] text-white transition-colors;
+    @apply active:scale-[0.99] hover:bg-cta-orange-deep;
+    @apply disabled:cursor-not-allowed disabled:bg-cta-orange/40 disabled:hover:bg-cta-orange/40;
+  }
+
+  /* Bright-orange CONTINUE pill — the live quiz CONTINUE color (#FE6903), used on
+     the sticky bottom CTA bar (shampoo reveal idx-10, multi-block pitch idx-13,
+     pitches, multi-selects, email submit-via-bar). Disabled = translucent orange. */
+  .btn-cta {
+    @apply w-full rounded-2xl bg-cta-orange px-5 py-4 text-center text-sm font-semibold uppercase tracking-[0.7px] text-white transition-colors;
+    @apply active:scale-[0.99] hover:bg-cta-orange-deep;
+  }
+
+  /* Secondary CTA — outlined bright-orange (e.g. SKIP QUIZ confirm in the skip
+     modal): orange-themed but visually distinct from the solid primary. */
+  .btn-secondary {
+    @apply w-full rounded-2xl border-2 border-cta-orange bg-white px-5 py-4 text-center text-sm font-semibold uppercase tracking-[0.7px] text-cta-orange transition-colors;
+    @apply active:scale-[0.99] hover:bg-cta-orange/10;
+  }
+
+  /* Text link — rich-black, deep-tangerine on hover. */
+  .link-brand {
+    @apply font-medium text-rich-black underline underline-offset-2 transition-colors hover:text-tangerine-deep;
+  }
+
+  /* Answer option card — white surface, periwinkle border, plum selected state. */
+  .answer-card {
+    @apply w-full rounded-2xl border bg-white text-left text-base font-medium text-rich-black shadow-card transition-colors active:scale-[0.99];
+    @apply border-neutral-200 hover:border-periwinkle;
+  }
+
+  .answer-card--selected {
+    @apply border-plum bg-violet;
+  }
+}
