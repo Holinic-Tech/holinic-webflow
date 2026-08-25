@@ -41,6 +41,7 @@
         var h = location.hostname;
         if (!h || h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0') return;
 
+        // --- dataLayer only (GTM reads it). NO standalone gtag.js — see head comment. ---
         window.dataLayer = window.dataLayer || [];
 
         // --- Converge (cvg) — the wrapper the app calls via window.trackEvent ---
@@ -71,8 +72,8 @@
         })(window, document, 'script', 'dataLayer', 'GTM-TT5MJDF');
       })();
     </script>
-    <script type="module" crossorigin src="/48-the-quiz-haircare/assets/index-DZS1cbK7.js"></script>
-    <link rel="stylesheet" crossorigin href="/48-the-quiz-haircare/assets/index-DAuIfpWk.css">
+    <script type="module" crossorigin src="/48-the-quiz-haircare/assets/index-DE6XbMmF.js"></script>
+    <link rel="stylesheet" crossorigin href="/48-the-quiz-haircare/assets/index-DybgN9cf.css">
   </head>
   <body><div id="root"></div></body>
 </html>
