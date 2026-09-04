@@ -324,6 +324,50 @@ option7Group.forEach((radio) => {
   });
 });
 
+// ---- Lead webhook fix: bysa.app is dead (HTTP 500); send leads to the live
+// quiz-submissions worker instead (AC contact + Mixpanel profile + Converge "Signed Up").
+// This ONLY changes where leads are sent — the quiz flow, events, tags and checkout are
+// untouched. The worker upserts by email, so sending on both submit + join is harmless. ----
+var HQ_WORKER_URL = 'https://quiz-submissions-worker.dndgroup.workers.dev/api/v1/quiz/submit';
+var HQ_WORKER_SECRET = 'a6e3a73e9d1d60d438efad6b5512b5a75db65c3c1f78f90ed9aeccfde3ac6969';
+var HQ_CONCERN_MAP = {
+  Hair_loss: 'concern_hairloss', Irritation_dandruff: 'concern_scalp',
+  Damage_dye: 'concern_damage', Split_dryness: 'concern_splitends', None: 'concern_mixed',
+};
+var HQ_QMAP = {
+  options: { qid: 'hairConcern', mp: 'Hair Concern Type', ac: '8' },
+  option1: { qid: 'age', mp: 'Age Cohort' },
+  option2: { qid: 'currentRoutine', mp: 'Haircare Background' },
+  option3: { qid: 'shampooSpending', mp: 'Spending' },
+  option4: { qid: 'diet', mp: 'Diet' },
+  option6: { qid: 'hairMyth', mp: 'hairMyth' },
+  option7: { qid: 'hairType', mp: 'Hair Type' },
+};
+function hqCleanLabel(s) { return (s || '').replace(/^[^A-Za-z0-9$]+/, '').trim(); }
+function hqLabelFor(input) { if (!input) return ''; var l = document.querySelector('label[for="' + input.id + '"]'); return l ? l.textContent : ''; }
+function hqSendLead(firstName, lastName, email) {
+  try {
+    if (!email) return;
+    var name = ((firstName || '') + ' ' + (lastName || '')).trim();
+    var rawAnswers = [], mp = { $name: name, $email: email }, ac = {};
+    Object.keys(HQ_QMAP).forEach(function (group) {
+      var input = document.querySelector('input[name="' + group + '"]:checked');
+      if (!input) return;
+      var meta = HQ_QMAP[group], val = hqCleanLabel(hqLabelFor(input));
+      if (meta.qid === 'hairConcern') { val = HQ_CONCERN_MAP[input.value] || val; }
+      rawAnswers.push({ questionId: meta.qid, answerIds: [val] });
+      if (meta.mp) mp[meta.mp] = val;
+      if (meta.ac) ac['field_' + meta.ac] = val;
+    });
+    fetch(HQ_WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Webhook-Secret': HQ_WORKER_SECRET },
+      body: JSON.stringify({ name: name, firstName: firstName, lastName: lastName, email: email, quizData: { rawAnswers: rawAnswers }, activeCampaign: ac, mixpanel: mp }),
+      keepalive: true,
+    }).catch(function () {});
+  } catch (e) { /* never break the quiz */ }
+}
+
 function handleDataSubmission(email, firstName, lastName, answers) {
   // Get the reference to the loader element
   const loader = document.getElementById('loader');
@@ -401,32 +445,9 @@ function handleDataSubmission(email, firstName, lastName, answers) {
     '&billing_last_name=' +
     encodeURIComponent(lastName);
 
-  // Post user's answers, name, and email to webhook - retry twicce
-  $.ajax({
-    url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
-    type: 'POST',
-    data: JSON.stringify(data),
-    contentType: 'application/json',
-    success: function () {
-      return (window.top.location.href = redirectUrl);
-    },
-    error: function () {
-      // Failed webhook request; handle as needed
-      $.ajax({
-        url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        success: function () {
-          return (window.top.location.href = redirectUrl);
-        },
-        error: function () {
-          // Failed webhook request; handle as needed
-          return (window.top.location.href = redirectUrl);
-        },
-      });
-    },
-  });
+  // Send the lead to the live worker (bysa.app is dead), then continue to checkout.
+  hqSendLead(firstName, lastName, email);
+  window.top.location.href = redirectUrl;
 
   scrollToTop();
 }
@@ -500,31 +521,13 @@ function handleSubmit(event) {
       name: `${firstName} ${lastName}`,
       email: selectedEm.value,
     };
-    // Post user's answers, name, and email to webhook
-    $.ajax({
-      url: 'https://bysa.app/api/v1/onboarding/quiz_webhook/',
-      type: 'POST',
-      data: JSON.stringify(data_upload),
-      contentType: 'application/json',
-      success: function () {
-        console.log('sucessful webhook');
-        // console.log("Selected value: " + questions_logic_payload.hair_problem.toString(), 'Profile: ', user_profile);
-        const result_screen = proocessResultLogic(
-          questions_logic_payload.hair_problem.toString(),
-          firstName
-        );
-        return (resultScreenId.innerHTML = result_screen);
-      },
-      error: function () {
-        // Failed webhook request; handle as needed
-        console.log('failed webhook');
-        const result_screen = proocessResultLogic(
-          questions_logic_payload.hair_problem.toString(),
-          firstName
-        );
-        return (resultScreenId.innerHTML = result_screen);
-      },
-    });
+    // Send the lead to the live worker (bysa.app is dead), then render the result.
+    hqSendLead(firstName, lastName, selectedEm.value);
+    const result_screen = proocessResultLogic(
+      questions_logic_payload.hair_problem.toString(),
+      firstName
+    );
+    resultScreenId.innerHTML = result_screen;
 
     // Perform any further operations with the selected value
     form_content.style.display = 'none';
